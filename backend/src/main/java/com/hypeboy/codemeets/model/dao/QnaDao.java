@@ -2,8 +2,11 @@ package com.hypeboy.codemeets.model.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.hypeboy.codemeets.model.dto.QnaDto;
 
+@Mapper
 public interface QnaDao {
 	//QNA 작성
 	int writeQna(QnaDto qnaDto);
