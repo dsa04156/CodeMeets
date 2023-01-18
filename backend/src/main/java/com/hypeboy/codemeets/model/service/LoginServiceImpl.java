@@ -1,6 +1,7 @@
 package com.hypeboy.codemeets.model.service;
 
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.exception.LoginFailedException;
 import com.hypeboy.codemeets.model.dao.LoginDao;
 import com.hypeboy.codemeets.model.dto.LoginDto;
+import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -30,16 +32,27 @@ public class LoginServiceImpl implements LoginService {
 	@Autowired
 	private SqlSession sqlSession;
 	
-    public String login(LoginDto loginDto) {
-    	LoginDto loginUserDto = sqlSession.getMapper(LoginDao.class).findUserByUsername(loginDto.getUserId())
+	@Override
+    public UserDto login(LoginDto loginDto) throws Exception {
+    	UserDto loginUserDto = sqlSession.getMapper(LoginDao.class)
+    			.findUserByUsername(loginDto.getUserId())
     			.orElseThrow(() -> new LoginFailedException("잘못된 아이디입니다"));
     	
-//    	logger.info(loginUserDto.toString());
+    	logger.info("LoginServiceImpl login - " + loginUserDto.toString());
 
         if (!passwordEncoder.matches(loginDto.getPassword(), loginUserDto.getPassword())) {
             throw new LoginFailedException("잘못된 비밀번호입니다");
         }
 
-        return jwtTokenProvider.createToken(loginUserDto.getUserPk(), Collections.singletonList(loginUserDto.getUserId()));
+        return loginUserDto;
     }
+    
+	@Override
+	public void saveRefreshToken(String userId, String refreshToken) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("id",  userId);
+		map.put("token", refreshToken);
+		logger.info(map.toString());
+		sqlSession.getMapper(LoginDao.class).saveRefreshToken(map);
+	}
 }

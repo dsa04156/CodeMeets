@@ -28,6 +28,9 @@ public class JwtTokenProvider {
 
     @Value("${jwt.token-validity-in-seconds}")
     private long tokenValidMillisecond;
+    
+    @Value("${jwt.refresh-token-validity-in-seconds}")
+    private long refreshTokenValidMillisecond;
 
     private final UserDetailsService userDetailsService;
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
@@ -37,19 +40,25 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes()); // SecretKey Base64로 인코딩
     }
 
-    // JWT 토큰 생성
-    public String createToken(int userId, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(Long.toString(userId));
-        claims.put("roles", roles);
-        Date now = new Date();
+	public <T> String createAccessToken(String key, T data) {
+		return create(key, data, "access-token", tokenValidMillisecond);
+	}
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenValidMillisecond)) // 토큰 만료일 설정
-                .signWith(SignatureAlgorithm.HS256, secretKey) // 암호화
-                .compact();
-    }
+	public <T> String createRefreshToken(String key, T data) {
+		return create(key, data, "refresh-token", refreshTokenValidMillisecond);
+	}
+
+	public <T> String create(String key, T data, String subject, long expire) {
+		String jwt = Jwts.builder()
+				.setHeaderParam("typ", "JWT")
+				.setHeaderParam("regDate", System.currentTimeMillis())
+				.setExpiration(new Date(System.currentTimeMillis() + expire))
+				.setSubject(subject)
+				.claim(key, data)
+				.signWith(SignatureAlgorithm.HS256, secretKey)
+				.compact();
+		return jwt;
+	}
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {

@@ -3,11 +3,22 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.hypeboy.codemeets.model.dao.LoginDao">
-    <select id="findUserByUsername" resultType="LoginDto">
-        SELECT user_pk userPk, user_id userId, password, user_active userActive
-        FROM user
+    <select id="findUserByUsername" resultType="UserDto">
+    	<!-- SELECT *
+    	FROM user NATURAL JOIN user_info
+    	WHERE user_id = #{userId} -->
+   		SELECT user_pk userPk, user_id userId, password, token, 
+   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
+   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
+        FROM user NATURAL JOIN user_info
         WHERE user_id = #{userId}
     </select>
+    
+    <update id="saveRefreshToken" parameterType="map">
+		update user
+		set token = #{token}
+		where user_id = #{id}
+	</update>
 
 </mapper>
 
