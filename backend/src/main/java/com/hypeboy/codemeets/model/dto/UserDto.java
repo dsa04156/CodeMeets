@@ -18,5 +18,6 @@ public class UserDto {
 	private String tel;
 	private String email;
 	private String profilePhoto;
-	private int profilePublic;
+	private int emailPublic;
+	private int telPublic;
 }

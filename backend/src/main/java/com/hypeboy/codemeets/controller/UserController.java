@@ -49,7 +49,9 @@ public class UserController {
 		}
 	}
     
-    @Operation(summary = "유저 회원가입", description = "유저 회원가입 API \n\n userPk, userInfoPk, userActive값은 제외해주세요")
+    @Operation(summary = "유저 회원가입", description = "유저 회원가입 API \n\n "
+    		+ "userPk, userInfoPk, userActive값은 제외해주세요 "
+    		+ "\n\n 이메일, 전화번호 공개 시 값 1로 설정바랍니다.")
     @PostMapping("/regist")
 	public ResponseEntity<?> regist(@RequestBody UserDto userDto) {
 		try {
