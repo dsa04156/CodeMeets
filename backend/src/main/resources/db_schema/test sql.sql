@@ -30,6 +30,12 @@ CHANGE `token` `token` VARCHAR(256);
 ALTER TABLE `s08p11d109`.`user` 
 CHANGE `password` `password` VARCHAR(1000);
 
+ALTER TABLE `s08p11d109`.`user_info` 
+CHANGE `profile_public` `email_public` TINYINT NOT NULL DEFAULT 1;
+
+ALTER TABLE `s08p11d109`.`user_info` 
+ADD `tel_public` TINYINT NOT NULL DEFAULT 1;
+
 START TRANSACTION;
 	INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
 	VALUES('test03', '1234', 'token', 1);
