@@ -12,8 +12,8 @@ from user natural join user_info;
 delete from user where user_pk = 3;
 delete from user_info where user_pk = 3;
 
-ALTER TABLE user_info AUTO_INCREMENT = 2;
-ALTER TABLE user AUTO_INCREMENT = 2;
+ALTER TABLE user_info AUTO_INCREMENT = 1;
+ALTER TABLE user AUTO_INCREMENT = 1;
 
 select *
 from user_info
@@ -27,7 +27,8 @@ where user_id = 'test01';
 ALTER TABLE `s08p11d109`.`user` 
 CHANGE `token` `token` VARCHAR(256);
 
-
+ALTER TABLE `s08p11d109`.`user` 
+CHANGE `password` `password` VARCHAR(1000);
 
 START TRANSACTION;
 	INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
