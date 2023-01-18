@@ -7,18 +7,24 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.UserDao;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@Autowired
 	private SqlSession sqlSession;
+
+    private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public List<UserDto> getUserList(int userPk) throws Exception {
@@ -29,6 +35,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void registUser(UserDto userDto) throws Exception {
 		logger.info("userRegist - 실행");
+		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		sqlSession.getMapper(UserDao.class).registUser(userDto);
 	}
 	
