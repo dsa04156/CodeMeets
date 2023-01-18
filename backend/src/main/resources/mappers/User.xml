@@ -12,10 +12,10 @@
 			]]>
 		</select>
 		
-		<update id="registUser" parameterType="UserDto">
+		<insert id="registUser" parameterType="UserDto">
 			INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
 			VALUES(#{userId}, #{password}, 'token', 1);
-		</update>
+		</insert>
 		
 		
 		<update id="registUserInfo" parameterType="UserDto">
