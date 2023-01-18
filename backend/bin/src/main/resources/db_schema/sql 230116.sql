@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`user` (
   `user_pk` INT NOT NULL AUTO_INCREMENT,
   `user_id` VARCHAR(16) NOT NULL,
   `password` VARCHAR(20) NOT NULL,
-  `token` VARCHAR(100) NULL,
+  `token` VARCHAR(256) NULL,
   `user_active` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`user_pk`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC))
