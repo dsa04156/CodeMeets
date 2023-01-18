@@ -7,13 +7,16 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserInfoDto {
-	private int user_info_pk;
+public class UserDto {
+	private int userPk;
+	private String userId;
+	private String password;
+	private int userActive;
+	private int userInfoPk;
 	private String userName;
 	private String nickname;
 	private String tel;
 	private String email;
-	private String profile_photo;
+	private String profilePhoto;
 	private int profilePublic;
-	private int userPk;
 }
