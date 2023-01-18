@@ -34,14 +34,14 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void registUser(UserDto userDto) throws Exception {
-		logger.info("userRegist - 실행");
+		logger.info("registUser - 실행");
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		sqlSession.getMapper(UserDao.class).registUser(userDto);
 	}
 	
 	@Override
 	public void registUserInfo(UserDto userDto) throws Exception {
-		logger.info("userInfoRegist - 실행");
+		logger.info("registUserInfo - 실행");
 		sqlSession.getMapper(UserDao.class).registUserInfo(userDto);
 	}
 

@@ -57,7 +57,7 @@ public class UserController {
 		try {
 			logger.info("registUser - 호출");
 			userService.registUser(userDto);
-			logger.info("RegistUserInfo - 호출");
+			logger.info("registUserInfo - 호출");
 			userService.registUserInfo(userDto);
 			logger.info("registUser, registUserInfo - 성공");
 			return new ResponseEntity<String>("회원가입 성공", HttpStatus.OK);
