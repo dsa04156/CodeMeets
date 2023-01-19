@@ -13,6 +13,9 @@ import com.hypeboy.codemeets.model.dto.UserDto;
 public interface LoginDao {
     Optional<UserDto> findUserByUsername(String username) throws SQLException;
     Optional<UserDto> findByUserId(Long userId) throws SQLException;
-    void save(UserDto userDto) throws SQLException;
+    public UserDto getUserInfo(String id) throws SQLException;
+    
+    // token
     public void saveRefreshToken(Map<String, String> map) throws SQLException;
+    public Object getRefreshToken(String userId) throws SQLException;
 }

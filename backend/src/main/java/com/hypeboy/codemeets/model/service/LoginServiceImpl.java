@@ -48,11 +48,23 @@ public class LoginServiceImpl implements LoginService {
     }
     
 	@Override
+	public UserDto getUserInfo(String id) throws Exception {
+		return sqlSession.getMapper(LoginDao.class).getUserInfo(id);
+	}
+	
+	// token ----------------------------------------------------------------------------------------------------
+	
+	@Override
 	public void saveRefreshToken(String userId, String refreshToken) throws Exception {
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("id",  userId);
 		map.put("token", refreshToken);
 		logger.info(map.toString());
 		sqlSession.getMapper(LoginDao.class).saveRefreshToken(map);
+	}
+	
+	@Override
+	public Object getRefreshToken(String userId) throws Exception {
+		return sqlSession.getMapper(LoginDao.class).getRefreshToken(userId);
 	}
 }
