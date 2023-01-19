@@ -23,6 +23,8 @@ import com.hypeboy.codemeets.model.service.LoginServiceImpl;
 import com.hypeboy.codemeets.model.service.ResponseServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
@@ -75,6 +77,9 @@ public class LoginController {
 	
 	@Operation(summary = "Get Login UserInfo", description = "로그인 상태의 유저 정보 획득 API."
 			+ " \n\n 아이디와 헤더에 담긴 토큰으로 검사")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
 	@GetMapping("/{id}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("id") String id, HttpServletRequest request) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -101,6 +106,9 @@ public class LoginController {
 	}
 	
 	@Operation(summary = "Get Access-Token", description = "유저의 refresh-token 사용하여 access-token 재발급")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "REFRESH-TOKEN", value = "로그인 성공 후 발급 받은 refresh-token", required = true, dataType = "String", paramType = "header")
+    })
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
