@@ -4,11 +4,22 @@
 	
 <mapper namespace="com.hypeboy.codemeets.model.dao.UserDao">
 	
-		<select id="getUserList" parameterType="int" resultType="UserDto">
+		<select id="getUserList" parameterType="string" resultType="UserDto">
 			<![CDATA[
-				select *
-				from user_info
-				where user_pk = #{userPk};
+				SELECT user_pk userPk, user_id userId, password, token, 
+		   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
+		   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
+		        FROM user NATURAL JOIN user_info
+		        WHERE user_id = #{userId}
+			]]>
+		</select>
+		
+		<select id="getAllUserList" resultType="UserDto">
+			<![CDATA[
+				SELECT user_pk userPk, user_id userId, password, token, 
+		   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
+		   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
+		        FROM user NATURAL JOIN user_info
 			]]>
 		</select>
 		
