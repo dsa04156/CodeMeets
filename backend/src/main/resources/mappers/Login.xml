@@ -4,7 +4,7 @@
 	
 <mapper namespace="com.hypeboy.codemeets.model.dao.LoginDao">
     <select id="findUserByUsername" resultType="UserDto">
-   		SELECT user_pk userPk, user_id userId, password, token, user_name userName 
+   		SELECT user_pk userPk, user_id userId, password, token, user_name userName,
    		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
    		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
         FROM user NATURAL JOIN user_info
@@ -12,7 +12,7 @@
     </select>
     
 	<select id="getUserInfo" resultType="UserDto">
-   		SELECT user_pk userPk, user_id userId,
+   		SELECT user_pk userPk, user_id userId, user_name userName,
    		user_active userActive, nickname, tel, email, 
    		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
         FROM user NATURAL JOIN user_info
