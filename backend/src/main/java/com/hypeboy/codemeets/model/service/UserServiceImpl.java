@@ -27,9 +27,14 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public List<UserDto> getUserList(int userPk) throws Exception {
+	public List<UserDto> getUserList(String userId) throws Exception {
 //		logger.info("getUserInfoList - 실행");
-		return sqlSession.getMapper(UserDao.class).getUserList(userPk);
+		return sqlSession.getMapper(UserDao.class).getUserList(userId);
+	}
+	
+	@Override
+	public List<UserDto> getAllUserList() throws Exception {
+		return sqlSession.getMapper(UserDao.class).getAllUserList();
 	}
 
 	@Override
@@ -59,6 +64,7 @@ public class UserServiceImpl implements UserService{
 	public int getUserEmailOverlap(String userId) throws SQLException {
 		return sqlSession.getMapper(UserDao.class).getUserEmailOverlap(userId);
 	}
+
 	
 
 }

@@ -9,7 +9,8 @@ import com.hypeboy.codemeets.model.dto.UserDto;
 
 @Mapper
 public interface UserDao {
-	public List<UserDto> getUserList(int userPk) throws SQLException;
+	public List<UserDto> getUserList(String userId) throws SQLException;
+	public List<UserDto> getAllUserList() throws SQLException;
 	public void registUser(UserDto userDto) throws SQLException;
 	public void registUserInfo(UserDto userDto) throws SQLException;
 	public int getUserIdOverlap(String userId) throws SQLException;
