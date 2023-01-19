@@ -1,6 +1,8 @@
 package com.hypeboy.codemeets.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,9 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.UserDto;
@@ -25,6 +27,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("/user")
 public class UserController {
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
 	
 	@Autowired
 	private UserServiceImpl userService;
@@ -116,6 +121,33 @@ public class UserController {
 			return new ResponseEntity<String>("서버오류", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+    
+    @Operation(summary = "ID 찾기", description = "email 혹은 전화번호 기반 ID 찾기 "
+    		+ "\n\n type은 [email] 혹은 [tel]로 입력해주세요")
+    @GetMapping("/search-id")
+	public ResponseEntity<?> searchId(@RequestParam("type") String type, @RequestParam("data") String data) throws Exception {
+		logger.info("searchId - 호출");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		try {
+			String result = userService.searchId(type, data);
+			
+			if (result != null) {
+				resultMap.put("data", result);
+				resultMap.put("message", SUCCESS);
+			}
+			else {
+				resultMap.put("data", result);
+				resultMap.put("message", FAIL);
+			}
+			
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("서버오류", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+    
+    
     
     
     

@@ -2,11 +2,14 @@ package com.hypeboy.codemeets.model.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -51,19 +54,38 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public int getUserIdOverlap(String userId) throws SQLException {
+	public int getUserIdOverlap(String userId) throws Exception {
 		return sqlSession.getMapper(UserDao.class).getUserIdOverlap(userId);
 	}
 
 	@Override
-	public int getUserTelOverlap(String userId) throws SQLException {
+	public int getUserTelOverlap(String userId) throws Exception {
 		return sqlSession.getMapper(UserDao.class).getUserTelOverlap(userId);
 	}
 
 	@Override
-	public int getUserEmailOverlap(String userId) throws SQLException {
+	public int getUserEmailOverlap(String userId) throws Exception {
 		return sqlSession.getMapper(UserDao.class).getUserEmailOverlap(userId);
 	}
+
+	@Override
+	public String searchId(String type, String data) throws Exception {
+		String result = null;
+		
+		try {
+			if (type.equals("email")) {
+				result = sqlSession.getMapper(UserDao.class).searchIdFromEmail(data);
+			}
+			else if (type.equals("tel")) {
+				result = sqlSession.getMapper(UserDao.class).searchIdFromTel(data);
+			}
+		} catch (Exception e) {
+			return null;
+		}
+		
+		return result;
+	}
+
 
 	
 

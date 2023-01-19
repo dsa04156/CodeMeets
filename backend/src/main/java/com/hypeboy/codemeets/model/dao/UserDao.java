@@ -16,4 +16,6 @@ public interface UserDao {
 	public int getUserIdOverlap(String userId) throws SQLException;
 	public int getUserTelOverlap(String userId) throws SQLException;
 	public int getUserEmailOverlap(String userId) throws SQLException;
+	public String searchIdFromEmail(String data) throws SQLException;
+	public String searchIdFromTel(String data) throws SQLException;
 }

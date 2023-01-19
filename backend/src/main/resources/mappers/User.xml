@@ -6,7 +6,7 @@
 	
 		<select id="getUserList" parameterType="string" resultType="UserDto">
 			<![CDATA[
-				SELECT user_pk userPk, user_id userId, password, token, 
+				SELECT user_pk userPk, user_id userId, password, token, user_name userName,
 		   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
 		   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
 		        FROM user NATURAL JOIN user_info
@@ -16,7 +16,7 @@
 		
 		<select id="getAllUserList" resultType="UserDto">
 			<![CDATA[
-				SELECT user_pk userPk, user_id userId, password, token, 
+				SELECT user_pk userPk, user_id userId, password, token, user_name userName,
 		   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
 		   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
 		        FROM user NATURAL JOIN user_info
@@ -40,27 +40,45 @@
 		
 		<select id="getUserIdOverlap" parameterType="string" resultType="int">
 			<![CDATA[
-				select count(*)
-				from user
-				where user_id = #{userId};
+				SELECT count(*)
+				FROM user
+				WHERE user_id = #{userId};
 			]]>
 		</select>
 		
 		<select id="getUserTelOverlap" parameterType="string" resultType="int">
 			<![CDATA[
-				select count(*)
-				from user_info
-				where tel = #{tel};
+				SELECT count(*)
+				FROM user_info
+				WHERE tel = #{tel};
 			]]>
 		</select>
 		
 		<select id="getUserEmailOverlap" parameterType="string" resultType="int">
 			<![CDATA[
-				select count(*)
-				from user_info
-				where email = #{email};
+				SELECT count(*)
+				FROM user_info
+				WHERE email = #{email};
 			]]>
 		</select>
+		
+		<select id="searchIdFromEmail" parameterType="string" resultType="string">
+			<![CDATA[
+				SELECT user_id
+				FROM user NATURAL JOIN user_info
+				WHERE email = #{data};
+			]]>
+		</select>
+		
+		<select id="searchIdFromTel" parameterType="string" resultType="string">
+			<![CDATA[
+				SELECT user_id
+				FROM user NATURAL JOIN user_info
+				WHERE tel = #{data};
+			]]>
+		</select>
+		
+		
 
 </mapper>
 
