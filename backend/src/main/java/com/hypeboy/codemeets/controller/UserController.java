@@ -29,21 +29,33 @@ public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
 	
-    @Operation(summary = "test UserInfo", description = "userInfo api example")
+    @Operation(summary = "Dev Search UserInfo", description = "닉네임으로 유저 정보 검색")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
             @ApiResponse(responseCode = "404", description = "NOT FOUND !!"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
-	@GetMapping(produces = "application/json;charset=utf-8")
-	public ResponseEntity<?> userInfoList(@RequestParam("userPk") int userPk) throws Exception {
-		logger.info("favorite list - 호출");
+	@GetMapping(value="/dev-search-userinfo",produces = "application/json;charset=utf-8")
+	public ResponseEntity<?> userInfoList(@RequestParam("userId") String userId) throws Exception {
+		logger.info("userInfoList - 호출");
 
 		try {
-			List<UserDto> test = userService.getUserList(userPk);
-			System.out.println(test.toString());
-			return new ResponseEntity<List<UserDto>>(test, HttpStatus.OK);
+			List<UserDto> user = userService.getUserList(userId);
+			return new ResponseEntity<List<UserDto>>(user, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("서버오류", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+    
+    @Operation(summary = "Dev All UserList", description = "모든 유저 정보 얻기")
+	@GetMapping(value="/dev-all-userlist", produces = "application/json;charset=utf-8")
+	public ResponseEntity<?> userInfoAllList() throws Exception {
+		logger.info("userInfoAllList - 호출");
+
+		try {
+			List<UserDto> allUserList = userService.getAllUserList();
+			return new ResponseEntity<List<UserDto>>(allUserList, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("서버오류", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
