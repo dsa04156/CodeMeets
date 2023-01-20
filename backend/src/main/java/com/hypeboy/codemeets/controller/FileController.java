@@ -57,7 +57,7 @@ public class FileController {
 		}
 		return "";
 	}
-	@Operation(summary = "View Image", description = "서버에 올라온 이미지 확인"
+	@Operation(summary = "Get And Show Image", description = "서버에 올라온 이미지 확인 or 다운로드"
 			+ "img src 태그에 값을 넣어서 확인바랍니다")
 	@GetMapping("/images/{fileName}")
     public ResponseEntity<Resource> image(@PathVariable String fileName) throws FileNotFoundException {
@@ -70,15 +70,15 @@ public class FileController {
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(inputStreamResource);
     }
-
+	
+	@Operation(summary = "Get Image File List", description = "저장된 이미지 이름 리스트 요청")
 	@GetMapping
 	public List<String> getFileNames() {
-		return Stream.of(new File(imageDirectory).listFiles()).filter(file -> !file.isDirectory()).map(File::getName)
+		return Stream.of(new File(imageDirectory + imagesFolder).listFiles()).filter(file -> !file.isDirectory()).map(File::getName)
 				.collect(Collectors.toList());
 	}
 	
-	@Operation(summary = "File Upload", description = "파일 업로드 \n\n"
-			+ "")
+	@Operation(summary = "Upload File", description = "파일을 서버에 업로드")
 	@PostMapping(consumes = "multipart/form-data")
 	public ResponseEntity<Object> uploadFiles(
 	    @Parameter(
