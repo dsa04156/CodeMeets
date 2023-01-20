@@ -8,7 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class QnaDto {
-
+	// QNA PK
 	private int groupQuestionPk;
 	private String groupQuestionTitle;
 	private String groupQuestionTontents;

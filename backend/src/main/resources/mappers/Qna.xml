@@ -15,7 +15,7 @@
 		<result column="user_pk" property="userPk"/>
 	</resultMap>
 	
-	<insert id="writeQna" parameterType="QnaDto">
+	<insert id="writeQna" parameterType="QnaDto">x`
 		INSERT INTO board (group_question_title, group_question_contents, group_question_date, group_pk, user_pk)
 		VALUES (#{groupQuestionTitle}, #{groupQuestionContents}, now(), #{groupPk}, #{userPk})
 	</insert>

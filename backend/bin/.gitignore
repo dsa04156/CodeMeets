@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 *.mwb.bak
+*.png
+*.jpg
 
 ### STS ###
 .apt_generated
