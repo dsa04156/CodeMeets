@@ -183,7 +183,7 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		try {
-			resultMap.put("result", userService.editPw(userId, password));
+			resultMap.put("message", userService.editPw(userId, password));
 			
 			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
