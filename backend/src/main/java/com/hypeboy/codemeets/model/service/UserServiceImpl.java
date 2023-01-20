@@ -1,15 +1,11 @@
 package com.hypeboy.codemeets.model.service;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +19,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
 	
 	@Autowired
 	private SqlSession sqlSession;
@@ -84,6 +83,42 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		return result;
+	}
+
+	@Override
+	public int forgotPw(String userId, String type, String data) throws Exception {
+		int result = 0;
+		
+		try {
+			if (type.equals("email")) {
+				result = sqlSession.getMapper(UserDao.class).forgotPwFromEmail(userId, data);
+			}
+			else if (type.equals("tel")) {
+				result = sqlSession.getMapper(UserDao.class).forgotPwFromTel(userId, data);
+			}
+		} catch (Exception e) {
+			return result;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public String editPw(String userId, String password) throws Exception {
+		try {
+			int result = sqlSession.getMapper(UserDao.class).editPw(userId, passwordEncoder.encode(password));
+			
+			if (result == 1) {
+				return SUCCESS;
+			}
+			else {
+				return FAIL;
+			}
+			
+		} catch (Exception e) {
+			return FAIL;
+		}
+
 	}
 
 

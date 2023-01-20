@@ -20,6 +20,8 @@ public interface UserService {
 	public int getUserTelOverlap(String userId) throws Exception;
 	public int getUserEmailOverlap(String userId) throws Exception;
 	
-	// 아이디, 비밀번호 찾기
+	// ID, PW 찾기
 	public String searchId(String type, String data) throws Exception;
+	public int forgotPw(String userId, String type, String data) throws Exception;
+	public String editPw(String userId, String password) throws Exception;
 }
