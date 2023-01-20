@@ -78,6 +78,27 @@
 			]]>
 		</select>
 		
+		<select id="forgotPwFromEmail" parameterType="string" resultType="int">
+			<![CDATA[
+				SELECT count(*)
+				FROM user NATURAL JOIN user_info
+				WHERE user_id = #{userId} AND email = #{data};
+			]]>
+		</select>
+		
+		<select id="forgotPwFromTel" parameterType="string" resultType="int">
+			<![CDATA[
+				SELECT count(*)
+				FROM user NATURAL JOIN user_info
+				WHERE user_id = #{userId} AND tel = #{data};
+			]]>
+		</select>
+		
+		<update id="editPw" parameterType="string">
+			UPDATE user
+			SET password = #{password}
+			WHERE user_id = #{userId}
+		</update>
 		
 
 </mapper>
