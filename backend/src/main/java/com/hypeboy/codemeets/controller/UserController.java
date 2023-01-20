@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,7 @@ public class UserController {
 	@Autowired
 	private UserServiceImpl userService;
 	
-    @Operation(summary = "Dev Search UserInfo", description = "닉네임으로 유저 정보 검색")
+    @Operation(summary = "Dev - Search UserInfo", description = "닉네임으로 유저 정보 검색")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
@@ -53,7 +54,7 @@ public class UserController {
 		}
 	}
     
-    @Operation(summary = "Dev All UserList", description = "모든 유저 정보 얻기")
+    @Operation(summary = "Dev - Get All UserList", description = "모든 유저 정보 얻기")
 	@GetMapping(value="/dev-all-userlist", produces = "application/json;charset=utf-8")
 	public ResponseEntity<?> userInfoAllList() throws Exception {
 		logger.info("userInfoAllList - 호출");
@@ -66,9 +67,9 @@ public class UserController {
 		}
 	}
     
-    @Operation(summary = "유저 회원가입", description = "유저 회원가입 API \n\n "
-    		+ "userPk, userInfoPk, userActive값은 제외해주세요 "
-    		+ "\n\n 이메일, 전화번호 공개 시 값 1로 설정바랍니다.")
+    @Operation(summary = "Regist User", description = "유저 회원가입 API "
+    		+ " \n userPk, userInfoPk, userActive값은 제외해주세요 "
+    		+ " \n 이메일, 전화번호 공개 시 값 1로 설정바랍니다.")
     @PostMapping("/regist")
 	public ResponseEntity<?> regist(@RequestBody UserDto userDto) {
 		try {
@@ -83,7 +84,7 @@ public class UserController {
 		}
 	}
     
-    @Operation(summary = "ID 중복 검사", description = "회원가입시 ID 중복 검사 API")
+    @Operation(summary = "Check Overlap ID", description = "회원가입시 ID 중복 검사 API")
     @GetMapping("/overlap")
 	public ResponseEntity<?> userIdOverlap(@RequestParam("userId") String userId) throws Exception {
 		logger.info("userIdOverlap - 호출");
@@ -96,7 +97,7 @@ public class UserController {
 		}
 	}
     
-    @Operation(summary = "Tel 중복 검사", description = "회원가입시 전화번호 중복 검사 API")
+    @Operation(summary = "Check Overlap Tel", description = "회원가입시 전화번호 중복 검사 API")
     @GetMapping("/telOverlap")
 	public ResponseEntity<?> userTelOverlap(@RequestParam("tel") String tel) throws Exception {
 		logger.info("userTelOverlap - 호출");
@@ -109,7 +110,7 @@ public class UserController {
 		}
 	}
     
-    @Operation(summary = "Email 중복 검사", description = "회원가입시 이메일 중복 검사 API")
+    @Operation(summary = "Check Overlap Email", description = "회원가입시 이메일 중복 검사 API")
     @GetMapping("/emailOverlap")
 	public ResponseEntity<?> userEmailOverlap(@RequestParam("email") String email) throws Exception {
 		logger.info("userTelOverlap - 호출");
@@ -122,8 +123,8 @@ public class UserController {
 		}
 	}
     
-    @Operation(summary = "ID 찾기", description = "email 혹은 전화번호 기반 ID 찾기 "
-    		+ "\n\n type은 [email] 혹은 [tel]로 입력해주세요")
+    @Operation(summary = "Search ID", description = "email 혹은 전화번호 기반 ID 찾기 "
+    		+ " \n type은 [email] 혹은 [tel]로 입력해주세요")
     @GetMapping("/search-id")
 	public ResponseEntity<?> searchId(@RequestParam("type") String type, @RequestParam("data") String data) throws Exception {
 		logger.info("searchId - 호출");
@@ -148,6 +149,47 @@ public class UserController {
 	}
     
     
+    @Operation(summary = "Forgot PW", description = "ID와 email 혹은 전화번호 기반 PW 수정 자격 확인 "
+    		+ " \n type은 [email] 혹은 [tel]로 입력해주세요")
+    @GetMapping("/forgot-pw")
+	public ResponseEntity<?> forgotPw(@RequestParam("userId") String userId, 
+			@RequestParam("type") String type, 
+			@RequestParam("data") String data) throws Exception {
+    	
+		logger.info("forgotPw - 호출");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		try {
+			int result = userService.forgotPw(userId, type, data);
+			
+			if (result == 1) {
+				resultMap.put("result", 1);
+			}
+			else {
+				resultMap.put("result", 0);
+			}
+			
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("서버오류", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+    
+    @Operation(summary = "Edit PW", description = "PW 수정")
+    @PutMapping("/edit-pw")
+	public ResponseEntity<?> EditPw(@RequestParam("userId") String userId, @RequestParam("password") String password) throws Exception {
+    	
+		logger.info("EditPw - 호출");
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		
+		try {
+			resultMap.put("result", userService.editPw(userId, password));
+			
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>("서버오류", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
     
     
     
