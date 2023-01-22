@@ -137,5 +137,13 @@
 		WHERE user_pk = #{userPk}
     </update>
 
+	<!-- ==================== 회원탈퇴 ======================================== -->
+	
+	<update id="resign" parameterType="int">
+		UPDATE user
+		SET user_active = 0
+		WHERE user_pk = #{userPk}
+    </update>
+	
 </mapper>
 
