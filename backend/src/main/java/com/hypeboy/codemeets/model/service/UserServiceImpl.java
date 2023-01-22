@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<UserDto> getUserList(String userId) throws Exception {
 		logger.info("getUserList - 실행");
+		
 		return sqlSession.getMapper(UserDao.class).getUserList(userId);
 	}
 	
@@ -119,15 +120,7 @@ public class UserServiceImpl implements UserService{
 		logger.info("editPw - 실행");
 		
 		try {
-			int result = sqlSession.getMapper(UserDao.class).editPw(userId, passwordEncoder.encode(password));
-			
-			if (result == 1) {
-				return true;
-			}
-			else {
-				return false;
-			}
-			
+			return sqlSession.getMapper(UserDao.class).editPw(userId, passwordEncoder.encode(password)) == 1 ? true : false;
 		} catch (Exception e) {
 			return false;
 		}
@@ -146,6 +139,13 @@ public class UserServiceImpl implements UserService{
 		logger.info("editMyProfile - 실행");
 		
 		return sqlSession.getMapper(UserDao.class).editMyProfile(userDto);
+	}
+
+	@Override
+	public int resign(int userPk) throws Exception {
+		logger.info("resign - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).resign(userPk);
 	}
 
 }
