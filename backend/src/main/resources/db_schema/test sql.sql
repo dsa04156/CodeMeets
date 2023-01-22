@@ -46,3 +46,7 @@ START TRANSACTION;
     WHERE user_id = 'test03'));
     
 COMMIT;
+
+UPDATE user
+SET user_active = 1
+WHERE user_pk = 3;

@@ -31,4 +31,7 @@ public interface UserService {
 	// myProfile 수정
 	public int editMyProfile(UserDto userDto) throws Exception;
 	
+	// 회원탈퇴
+	public int resign(int userPk) throws Exception;
+	
 }
