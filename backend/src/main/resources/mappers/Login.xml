@@ -3,6 +3,8 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.hypeboy.codemeets.model.dao.LoginDao">
+	<!-- ==================== login ======================================== -->
+	
     <select id="findUserByUsername" resultType="UserDto">
    		SELECT user_pk userPk, user_id userId, password, token, user_name userName,
    		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
@@ -19,7 +21,8 @@
         WHERE user_id = #{userId}
     </select>
     
-    <!-- ==================== token ==================== -->
+    <!-- ==================== token ======================================== -->
+    
     <update id="saveRefreshToken" parameterType="map">
 		UPDATE user
 		SET token = #{token}
@@ -31,6 +34,12 @@
 		FROM user
 		WHERE user_id = #{userId}
 	</select>
+	
+	<update id="deleteRefreshToken" parameterType="int">
+		UPDATE user
+		SET token = "-" 
+		WHERE user_pk = #{userPk}
+	</update>
 
 </mapper>
 

@@ -34,6 +34,8 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Override
     public UserDto login(LoginDto loginDto) throws Exception {
+		logger.info("login - 실행");
+		
     	UserDto loginUserDto = sqlSession.getMapper(LoginDao.class)
     			.findUserByUsername(loginDto.getUserId())
     			.orElseThrow(() -> new LoginFailedException("잘못된 아이디입니다"));
@@ -49,6 +51,8 @@ public class LoginServiceImpl implements LoginService {
     
 	@Override
 	public UserDto getUserInfo(String id) throws Exception {
+		logger.info("getUserInfo - 실행");
+		
 		return sqlSession.getMapper(LoginDao.class).getUserInfo(id);
 	}
 	
@@ -56,6 +60,8 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Override
 	public void saveRefreshToken(String userId, String refreshToken) throws Exception {
+		logger.info("saveRefreshToken - 실행");
+		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("id",  userId);
 		map.put("token", refreshToken);
@@ -65,6 +71,15 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Override
 	public Object getRefreshToken(String userId) throws Exception {
+		logger.info("getRefreshToken - 실행");
+		
 		return sqlSession.getMapper(LoginDao.class).getRefreshToken(userId);
+	}
+
+	@Override
+	public int deleteRefreshToken(int userPk) throws Exception {
+		logger.info("deleteRefreshToken - 실행");
+		
+		return sqlSession.getMapper(LoginDao.class).deleteRefreshToken(userPk);
 	}
 }
