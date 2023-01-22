@@ -31,5 +31,11 @@ public interface UserDao {
 	// PW 수정
 	public int forgotPwFromEmail(String userId, String data) throws SQLException;
 	public int forgotPwFromTel(String userId, String data) throws SQLException;
-	public int editPw(String userId, String password) throws SQLException;	
+	public int editPw(String userId, String password) throws SQLException;
+	
+	// myProfile 정보 획득
+	public UserDto getMyProfile(String userPk) throws SQLException;
+	
+	// myProfile 정보 수정
+	public int editMyProfile(UserDto userDto) throws SQLException;
 }

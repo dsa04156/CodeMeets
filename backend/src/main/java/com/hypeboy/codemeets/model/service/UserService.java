@@ -23,5 +23,12 @@ public interface UserService {
 	// ID, PW 찾기
 	public String searchId(String type, String data) throws Exception;
 	public int forgotPw(String userId, String type, String data) throws Exception;
-	public String editPw(String userId, String password) throws Exception;
+	public boolean editPw(String userId, String password) throws Exception;
+	
+	// myProfile 정보 획득
+	public UserDto getMyProfile(String userPk) throws Exception;
+	
+	// myProfile 수정
+	public int editMyProfile(UserDto userDto) throws Exception;
+	
 }
