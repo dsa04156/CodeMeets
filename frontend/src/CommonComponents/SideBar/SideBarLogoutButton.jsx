@@ -8,7 +8,7 @@ const SideBarLogoutButton = () => {
   };
 
   return (
-    <LogoutDiv to={'/login'}>
+    <LogoutDiv to={'/codemeets/login'}>
       <IoPowerSharp
         onClick={SideBarLogoutHandler}
         size="24"

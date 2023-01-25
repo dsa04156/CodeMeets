@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const LoginPage = () => {
   const API = "http://localhost:3002/login";
@@ -38,20 +39,20 @@ const LoginPage = () => {
   };
 
   return (
-    <div id="card-background">
-      <h2>Login Page</h2>
-      <div>
-        <label htmlFor="input_id"></label>
+    <div style={{paddingBottom:"100px"}}>
+      <h1>Login</h1>
+      <InputStyle>
+        <label htmlFor="input_id">ID</label>
         <input type="text" name="input_id" placeholder="ID" onChange={inputIdHandler}/>
-      </div>
+      </InputStyle>
       {/* defaultValue : 변하는 값*/}
-      <div>
-        <label htmlFor="input_pw"></label>
+      <InputStyle>
+        <label htmlFor="input_pw">PW</label>
         <input type="text" name="input_pw" placeholder="PW" onChange={inputPwHandler}/>
-      </div>
-      <div>
-        <button onClick={ToHomePageHandler}>Login</button>
-      </div>
+      </InputStyle>
+      <ButtonStyle>
+        <button onClick={ToHomePageHandler} style={{width:"100%"}}>Sign In</button>
+      </ButtonStyle>
       <Link to="/codemeets/signup">회원가입</Link> |<Link to="/codemeets/findid"> 아이디 찾기</Link>{' '}
       |<Link to="/codemeets/findpassword"> 비밀번호 찾기</Link>
     </div>
@@ -59,3 +60,19 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+const InputStyle = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  input {
+    margin: 8px;
+  }
+`
+const ButtonStyle = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 8px;
+  margin-left: 0px;
+  margin-bottom: 60px;
+`

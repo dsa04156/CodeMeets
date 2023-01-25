@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const NewPasswordPage = () => {
   const [newPassword1, setNewPassword1] = useState('');
@@ -28,24 +29,32 @@ const NewPasswordPage = () => {
   //   navigate('/login');
   // };
   return (
-    <div>
-      <h2>비밀번호 변경</h2>
-      <div>
-        <h5>새 비밀번호 </h5>
+    <MainStyle>
+      <h1>Change Password</h1>
+      <div style={{marginTop:"40px", marginBottom:"40px"}}>
+        <label htmlFor="">New Password</label>
+        <div>
         <input type="password" placeholder="password" onChange={NewPassword1Handler}/>
-        <br />
+        </div>
       </div>
+        <label>Check Password</label>
       <div>
-        <h5>새 비밀번호 확인 </h5>
         <input type="password" placeholder="password" onChange={NewPassword2Handler}/>
       </div>
       <div>
         <br />
         <button type="button" onClick={ChangeToPassword}>
-          확인
+          Submit
         </button>
       </div>
-    </div>
+    </MainStyle>
   );
 };
 export default NewPasswordPage;
+
+const MainStyle = styled.div`
+input {
+  margin: 8px;
+  margin-left: 0px;
+};
+`;

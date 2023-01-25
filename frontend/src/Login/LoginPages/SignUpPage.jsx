@@ -1,17 +1,18 @@
-import React, { useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
 const SignUpPage = () => {
   const imageinput = useRef();
 
-  const [inputName, setInputName] = useState('');
-  const [inputId, setInputId] = useState('');
-  const [inputPw, setInputPw] = useState('');
-  const [inputSecondPw, setInputSecondPw] = useState('');
-  const [inputEmail, setInputEmail] = useState('');
-  const [inputPhoneNum, setInputPhoneNum] = useState('');
-  const [inputImage, setInputImage] = useState('');
-  const [inputNicName, setInputNicName] = useState('Unregistered');
+  const [inputName, setInputName] = useState("");
+  const [inputId, setInputId] = useState("");
+  const [inputPw, setInputPw] = useState("");
+  const [inputSecondPw, setInputSecondPw] = useState("");
+  const [inputEmail, setInputEmail] = useState("");
+  const [inputPhoneNum, setInputPhoneNum] = useState("");
+  const [inputImage, setInputImage] = useState("");
+  const [inputNicName, setInputNicName] = useState("Unregistered");
   const [privateEmail, setPrivateEmail] = useState(true);
   const [privatePhoneNum, setPrivatePhoneNum] = useState(true);
   const [checkInformation, setCheckInformation] = useState(false);
@@ -39,12 +40,12 @@ const SignUpPage = () => {
   const inputImageHandler = (event) => {
     // setInputImage(event.target.value);
     event.preventDefault();
-    setInputImage(URL.createObjectURL(event.target.files[0]))
+    setInputImage(URL.createObjectURL(event.target.files[0]));
   };
   const deleteFileImage = () => {
     URL.revokeObjectURL(inputImage);
-    setInputImage('');
-    imageinput.current.value = null
+    setInputImage("");
+    imageinput.current.value = null;
   };
   const inputNicNameHandler = (event) => {
     setInputNicName(event.target.value);
@@ -59,7 +60,7 @@ const SignUpPage = () => {
 
   const InfoAgreeCheck = () => {
     setCheckInformation(!checkInformation);
-  }
+  };
 
   const JoinSuccessHandler = () => {
     //await 쓰려면 = async () => { 해줘야 됨
@@ -77,31 +78,31 @@ const SignUpPage = () => {
       })
     );
     if (inputPw !== inputSecondPw) {
-      alert('비밀번호가 일치하지 않습니다.');
+      alert("비밀번호가 일치하지 않습니다.");
       return;
     }
     if (
-      inputName === '' ||
-      inputId === '' ||
-      inputPw === '' ||
-      inputSecondPw === '' ||
-      inputEmail === '' ||
-      inputPhoneNum === ''
+      inputName === "" ||
+      inputId === "" ||
+      inputPw === "" ||
+      inputSecondPw === "" ||
+      inputEmail === "" ||
+      inputPhoneNum === ""
     ) {
-      alert('필수사항 입력해주세요.');
+      alert("필수사항 입력해주세요.");
       return;
     }
     if (checkInformation === false) {
-      alert('정보 제공 동의는 필수입니다.')
+      alert("정보 제공 동의는 필수입니다.");
       return;
     }
     // await fetch 를 쓸거면 양식 맞게 써준 뒤 if문으로 id 중복이 아니면 다음 fetch 검사하는 식으로 짜야 됨.
 
-    fetch('http://aeoragy.iptime.org:18081/user/regist', {
+    fetch("http://aeoragy.iptime.org:18081/user/regist", {
       // await fetch : fetch를 하나씩 하나씩 실행되어 검사하는 것.
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-type': 'application/json',
+        "Content-type": "application/json",
       },
       body: JSON.stringify({
         email: inputEmail,
@@ -117,8 +118,8 @@ const SignUpPage = () => {
     })
       .then((response) => {
         if (response.ok) {
-          alert(`${inputName}님, 반갑습니다.`)
-          navigate('/codemeets/login');
+          alert(`${inputName}님, 반갑습니다.`);
+          navigate("/codemeets/login");
         }
       })
       .catch((err) => console.log(err));
@@ -129,10 +130,10 @@ const SignUpPage = () => {
     fetch(`http://aeoragy.iptime.org:18081/user/overlap?userId=${inputId}`)
       .then((response) => response.json())
       .then((response) => {
-        if (JSON.stringify(response) === '1') {
-          alert('이미 존재하는 아이디 입니다.');
-        } else{
-          alert('사용 가능한 ID입니다.');
+        if (JSON.stringify(response) === "1") {
+          alert("이미 존재하는 아이디 입니다.");
+        } else {
+          alert("사용 가능한 ID입니다.");
         }
       })
       .catch((err) => console.log(err));
@@ -140,112 +141,186 @@ const SignUpPage = () => {
 
   // 사용중인 이메일 : ssafy@naver.com
   const EmailOverlapConfirm = () => {
-    fetch(`http://aeoragy.iptime.org:18081/user/emailOverlap?email=${inputEmail}`)
-    .then((response) => response.json())
-    .then((response) => {
-      if (JSON.stringify(response) === '1'){
-        alert('이미 사용되고 있는 이메일 입니다.');
-      } else {
-        alert('사용 가능한 이메일 입니다.');
-      }
-    })
-    .catch((err) => console.log(err))
-  }
+    fetch(
+      `http://aeoragy.iptime.org:18081/user/emailOverlap?email=${inputEmail}`
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        if (JSON.stringify(response) === "1") {
+          alert("이미 사용되고 있는 이메일 입니다.");
+        } else {
+          alert("사용 가능한 이메일 입니다.");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   // 사용중인 번호 : f
   const PhoneNumOverlapConfirm = () => {
-    fetch(`http://aeoragy.iptime.org:18081/user/telOverlap?tel=${inputPhoneNum}`)
-    .then((response) => response.json())
-    .then((response) => {
-      if (JSON.stringify(response) === '1'){
-        alert('이미 등록된 번호 입니다.');
-      } else {
-        alert('사용가능한 번호 입니다.');
-      }
-    })
-    .catch((err) => console.log(err))
-  }
-  
+    fetch(
+      `http://aeoragy.iptime.org:18081/user/telOverlap?tel=${inputPhoneNum}`
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        if (JSON.stringify(response) === "1") {
+          alert("이미 등록된 번호 입니다.");
+        } else {
+          alert("사용가능한 번호 입니다.");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   const JoinCancelHandler = () => {
-    navigate('/codemeets/login');
+    navigate("/codemeets/login");
   };
 
   return (
     <div>
-      <h2>회원가입 페이지</h2>
-      <h4>필수 사항</h4>
-      <div>
-        <input type="text" placeholder="Name" onChange={inputNameHandler} />
-      </div>
-      <div>
+      <h1>Sign Up</h1>
+      <FormStyle>
+        <h4 style={{ marginTop: "0px" }}>필수 사항</h4>
+        <label htmlFor="">Name</label>
         <span>
-          <input type="text" placeholder="ID" onChange={inputIdHandler} />
-          <button type="submit" onClick={IdOverlapConfirm}>
-            중복 확인
-          </button>
-        </span>
-      </div>
-      <div>
-        <input type="text" placeholder="Password" onChange={inputPwHandler} />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Password"
-          onChange={inputSecondPwHandler}
-        />
-      </div>
-      <div>
-        <span>
-          <input
+          <InputStyle
             type="text"
-            placeholder="E-mail"
-            onChange={inputEmailHandler}
+            placeholder="Name"
+            onChange={inputNameHandler}
           />
-          <button type="submit" onClick={EmailOverlapConfirm}>
-            중복 확인
-          </button>
-          <input type="checkbox" onClick={changePrivateEmailHandler} /> 비공개
         </span>
-      </div>
-      <span>
-        <input
-          type="text"
-          placeholder="Phone Number"
-          onChange={inputPhoneNumHandler}
-        />
-        <button type="submit" onClick={PhoneNumOverlapConfirm}>
-            중복 확인
-          </button>
-        <input type="checkbox" onClick={changePrivatePhoneNumHandler} /> 비공개
-      </span>
-      <h4>선택 사항</h4>
-      프로필 이미지
-      <div>
-        {inputImage && (<img alt="sample" src={inputImage} />)}
-        <input type="file" accept="image/*" onChange={inputImageHandler} ref={imageinput}/>
-        <button type="button" onClick={() => deleteFileImage()}>삭제</button>
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="Nick Name"
-          onChange={inputNicNameHandler}
-        />
-      </div>
-      <div>
+        <label htmlFor="">ID</label>
+        <div>
+          <span>
+            <InputStyle
+              type="text"
+              placeholder="ID"
+              onChange={inputIdHandler}
+            />
+            <button type="submit" onClick={IdOverlapConfirm}>
+              중복 확인
+            </button>
+          </span>
+        </div>
+        <label htmlFor="">Password</label>
+        <div>
+          <InputStyle
+            type="text"
+            placeholder="Password"
+            onChange={inputPwHandler}
+          />
+        </div>
+        <label htmlFor="">Password Check</label>
+        <div>
+          <InputStyle
+            type="text"
+            placeholder="Password"
+            onChange={inputSecondPwHandler}
+          />
+        </div>
+        <label htmlFor="">E-mail</label>
+        <div>
+          <span>
+            <InputStyle
+              type="text"
+              placeholder="E-mail"
+              onChange={inputEmailHandler}
+            />
+            <button type="submit" onClick={EmailOverlapConfirm}>
+              중복 확인
+            </button>
+            <CheckBoxStyle>
+              <input type="checkbox" onClick={changePrivateEmailHandler} />
+              비공개
+            </CheckBoxStyle>
+          </span>
+        </div>
+        <label htmlFor="">Phone number</label>
         <span>
-          <input type="checkbox" onClick={InfoAgreeCheck}/>(필수)위 내용을 제공하는 것에 동의 합니다.
+          <InputStyle
+            type="text"
+            placeholder="Phone Number"
+            onChange={inputPhoneNumHandler}
+          />
+          <button type="submit" onClick={PhoneNumOverlapConfirm}>
+            중복 확인
+          </button>
+          <CheckBoxStyle>
+            <input type="checkbox" onClick={changePrivatePhoneNumHandler} />
+            비공개
+          </CheckBoxStyle>
         </span>
-      </div>
-      <button type="button" onClick={JoinSuccessHandler}>
-        가입
-      </button>
-      <button type="button" onClick={JoinCancelHandler}>
-        취소
-      </button>
+        <h4>선택 사항</h4>
+        <label htmlFor="">프로필 사진</label>
+        <div>
+          {inputImage && <img alt="sample" src={inputImage} />}
+          <InputStyle
+            type="file"
+            accept="image/*"
+            onChange={inputImageHandler}
+            ref={imageinput}
+            style={{ height: "25px" }}
+          />
+          <button type="button" onClick={() => deleteFileImage()}>
+            삭제
+          </button>
+        </div>
+        <label htmlFor="">닉네임</label>
+        <div>
+          <InputStyle
+            type="text"
+            placeholder="Nick Name"
+            onChange={inputNicNameHandler}
+          />
+        </div>
+        <div>
+          <LastCheckBox>
+            <input type="checkbox" onClick={InfoAgreeCheck} />
+            (필수)위 내용을 제공하는 것에 동의 합니다.
+          </LastCheckBox>
+        </div>
+        <div>
+          <button type="button" onClick={JoinSuccessHandler}>
+            가입
+          </button>
+          <button type="button" onClick={JoinCancelHandler}>
+            취소
+          </button>
+        </div>
+      </FormStyle>
     </div>
   );
 };
 
 export default SignUpPage;
+
+const InputStyle = styled.input`
+  margin: 3px;
+`;
+
+const CheckBoxStyle = styled.div`
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  width: 18rem;
+  input {
+    width: 20px;
+  }
+`;
+
+const FormStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding-left: 7rem;
+  height: 33rem;
+  width: 25rem;
+  padding-bottom: 30px;
+  overflow: scroll;
+`;
+
+const LastCheckBox = styled.div`
+  display: flex;
+  input {
+    width: 20px;
+  }
+`;
