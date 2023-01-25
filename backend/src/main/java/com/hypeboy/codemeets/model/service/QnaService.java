@@ -15,5 +15,7 @@ public interface QnaService {
 	int modifyQna(QnaDto qnaDto) throws Exception;
 	//QNA 삭제
 	int deleteQna(int groupQuestionPk) throws Exception;
+	//QNA 좋아요
+	int likeQna(int groupQuestionPk) throws Exception;
 }	
 	

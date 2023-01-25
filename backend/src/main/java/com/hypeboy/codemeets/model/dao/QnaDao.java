@@ -18,6 +18,6 @@ public interface QnaDao {
 	int modifyQna(QnaDto qnaDto);
 	//QNA 삭제
 	int deleteQna(int groupQuestionPk);
-	
-	//QNA 좋아요 - 아직 미구현
+	//QNA 좋아요
+	int likeQna(int groupQuestionPk);
 }

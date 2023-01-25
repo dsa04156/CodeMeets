@@ -43,6 +43,12 @@ public class QnaServiceImpl implements QnaService{
 	public int deleteQna(int groupQuestionPk) throws Exception {
 		return qnaDao.deleteQna(groupQuestionPk);
 	}
+
+	@Override
+	public int likeQna(int groupQuestionPk) throws Exception {
+		return qnaDao.likeQna(groupQuestionPk);
+	}
+	
 	
 	
 }

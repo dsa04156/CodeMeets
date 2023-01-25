@@ -31,14 +31,18 @@
 	</select>
 	<update id="modifyQna" parameterType="QnaDto">
 		update group_question
-		set group_question_title = #{groupQuestionTitle}, group_question_contents = #{groupQuestionContents}, group_question_date = now(), group_question_update = 1, 
+		set group_question_title = #{groupQuestionTitle}, group_question_contents = #{groupQuestionContents}, group_question_date = now(), group_question_update = 1
 		where group_question_pk = #{groupQuestionPk}
 	</update>
 	<delete id="deleteQna" parameterType="int">
 		delete from group_question
 		where group_question_pk = #{groupQuestionPk}
 	</delete>
-	
+	<update id="modifyQna" parameterType="QnaDto">
+		update group_question
+		set  group_question_like = group_question_like + 1
+		where group_question_pk = #{groupQuestionPk}
+	</update>
 	
 	
 	
