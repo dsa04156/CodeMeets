@@ -72,7 +72,6 @@ public class UserController {
 		}
 	}
     
-    @Transactional
     @Operation(summary = "Regist User", description = "유저 회원가입 API "
     		+ " \n userPk, userInfoPk, userActive값은 제외해주세요 "
     		+ " \n 이메일, 전화번호 공개 시 값 1로 설정바랍니다.")
@@ -85,11 +84,7 @@ public class UserController {
 			
 			userService.registUser(userDto);
 			logger.info(userDto.toString());
-			logger.info("registUserInfo - 호출");
-			
-			userService.registUserInfo(userDto);
-			logger.info(userDto.toString());
-			logger.info("registUser, registUserInfo - 성공");
+			logger.info("registUser - 성공");
 			
 			return new ResponseEntity<String>("Regist User Success", HttpStatus.OK);
 		} catch (Exception e) {

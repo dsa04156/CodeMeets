@@ -12,8 +12,8 @@ from user natural join user_info;
 delete from user where user_pk > 3;
 delete from user_info where user_pk > 3;
 
-ALTER TABLE user_info AUTO_INCREMENT = 4;
-ALTER TABLE user AUTO_INCREMENT = 4;
+ALTER TABLE `user_info` AUTO_INCREMENT = 4;
+ALTER TABLE `user` AUTO_INCREMENT = 4;
 
 select *
 from user_info
@@ -55,3 +55,11 @@ select engine, support from information_schema.engines where support='DEFAULT';
 
 ALTER TABLE user_info
 MODIFY nickname varchar(16);
+
+INSERT ALL
+INTO `user`(user_id, `password`, token, user_active) VALUES('test03', '1234', 'token', 1)
+INTO `user_info` (user_name, nickname, tel, email, profile_photo, profile_public, user_pk) VALUES('테스트03', '테스트닉네임03', '010-0303-0303', '이메일03@주소', '프로필사진', 1, (SELECT user_pk 
+    FROM user 
+    WHERE user_id = 'test03'))user_info
+SELECT *
+FROM DUAL;
