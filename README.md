@@ -1,4 +1,4 @@
-# CODE Meets - OCR 기능과 참가자 실시간 피드백 기능 중점의 화상 회의 프로그램
+# CODE Meets - OCR 기능 중심 화상 회의 프로그램
 ---
 ![nobg](/uploads/9332275ef1448b9a77f8663aa65e0684/nobg.gif)
 
