@@ -72,7 +72,6 @@ public class UserController {
 		}
 	}
     
-    
     @Operation(summary = "Regist User", description = "유저 회원가입 API "
     		+ " \n userPk, userInfoPk, userActive값은 제외해주세요 "
     		+ " \n 이메일, 전화번호 공개 시 값 1로 설정바랍니다.")
@@ -82,10 +81,11 @@ public class UserController {
 		
 		try {
 			logger.info("registUser - 호출");
+			
 			userService.registUser(userDto);
-			logger.info("registUserInfo - 호출");
-			userService.registUserInfo(userDto);
-			logger.info("registUser, registUserInfo - 성공");
+			logger.info(userDto.toString());
+			logger.info("registUser - 성공");
+			
 			return new ResponseEntity<String>("Regist User Success", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Regist User Fail", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -99,7 +99,10 @@ public class UserController {
 		logger.info("userIdOverlap - 호출");
 
 		try {
+			logger.info("userId : " + userId);
+			
 			int result = userService.getUserIdOverlap(userId);
+			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -113,6 +116,8 @@ public class UserController {
 		logger.info("userTelOverlap - 호출");
 
 		try {
+			logger.info("Tel : " + tel);
+			
 			int result = userService.getUserTelOverlap(tel);
 			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
@@ -128,6 +133,8 @@ public class UserController {
 		logger.info("userTelOverlap - 호출");
 
 		try {
+			logger.info("email : " + email);
+			
 			int result = userService.getUserEmailOverlap(email);
 			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);

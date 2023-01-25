@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.UserDao;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService{
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
@@ -44,13 +46,8 @@ public class UserServiceImpl implements UserService{
 		logger.info("registUser - 실행");
 		
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		sqlSession.getMapper(UserDao.class).registUser(userDto);
-	}
-	
-	@Override
-	public void registUserInfo(UserDto userDto) throws Exception {
-		logger.info("registUserInfo - 실행");
 		
+		sqlSession.getMapper(UserDao.class).registUser(userDto);
 		sqlSession.getMapper(UserDao.class).registUserInfo(userDto);
 	}
 

@@ -79,7 +79,7 @@ public class FileController {
 	}
 	
 	@Operation(summary = "Upload File", description = "파일을 서버에 업로드")
-	@PostMapping(consumes = "multipart/form-data")
+	@PostMapping
 	public ResponseEntity<Object> uploadFiles(
 	    @Parameter(
 	        description = "Files to be uploaded", 
