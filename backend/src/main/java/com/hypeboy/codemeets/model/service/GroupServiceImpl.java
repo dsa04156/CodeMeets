@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.GroupDao;
 import com.hypeboy.codemeets.model.dto.GroupDto;
+import com.hypeboy.codemeets.model.dto.GroupListDto;
 import com.hypeboy.codemeets.model.dto.GroupUserDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
@@ -44,7 +45,13 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public int groupJoin(GroupUserDto guDto) throws SQLException  {
 		return dao.groupJoin(guDto);
-		}
+}
+
+
+	@Override
+	public List<GroupListDto> getList() throws SQLException {
+		return dao.getList();
+	}
 
 
 

@@ -88,3 +88,13 @@ VALUES ('테스트공지', '테스트는거꾸로해도테스트가 아니네', 
 UPDATE `group_notice`
 SET group_notice_hit = group_notice_hit + 1
 WHERE group_notice_pk = 1;
+
+UPDATE `group_notice`
+SET group_notice_title = "수정한 공지 제목",
+group_notice_contents = "이건 지금 수정한 테스트 공지",
+upload_file = '\"\"'
+WHERE group_notice_pk = 1;
+
+
+DELETE FROM `group_notice` 
+WHERE group_notice_pk = 3;

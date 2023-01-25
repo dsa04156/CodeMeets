@@ -31,10 +31,13 @@
 	<select id="groupMemberList" resultMap="guDto" parameterType="int">
 		<![CDATA[
 			select 
-			user_id,user_name
-			from 
-			`group-user` 
-			where group_pk=#{gpk};
+			user.user_id,user_info.user_name,`group-user`.group_pk 
+			from
+			 user user, user_info user_info,`group-user` `group-user`
+ 			where 
+ 			user.user_pk=user_info.user_pk
+ 			 and `group-user`.user_pk=user_info.user_pk 
+ 			 and `group-user`.group_pk=#{gpk};
 		]]>
 	</select>
 	
@@ -46,6 +49,15 @@
 		(#{gpk},#{userPk},#{userId},#{userName});
 		  ]]>
 	</insert>
+	
+	<select id="groupList">
+	select 
+	`group`.group_pk, `group`.group_name, `user_info`.nickname
+	from 
+	`group` `group`, user_info user_info
+	where 
+	`group`.manager_id=`user_info`.user_pk;
+	</select>
 	
 	</mapper>
 	
