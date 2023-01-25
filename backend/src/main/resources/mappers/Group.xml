@@ -11,16 +11,13 @@
 		<result column="group_url" property="gurl" />
 	</resultMap>
 	
-	<resultMap type="UserDto" id="user">
+	<resultMap type="GroupUserDto" id="guDto">
+	<result column="group_pk" property="gpk" />
 		<result column="user_pk" property="userPk" />
 		<result column="user_id" property="userId" />
-		<result column="user_name" property="userName" />
-		<result column="user_active" property="userActive" />
-		<result column="user_info_pk" property="userInfoPk" />
-		<result column="profile_photo" property="profilePhoto" />
-		<result column="email_public" property="emailPublic" />
-		<result column="tel_public" property="telPublic"/>
+		<result column="user_name" property="userName"/>
 	</resultMap>
+
 	
 	<insert id="createGroup" parameterType="GroupDto">
 	<![CDATA[
@@ -31,22 +28,22 @@
 		  ]]>
 	</insert>
 	
-	<select id="groupMemberList" resultMap="user">
+	<select id="groupMemberList" resultMap="guDto" parameterType="int">
 		<![CDATA[
-			SELECT user_pk, user_id, password, token, user_name,
-	   		user_active, user_info_pk, nickname, tel, email, 
-	   		profile_photo, email_public, tel_public
-	        FROM user NATURAL JOIN user_info
+			select 
+			user_id,user_name
+			from 
+			`group-user` 
+			where group_pk=#{gpk};
 		]]>
 	</select>
 	
-	<insert id="groupJoin" parameterType="String">
+	<insert id="groupJoin" >
 	<![CDATA[
-		
 		insert into
-		`s08p11d109`.`group-user`(group_pk,user_pk)
+		`group-user`(group_pk,user_pk,user_id,user_name)
 		values
-		(#{gpk},#{userPk});
+		(#{gpk},#{userPk},#{userId},#{userName});
 		  ]]>
 	</insert>
 	

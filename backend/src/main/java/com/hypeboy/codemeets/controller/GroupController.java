@@ -1,5 +1,6 @@
 package com.hypeboy.codemeets.controller;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.GroupDto;
+import com.hypeboy.codemeets.model.dto.GroupUserDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.model.service.GroupService;
 import com.hypeboy.codemeets.model.service.GroupServiceImpl;
@@ -69,6 +71,7 @@ public class GroupController {
 		try {
 			logger.info("group member list - 호출");
 			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk);
+			logger.info("group member list - 호출 성공");
 			return new ResponseEntity<List<UserDto>>(groupMemberList, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -76,16 +79,15 @@ public class GroupController {
 	}
     
     @Operation(summary = "Group Join", description = "그룹 가입 API ")
-    @PostMapping("/{groupPk}/join")
-	public ResponseEntity<?> groupJoin(@PathVariable("groupPk") int groupPk, int userPk ) {
+    @PostMapping("/join")
+	public ResponseEntity<?> groupJoin(@RequestBody @ApiParam(value="그룹 가입하기",required = true) GroupUserDto guDto ) throws SQLException  {
     	logger.info("group join - 호출");
-    	System.out.println(userPk);
-		try {
-			groupService.groupJoin(groupPk,userPk);
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		} catch (Exception e) {
+    	System.out.println(guDto);
+    	if(groupService.groupJoin(guDto)!=0) {
+    		logger.info("group-join 성공");
+    		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+    	}else
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
 	}
     
     
