@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_notice` (
   `group_notice_title` VARCHAR(100) NOT NULL,
   `group_notice_contents` VARCHAR(500) NOT NULL,
   `upload_file` JSON NULL,
-  `group_notice_date` DATE NOT NULL,
+  `group_notice_date` DATETIME NOT NULL,
   `group_pk` INT NOT NULL,
   `user_pk` INT NOT NULL,
   `group_notice_hit` INT NOT NULL DEFAULT 0,
