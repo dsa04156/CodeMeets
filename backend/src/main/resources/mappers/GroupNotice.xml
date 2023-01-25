@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.hypeboy.codemeets.model.dao.GroupNoticeDao">
+
+	<resultMap type="GroupNoticeDto" id="groupNotice">
+		<result column="group_notice_pk" property="groupNoticePk" />
+		<result column="group_notice_title" property="groupNoticeTitle" />
+		<result column="group_notice_contents" property="groupNoticeContents" />
+		<result column="upload_file" property="uploadFile" />
+		<result column="group_notice_date" property="groupNoticeDate" />
+		<result column="group_pk" property="groupPk" />
+		<result column="user_pk" property="userPk" />
+		<result column="group_notice_hit" property="groupNoticeHit" />
+	</resultMap>
+	
+	<!-- ==================== write ======================================== -->
+	
+	<insert id="writeGroupNotice" parameterType="GroupNoticeDto" >
+		INSERT INTO `group_notice` (group_notice_title, group_notice_contents, upload_file, group_notice_date, group_pk, user_pk, group_notice_hit)
+		VALUES (#{groupNoticeTitle}, #{groupNoticeContents}, #{uploadFile}, now(), #{groupPk}, #{userPk}, 0)
+	</insert>
+	
+	<!-- ==================== get ======================================== -->
+	
+	<select id="getGroupNoticeList" resultMap="groupNotice" >
+		SELECT *
+		FROM `group_notice`
+		WHERE group_pk = #{groupPk}
+		ORDER BY group_notice_pk DESC
+		LIMIT #{nowPage}, #{items};
+	</select>
+	
+    <select id="getGroupNotice" resultMap="groupNotice" >
+		SELECT *
+		FROM `group_notice`
+		WHERE group_notice_pk = #{groupNoticePk}
+	</select>
+	
+	<update id="addGroupNoticeHit" parameterType="int">
+		UPDATE `group_notice`
+		SET group_notice_hit = group_notice_hit + 1
+		WHERE group_notice_pk = #{groupNoticePk};
+	</update>
+	
+	
+	
+</mapper>
