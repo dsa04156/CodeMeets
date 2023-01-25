@@ -63,3 +63,28 @@ INTO `user_info` (user_name, nickname, tel, email, profile_photo, profile_public
     WHERE user_id = 'test03'))user_info
 SELECT *
 FROM DUAL;
+
+SELECT *
+FROM `group`;
+
+SELECT *
+FROM group_notice;
+
+SELECT *
+FROM `group_notice`
+WHERE group_pk = 24
+ORDER BY group_notice_pk DESC
+LIMIT 1 , 10;
+
+INSERT INTO `group-user` (`group_user_position`, `group_pk`, `user_pk`, `user_id`, `user_name`)
+VALUES (1, 24, 4, 'admin03', '1');
+
+
+INSERT INTO `group_notice` (group_notice_title, group_notice_contents, upload_file, group_notice_date, 
+group_pk, user_pk, group_notice_hit)
+VALUES ('테스트공지', '테스트는거꾸로해도테스트가 아니네', '""', now(), 24, 3, 0);
+
+
+UPDATE `group_notice`
+SET group_notice_hit = group_notice_hit + 1
+WHERE group_notice_pk = 1;
