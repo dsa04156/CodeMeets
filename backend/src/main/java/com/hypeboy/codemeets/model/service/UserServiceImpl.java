@@ -19,9 +19,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
-
-	private static final String SUCCESS = "success";
-	private static final String FAIL = "fail";
 	
 	@Autowired
 	private SqlSession sqlSession;
@@ -30,18 +27,22 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<UserDto> getUserList(String userId) throws Exception {
-//		logger.info("getUserInfoList - 실행");
+		logger.info("getUserList - 실행");
+		
 		return sqlSession.getMapper(UserDao.class).getUserList(userId);
 	}
 	
 	@Override
 	public List<UserDto> getAllUserList() throws Exception {
+		logger.info("getAllUserList - 실행");
+		
 		return sqlSession.getMapper(UserDao.class).getAllUserList();
 	}
 
 	@Override
 	public void registUser(UserDto userDto) throws Exception {
 		logger.info("registUser - 실행");
+		
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		sqlSession.getMapper(UserDao.class).registUser(userDto);
 	}
@@ -49,26 +50,35 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void registUserInfo(UserDto userDto) throws Exception {
 		logger.info("registUserInfo - 실행");
+		
 		sqlSession.getMapper(UserDao.class).registUserInfo(userDto);
 	}
 
 	@Override
 	public int getUserIdOverlap(String userId) throws Exception {
+		logger.info("getUserIdOverlap - 실행");
+		
 		return sqlSession.getMapper(UserDao.class).getUserIdOverlap(userId);
 	}
 
 	@Override
 	public int getUserTelOverlap(String userId) throws Exception {
+		logger.info("getUserTelOverlap - 실행");
+		
 		return sqlSession.getMapper(UserDao.class).getUserTelOverlap(userId);
 	}
 
 	@Override
 	public int getUserEmailOverlap(String userId) throws Exception {
+		logger.info("getUserEmailOverlap - 실행");
+		
 		return sqlSession.getMapper(UserDao.class).getUserEmailOverlap(userId);
 	}
 
 	@Override
 	public String searchId(String type, String data) throws Exception {
+		logger.info("searchId - 실행");
+		
 		String result = null;
 		
 		try {
@@ -87,6 +97,8 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int forgotPw(String userId, String type, String data) throws Exception {
+		logger.info("forgotPw - 실행");
+		
 		int result = 0;
 		
 		try {
@@ -104,24 +116,36 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public String editPw(String userId, String password) throws Exception {
+	public boolean editPw(String userId, String password) throws Exception {
+		logger.info("editPw - 실행");
+		
 		try {
-			int result = sqlSession.getMapper(UserDao.class).editPw(userId, passwordEncoder.encode(password));
-			
-			if (result == 1) {
-				return SUCCESS;
-			}
-			else {
-				return FAIL;
-			}
-			
+			return sqlSession.getMapper(UserDao.class).editPw(userId, passwordEncoder.encode(password)) == 1 ? true : false;
 		} catch (Exception e) {
-			return FAIL;
+			return false;
 		}
 
 	}
 
+	@Override
+	public UserDto getMyProfile(String userPk) throws Exception {
+		logger.info("getMyProfile - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).getMyProfile(userPk);
+	}
 
-	
+	@Override
+	public int editMyProfile(UserDto userDto) throws Exception {
+		logger.info("editMyProfile - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).editMyProfile(userDto);
+	}
+
+	@Override
+	public int resign(int userPk) throws Exception {
+		logger.info("resign - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).resign(userPk);
+	}
 
 }

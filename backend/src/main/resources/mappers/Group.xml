@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.hypeboy.codemeets.model.dao.GroupDao">
+	
+	<resultMap type="GroupDto" id="group">
+		<result column="group_pk" property="gpk" />
+		<result column="group_name" property="gname" />
+		<result column="group_desc" property="gdesc" />
+		<result column="manager_id" property="mid" />
+		<result column="group_url" property="gurl" />
+	</resultMap>
+	
+	<resultMap type="UserDto" id="user">
+		<result column="user_pk" property="userPk" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_active" property="userActive" />
+		<result column="user_info_pk" property="userInfoPk" />
+		<result column="profile_photo" property="profilePhoto" />
+		<result column="email_public" property="emailPublic" />
+		<result column="tel_public" property="telPublic"/>
+	</resultMap>
+	
+	<insert id="createGroup" parameterType="GroupDto">
+	<![CDATA[
+		INSERT INTO
+		 `s08p11d109`.`group`(group_name,group_desc,manager_id,group_url)
+		VALUES
+		  (#{gname}, #{gdesc}, #{mid},#{gurl});
+		  ]]>
+	</insert>
+	
+	<select id="groupMemberList" resultMap="user">
+		<![CDATA[
+			SELECT user_pk, user_id, password, token, user_name,
+	   		user_active, user_info_pk, nickname, tel, email, 
+	   		profile_photo, email_public, tel_public
+	        FROM user NATURAL JOIN user_info
+		]]>
+	</select>
+	
+	<insert id="groupJoin" parameterType="String">
+	<![CDATA[
+		
+		insert into
+		`s08p11d109`.`group-user`(group_pk,user_pk)
+		values
+		(#{gpk},#{userPk});
+		  ]]>
+	</insert>
+	
+	</mapper>
+	

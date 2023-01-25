@@ -11,6 +11,7 @@ public class UserDto {
 	private int userPk;
 	private String userId;
 	private String password;
+	private String token;
 	private int userActive;
 	private int userInfoPk;
 	private String userName;
@@ -20,4 +21,5 @@ public class UserDto {
 	private String profilePhoto;
 	private int emailPublic;
 	private int telPublic;
+		
 }
