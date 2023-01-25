@@ -40,4 +40,14 @@ public class GroupNoticeServiceImpl implements GroupNoticeService {
 		return sqlSession.getMapper(GroupNoticeDao.class).getGroupNoticeList(groupPk, nowPage, items);
 	}
 
+	@Override
+	public int editGroupNotice(GroupNoticeDto groupNoticeDto) throws Exception {
+		return sqlSession.getMapper(GroupNoticeDao.class).editGroupNotice(groupNoticeDto);
+	}
+
+	@Override
+	public int deleteGroupNotice(int groupNoticePk) throws Exception {
+		return sqlSession.getMapper(GroupNoticeDao.class).deleteGroupNotice(groupNoticePk);
+	}
+
 }
