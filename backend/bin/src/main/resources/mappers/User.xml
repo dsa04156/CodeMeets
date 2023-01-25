@@ -4,18 +4,29 @@
 	
 <mapper namespace="com.hypeboy.codemeets.model.dao.UserDao">
 	
-		<select id="getUserList" parameterType="int" resultType="UserDto">
+		<select id="getUserList" parameterType="string" resultType="UserDto">
 			<![CDATA[
-				select *
-				from user_info
-				where user_pk = #{userPk};
+				SELECT user_pk userPk, user_id userId, password, token, user_name userName,
+		   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
+		   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
+		        FROM user NATURAL JOIN user_info
+		        WHERE user_id = #{userId}
 			]]>
 		</select>
 		
-		<update id="registUser" parameterType="UserDto">
+		<select id="getAllUserList" resultType="UserDto">
+			<![CDATA[
+				SELECT user_pk userPk, user_id userId, password, token, user_name userName,
+		   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
+		   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
+		        FROM user NATURAL JOIN user_info
+			]]>
+		</select>
+		
+		<insert id="registUser" parameterType="UserDto">
 			INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
 			VALUES(#{userId}, #{password}, 'token', 1);
-		</update>
+		</insert>
 		
 		
 		<update id="registUserInfo" parameterType="UserDto">
@@ -29,27 +40,66 @@
 		
 		<select id="getUserIdOverlap" parameterType="string" resultType="int">
 			<![CDATA[
-				select count(*)
-				from user
-				where user_id = #{userId};
+				SELECT count(*)
+				FROM user
+				WHERE user_id = #{userId};
 			]]>
 		</select>
 		
 		<select id="getUserTelOverlap" parameterType="string" resultType="int">
 			<![CDATA[
-				select count(*)
-				from user_info
-				where tel = #{tel};
+				SELECT count(*)
+				FROM user_info
+				WHERE tel = #{tel};
 			]]>
 		</select>
 		
 		<select id="getUserEmailOverlap" parameterType="string" resultType="int">
 			<![CDATA[
-				select count(*)
-				from user_info
-				where email = #{email};
+				SELECT count(*)
+				FROM user_info
+				WHERE email = #{email};
 			]]>
 		</select>
+		
+		<select id="searchIdFromEmail" parameterType="string" resultType="string">
+			<![CDATA[
+				SELECT user_id
+				FROM user NATURAL JOIN user_info
+				WHERE email = #{data};
+			]]>
+		</select>
+		
+		<select id="searchIdFromTel" parameterType="string" resultType="string">
+			<![CDATA[
+				SELECT user_id
+				FROM user NATURAL JOIN user_info
+				WHERE tel = #{data};
+			]]>
+		</select>
+		
+		<select id="forgotPwFromEmail" parameterType="string" resultType="int">
+			<![CDATA[
+				SELECT count(*)
+				FROM user NATURAL JOIN user_info
+				WHERE user_id = #{userId} AND email = #{data};
+			]]>
+		</select>
+		
+		<select id="forgotPwFromTel" parameterType="string" resultType="int">
+			<![CDATA[
+				SELECT count(*)
+				FROM user NATURAL JOIN user_info
+				WHERE user_id = #{userId} AND tel = #{data};
+			]]>
+		</select>
+		
+		<update id="editPw" parameterType="string">
+			UPDATE user
+			SET password = #{password}
+			WHERE user_id = #{userId}
+		</update>
+		
 
 </mapper>
 

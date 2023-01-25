@@ -12,10 +12,12 @@ public interface QnaDao {
 	int writeQna(QnaDto qnaDto);
 	//QNA 목록
 	List<QnaDto> getList(int groupPk);
-	//QNA 조회
+	//QNA 조회 - 좋아요 부분 미구현
 	QnaDto getQna(int groupQuestionPk);
 	//QNA 수정
 	int modifyQna(QnaDto qnaDto);
 	//QNA 삭제
 	int deleteQna(int groupQuestionPk);
+	//QNA 좋아요
+	int likeQna(int groupQuestionPk);
 }

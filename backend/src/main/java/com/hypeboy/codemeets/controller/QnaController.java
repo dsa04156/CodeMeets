@@ -49,8 +49,8 @@ public class QnaController {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
-	@GetMapping("")
-	public ResponseEntity<?> getlist(int groupPk) throws Exception {
+	@GetMapping
+	public ResponseEntity<?> getlist(@RequestBody int groupPk) throws Exception {
 		
 		System.out.println("qna list hi");
 		
@@ -65,7 +65,7 @@ public class QnaController {
 		return new ResponseEntity<QnaDto>(service.getQna(qnaPk), HttpStatus.OK);
 	}
 	
-	@PutMapping("/{groupQuestionPk}/modify")
+	@PutMapping
 	public ResponseEntity<String> modifyQna(@RequestBody QnaDto qnaDto) throws Exception {
 		
 		Logger.info("modifyQna - 호출 {}", qnaDto);
@@ -87,4 +87,14 @@ public class QnaController {
 		return new ResponseEntity<String>(FAIL,HttpStatus.NO_CONTENT);
 	}
 	
+	@PutMapping("/{groupQuestionPk}")
+	public ResponseEntity<?> likeQna(@PathVariable("groupQuestionPk")int groupQuestionPk) throws Exception {
+	
+		Logger.info("likeQna - 호출");
+		
+		if (service.likeQna(groupQuestionPk)!=0) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
 }
