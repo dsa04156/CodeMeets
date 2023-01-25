@@ -100,7 +100,7 @@ public class FileController {
 //	}
 
 	@Operation(summary = "Upload File", description = "파일을 서버에 업로드")
-	@PostMapping
+	@PostMapping(consumes = "multipart/form-data")
 	public String uploadFiles(@RequestParam("files") List<MultipartFile> files) {
 		String dbfilename = null;
 
