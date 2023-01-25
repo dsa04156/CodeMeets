@@ -13,7 +13,6 @@ public interface UserService {
 	
 	// 회원가입
 	public void registUser(UserDto userDto) throws Exception;
-	public void registUserInfo(UserDto userDto) throws Exception;
 	
 	// 유저 중복검사
 	public int getUserIdOverlap(String userId) throws Exception;
