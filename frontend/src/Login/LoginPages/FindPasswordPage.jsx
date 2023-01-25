@@ -23,7 +23,7 @@ const FindPasswordPage = () => {
     console.log(inputId);
     console.log(inputEmail);
     console.log(inputPhoneNum);
-    navigate('/newpassword');
+    navigate('/codemeets/newpassword');
   };
 
   return (

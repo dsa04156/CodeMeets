@@ -118,7 +118,7 @@ const SignUpPage = () => {
       .then((response) => {
         if (response.ok) {
           alert(`${inputName}님, 반갑습니다.`)
-          navigate('/login');
+          navigate('/codemeets/login');
         }
       })
       .catch((err) => console.log(err));
@@ -167,7 +167,7 @@ const SignUpPage = () => {
   }
   
   const JoinCancelHandler = () => {
-    navigate('/login');
+    navigate('/codemeets/login');
   };
 
   return (

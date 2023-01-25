@@ -52,8 +52,8 @@ const LoginPage = () => {
       <div>
         <button onClick={ToHomePageHandler}>Login</button>
       </div>
-      <Link to="/signup">회원가입</Link> |<Link to="/findid"> 아이디 찾기</Link>{' '}
-      |<Link to="/findpassword"> 비밀번호 찾기</Link>
+      <Link to="/codemeets/signup">회원가입</Link> |<Link to="/codemeets/findid"> 아이디 찾기</Link>{' '}
+      |<Link to="/codemeets/findpassword"> 비밀번호 찾기</Link>
     </div>
   );
 };

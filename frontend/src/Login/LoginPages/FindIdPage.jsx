@@ -21,7 +21,7 @@ const FindIdPage = () => {
   }
 
   const FindPasswordHandler = () => {
-    navigate('/findpassword');
+    navigate('/codemeets/findpassword');
   };
 
   // 현재 데이터에 있는 이메일 : ddddd

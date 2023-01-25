@@ -13,6 +13,7 @@ import GroupNotice from "./Group/GroupPages/GroupNotice";
 import GroupSchedule from "./Group/GroupPages/GroupSchedule";
 import GroupMember from "./Group/GroupPages/GroupMember";
 
+import LoginFrame from "./Login/LoginComponents/LoginFrame";
 import FindIdPage from "./Login/LoginPages/FindIdPage";
 import FindPasswordPage from "./Login/LoginPages/FindPasswordPage";
 import LoginPage from "./Login/LoginPages/LoginPage";
@@ -34,7 +35,7 @@ function App() {
   const Navigate = useNavigate();
 
   const LogoHandler = () => {
-    Navigate("/");
+    Navigate("/codemeets/login");
   };
 
   return (
@@ -68,14 +69,19 @@ function App() {
           <div style={{ paddingLeft: "1rem" }}>
             <Routes>
               {/* Login */}
-              <Route path="/login" element={<LoginPage />}></Route>
-              <Route path="/signup" element={<SignUpPage />}></Route>
-              <Route path="/findid" element={<FindIdPage />}></Route>
-              <Route
-                path="/findpassword"
-                element={<FindPasswordPage />}
-              ></Route>
-              <Route path="/newpassword" element={<NewPasswordPage />}></Route>
+              <Route path="/codemeets" element={<LoginFrame />}>
+                <Route path="login" element={<LoginPage />}></Route>
+                <Route path="signup" element={<SignUpPage />}></Route>
+                <Route path="findid" element={<FindIdPage />}></Route>
+                <Route
+                  path="findpassword"
+                  element={<FindPasswordPage />}
+                ></Route>
+                <Route
+                  path="newpassword"
+                  element={<NewPasswordPage />}
+                ></Route>
+              </Route>
               {/* MainBoard */}
               <Route path="/" element={<Home />}></Route>
               <Route path="/my-page/:user_id" element={<MyPage />}>

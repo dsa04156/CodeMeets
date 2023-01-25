@@ -16,7 +16,7 @@ const NewPasswordPage = () => {
     console.log(newPassword1);
     console.log(newPassword2);
     if (newPassword1 === newPassword2){
-      navigate('/login');
+      navigate('/codemeets/login');
     } else {
       alert('비밀번호가 일치하지 않습니다.');
     };
