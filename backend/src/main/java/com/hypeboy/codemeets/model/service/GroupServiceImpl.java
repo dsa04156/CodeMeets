@@ -3,15 +3,22 @@ package com.hypeboy.codemeets.model.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.GroupDao;
 import com.hypeboy.codemeets.model.dto.GroupDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
 public class GroupServiceImpl implements GroupService {
+	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	private GroupDao dao;
 	
@@ -20,10 +27,12 @@ public class GroupServiceImpl implements GroupService {
 		super();
 		this.dao = dao;
 	}
+	
+	
 
 	@Override
-	public void createGroup(GroupDto groupDto) throws SQLException {
-		dao.createGroup(groupDto);
+	public int createGroup(GroupDto groupDto) throws SQLException {
+		return dao.createGroup(groupDto);
 	}
 
 	@Override
@@ -33,7 +42,7 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public void groupJoin(int groupPk,int userPk) throws SQLException {
-		dao.groupJoin(groupPk,userPk);
+		dao.groupJoin(groupPk, userPk);
 	}
 	
 

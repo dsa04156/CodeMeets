@@ -11,7 +11,7 @@ import com.hypeboy.codemeets.model.dto.UserDto;
 @Mapper
 public interface GroupDao {
 
-	void createGroup(GroupDto groupDto) throws SQLException;
+	int createGroup(GroupDto groupDto) throws SQLException;
 
 	List<UserDto> groupMemberList(int groupPk) throws SQLException;
 

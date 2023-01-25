@@ -10,10 +10,10 @@ import lombok.ToString;
 @Setter
 @ToString
 public class GroupDto {
-	private int group_pk;
-	private String group_name;
-	private String group_desc;
-	private int manager_id;
-	private String group_url;
+	private int gpk;
+	private String gname;
+	private String gdesc;
+	private int mid;
+	private String gurl;
 	
 }

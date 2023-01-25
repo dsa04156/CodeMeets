@@ -22,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hypeboy.codemeets.model.dto.GroupDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.model.service.GroupService;
+import com.hypeboy.codemeets.model.service.GroupServiceImpl;
 
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -36,13 +38,8 @@ public class GroupController {
 	private static final String FAIL = "fail";
 	
 	@Autowired
-	private GroupService groupService;
+	GroupServiceImpl groupService;
 	
-	@Autowired
-	public GroupController(GroupService groupSerivce) {
-		super();
-		this.groupService = groupSerivce;
-	}
 	
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
@@ -55,17 +52,15 @@ public class GroupController {
     		+ " \n group_Pk값은 제외해주세요"
     		+ "\n manager_id 값은 회원 pk 번호입니다 ")
     @PostMapping("/create")
-	public ResponseEntity<?> regist(@RequestBody GroupDto groupDto) {
-		try {
+	public ResponseEntity<?> regist(@RequestBody @ApiParam(value="그룹 만들기",required = true) GroupDto groupDto) throws Exception {
 			logger.info("create group - 호출");
 			
-			groupService.createGroup(groupDto);
-			logger.info("createGroup - 성공");
 			logger.info(groupDto.toString());
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+			if(groupService.createGroup(groupDto)!=0) {
+			logger.info("createGroup - 성공");
+				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			}else
+				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
     
     @Operation(summary = "Group Member List", description = "그룹 멤버 리스트 API ")

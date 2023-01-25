@@ -3,7 +3,7 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	<mapper namespace="com.hypeboy.codemeets.model.dao.GroupDao">
 	
-		<resultMap type="GroupDto" id="group">
+	<resultMap type="GroupDto" id="group">
 		<result column="group_pk" property="gpk" />
 		<result column="group_name" property="gname" />
 		<result column="group_desc" property="gdesc" />
@@ -24,9 +24,9 @@
 	
 	<insert id="createGroup" parameterType="GroupDto">
 	<![CDATA[
-		insert into
-		 group(group_name,group_desc,manager_id,group_url)
-		 values
+		INSERT INTO
+		 `s08p11d109`.`group`(group_name,group_desc,manager_id,group_url)
+		VALUES
 		  (#{gname}, #{gdesc}, #{mid},#{gurl});
 		  ]]>
 	</insert>
