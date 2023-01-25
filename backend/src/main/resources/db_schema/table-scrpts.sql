@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `s08p11d109`.`user_info` ;
 CREATE TABLE IF NOT EXISTS `s08p11d109`.`user_info` (
   `user_info_pk` INT NOT NULL AUTO_INCREMENT,
   `user_name` VARCHAR(10) NOT NULL,
-  `nickname` VARCHAR(10) NULL,
+  `nickname` VARCHAR(16) NULL,
   `tel` VARCHAR(13) NULL,
   `email` VARCHAR(45) NULL,
   `profile_photo` VARCHAR(512) NULL,
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_notice` (
   `group_notice_title` VARCHAR(100) NOT NULL,
   `group_notice_contents` VARCHAR(500) NOT NULL,
   `upload_file` JSON NULL,
-  `group_notice_date` DATE NOT NULL,
+  `group_notice_date` DATETIME NOT NULL,
   `group_pk` INT NOT NULL,
   `user_pk` INT NOT NULL,
   `group_notice_hit` INT NOT NULL DEFAULT 0,
