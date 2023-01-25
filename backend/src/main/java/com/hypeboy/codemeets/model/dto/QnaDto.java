@@ -11,10 +11,9 @@ public class QnaDto {
 
 	private int groupQuestionPk;
 	private String groupQuestionTitle;
-	private String groupQuestionTontents;
+	private String groupQuestionContents;
 	private String groupQuestionDate;
 	private int groupQuestionUpdate;
-	private int groupQuestionLike;
 	private int groupPk;
 	private int userPk;
 	

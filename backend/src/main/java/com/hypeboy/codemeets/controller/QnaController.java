@@ -38,7 +38,7 @@ public class QnaController {
 		this.service = service;
 	}
 	
-	@PostMapping("/write")
+	@PostMapping
 	public ResponseEntity<String> writeQna(@RequestBody @ApiParam(value = "qna 정보.", required = true) QnaDto qnaDto) throws Exception {
 		
 		Logger.info("wirteQna - 호출");
@@ -49,8 +49,8 @@ public class QnaController {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
-	@GetMapping("")
-	public ResponseEntity<?> getlist(int groupPk) throws Exception {
+	@GetMapping("/list/{groupPk}")
+	public ResponseEntity<?> getList(@PathVariable("groupPk") int groupPk) throws Exception {
 		
 		System.out.println("qna list hi");
 		
@@ -65,8 +65,10 @@ public class QnaController {
 		return new ResponseEntity<QnaDto>(service.getQna(qnaPk), HttpStatus.OK);
 	}
 	
-	@PutMapping("/{groupQuestionPk}/modify")
+	@PutMapping
 	public ResponseEntity<String> modifyQna(@RequestBody QnaDto qnaDto) throws Exception {
+		
+		System.out.println("qna modify");
 		
 		Logger.info("modifyQna - 호출 {}", qnaDto);
 		
