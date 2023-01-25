@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.GroupDto;
+import com.hypeboy.codemeets.model.dto.GroupListDto;
 import com.hypeboy.codemeets.model.dto.GroupUserDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.model.service.GroupService;
@@ -89,6 +90,13 @@ public class GroupController {
     	}else
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+    
+    @Operation(summary = "Group List", description = "그룹 리스트")
+    @GetMapping("/")
+    public ResponseEntity<?> groupList() throws Exception{
+    	logger.info("group list 호출");
+    	return new ResponseEntity<List<GroupListDto>>(groupService.getList(),HttpStatus.OK);
+    }
     
     
     
