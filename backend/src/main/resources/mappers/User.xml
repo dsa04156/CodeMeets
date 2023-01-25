@@ -3,103 +3,147 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.hypeboy.codemeets.model.dao.UserDao">
-	
-		<select id="getUserList" parameterType="string" resultType="UserDto">
-			<![CDATA[
-				SELECT user_pk userPk, user_id userId, password, token, user_name userName,
-		   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
-		   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
-		        FROM user NATURAL JOIN user_info
-		        WHERE user_id = #{userId}
-			]]>
-		</select>
-		
-		<select id="getAllUserList" resultType="UserDto">
-			<![CDATA[
-				SELECT user_pk userPk, user_id userId, password, token, user_name userName,
-		   		user_active userActive, user_info_pk userInfoPk, nickname, tel, email, 
-		   		profile_photo profilePhoto, email_public emailPublic, tel_public telPublic
-		        FROM user NATURAL JOIN user_info
-			]]>
-		</select>
-		
-		<insert id="registUser" parameterType="UserDto">
-			INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
-			VALUES(#{userId}, #{password}, 'token', 1);
-		</insert>
-		
-		
-		<update id="registUserInfo" parameterType="UserDto">
-		    INSERT INTO `s08p11d109`.`user_info` (user_name, nickname, tel, email, profile_photo, email_public, tel_public, user_pk) 
-		    VALUES(#{userName}, #{nickname}, #{tel}, #{email}, #{profilePhoto}, #{emailPublic}, #{telPublic}, (
-		    SELECT user_pk 
-		    FROM user 
-		    WHERE user_id = #{userId})
-		    );
-		</update>
-		
-		<select id="getUserIdOverlap" parameterType="string" resultType="int">
-			<![CDATA[
-				SELECT count(*)
-				FROM user
-				WHERE user_id = #{userId};
-			]]>
-		</select>
-		
-		<select id="getUserTelOverlap" parameterType="string" resultType="int">
-			<![CDATA[
-				SELECT count(*)
-				FROM user_info
-				WHERE tel = #{tel};
-			]]>
-		</select>
-		
-		<select id="getUserEmailOverlap" parameterType="string" resultType="int">
-			<![CDATA[
-				SELECT count(*)
-				FROM user_info
-				WHERE email = #{email};
-			]]>
-		</select>
-		
-		<select id="searchIdFromEmail" parameterType="string" resultType="string">
-			<![CDATA[
-				SELECT user_id
-				FROM user NATURAL JOIN user_info
-				WHERE email = #{data};
-			]]>
-		</select>
-		
-		<select id="searchIdFromTel" parameterType="string" resultType="string">
-			<![CDATA[
-				SELECT user_id
-				FROM user NATURAL JOIN user_info
-				WHERE tel = #{data};
-			]]>
-		</select>
-		
-		<select id="forgotPwFromEmail" parameterType="string" resultType="int">
-			<![CDATA[
-				SELECT count(*)
-				FROM user NATURAL JOIN user_info
-				WHERE user_id = #{userId} AND email = #{data};
-			]]>
-		</select>
-		
-		<select id="forgotPwFromTel" parameterType="string" resultType="int">
-			<![CDATA[
-				SELECT count(*)
-				FROM user NATURAL JOIN user_info
-				WHERE user_id = #{userId} AND tel = #{data};
-			]]>
-		</select>
-		
-		<update id="editPw" parameterType="string">
-			UPDATE user
-			SET password = #{password}
-			WHERE user_id = #{userId}
-		</update>
-		
 
+	<resultMap type="UserDto" id="user">
+		<result column="user_pk" property="userPk" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_active" property="userActive" />
+		<result column="user_info_pk" property="userInfoPk" />
+		<result column="profile_photo" property="profilePhoto" />
+		<result column="email_public" property="emailPublic" />
+		<result column="tel_public" property="telPublic"/>
+	</resultMap>
+
+	<!-- ==================== 개발용 기능 ======================================== -->
+
+	<select id="getUserList" parameterType="string" resultMap="user">
+		<![CDATA[
+			SELECT user_pk, user_id, password, token, user_name,
+	   		user_active, user_info_pk, nickname, tel, email, 
+	   		profile_photo, email_public, tel_public
+	        FROM user NATURAL JOIN user_info
+	        WHERE user_id = #{userId}
+		]]>
+	</select>
+	
+	<select id="getAllUserList" resultMap="user">
+		<![CDATA[
+			SELECT user_pk, user_id, password, token, user_name,
+	   		user_active, user_info_pk, nickname, tel, email, 
+	   		profile_photo, email_public, tel_public
+	        FROM user NATURAL JOIN user_info
+		]]>
+	</select>
+	
+	<!-- ==================== 회원 가입 ======================================== -->
+	
+	<insert id="registUser" parameterType="UserDto">
+		INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
+		VALUES(#{userId}, #{password}, 'token', 1);
+	</insert>
+	
+	<update id="registUserInfo" parameterType="UserDto">
+	    INSERT INTO `s08p11d109`.`user_info` (user_name, nickname, tel, email, profile_photo, email_public, tel_public, user_pk) 
+	    VALUES(#{userName}, #{nickname}, #{tel}, #{email}, #{profilePhoto}, #{emailPublic}, #{telPublic}, (
+	    SELECT user_pk 
+	    FROM user 
+	    WHERE user_id = #{userId})
+	    );
+	</update>
+	
+	<!-- ==================== ID, Email, Tel 중복 검사 ======================================== -->
+	
+	<select id="getUserIdOverlap" parameterType="string" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM user
+			WHERE user_id = #{userId};
+		]]>
+	</select>
+	
+	<select id="getUserTelOverlap" parameterType="string" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM user_info
+			WHERE tel = #{tel};
+		]]>
+	</select>
+	
+	<select id="getUserEmailOverlap" parameterType="string" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM user_info
+			WHERE email = #{email};
+		]]>
+	</select>
+	
+	<!-- ==================== ID, PW 찾기 ======================================== -->
+	
+	<select id="searchIdFromEmail" parameterType="string" resultType="string">
+		<![CDATA[
+			SELECT user_id
+			FROM user NATURAL JOIN user_info
+			WHERE email = #{data};
+		]]>
+	</select>
+	
+	<select id="searchIdFromTel" parameterType="string" resultType="string">
+		<![CDATA[
+			SELECT user_id
+			FROM user NATURAL JOIN user_info
+			WHERE tel = #{data};
+		]]>
+	</select>
+	
+	<select id="forgotPwFromEmail" parameterType="string" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM user NATURAL JOIN user_info
+			WHERE user_id = #{userId} AND email = #{data};
+		]]>
+	</select>
+	
+	<select id="forgotPwFromTel" parameterType="string" resultType="int">
+		<![CDATA[
+			SELECT count(*)
+			FROM user NATURAL JOIN user_info
+			WHERE user_id = #{userId} AND tel = #{data};
+		]]>
+	</select>
+	
+	<update id="editPw" parameterType="string">
+		UPDATE user
+		SET password = #{password}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<!-- ==================== myProfile 정보 획득 ======================================== -->
+		
+	<select id="getMyProfile" resultMap="user">
+		SELECT user_pk, user_id, token, user_name,
+   		user_active, user_info_pk, nickname, tel, email, 
+   		profile_photo, email_public, tel_public
+        FROM user NATURAL JOIN user_info
+        WHERE user_pk = #{userPk}
+    </select>
+	
+	<!-- ==================== myProfile 정보 수정 ======================================== -->
+			
+	<update id="editMyProfile" parameterType="userDto">
+		UPDATE user_info
+		SET profile_photo = #{profilePhoto}, email = #{email}, email_public = #{emailPublic}, 
+		tel = #{tel}, tel_public = #{telPublic}, nickname = #{nickname}
+		WHERE user_pk = #{userPk}
+    </update>
+
+	<!-- ==================== 회원탈퇴 ======================================== -->
+	
+	<update id="resign" parameterType="int">
+		UPDATE user
+		SET user_active = 0
+		WHERE user_pk = #{userPk}
+    </update>
+	
 </mapper>
 
