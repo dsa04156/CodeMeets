@@ -9,11 +9,11 @@ from user_info;
 select *
 from user natural join user_info;
 
-delete from user where user_pk = 3;
-delete from user_info where user_pk = 3;
+delete from user where user_pk > 3;
+delete from user_info where user_pk > 3;
 
-ALTER TABLE user_info AUTO_INCREMENT = 1;
-ALTER TABLE user AUTO_INCREMENT = 1;
+ALTER TABLE user_info AUTO_INCREMENT = 4;
+ALTER TABLE user AUTO_INCREMENT = 4;
 
 select *
 from user_info
@@ -46,3 +46,12 @@ START TRANSACTION;
     WHERE user_id = 'test03'));
     
 COMMIT;
+
+UPDATE user
+SET user_active = 1
+WHERE user_pk = 3;
+
+select engine, support from information_schema.engines where support='DEFAULT';
+
+ALTER TABLE user_info
+MODIFY nickname varchar(16);
