@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hypeboy.codemeets.model.dto.UserDto;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,6 +37,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 @RequestMapping("/file")
 public class FileController {
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
 	
 	@Value("${file.images-dir}")
     private String imagesFolder;
@@ -84,7 +90,7 @@ public class FileController {
 
 	@Operation(summary = "Upload File", description = "파일을 서버에 업로드")
 	@PostMapping(consumes = "multipart/form-data")
-	public String uploadFiles(
+	public ResponseEntity<?> uploadFiles(
 		    @Parameter(
 			        description = "Files to be uploaded",
 			        content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -103,11 +109,11 @@ public class FileController {
 			} catch (Exception e) {
 				logger.info(e.getMessage(), e);
 				 
-				throw new RuntimeException("Fail to upload files.");
+				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 		
-		return dbfilename;
+		return new ResponseEntity<String>(dbfilename, HttpStatus.OK);
 	}
 	
 }
