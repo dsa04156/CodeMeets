@@ -68,12 +68,7 @@ public class LoginController {
 				loginService.saveRefreshToken(loginUserDto.getUserId(), refreshToken);
 				resultMap.put("access_token", accessToken);
 				resultMap.put("refresh_token", refreshToken);
-				
-				UserDto userDto = loginService.getUserInfo(loginDto.getUserId());
-				resultMap.put("userInfo", userDto);
-				
 				resultMap.put("message", SUCCESS);
-				
 				status = HttpStatus.ACCEPTED;
 			} else {
 				logger.info("로그인 실패");
