@@ -49,8 +49,7 @@ public class LoginController {
 	private JwtTokenProvider jwtTokenProvider;
 	
 	@Transactional(readOnly = false)
-	@Operation(summary = "Login", description = "로그인 API "
-			+ " \n ID와 PW값을 입력해주세요")
+	@Operation(summary = "로그인", description = "ID와 PW를 입력해주세요")
     @PostMapping
     public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDto loginDto) {
 		logger.info("login - 호출");
@@ -89,8 +88,7 @@ public class LoginController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@Operation(summary = "Get Login UserInfo", description = "로그인 상태의 유저 정보 획득 API "
-			+ " \n 헤더에 담긴 토큰으로 검사 및 정보 획득")
+	@Operation(summary = "로그인 상태의 유저 정보 획득", description = "헤더에 담긴 access_token으로 검사 및 정보 획득")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -130,7 +128,8 @@ public class LoginController {
 	}
 
 	@Transactional(readOnly = false)
-	@Operation(summary = "Get Access_Token", description = "유저의 refresh_token 및 userPk를 사용하여 access_token 재발급")
+	@Operation(summary = "access_token 재발급", description = "유저의 refresh_token 및 userPk를 사용하여 access_token 재발급 "
+			+ " \n 토큰과 userPk값만 입력하시면 됩니다.")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "REFRESH_TOKEN", value = "로그인 성공 후 발급 받은 refresh_token", required = true, dataType = "String", paramType = "header")
     })
@@ -160,26 +159,42 @@ public class LoginController {
 			resultMap.put("message", "Token has expired");
 			status = HttpStatus.UNAUTHORIZED;
 		}
+		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 
 	@Transactional(readOnly = false)
-	@Operation(summary = "Logout", description = "로그아웃")
+	@Operation(summary = "로그아웃", description = "DB에 저장된 refresh_token 삭제")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
 	@PutMapping("/logout")
-	public ResponseEntity<?> logout(@RequestParam("userPk") int userPk) {
+	public ResponseEntity<?> logout(HttpServletRequest request) {
 		logger.info("logout - 호출");
 		
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		
-		try {
-			loginService.deleteRefreshToken(userPk);
-			resultMap.put("message", SUCCESS);
-		} catch (Exception e) {
-			logger.info("로그아웃 실패 - " + e);
-
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.BAD_REQUEST;
+		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰");
+			
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+		
+			try {
+				loginService.deleteRefreshToken(userPk);
+				resultMap.put("message", SUCCESS);
+			} catch (Exception e) {
+				logger.info("로그아웃 실패 - " + e);
+	
+				resultMap.put("message", e.getMessage());
+				status = HttpStatus.BAD_REQUEST;
+			}
+		} else {
+			logger.info("사용 불가능한 토큰");
+			
+			resultMap.put("message", "Token has expired");
+			status = HttpStatus.UNAUTHORIZED;
 		}
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
