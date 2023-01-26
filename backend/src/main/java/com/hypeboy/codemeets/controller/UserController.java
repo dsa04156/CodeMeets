@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +28,6 @@ import com.hypeboy.codemeets.utils.JwtTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/user")
@@ -73,18 +72,20 @@ public class UserController {
 		}
 	}
     
-    
     @Operation(summary = "Regist User", description = "유저 회원가입 API "
     		+ " \n userPk, userInfoPk, userActive값은 제외해주세요 "
     		+ " \n 이메일, 전화번호 공개 시 값 1로 설정바랍니다.")
     @PostMapping("/regist")
 	public ResponseEntity<?> regist(@RequestBody UserDto userDto) {
+		logger.info("regist - 호출");
+		
 		try {
 			logger.info("registUser - 호출");
+			
 			userService.registUser(userDto);
-			logger.info("registUserInfo - 호출");
-			userService.registUserInfo(userDto);
-			logger.info("registUser, registUserInfo - 성공");
+			logger.info(userDto.toString());
+			logger.info("registUser - 성공");
+			
 			return new ResponseEntity<String>("Regist User Success", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Regist User Fail", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -98,7 +99,10 @@ public class UserController {
 		logger.info("userIdOverlap - 호출");
 
 		try {
+			logger.info("userId : " + userId);
+			
 			int result = userService.getUserIdOverlap(userId);
+			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -112,6 +116,8 @@ public class UserController {
 		logger.info("userTelOverlap - 호출");
 
 		try {
+			logger.info("Tel : " + tel);
+			
 			int result = userService.getUserTelOverlap(tel);
 			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
@@ -127,6 +133,8 @@ public class UserController {
 		logger.info("userTelOverlap - 호출");
 
 		try {
+			logger.info("email : " + email);
+			
 			int result = userService.getUserEmailOverlap(email);
 			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
@@ -141,6 +149,7 @@ public class UserController {
     @GetMapping("/search-id")
 	public ResponseEntity<?> searchId(@RequestParam("type") String type, @RequestParam("data") String data) throws Exception {
 		logger.info("searchId - 호출");
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		try {
@@ -192,8 +201,8 @@ public class UserController {
     @Operation(summary = "Edit PW", description = "PW 수정")
     @PutMapping("/edit-pw")
 	public ResponseEntity<?> editPw(@RequestParam("userId") String userId, @RequestParam("password") String password) throws Exception {
+    	logger.info("editPw - 호출");
     	
-		logger.info("editPw - 호출");
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		try {
@@ -268,6 +277,7 @@ public class UserController {
 			try {
 				userDto.setUserPk(userPk);
 				userService.editMyProfile(userDto);
+				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
 				logger.info("사용자 정보 수정 실패" + " " + e);
@@ -283,6 +293,44 @@ public class UserController {
 		}
 		
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
+		
+	}
+    
+
+	@Transactional(readOnly = false)
+	@Operation(summary = "Resign", description = "회원탈퇴")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
+	@PutMapping("/resign")
+	public ResponseEntity<?> resign(@RequestParam("userPk") int userPk, HttpServletRequest request) {
+		logger.info("resign - 호출");
+		
+    	Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		if (jwtTokenProvider.validateToken(request.getHeader("access-token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			try {
+				userService.resign(userPk);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				logger.info("유저 회원탈퇴 실패" + " " + e);
+				
+				resultMap.put("message", FAIL);
+				status = HttpStatus.UNAUTHORIZED;
+			} 
+		} else {
+			logger.info("사용 불가능한 토큰입니다");
+			
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String,Object>>(resultMap, status);
+		
 	}
     
     

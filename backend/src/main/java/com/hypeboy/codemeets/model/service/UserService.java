@@ -13,7 +13,6 @@ public interface UserService {
 	
 	// 회원가입
 	public void registUser(UserDto userDto) throws Exception;
-	public void registUserInfo(UserDto userDto) throws Exception;
 	
 	// 유저 중복검사
 	public int getUserIdOverlap(String userId) throws Exception;
@@ -30,5 +29,8 @@ public interface UserService {
 	
 	// myProfile 수정
 	public int editMyProfile(UserDto userDto) throws Exception;
+	
+	// 회원탈퇴
+	public int resign(int userPk) throws Exception;
 	
 }

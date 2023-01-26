@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.hypeboy.codemeets.model.dao.GroupDao">
+	
+	<resultMap type="GroupDto" id="group">
+		<result column="group_pk" property="gpk" />
+		<result column="group_name" property="gname" />
+		<result column="group_desc" property="gdesc" />
+		<result column="manager_id" property="mid" />
+		<result column="group_url" property="gurl" />
+	</resultMap>
+	
+	<resultMap type="GroupUserDto" id="guDto">
+		<result column="group_pk" property="gpk" />
+		<result column="user_pk" property="userPk" />
+	
+	</resultMap>
+	<resultMap type="GroupListDto" id="glDto">
+		<result column="cnt" property="cnt"/>
+		<result column="group_name" property="gname"/>
+		<result column="nickname" property="nickname"/>
+		<result column="count" property="count"/>
+		<result column="callStartTime" property="csTime"/>
+	</resultMap>
+
+	
+	<insert id="createGroup" useGeneratedKeys="true" keyProperty="gpk" >
+	<![CDATA[
+		INSERT INTO
+		 `s08p11d109`.`group`(group_name,group_desc,manager_id,group_url)
+		VALUES
+		  (#{gname}, #{gdesc}, #{mid},#{gurl});
+		  ]]>
+	</insert>
+	
+	<insert id="createGroupUser" >
+	<![CDATA[
+		insert into
+		 `group-user`
+		 (group_user_position,group_pk,user_pk) 
+		 values (1,#{gpk},#{userPk});
+		  ]]>
+	</insert>
+	<select id="groupMemberList" resultMap="guDto" parameterType="int">
+		<![CDATA[
+			select 
+			user.user_id,user_info.user_name,`group-user`.group_pk 
+			from
+			 user user, user_info user_info,`group-user` `group-user`
+ 			where 
+ 			user.user_pk=user_info.user_pk
+ 			 and `group-user`.user_pk=user_info.user_pk 
+ 			 and `group-user`.group_pk=#{gpk};
+		]]>
+	</select>
+	
+	<insert id="groupJoin" >
+	<![CDATA[
+		insert into
+		`group-user`(group_pk,user_pk)
+		values
+		(#{gpk},#{userPk});
+		  ]]>
+	</insert>
+	
+	<select id="getList" resultMap="glDto">
+	<![CDATA[
+		select 
+		`group`.group_name, `user_info`.nickname
+		from 
+		`group` `group`, user_info user_info
+		where 
+		`group`.manager_id=`user_info`.user_pk;
+		]]>
+	</select>
+	
+	<select id="countMember" resultType="int">
+	<![CDATA[
+		select 
+		count(*) 
+		from 
+		`group-user` 
+		where 
+		group_pk = #{gpk};
+		]]>
+	</select>
+	
+	<select id="countGroup" resultType="int">
+	<![CDATA[
+		select 
+		count(*) 
+		from 
+		`group`;
+		]]>
+	</select>
+	
+	<select id="gpList" resultType="int">
+	<![CDATA[
+		select 
+		`group_pk`
+		from 
+		`group`;
+		]]>
+	</select>
+	<select id="callStartTime" resultType="String">
+	<![CDATA[
+		select 
+		date_format(call_start_time, '%Y-%m-%d')
+		from 
+		conference 
+		where 
+		group_pk=#{gpk};
+	]]>
+	</select>
+	</mapper>
+	

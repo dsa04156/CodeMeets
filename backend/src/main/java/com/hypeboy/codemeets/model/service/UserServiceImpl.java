@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.UserDao;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService{
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public List<UserDto> getUserList(String userId) throws Exception {
 		logger.info("getUserList - 실행");
+		
 		return sqlSession.getMapper(UserDao.class).getUserList(userId);
 	}
 	
@@ -43,13 +46,8 @@ public class UserServiceImpl implements UserService{
 		logger.info("registUser - 실행");
 		
 		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-		sqlSession.getMapper(UserDao.class).registUser(userDto);
-	}
-	
-	@Override
-	public void registUserInfo(UserDto userDto) throws Exception {
-		logger.info("registUserInfo - 실행");
 		
+		sqlSession.getMapper(UserDao.class).registUser(userDto);
 		sqlSession.getMapper(UserDao.class).registUserInfo(userDto);
 	}
 
@@ -119,15 +117,7 @@ public class UserServiceImpl implements UserService{
 		logger.info("editPw - 실행");
 		
 		try {
-			int result = sqlSession.getMapper(UserDao.class).editPw(userId, passwordEncoder.encode(password));
-			
-			if (result == 1) {
-				return true;
-			}
-			else {
-				return false;
-			}
-			
+			return sqlSession.getMapper(UserDao.class).editPw(userId, passwordEncoder.encode(password)) == 1 ? true : false;
 		} catch (Exception e) {
 			return false;
 		}
@@ -146,6 +136,13 @@ public class UserServiceImpl implements UserService{
 		logger.info("editMyProfile - 실행");
 		
 		return sqlSession.getMapper(UserDao.class).editMyProfile(userDto);
+	}
+
+	@Override
+	public int resign(int userPk) throws Exception {
+		logger.info("resign - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).resign(userPk);
 	}
 
 }

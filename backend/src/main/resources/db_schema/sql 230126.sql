@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `s08p11d109`.`user_info` ;
 CREATE TABLE IF NOT EXISTS `s08p11d109`.`user_info` (
   `user_info_pk` INT NOT NULL AUTO_INCREMENT,
   `user_name` VARCHAR(10) NOT NULL,
-  `nickname` VARCHAR(16) NULL,
+  `nickname` VARCHAR(10) NULL,
   `tel` VARCHAR(13) NULL,
   `email` VARCHAR(45) NULL,
   `profile_photo` VARCHAR(512) NULL,
@@ -121,10 +121,9 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_notice` (
   `group_notice_title` VARCHAR(100) NULL,
   `group_notice_contents` VARCHAR(500) NULL,
   `upload_file` JSON NULL,
-  `group_notice_date` DATETIME NOT NULL,
-  `group_pk` INT NOT NULL,
-  `user_pk` INT NOT NULL,
-  `group_notice_hit` INT NOT NULL DEFAULT 0,
+  `group_notice_date` DATE NULL,
+  `group_pk` INT NULL,
+  `user_pk` INT NULL,
   PRIMARY KEY (`group_notice_pk`),
   UNIQUE INDEX `group_notice_pk_UNIQUE` (`group_notice_pk` ASC),
   INDEX `group_notice.user_pk_idx` (`user_pk` ASC),
@@ -433,21 +432,6 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`alarm` (
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
--- -----------------------------------------------------
--- Table `s08p11d109`.`group_question_user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `s08p11d109`.`group_question_user`;
-
-CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_question_user`(
-`group_question_pk` int not null,
-`user_pk` int not null,
-PRIMARY KEY (`group_question_pk`, `user_pk`),
-FOREIGN KEY (`group_question_pk`) REFERENCES `group_question(group_question_pk)`,
-FOREIGN KEY (`user_pk`) REFERENCES user(`user_pk`)
-)
-ENGINE = InnoDB;
-
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

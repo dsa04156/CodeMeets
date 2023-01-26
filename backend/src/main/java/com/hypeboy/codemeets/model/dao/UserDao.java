@@ -38,4 +38,8 @@ public interface UserDao {
 	
 	// myProfile 정보 수정
 	public int editMyProfile(UserDto userDto) throws SQLException;
+	
+	// 회원탈퇴
+	public int resign(int userPk) throws SQLException;
+	
 }
