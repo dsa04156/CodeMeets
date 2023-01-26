@@ -30,8 +30,8 @@ public class QnaServiceImpl implements QnaService{
 	}
 
 	@Override
-	public QnaDto getQna(int groupQuestionPk) throws Exception {
-		return qnaDao.getQna(groupQuestionPk);
+	public QnaDto getQna(int groupQuestionPk, int userPk) throws Exception {
+		return qnaDao.getQna(groupQuestionPk, userPk);
 	}
 
 	@Override
@@ -42,6 +42,16 @@ public class QnaServiceImpl implements QnaService{
 	@Override
 	public int deleteQna(int groupQuestionPk) throws Exception {
 		return qnaDao.deleteQna(groupQuestionPk);
+	}
+	
+	@Override
+	public int likeQna(QnaDto qnaDto) throws Exception {
+		if (qnaDao.searchLike(qnaDto) == 1) {
+			return qnaDao.deleteLike(qnaDto);
+		}
+		else {
+		return qnaDao.likeQna(qnaDto);
+		}
 	}
 	
 	
