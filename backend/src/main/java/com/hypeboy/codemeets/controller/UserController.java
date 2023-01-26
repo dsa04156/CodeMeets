@@ -177,8 +177,8 @@ public class UserController {
 	public ResponseEntity<?> forgotPw(@RequestParam("userId") String userId, 
 			@RequestParam("type") String type, 
 			@RequestParam("data") String data) throws Exception {
-    	logger.info("forgotPw - 호출");
-    	
+		logger.info("forgotPw - 호출");
+		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		
 		try {
@@ -216,19 +216,23 @@ public class UserController {
     
     
     @Operation(summary = "Get MyPage Info", description = "MyPage 유저 정보 확인 "
-    		+ " \n userPk와 헤더에 담긴 토큰으로 확인")
+    		+ " \n 헤더에 담긴 토큰으로 확인")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/{userPk}/myprofile")
-	public ResponseEntity<?> getMyProfile(@PathVariable("userPk") String userPk, HttpServletRequest request) throws Exception {
-    	logger.info("getMyProfile - 호출");
+	public ResponseEntity<?> getMyProfile(HttpServletRequest request) throws Exception {
+
+		logger.info("getMyProfile - 호출");
 		
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access-token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
 			logger.info("사용가능한 토큰입니다");
+			
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
 			
 			try {
 				UserDto userDto = userService.getMyProfile(userPk);
@@ -254,17 +258,21 @@ public class UserController {
     @Operation(summary = "Edit User Profile", description = "유저 프로필 수정 "
     		+ " \n 프로필 사진, 이메일, 전화번호, 닉네임 수정")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
     @PutMapping("/{userPk}/edit-profile")
-	public ResponseEntity<?> editProfile(@PathVariable("userPk") int userPk, @RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
+	public ResponseEntity<?> editProfile(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
+    	
 		logger.info("editProfile - 호출");
 		
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access-token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
 			logger.info("사용가능한 토큰입니다");
+			
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
 			
 			try {
 				userDto.setUserPk(userPk);
@@ -273,6 +281,7 @@ public class UserController {
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
 				logger.info("사용자 정보 수정 실패" + " " + e);
+				
 				resultMap.put("message", FAIL);
 				status = HttpStatus.UNAUTHORIZED;
 			} 
