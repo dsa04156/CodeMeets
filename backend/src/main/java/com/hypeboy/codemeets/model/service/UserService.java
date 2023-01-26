@@ -26,7 +26,7 @@ public interface UserService {
 	public boolean editPw(String userId, String password) throws Exception;
 	
 	// myProfile 정보 획득
-	public UserDto getMyProfile(String userPk) throws Exception;
+	public UserDto getMyProfile(int userPk) throws Exception;
 	
 	// myProfile 수정
 	public int editMyProfile(UserDto userDto) throws Exception;

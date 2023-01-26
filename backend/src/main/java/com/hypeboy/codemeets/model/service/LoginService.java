@@ -4,14 +4,15 @@ import com.hypeboy.codemeets.model.dto.LoginDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
 public interface LoginService {
-	// login
+	// 로그인
 	public LoginDto login(LoginDto loginDto) throws Exception;
+	
+	// 로그인한 유저 정보 획득
+	public UserDto getUserInfo(int userPk) throws Exception;
 	
 	// token
 	public void saveRefreshToken(String userid, String refreshToken) throws Exception;
-	public Object getRefreshToken(String userId) throws Exception;
+	public Object getRefreshToken(int userPk) throws Exception;
 	public int deleteRefreshToken(int userPk) throws Exception;
-	
-	// not use
-	public UserDto getUserInfo(String id) throws Exception;
+
 }

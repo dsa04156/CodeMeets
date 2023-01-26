@@ -36,7 +36,7 @@
    		user_active, nickname, tel, email, 
    		profile_photo, email_public, tel_public
         FROM user NATURAL JOIN user_info
-        WHERE user_id = #{userId}
+        WHERE user_pk = #{userPk}
     </select>
     
     <!-- ==================== token ======================================== -->
@@ -47,10 +47,10 @@
 		WHERE user_id = #{id}
 	</update>
     
-    <select id="getRefreshToken" parameterType="string" resultType="string">
+    <select id="getRefreshToken" parameterType="int" resultType="string">
 		SELECT token
 		FROM user
-		WHERE user_id = #{userId}
+		WHERE user_pk = #{userPk}
 	</select>
 	
 	<update id="deleteRefreshToken" parameterType="int">

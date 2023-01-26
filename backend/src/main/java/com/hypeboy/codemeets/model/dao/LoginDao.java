@@ -12,14 +12,15 @@ import com.hypeboy.codemeets.model.dto.UserDto;
 
 @Mapper
 public interface LoginDao {
-	// login
+	// 로그인
     Optional<LoginDto> findByUserId(String userId) throws SQLException;
+    
+    // 로그인한 유저 정보 획득
+    public UserDto getUserInfo(int userPk) throws SQLException;
     
     // token
     public void saveRefreshToken(Map<String, String> map) throws SQLException;
-    public Object getRefreshToken(String userId) throws SQLException;
+    public Object getRefreshToken(int userPk) throws SQLException;
     public int deleteRefreshToken(int userPk) throws SQLException;
-    
-    // not use
-    public UserDto getUserInfo(String id) throws SQLException;
+
 }

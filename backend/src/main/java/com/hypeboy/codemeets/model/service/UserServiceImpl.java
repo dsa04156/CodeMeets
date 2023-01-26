@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserDto getMyProfile(String userPk) throws Exception {
+	public UserDto getMyProfile(int userPk) throws Exception {
 		logger.info("getMyProfile - 실행");
 		
 		return sqlSession.getMapper(UserDao.class).getMyProfile(userPk);

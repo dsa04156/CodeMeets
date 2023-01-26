@@ -50,10 +50,10 @@ public class LoginServiceImpl implements LoginService {
     }
     
 	@Override
-	public UserDto getUserInfo(String id) throws Exception {
+	public UserDto getUserInfo(int userPk) throws Exception {
 		logger.info("getUserInfo - 실행");
 		
-		return sqlSession.getMapper(LoginDao.class).getUserInfo(id);
+		return sqlSession.getMapper(LoginDao.class).getUserInfo(userPk);
 	}
 	
 	// token ----------------------------------------------------------------------------------------------------
@@ -70,10 +70,10 @@ public class LoginServiceImpl implements LoginService {
 	}
 	
 	@Override
-	public Object getRefreshToken(String userId) throws Exception {
+	public Object getRefreshToken(int userPk) throws Exception {
 		logger.info("getRefreshToken - 실행");
 		
-		return sqlSession.getMapper(LoginDao.class).getRefreshToken(userId);
+		return sqlSession.getMapper(LoginDao.class).getRefreshToken(userPk);
 	}
 
 	@Override

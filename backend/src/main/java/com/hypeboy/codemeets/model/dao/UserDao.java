@@ -34,7 +34,7 @@ public interface UserDao {
 	public int editPw(String userId, String password) throws SQLException;
 	
 	// myProfile 정보 획득
-	public UserDto getMyProfile(String userPk) throws SQLException;
+	public UserDto getMyProfile(int userPk) throws SQLException;
 	
 	// myProfile 정보 수정
 	public int editMyProfile(UserDto userDto) throws SQLException;

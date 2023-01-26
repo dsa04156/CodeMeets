@@ -1,8 +1,13 @@
 package com.hypeboy.codemeets.utils;
 
 
-import io.jsonwebtoken.*;
-import lombok.RequiredArgsConstructor;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,12 +17,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
@@ -62,18 +72,17 @@ public class JwtTokenProvider {
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserId(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername( String.valueOf(this.getUserPk(token)) );
 
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     // 유저 이름 추출
-    public String getUserId(String token) {
-        return Jwts.parser()
+    public int getUserPk(String token) {
+        return Integer.parseInt(Jwts.parser()
                 .setSigningKey(secretKey)
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody().get("userPk").toString());
     }
 
     // Request header에서 token 꺼내옴
@@ -104,4 +113,22 @@ public class JwtTokenProvider {
 
         return false;
     }
+    
+	public Map<String, Object> get(String key) {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+		String jwt = request.getHeader("access_token");
+		Jws<Claims> claims = null;
+		try {
+			claims = Jwts.parser().setSigningKey(secretKey.getBytes("UTF-8")).parseClaimsJws(jwt);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Map<String, Object> value = claims.getBody();
+		return value;
+	}
+
+	public String getUserId() {
+		return (String) this.get("user").get("userid");
+	}
 }
