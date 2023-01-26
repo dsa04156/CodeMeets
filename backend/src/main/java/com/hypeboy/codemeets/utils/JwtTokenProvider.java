@@ -41,11 +41,11 @@ public class JwtTokenProvider {
     }
 
 	public <T> String createAccessToken(String key, T data) {
-		return create(key, data, "access-token", tokenValidMillisecond);
+		return create(key, data, "access_token", tokenValidMillisecond);
 	}
 
 	public <T> String createRefreshToken(String key, T data) {
-		return create(key, data, "refresh-token", refreshTokenValidMillisecond);
+		return create(key, data, "refresh_token", refreshTokenValidMillisecond);
 	}
 
 	public <T> String create(String key, T data, String subject, long expire) {
