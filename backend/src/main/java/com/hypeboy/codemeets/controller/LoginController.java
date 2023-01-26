@@ -58,16 +58,16 @@ public class LoginController {
 		HttpStatus status = null;
 		
 		try {
-			UserDto userDto = loginService.login(loginDto);
+			LoginDto loginUserDto = loginService.login(loginDto);
 			
-			if (userDto != null && userDto.getUserActive() == 1) {
-				logger.info("LoginController - login " + userDto.toString());
+			if (loginUserDto != null && loginUserDto.getUserActive() == 1) {
+				logger.info("LoginController - login " + loginUserDto.toString());
 				
-				String accessToken = jwtTokenProvider.createAccessToken("id", userDto.getUserId());
-				String refreshToken = jwtTokenProvider.createRefreshToken("id", userDto.getUserId());
-				loginService.saveRefreshToken(userDto.getUserId(), refreshToken);
-				resultMap.put("access-token", accessToken);
-				resultMap.put("refresh-token", refreshToken);
+				String accessToken = jwtTokenProvider.createAccessToken("id", loginUserDto.getUserId());
+				String refreshToken = jwtTokenProvider.createRefreshToken("id", loginUserDto.getUserId());
+				loginService.saveRefreshToken(loginUserDto.getUserId(), refreshToken);
+				resultMap.put("access_token", accessToken);
+				resultMap.put("refresh_token", refreshToken);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} else {
@@ -89,7 +89,7 @@ public class LoginController {
 	@Operation(summary = "Get Login UserInfo", description = "로그인 상태의 유저 정보 획득 API "
 			+ " \n 아이디와 헤더에 담긴 토큰으로 검사")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
 	@GetMapping("/{userId}")
 	public ResponseEntity<Map<String, Object>> getInfo(@PathVariable("userId") String userId, HttpServletRequest request) {
@@ -98,7 +98,7 @@ public class LoginController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access-token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
 			logger.info("사용가능한 토큰입니다");
 			
 			try {
@@ -122,9 +122,9 @@ public class LoginController {
 	}
 
 	@Transactional(readOnly = false)
-	@Operation(summary = "Get Access-Token", description = "유저의 refresh-token 및 ID를 사용하여 access-token 재발급")
+	@Operation(summary = "Get Access-Token", description = "유저의 refresh_token 및 ID를 사용하여 access-token 재발급")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "REFRESH-TOKEN", value = "로그인 성공 후 발급 받은 refresh-token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "REFRESH_TOKEN", value = "로그인 성공 후 발급 받은 refresh_token", required = true, dataType = "String", paramType = "header")
     })
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
@@ -132,12 +132,12 @@ public class LoginController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		String token = request.getHeader("refresh-token");
+		String token = request.getHeader("refresh_token");
 		
 		if (jwtTokenProvider.validateToken(token)) {
 			if (token.equals(loginService.getRefreshToken(userDto.getUserId()))) {
 				String accessToken = jwtTokenProvider.createAccessToken("id", userDto.getUserId());
-				resultMap.put("access-token", accessToken);
+				resultMap.put("access_token", accessToken);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 				logger.info("액세스 토큰 재발급 완료");

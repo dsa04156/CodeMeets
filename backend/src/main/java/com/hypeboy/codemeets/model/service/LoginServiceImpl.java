@@ -33,11 +33,11 @@ public class LoginServiceImpl implements LoginService {
 	private SqlSession sqlSession;
 	
 	@Override
-    public UserDto login(LoginDto loginDto) throws Exception {
+    public LoginDto login(LoginDto loginDto) throws Exception {
 		logger.info("login - 실행");
 		
-    	UserDto loginUserDto = sqlSession.getMapper(LoginDao.class)
-    			.findUserByUsername(loginDto.getUserId())
+    	LoginDto loginUserDto = sqlSession.getMapper(LoginDao.class)
+    			.findByUserId(loginDto.getUserId())
     			.orElseThrow(() -> new LoginFailedException("잘못된 아이디입니다"));
     	
     	logger.info("LoginServiceImpl login - " + loginUserDto.toString());
