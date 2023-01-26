@@ -41,10 +41,10 @@
     
     <!-- ==================== token ======================================== -->
     
-    <update id="saveRefreshToken" parameterType="map">
+    <update id="saveRefreshToken">
 		UPDATE user
-		SET token = #{token}
-		WHERE user_id = #{id}
+		SET token = #{refreshToken}
+		WHERE user_pk = #{userPk}
 	</update>
     
     <select id="getRefreshToken" parameterType="int" resultType="string">

@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,12 +25,14 @@ import com.hypeboy.codemeets.model.service.LoginServiceImpl;
 import com.hypeboy.codemeets.model.service.ResponseServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/login")
+@Api(tags = "로그인 API")
 public class LoginController {
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -64,8 +65,8 @@ public class LoginController {
 				logger.info("LoginController - login " + loginUserDto.toString());
 				
 				String accessToken = jwtTokenProvider.createAccessToken("userPk", loginUserDto.getUserPk());
-				String refreshToken = jwtTokenProvider.createRefreshToken("userPk", loginUserDto.getUserPk());
-				loginService.saveRefreshToken(loginUserDto.getUserId(), refreshToken);
+				String refreshToken = jwtTokenProvider.createRefreshToken();
+				loginService.saveRefreshToken(loginUserDto.getUserPk(), refreshToken);
 				
 				resultMap.put("access_token", accessToken);
 				resultMap.put("refresh_token", refreshToken);
@@ -75,14 +76,14 @@ public class LoginController {
 				logger.info("로그인 실패");
 				
 				resultMap.put("message", FAIL);
-				status = HttpStatus.ACCEPTED;
+				status = HttpStatus.BAD_REQUEST;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.info("토큰 사용 불가능");
+			logger.info("사용 불가능한 토큰");
 			
 			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			status = HttpStatus.UNAUTHORIZED;
 		}
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -98,10 +99,10 @@ public class LoginController {
 		logger.info("getInfo - 호출");
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		HttpStatus status = null;
 		
 		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
-			logger.info("사용가능한 토큰입니다");
+			logger.info("사용가능한 토큰");
 			
 			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
 			logger.info("userPk - " + userPk);
@@ -116,13 +117,13 @@ public class LoginController {
 				logger.info("사용자 정보 조회 실패" + " " + e);
 				
 				resultMap.put("message", FAIL);
-				status = HttpStatus.UNAUTHORIZED;
+				status = HttpStatus.BAD_REQUEST;
 			} 
 		} else {
-			logger.info("사용 불가능한 토큰입니다");
+			logger.info("사용 불가능한 토큰");
 			
-			resultMap.put("message", FAIL);
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			resultMap.put("message", "Token has expired");
+			status = HttpStatus.UNAUTHORIZED;
 		}
 		
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
@@ -154,8 +155,9 @@ public class LoginController {
 				
 			}
 		} else {
-			logger.info("리프레쉬 토큰 사용 불가");
+			logger.info("사용 불가능한 리프레쉬 토큰");
 			
+			resultMap.put("message", "Token has expired");
 			status = HttpStatus.UNAUTHORIZED;
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
@@ -177,7 +179,7 @@ public class LoginController {
 			logger.info("로그아웃 실패 - " + e);
 
 			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
+			status = HttpStatus.BAD_REQUEST;
 		}
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);

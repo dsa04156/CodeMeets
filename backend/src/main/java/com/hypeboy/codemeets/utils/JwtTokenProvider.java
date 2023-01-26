@@ -50,25 +50,39 @@ public class JwtTokenProvider {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes()); // SecretKey Base64로 인코딩
     }
 
+//	public <T> String createAccessToken(String key, T data) {
+//		return create(key, data, "access_token", tokenValidMillisecond);
+//	}
+//
+//	public <T> String createRefreshToken(String key, T data) {
+//		return create(key, data, "refresh_token", refreshTokenValidMillisecond);
+//	}
+
 	public <T> String createAccessToken(String key, T data) {
-		return create(key, data, "access_token", tokenValidMillisecond);
-	}
-
-	public <T> String createRefreshToken(String key, T data) {
-		return create(key, data, "refresh_token", refreshTokenValidMillisecond);
-	}
-
-	public <T> String create(String key, T data, String subject, long expire) {
 		String jwt = Jwts.builder()
 				.setHeaderParam("typ", "JWT")
 				.setHeaderParam("regDate", System.currentTimeMillis())
-				.setExpiration(new Date(System.currentTimeMillis() + expire))
-				.setSubject(subject)
+				.setExpiration(new Date(System.currentTimeMillis() + tokenValidMillisecond))
+				.setSubject("access_token")
 				.claim(key, data)
 				.signWith(SignatureAlgorithm.HS256, secretKey)
 				.compact();
 		return jwt;
 	}
+	
+	public <T> String createRefreshToken() {
+		String jwt = Jwts.builder()
+				.setHeaderParam("typ", "JWT")
+				.setHeaderParam("regDate", System.currentTimeMillis())
+				.setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidMillisecond))
+				.setSubject("refresh_token")
+				.signWith(SignatureAlgorithm.HS256, secretKey)
+				.compact();
+		return jwt;
+	}
+	
+
+	
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
@@ -77,7 +91,7 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // 유저 이름 추출
+    // 유저 PK 추출
     public int getUserPk(String token) {
         return Integer.parseInt(Jwts.parser()
                 .setSigningKey(secretKey)

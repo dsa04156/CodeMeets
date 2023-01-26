@@ -19,7 +19,7 @@ public interface LoginDao {
     public UserDto getUserInfo(int userPk) throws SQLException;
     
     // token
-    public void saveRefreshToken(Map<String, String> map) throws SQLException;
+    public void saveRefreshToken(int userPk, String refreshToken) throws SQLException;
     public Object getRefreshToken(int userPk) throws SQLException;
     public int deleteRefreshToken(int userPk) throws SQLException;
 
