@@ -4,9 +4,7 @@ import imageCompression from "browser-image-compression"; // npm install browser
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import FormData from "form-data";
-
-const SignUpPage = () => {
+const SignUp22Page = () => {
   const imageinput = useRef();
 
   const [inputName, setInputName] = useState("");
@@ -45,6 +43,10 @@ const SignUpPage = () => {
     setInputPhoneNum(event.target.value);
   };
   const inputImageHandler = (event) => {
+    // setInputImage(event.target.value);
+    event.preventDefault();
+    // setInputImage(URL.createObjectURL(event.target.files[0]))
+
     //이미지 미리보기 코드 해석 참고: https://velog.io/@devyouth94/react-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%A6%AC%EC%82%AC%EC%9D%B4%EC%A7%95%EC%9D%84-%ED%95%B4%EB%B3%B4%EC%9E%90-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0
     const encodeFile = (file) => {
       const reader = new FileReader();
@@ -70,34 +72,8 @@ const SignUpPage = () => {
       //이미지 미리보기 관련
       encodeFile(newFile);
       setInputImage(newFile);
-      console.log(newFile);
-      console.log('여기가 넘어온거')
-      const formData = new FormData();
-      formData.append("files", newFile);
-      for (const keyValue of formData) console.log(keyValue);
-      fetch("http://aeoragy.iptime.org:18081/file", {
-        method: "POST",
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        // },
-        body: formData,
-      })
-        .then((response) => {
-          console.log(response)
-          const data = response.json()
-          setInputImage(data);
-        })
-        // .then((data) => {
-        //   console.log(JSON.stringify(response));
-        // })
-        .catch((err) => console.log(err));
-      //await 쓰려면 = async () => { 해줘야 됨
-    })
-
-    // 이미지 파일 서버 보내기
+    });
   };
-
-// console.log("db에[ 수정된 파일명:" + DBfilename);
 
   const deleteFileImage = () => {
     // URL.revokeObjectURL(inputImage);
@@ -107,7 +83,6 @@ const SignUpPage = () => {
     setPreviewImage(null);
     imageinput.current.value = null;
   };
-
   const inputNicNameHandler = (event) => {
     setInputNicName(event.target.value);
   };
@@ -115,7 +90,6 @@ const SignUpPage = () => {
   const changePrivateEmailHandler = () => {
     setPrivateEmail(!privateEmail);
   };
-
   const changePrivatePhoneNumHandler = () => {
     setPrivatePhoneNum(!privatePhoneNum);
   };
@@ -124,8 +98,33 @@ const SignUpPage = () => {
     setCheckInformation(!checkInformation);
   };
 
-  const JoinSuccessHandler = (e) => {
-    e.preventDefault();
+  const JoinSuccessHandler = async() => {
+    // 이미지 파일 서버 보내기
+    const formData = new FormData();
+    formData.append("profilePhoto", inputImage);
+
+    await fetch(`http://aeoragy.iptime.org:18081/file`, {
+      method: "POST",
+      headers: {
+        // 'Content-Type': 'multipart/form-data',
+        redirect: "follow",
+      },
+      cache: "no-cache",
+      body: JSON.stringify({
+        formData,
+      }),
+    })
+      .then((response) => {
+        setInputImage(response.json());
+      })
+      // .then((response) => {
+      //   console.log(JSON.stringify(response));
+      // })
+      .catch((err) => console.log(err));
+    //await 쓰려면 = async () => { 해줘야 됨
+
+
+
 
     console.log(
       JSON.stringify({
@@ -140,17 +139,41 @@ const SignUpPage = () => {
         userName: inputName,
       })
     );
-    fetch("http://aeoragy.iptime.org:18081/user/regist", {
+    if (inputPw !== inputSecondPw) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    if (
+      inputName === "" ||
+      inputId === "" ||
+      inputPw === "" ||
+      inputSecondPw === "" ||
+      inputEmail === "" ||
+      inputPhoneNum === ""
+    ) {
+      alert("필수사항 입력해주세요.");
+      return;
+    }
+    if (checkInformation === false) {
+      alert("정보 제공 동의는 필수입니다.");
+      return;
+    }
+    // await fetch 를 쓸거면 양식 맞게 써준 뒤 if문으로 id 중복이 아니면 다음 fetch 검사하는 식으로 짜야 됨.
+
+    // if 써서 에러 발생하면 멈추고 에러 발생 안하면 다음 fetch 실행
+
+    await fetch("http://aeoragy.iptime.org:18081/user/regist", {
+      // await fetch : fetch를 하나씩 하나씩 실행되어 검사하는 것.
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-type": "application/json",
       },
       body: JSON.stringify({
         email: inputEmail,
         emailPublic: +privateEmail,
         nickname: inputNicName,
         password: inputPw,
-        profilePhoto: `${inputImage}`,
+        profilePhoto: inputImage,
         tel: inputPhoneNum,
         telPublic: +privatePhoneNum,
         userId: inputId,
@@ -158,20 +181,13 @@ const SignUpPage = () => {
       }),
     })
       .then((response) => {
-        console.log(response);
-        // for (const keyValue of formData) console.log(keyValue);
         if (response.ok) {
           alert(`${inputName}님, 반갑습니다.`);
+          navigate("/codemeets/login");
         }
       })
-      .catch((error) => {
-        alert(error);
-      })
-      .then((data) => {
-        console.log(data);
-      });
+      .catch((err) => console.log(err));
   };
-
   // 현재 등록되어 있는 아이디 admin01
   const IdOverlapConfirm = () => {
     fetch(`http://aeoragy.iptime.org:18081/user/overlap?userId=${inputId}`)
@@ -299,6 +315,9 @@ const SignUpPage = () => {
         <h4>선택 사항</h4>
         <label htmlFor="">프로필 사진</label>
         <div>
+          {/* {inputImage && <img alt="sample" src={inputImage} />} */}
+          {/* {inputImage && (<img alt="sample" src={inputImage} />)} */}
+          {/* <input type="file" accept="image/*" onChange={inputImageHandler} ref={imageinput}/> */}
           <img src={previewImage} />
           <InputStyle
             type="file"
@@ -338,7 +357,7 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default SignUp22Page;
 
 const InputStyle = styled.input`
   margin: 3px;
