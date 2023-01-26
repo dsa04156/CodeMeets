@@ -4,6 +4,7 @@ import imageCompression from "browser-image-compression"; // npm install browser
 import { useEffect } from "react";
 import styled from "styled-components";
 
+import axios from "axios";
 import FormData from "form-data";
 
 const SignUpPage = () => {
@@ -17,7 +18,8 @@ const SignUpPage = () => {
   const [inputPhoneNum, setInputPhoneNum] = useState("");
   const [inputImage, setInputImage] = useState("");
   const [previewImage, setPreviewImage] = useState("");
-  const [inputNicName, setInputNicName] = useState("Unregistered");
+  const [inputNickName, setInputNickName] = useState("Unregistered");
+
   const [privateEmail, setPrivateEmail] = useState(true);
   const [privatePhoneNum, setPrivatePhoneNum] = useState(true);
   const [checkInformation, setCheckInformation] = useState(false);
@@ -71,45 +73,35 @@ const SignUpPage = () => {
       encodeFile(newFile);
       setInputImage(newFile);
       console.log(newFile);
-      console.log('여기가 넘어온거')
+      console.log("여기가 넘어온거");
       const formData = new FormData();
       formData.append("files", newFile);
+
+      //이미지 보내고 이미지에 관한 고유 이름 받아오기
       for (const keyValue of formData) console.log(keyValue);
-      fetch("http://aeoragy.iptime.org:18081/file", {
+      axios({
         method: "POST",
-        // headers: {
-        //   "Content-Type": "multipart/form-data",
-        // },
-        body: formData,
+        url: "http://aeoragy.iptime.org:18081/file",
+        data: formData,
       })
         .then((response) => {
-          console.log(response)
-          const data = response.json()
-          setInputImage(data);
+          console.log(response.data);
+          setInputImage(response.data);
         })
-        // .then((data) => {
-        //   console.log(JSON.stringify(response));
-        // })
         .catch((err) => console.log(err));
-      //await 쓰려면 = async () => { 해줘야 됨
-    })
-
-    // 이미지 파일 서버 보내기
+    });
   };
 
-// console.log("db에[ 수정된 파일명:" + DBfilename);
+  // console.log("db에[ 수정된 파일명:" + DBfilename);
 
   const deleteFileImage = () => {
-    // URL.revokeObjectURL(inputImage);
-    // setInputImage('');
-    // imageinput.current.value = null
-    // encodeFile(null)
     setPreviewImage(null);
+    setInputImage("");
     imageinput.current.value = null;
   };
 
-  const inputNicNameHandler = (event) => {
-    setInputNicName(event.target.value);
+  const inputNickNameHandler = (event) => {
+    setInputNickName(event.target.value);
   };
 
   const changePrivateEmailHandler = () => {
@@ -131,7 +123,7 @@ const SignUpPage = () => {
       JSON.stringify({
         email: inputEmail,
         emailPublic: +privateEmail, // 최종 privateEmail이 + true 면 1 ,  + false 면 0 결과로 보내줌
-        nickname: inputNicName,
+        nickname: inputNickName,
         password: inputPw,
         profilePhoto: inputImage,
         tel: inputPhoneNum,
@@ -140,15 +132,16 @@ const SignUpPage = () => {
         userName: inputName,
       })
     );
-    fetch("http://aeoragy.iptime.org:18081/user/regist", {
+    axios({
       method: "POST",
+      url: "http://aeoragy.iptime.org:18081/user/regist",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      data: JSON.stringify({
         email: inputEmail,
         emailPublic: +privateEmail,
-        nickname: inputNicName,
+        nickname: inputNickName,
         password: inputPw,
         profilePhoto: `${inputImage}`,
         tel: inputPhoneNum,
@@ -166,9 +159,6 @@ const SignUpPage = () => {
       })
       .catch((error) => {
         alert(error);
-      })
-      .then((data) => {
-        console.log(data);
       });
   };
 
@@ -316,7 +306,7 @@ const SignUpPage = () => {
           <InputStyle
             type="text"
             placeholder="Nick Name"
-            onChange={inputNicNameHandler}
+            onChange={inputNickNameHandler}
           />
         </div>
         <div>
