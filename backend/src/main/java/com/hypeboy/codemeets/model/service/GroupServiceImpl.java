@@ -54,6 +54,37 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 
+	@Override
+	public void createGroupUser(GroupUserDto guDto) throws SQLException {
+		dao.createGroupUser(guDto);
+	}
+
+
+	@Override
+	public int countMember(Integer groupPk) throws SQLException {
+		return dao.countMember(groupPk);
+	}
+
+
+	@Override
+	public int countGroup() throws SQLException {
+		return dao.countGroup();//그룹 몇개?
+	}
+
+
+	@Override
+	public List<Integer> gpList() throws SQLException{
+		// TODO Auto-generated method stub
+		return dao.gpList();
+	}
+
+
+	@Override
+	public String callStartTime(Integer groupPk) throws SQLException {
+		return dao.callStartTime(groupPk);
+	}
+
+
 
 	
 

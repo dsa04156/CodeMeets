@@ -1,6 +1,7 @@
 package com.hypeboy.codemeets.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hypeboy.codemeets.model.dao.GroupDao;
 import com.hypeboy.codemeets.model.dto.GroupDto;
 import com.hypeboy.codemeets.model.dto.GroupListDto;
 import com.hypeboy.codemeets.model.dto.GroupUserDto;
@@ -57,10 +59,15 @@ public class GroupController {
     @PostMapping("/create")
 	public ResponseEntity<?> regist(@RequestBody @ApiParam(value="그룹 만들기",required = true) GroupDto groupDto) throws Exception {
 			logger.info("create group - 호출");
-			
-			logger.info(groupDto.toString());
+			GroupUserDto guDto = new GroupUserDto();
 			if(groupService.createGroup(groupDto)!=0) {
-			logger.info("createGroup - 성공");
+				logger.info("createGroup - 성공");
+				
+				logger.info(groupDto.toString());
+				guDto.setGpk(groupDto.getGpk());
+				guDto.setUserPk(groupDto.getMid());
+				logger.info(guDto.toString());
+				groupService.createGroupUser(guDto);
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 			}else
 				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -81,7 +88,7 @@ public class GroupController {
     
     @Operation(summary = "Group Join", description = "그룹 가입 API ")
     @PostMapping("/join")
-	public ResponseEntity<?> groupJoin(@RequestBody @ApiParam(value="그룹 가입하기",required = true) GroupUserDto guDto ) throws SQLException  {
+	public ResponseEntity<?> groupJoin(@RequestBody @ApiParam(value="그룹 가입하기",required = true) GroupUserDto guDto) throws SQLException  {
     	logger.info("group join - 호출");
     	System.out.println(guDto);
     	if(groupService.groupJoin(guDto)!=0) {
@@ -95,7 +102,17 @@ public class GroupController {
     @GetMapping("/")
     public ResponseEntity<?> groupList() throws Exception{
     	logger.info("group list 호출");
-    	return new ResponseEntity<List<GroupListDto>>(groupService.getList(),HttpStatus.OK);
+    	List<GroupListDto> groupList = groupService.getList();
+    	logger.info("gpList 호출");
+    	List<Integer> groupPkList = groupService.gpList();
+    	int gc = groupService.countGroup();
+    	for(int i=0;i<gc;i++) {
+    		groupList.get(i).setCnt(i+1);
+    		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
+    		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(i)));
+    	}
+    	System.out.println(groupList);
+    	return new ResponseEntity<List<GroupListDto>>(groupList,HttpStatus.OK);
     }
     
     

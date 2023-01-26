@@ -3,15 +3,16 @@ package com.hypeboy.codemeets.model.dto;
 import org.springframework.stereotype.Service;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Service
+@Setter
 @ToString
 public class GroupUserDto {
 	private int gpk;
 	private int userPk;
-	private String userId;
-	private String userName;
+//	private String userId;
+//	private String userName;
 	
 }
