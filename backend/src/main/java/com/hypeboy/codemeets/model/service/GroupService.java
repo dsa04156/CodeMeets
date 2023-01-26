@@ -15,6 +15,22 @@ public interface GroupService {
  
 	int groupJoin(GroupUserDto guDto) throws SQLException;
 	
-	public List<GroupListDto> getList() throws SQLException;
+//	public List<GroupListDto> getList() throws SQLException;
+//	List<GroupListDto> getList(GroupListDto glDto) throws SQLException;
+
+	void createGroupUser(GroupUserDto guDto) throws SQLException;
+
+//	int countMember() throws SQLException;
+
+	int countGroup() throws SQLException;
+
+	List<GroupListDto> getList() throws SQLException;
+
+	List<Integer> gpList() throws SQLException;
+
+	int countMember(Integer groupPk) throws SQLException;
+
+	String callStartTime(Integer groupPk) throws SQLException;
+
 	
-}
+}	
