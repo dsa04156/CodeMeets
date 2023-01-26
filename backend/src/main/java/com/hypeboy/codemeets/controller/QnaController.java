@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.QnaDto;
@@ -53,16 +54,17 @@ public class QnaController {
 	public ResponseEntity<?> getList(@PathVariable("groupPk") int groupPk) throws Exception {
 		
 		System.out.println("qna list hi");
+		List<QnaDto> qnaDtoList = service.getList(groupPk);
 		
-		return new ResponseEntity<List<QnaDto>>(service.getList(groupPk),HttpStatus.OK);
+		return new ResponseEntity<List<QnaDto>>(qnaDtoList, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{groupQuestionPk}")
-	public ResponseEntity<?> getQna(@PathVariable("groupQuestionPk") int qnaPk) throws Exception {
+	public ResponseEntity<?> getQna(@PathVariable("groupQuestionPk") int qnaPk, @RequestParam int userPk) throws Exception {
 		
 		System.out.println("info hi");
 		
-		return new ResponseEntity<QnaDto>(service.getQna(qnaPk), HttpStatus.OK);
+		return new ResponseEntity<QnaDto>(service.getQna(qnaPk, userPk), HttpStatus.OK);
 	}
 	
 	@PutMapping
@@ -78,12 +80,23 @@ public class QnaController {
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/{groupQuestionPk}/delete")
+	@DeleteMapping("/{groupQuestionPk}")
 	public ResponseEntity<String> deleteQna(@PathVariable("groupQuestionPk")int groupQuestionPk) throws Exception {
 		
 		Logger.info("deleteQna - 호출");
 		
 		if (service.deleteQna(groupQuestionPk)!=0) {
+			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+		}
+		return new ResponseEntity<String>(FAIL,HttpStatus.NO_CONTENT);
+	}
+	
+	@PutMapping("/like")
+	public ResponseEntity<String> likeQna(@RequestBody QnaDto qnaDto) throws Exception {
+		
+		Logger.info("likeQna - 호출");
+		
+		if (service.likeQna(qnaDto)!=0) {
 			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL,HttpStatus.NO_CONTENT);

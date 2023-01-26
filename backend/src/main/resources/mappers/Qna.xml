@@ -12,32 +12,53 @@
 		<result column="group_question_update" property="groupQuestionUpdate" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_pk" property="userPk"/>
-	</resultMap>
+		<result column="group_question_like_cnt" property="groupQuestionLikeCnt"/>
+		<result column="group_question_like" property="groupQuestionLike"/>
+	</resultMap>	
 	
 	<insert id="writeQna" parameterType="QnaDto">
 		INSERT INTO group_question (group_question_title, group_question_contents, group_question_date, group_pk, user_pk)
 		VALUES (#{groupQuestionTitle}, #{groupQuestionContents}, now(), #{groupPk}, #{userPk})
 	</insert>
 	<select id="getList" parameterType="int" resultMap="qna">
-		select group_question_pk, group_question_title, group_question_contents, date_format(group_question_date, "%Y-%m-%d") as group_question_date, group_question_update, group_pk, user_pk
-		from group_question
-		where group_pk = #{groupPk}
+		select Q.group_question_pk, Q.group_question_title, Q.group_question_contents, Q.group_question_date, Q.group_question_update, Q.group_pk, Q.user_pk,
+		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk) group_question_like_cnt
+		from group_question Q
+		where group_pk = #{groupPk}	
 	</select>
 	<select id="getQna" parameterType="int" resultMap="qna">
-		select group_question_pk, group_question_title, group_question_contents, date_format(group_question_date, "%Y-%m-%d") as group_question_date, group_question_update, group_pk, user_pk
-		from group_question
-		where group_question_pk = #{qnaPk}
+		select Q.group_question_pk, Q.group_question_title, Q.group_question_contents, Q.group_question_date, Q.group_question_update, Q.group_pk, Q.user_pk,
+		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk and L.user_pk = #{userPk}) group_question_like
+		from group_question Q
+		where group_question_pk = #{groupQuestionPk}
 	</select>
+
 	<update id="modifyQna" parameterType="QnaDto">
 		update group_question
 		set group_question_title = #{groupQuestionTitle}, group_question_contents = #{groupQuestionContents}, group_question_date = now(), group_question_update = 1
 		where group_question_pk = #{groupQuestionPk}
 	</update>
+
 	<delete id="deleteQna" parameterType="int">
 		delete from group_question
 		where group_question_pk = #{groupQuestionPk}
 	</delete>
-	
+
+	<select id="searchLike" parameterType="QnaDto" resultType="int">
+		SELECT count(*)
+		FROM group_question_user
+		WHERE group_question_pk = #{groupQuestionPk} AND user_pk = #{userPk}
+	</select>
+
+	<insert id="likeQna" parameterType="QnaDto">
+		INSERT INTO group_question_user (group_question_pk, user_pk)
+		VALUES (#{groupQuestionPk}, #{userPk})
+	</insert>
+
+	<delete id="deleteLike" parameterType="QnaDto">
+		delete from group_question_user
+		where group_question_pk = #{groupQuestionPk} AND user_pk = #{userPk}
+	</delete>
 	
 	
 	
