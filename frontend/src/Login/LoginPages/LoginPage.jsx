@@ -3,11 +3,16 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const LoginPage = () => {
-  const API = "http://localhost:3002/login";
+import { useAuthState,useAuthDispatch,loginUser } from '../../Context';
 
-  const [inputId, setInputId] = useState('');
-  const [inputPw, setInputPw] = useState('');
+
+const LoginPage = (props) => {
+  const API = "http://localhost:3002/login";
+  const dispatch = useAuthDispatch()
+  const {loading} = useAuthState()
+
+  const [userId, setInputId] = useState('');
+  const [password, setInputPw] = useState('');
 
   const navigate = useNavigate();
 
@@ -19,23 +24,18 @@ const LoginPage = () => {
     setInputPw(event.target.value)
   };
 
-  const ToHomePageHandler = () => {
-    // fetch(API, {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     id: this.state.id,
-    //     password: this.state.pw
-    //   }),
-    // })
-    // .then(response => response.json())
-    // .then(result => {
-    //   if (result.Authorization){
-    //     localStorage.setItem("token", result.Authorization);
-    //   }
-    // });
-    navigate('/');
-    // console.log(inputId)
-    // console.log(inputPw)
+  const loginHandler = async(e) => {
+    e.preventDefault()
+    let payload = {userId,password}
+    console.log(payload)
+    try{
+      const response = await loginUser(dispatch,payload)
+      console.log(response)
+      if(!response.user) return
+      props.history.push('/')
+    }catch(e){
+      console.log(e)
+    }
   };
 
   return (
@@ -51,7 +51,7 @@ const LoginPage = () => {
         <input type="text" name="input_pw" placeholder="PW" onChange={inputPwHandler}/>
       </InputStyle>
       <ButtonStyle>
-        <button onClick={ToHomePageHandler} style={{width:"100%"}}>Sign In</button>
+        <button onClick={loginHandler} style={{width:"100%"}}>Sign In</button>
       </ButtonStyle>
       <Link to="/codemeets/signup">회원가입</Link> |<Link to="/codemeets/findid"> 아이디 찾기</Link>{' '}
       |<Link to="/codemeets/findpassword"> 비밀번호 찾기</Link>

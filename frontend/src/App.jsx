@@ -30,6 +30,11 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Images/LogoSwing.gif";
 
+
+import { AuthProvider } from "./Context"
+
+
+
 function App() {
   const router = useLocation();
   const Navigate = useNavigate();
@@ -39,7 +44,7 @@ function App() {
   };
 
   return (
-    <div>
+    <AuthProvider>
       <Center>
         <SideArea>
           {router.pathname === "/login" ||
@@ -111,7 +116,7 @@ function App() {
           </div>
         </MainArea>
       </Center>
-    </div>
+    </AuthProvider>
   );
 }
 
