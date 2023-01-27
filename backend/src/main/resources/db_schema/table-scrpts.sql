@@ -443,11 +443,25 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_question_user`(
 `group_question_pk` int not null,
 `user_pk` int not null,
 PRIMARY KEY (`group_question_pk`, `user_pk`),
-FOREIGN KEY (`group_question_pk`) REFERENCES `group_question(group_question_pk)`,
+FOREIGN KEY (`group_question_pk`) REFERENCES group_question(`group_question_pk`),
 FOREIGN KEY (`user_pk`) REFERENCES user(`user_pk`)
 )
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `s08p11d109`.`group_answer_user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `s08p11d109`.`group_answer_user`;
+
+CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_answer_user`(
+`group_answer_pk` int not null,
+`user_pk` int not null,
+PRIMARY KEY (`group_answer_pk`, `user_pk`),
+FOREIGN KEY (`group_answer_pk`) REFERENCES group_answer(`group_answer_pk`),
+FOREIGN KEY (`user_pk`) REFERENCES user(`user_pk`)
+);
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
