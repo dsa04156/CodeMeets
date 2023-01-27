@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -27,14 +28,14 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.hypeboy.codemeets.model.dto.UserDto;
-
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 
 @RestController
 @RequestMapping("/file")
+@Api(tags = "파일 업로드 API")
 public class FileController {
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -49,11 +50,21 @@ public class FileController {
 
 	private final String fileDirectory = Paths.get("").toAbsolutePath() + "";
 
-	public FileController() {
-		File file = new File(fileDirectory);
+	public FileController() {		
+		File file = null;
 		
-		if (!file.exists()) {
-			file.mkdirs();
+		List<String> folderList = new ArrayList<>();
+		folderList.add("/images/");
+		folderList.add("/notice/");
+		
+		for (String folder : folderList) {
+			String filePath = fileDirectory + folder;
+			file = new File(filePath);
+			logger.info(file.toString());
+			
+			if (!file.exists()) {
+				file.mkdirs();
+			}
 		}
 		
 	}
