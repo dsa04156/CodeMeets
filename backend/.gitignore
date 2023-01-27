@@ -6,6 +6,8 @@ target/
 *.mwb.bak
 *.png
 *.jpg
+*.gif
+*.txt
 
 ### STS ###
 .apt_generated
