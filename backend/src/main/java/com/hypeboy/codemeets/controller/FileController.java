@@ -99,7 +99,7 @@ public class FileController {
     }
 	
 	@Operation(summary = "이미지 파일 리스트 요청", description = "서버에 저장된 이미지 이름 목록 획득")
-	@GetMapping
+	@GetMapping("images/list")
 	public List<String> getImageFileNames() {
 		
 		return Stream.of(new File(fileDirectory + imagesFolder).
@@ -108,7 +108,7 @@ public class FileController {
 	}
 
 	@Operation(summary = "공지 파일 리스트 요청", description = "서버에 저장된 공지 파일 이름 목록 획득")
-	@GetMapping
+	@GetMapping("/notice/list")
 	public List<String> getNoticeFileNames() {
 		
 		return Stream.of(new File(fileDirectory + noticeFolder).
