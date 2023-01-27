@@ -80,6 +80,7 @@ public class GroupController {
 			logger.info("group member list - 호출");
 			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk);
 			logger.info("group member list - 호출 성공");
+			System.out.println(groupMemberList.toString());
 			return new ResponseEntity<List<UserDto>>(groupMemberList, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);

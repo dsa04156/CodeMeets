@@ -13,9 +13,10 @@
 	
 	<resultMap type="GroupUserDto" id="guDto">
 		<result column="group_pk" property="gpk" />
-		<result column="user_pk" property="userPk" />
-	
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>	
 	</resultMap>
+	
 	<resultMap type="GroupListDto" id="glDto">
 		<result column="cnt" property="cnt"/>
 		<result column="group_name" property="gname"/>

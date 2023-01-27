@@ -12,7 +12,7 @@ import lombok.ToString;
 public class GroupUserDto {
 	private int gpk;
 	private int userPk;
-//	private String userId;
-//	private String userName;
+	private String userId;
+	private String userName;
 	
 }
