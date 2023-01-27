@@ -16,25 +16,25 @@
 			<result column="group_answer_like_cnt" property="groupQnaAnswerLikeCnt"/>
 	</resultMap>
 
-	<insert id="writeQnaAnswer" parameterType="QnaDto">
+	<insert id="writeQnaAnswer" parameterType="QnaAnswerDto">
 		INSERT INTO group_answer (group_answer_contents,group_answer_date, group_qusetion_Pk, userPk)
 		VALUES (#{groupQnaAnswerContents}, now(), #{groupQusetionPk}, #{userPk})
 	</insert>
 	
-	<select id="getList" parameterType="int" resultMap="qna">
+	<select id="getList" parameterType="int" resultMap="qnaAnswer">
 		select Q.group_answer_Pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_qusetion_Pk, Q.userPk,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk) group_answer_like_cnt
 		from group_answer Q
 		where group_qusetion_Pk = #{group_qusetion_Pk}	
 	</select>
-	<select id="getQnaAnswer" parameterType="int" resultMap="qna">
+	<select id="getQnaAnswer" parameterType="int" resultMap="qnaAnswer">
 		select Q.group_answer_Pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_qusetion_Pk, Q.user_pk,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like
 		from group_question Q
 		where group_answer_Pk = #{groupAnswerPk}
 	</select>
 
-	<update id="modifyQnaAnswer" parameterType="QnaDto">
+	<update id="modifyQnaAnswer" parameterType="QnaAnswerDto">
 		update group_answer
 		set group_answer_contents = #{groupAnswerContents}, group_answer_date = now(), group_answer_update = 1
 		where group_answer_Pk = #{groupAnswerPk}
@@ -51,7 +51,7 @@
 		WHERE group_answer_Pk = #{groupAnswerPk} AND user_pk = #{userPk}
 	</select>
 
-	<insert id="likeQnaAnswer" parameterType="QnaDto">
+	<insert id="likeQnaAnswer" parameterType="QnaAnswerDto">
 		INSERT INTO group_answer_user (group_answer_Pk, user_pk)
 		VALUES (#{groupAnswerPk}, #{userPk})
 	</insert>
