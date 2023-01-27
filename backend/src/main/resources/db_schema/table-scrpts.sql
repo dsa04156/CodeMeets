@@ -460,7 +460,7 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_answer_user`(
 PRIMARY KEY (`group_answer_pk`, `user_pk`),
 FOREIGN KEY (`group_answer_pk`) REFERENCES group_answer(`group_answer_pk`),
 FOREIGN KEY (`user_pk`) REFERENCES user(`user_pk`)
-);
+)
 ENGINE = InnoDB;
 
 
