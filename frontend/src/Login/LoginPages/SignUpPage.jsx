@@ -10,6 +10,7 @@ import FormData from "form-data";
 const SignUpPage = () => {
   const imageinput = useRef();
 
+  // 초기값 세팅 - 이름, 아이디, 비밀번호 등
   const [inputName, setInputName] = useState("");
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
@@ -20,9 +21,27 @@ const SignUpPage = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [inputNickName, setInputNickName] = useState("Unregistered");
 
+  // 초기값 세팅 -  비공개
   const [privateEmail, setPrivateEmail] = useState(true);
   const [privatePhoneNum, setPrivatePhoneNum] = useState(true);
   const [checkInformation, setCheckInformation] = useState(false);
+
+  // 오류메세지 상태 저장
+  const [idMessage, setIdMessage] = useState("");
+  const [nameMessage, setNameMessage] = useState("");
+  const [passwordMessage, setPasswordMessage] = useState("");
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
+  const [phoneMessage, setPhoneMessage] = useState("");
+
+  // 유효성 검사
+  const [isId, setIsId] = useState(false);
+  const [isname, setIsName] = useState(false);
+  const [isPassword, setIsPassword] = useState(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
+  const [isEmail, setIsEmail] = useState(false);
+  const [isPhone, setIsPhone] = useState(false);
+  const [isBirth, setIsBirth] = useState(false);
 
   // useEffect(()=>{twitSubmit()}, [inputImage])
 
@@ -31,21 +50,86 @@ const SignUpPage = () => {
   const inputNameHandler = (event) => {
     setInputName(event.target.value);
   };
-  const inputIdHandler = (event) => {
-    setInputId(event.target.value);
+  const inputIdHandler = (e) => {
+    const currentId = e.target.value;
+    setInputId(currentId);
+    const idRegExp = /^[a-zA-z0-9]{4,12}$/;
+
+    if (!idRegExp.test(currentId)) {
+      setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
+      setIsId(false);
+    } else {
+      setIdMessage("사용가능한 아이디 입니다.");
+      setIsId(true);
+    }
   };
-  const inputPwHandler = (event) => {
-    setInputPw(event.target.value);
+  const inputPwHandler = (e) => {
+    const currentPassword = e.target.value;
+    setInputPw(currentPassword);
+    const passwordRegExp =
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    if (!passwordRegExp.test(currentPassword)) {
+      setPasswordMessage(
+        "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
+      );
+      setIsPassword(false);
+    } else {
+      setPasswordMessage("안전한 비밀번호 입니다.");
+      setIsPassword(true);
+    }
   };
-  const inputSecondPwHandler = (event) => {
-    setInputSecondPw(event.target.value);
+  const inputSecondPwHandler = (e) => {
+    const currentPasswordConfirm = e.target.value;
+    setInputSecondPw(currentPasswordConfirm);
+    if (inputPw !== currentPasswordConfirm) {
+      setPasswordConfirmMessage("떼잉~ 비밀번호가 똑같지 않아요!");
+      setIsPasswordConfirm(false);
+    } else {
+      setPasswordConfirmMessage("똑같은 비밀번호를 입력했습니다.");
+      setIsPasswordConfirm(true);
+    }
   };
-  const inputEmailHandler = (event) => {
-    setInputEmail(event.target.value);
+  const inputEmailHandler = (e) => {
+    const currentEmail = e.target.value;
+    setInputEmail(currentEmail);
+    const emailRegExp =
+      /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+
+    if (!emailRegExp.test(currentEmail)) {
+      setEmailMessage("이메일의 형식이 올바르지 않습니다!");
+      setIsEmail(false);
+    } else {
+      setEmailMessage("사용 가능한 이메일 입니다.");
+      setIsEmail(true);
+    }
   };
-  const inputPhoneNumHandler = (event) => {
-    setInputPhoneNum(event.target.value);
+  const onChangePhone = (getNumber) => {
+    const currentPhone = getNumber;
+    setInputPhoneNum(currentPhone);
+    const phoneRegExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+ 
+    if (!phoneRegExp.test(currentPhone)) {
+      setPhoneMessage("올바른 형식이 아닙니다!");
+      setIsPhone(false);
+    } else {
+      setPhoneMessage("사용 가능한 번호입니다:-)");
+      setIsPhone(true);
+    }
   };
+
+  const inputPhoneNumHandler = (e) => {
+    const currentNumber = e.target.value;
+    setInputPhoneNum(currentNumber);
+    if (currentNumber.length == 3 || currentNumber.length == 8) {
+      setInputPhoneNum(currentNumber + "-");
+      onChangePhone(currentNumber + "-");
+    } else {
+      onChangePhone(currentNumber);
+    }
+  };
+
+
+
   const inputImageHandler = (event) => {
     //이미지 미리보기 코드 해석 참고: https://velog.io/@devyouth94/react-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%A6%AC%EC%82%AC%EC%9D%B4%EC%A7%95%EC%9D%84-%ED%95%B4%EB%B3%B4%EC%9E%90-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0
     const encodeFile = (file) => {
@@ -76,12 +160,11 @@ const SignUpPage = () => {
       console.log("여기가 넘어온거");
       const formData = new FormData();
       formData.append("files", newFile);
-
       //이미지 보내고 이미지에 관한 고유 이름 받아오기
       for (const keyValue of formData) console.log(keyValue);
       axios({
         method: "POST",
-        url: "http://aeoragy.iptime.org:18081/file",
+        url: "http://aeoragy.iptime.org:18081/file/images",
         data: formData,
       })
         .then((response) => {
@@ -100,8 +183,17 @@ const SignUpPage = () => {
     imageinput.current.value = null;
   };
 
-  const inputNickNameHandler = (event) => {
-    setInputNickName(event.target.value);
+  const inputNickNameHandler = (e) => {
+    const currentName = e.target.value;
+    setInputNickName(currentName);
+ 
+    if (currentName.length < 3 || currentName.length > 9) {
+      setNameMessage("닉네임은 3글자 이상 9글자 이하로 입력해주세요!");
+      setIsName(false);
+    } else {
+      setNameMessage("사용가능한 닉네임 입니다.");
+      setIsName(true);
+    }
   };
 
   const changePrivateEmailHandler = () => {
@@ -118,20 +210,6 @@ const SignUpPage = () => {
 
   const JoinSuccessHandler = (e) => {
     e.preventDefault();
-
-    console.log(
-      JSON.stringify({
-        email: inputEmail,
-        emailPublic: +privateEmail, // 최종 privateEmail이 + true 면 1 ,  + false 면 0 결과로 보내줌
-        nickname: inputNickName,
-        password: inputPw,
-        profilePhoto: inputImage,
-        tel: inputPhoneNum,
-        telPublic: +privatePhoneNum,
-        userId: inputId,
-        userName: inputName,
-      })
-    );
     axios({
       method: "POST",
       url: "http://aeoragy.iptime.org:18081/user/regist",
@@ -140,7 +218,7 @@ const SignUpPage = () => {
       },
       data: JSON.stringify({
         email: inputEmail,
-        emailPublic: +privateEmail,
+        emailPublic: +privateEmail, // 최종 privateEmail이 + true 면 1 ,  + false 면 0 결과로 보내줌
         nickname: inputNickName,
         password: inputPw,
         profilePhoto: `${inputImage}`,
@@ -152,10 +230,7 @@ const SignUpPage = () => {
     })
       .then((response) => {
         console.log(response);
-        // for (const keyValue of formData) console.log(keyValue);
-        if (response.ok) {
-          alert(`${inputName}님, 반갑습니다.`);
-        }
+        navigate("/codemeets/login");
       })
       .catch((error) => {
         alert(error);
@@ -237,6 +312,7 @@ const SignUpPage = () => {
               중복 확인
             </button>
           </span>
+          <MessageStyle>{idMessage}</MessageStyle>
         </div>
         <label htmlFor="">Password</label>
         <div>
@@ -245,6 +321,7 @@ const SignUpPage = () => {
             placeholder="Password"
             onChange={inputPwHandler}
           />
+          <MessageStyle>{passwordMessage}</MessageStyle>
         </div>
         <label htmlFor="">Password Check</label>
         <div>
@@ -253,6 +330,7 @@ const SignUpPage = () => {
             placeholder="Password"
             onChange={inputSecondPwHandler}
           />
+          <MessageStyle>{passwordConfirmMessage}</MessageStyle>
         </div>
         <label htmlFor="">E-mail</label>
         <div>
@@ -265,10 +343,13 @@ const SignUpPage = () => {
             <button type="submit" onClick={EmailOverlapConfirm}>
               중복 확인
             </button>
+            <MessageBox>
+            <MessageStyle>{emailMessage}</MessageStyle>
             <CheckBoxStyle>
               <input type="checkbox" onClick={changePrivateEmailHandler} />
               비공개
             </CheckBoxStyle>
+            </MessageBox>
           </span>
         </div>
         <label htmlFor="">Phone number</label>
@@ -281,10 +362,13 @@ const SignUpPage = () => {
           <button type="submit" onClick={PhoneNumOverlapConfirm}>
             중복 확인
           </button>
+          <MessageBox>
+          <MessageStyle>{phoneMessage}</MessageStyle>
           <CheckBoxStyle>
             <input type="checkbox" onClick={changePrivatePhoneNumHandler} />
             비공개
           </CheckBoxStyle>
+          </MessageBox>
         </span>
         <h4>선택 사항</h4>
         <label htmlFor="">프로필 사진</label>
@@ -309,6 +393,7 @@ const SignUpPage = () => {
             onChange={inputNickNameHandler}
           />
         </div>
+        <MessageStyle>{nameMessage}</MessageStyle>
         <div>
           <LastCheckBox>
             <input type="checkbox" onClick={InfoAgreeCheck} />
@@ -336,9 +421,7 @@ const InputStyle = styled.input`
 
 const CheckBoxStyle = styled.div`
   display: flex;
-  justify-content: right;
   align-items: center;
-  width: 18rem;
   input {
     width: 20px;
   }
@@ -360,4 +443,14 @@ const LastCheckBox = styled.div`
   input {
     width: 20px;
   }
+`;
+
+const MessageStyle = styled.p`
+  font-size: 4px;
+`;
+
+const MessageBox = styled.span`
+  display: flex;
+  justify-content: space-between;
+  width: 18rem;
 `;

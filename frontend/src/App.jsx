@@ -30,10 +30,13 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Images/LogoSwing.gif";
 
-
-import { AuthProvider } from "./Context"
-
-
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
 
 function App() {
   const router = useLocation();
@@ -44,7 +47,7 @@ function App() {
   };
 
   return (
-    <AuthProvider>
+    <RecoilRoot>
       <Center>
         <SideArea>
           {router.pathname === "/login" ||
@@ -82,10 +85,7 @@ function App() {
                   path="findpassword"
                   element={<FindPasswordPage />}
                 ></Route>
-                <Route
-                  path="newpassword"
-                  element={<NewPasswordPage />}
-                ></Route>
+                <Route path="newpassword" element={<NewPasswordPage />}></Route>
               </Route>
               {/* MainBoard */}
               <Route path="/" element={<Home />}></Route>
@@ -116,7 +116,7 @@ function App() {
           </div>
         </MainArea>
       </Center>
-    </AuthProvider>
+    </RecoilRoot>
   );
 }
 
