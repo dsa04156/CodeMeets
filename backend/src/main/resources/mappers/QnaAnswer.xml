@@ -24,6 +24,7 @@
 	<select id="getList" parameterType="int" resultMap="qnaAnswer">
 		select Q.group_answer_pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_qusetion_pk, Q.userPk,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk) group_answer_like_cnt
+		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like
 		from group_answer Q
 		where group_qusetion_Pk = #{group_qusetion_Pk}	
 	</select>
