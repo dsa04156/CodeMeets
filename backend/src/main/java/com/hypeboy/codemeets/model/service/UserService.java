@@ -8,8 +8,8 @@ import com.hypeboy.codemeets.model.dto.UserDto;
 
 public interface UserService {
 	// 개발용 API
-	public List<UserDto> getUserList(String userId) throws Exception;
-	public List<UserDto> getAllUserList() throws Exception;
+	public List<UserDto> devGetUserInfoList(String userId) throws Exception;
+	public List<UserDto> devGetUserInfoAllList() throws Exception;
 	
 	// 회원가입
 	public void registUser(UserDto userDto) throws Exception;
@@ -26,6 +26,9 @@ public interface UserService {
 	
 	// myProfile 정보 획득
 	public UserDto getMyProfile(int userPk) throws Exception;
+
+	// 다른 유저 정보 획득
+	public List<UserDto> getUserInfoList(String userPkList) throws Exception;
 	
 	// myProfile 수정
 	public int editMyProfile(UserDto userDto) throws Exception;

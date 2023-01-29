@@ -17,7 +17,7 @@
 
 	<!-- ==================== 개발용 기능 ======================================== -->
 
-	<select id="getUserList" parameterType="string" resultMap="user">
+	<select id="devGetUserInfoList" parameterType="string" resultMap="user">
 		<![CDATA[
 			SELECT user_pk, user_id, password, token, user_name,
 	   		user_active, user_info_pk, nickname, tel, email, 
@@ -27,7 +27,7 @@
 		]]>
 	</select>
 	
-	<select id="getAllUserList" resultMap="user">
+	<select id="devGetUserInfoAllList" resultMap="user">
 		<![CDATA[
 			SELECT user_pk, user_id, password, token, user_name,
 	   		user_active, user_info_pk, nickname, tel, email, 
@@ -144,6 +144,20 @@
 		SET user_active = 0
 		WHERE user_pk = #{userPk}
     </update>
-	
+
+	<!-- ==================== 다른 유저 정보 획득 ======================================== -->
+
+	<select id="getUserInfoList" parameterType="java.util.HashMap" resultMap="user">
+		<![CDATA[
+		SELECT user_pk, user_id, user_name,
+			   user_info_pk, nickname, tel, email,
+			   profile_photo, email_public, tel_public
+		FROM `user` NATURAL JOIN user_info
+		WHERE user_pk IN (${list})
+
+		]]>
+	</select>
+
+
 </mapper>
 

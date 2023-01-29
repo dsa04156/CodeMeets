@@ -1,36 +1,29 @@
 package com.hypeboy.codemeets.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.hypeboy.codemeets.model.dto.UserDto;
+import com.hypeboy.codemeets.model.service.UserServiceImpl;
+import com.hypeboy.codemeets.utils.JwtTokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.hypeboy.codemeets.model.dto.UserDto;
-import com.hypeboy.codemeets.model.service.UserServiceImpl;
-import com.hypeboy.codemeets.utils.JwtTokenProvider;
-
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.v3.oas.annotations.Operation;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
+@Api(tags = "유저 API")
 public class UserController {
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -44,35 +37,39 @@ public class UserController {
 	private JwtTokenProvider jwtTokenProvider;
 	
 	
-    @Operation(summary = "Dev - Search UserInfo", description = "유저 ID로 유저 정보 검색")
+    @Operation(summary = "개발용 - 유저 정보 검색", description = "유저 ID로 유저 정보 검색")
 	@GetMapping(value="/dev-search-userinfo", produces = "application/json;charset=utf-8")
-	public ResponseEntity<?> userInfoList(@RequestParam("userId") String userId) throws Exception {
+	public ResponseEntity<?> devGetUserInfoList(@RequestParam("userId") String userId) throws Exception {
 		logger.info("userInfoList - 호출");
 
 		try {
-			List<UserDto> user = userService.getUserList(userId);
+			List<UserDto> user = userService.devGetUserInfoList(userId);
 			return new ResponseEntity<List<UserDto>>(user, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("userInfoList fail - " + e);
+
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
     
-    @Operation(summary = "Dev - Get All UserList", description = "모든 유저 정보 얻기")
+    @Operation(summary = "개발용 - 유저 정보 목록 획득", description = "모든 유저 정보 얻기")
 	@GetMapping(value="/dev-all-userlist", produces = "application/json;charset=utf-8")
-	public ResponseEntity<?> userInfoAllList() throws Exception {
+	public ResponseEntity<?> devGetUserInfoAllList() throws Exception {
 		logger.info("userInfoAllList - 호출");
 
 		try {
-			List<UserDto> allUserList = userService.getAllUserList();
+			List<UserDto> allUserList = userService.devGetUserInfoAllList();
 			
 			return new ResponseEntity<List<UserDto>>(allUserList, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("userInfoAllList fail - " + e);
+
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
-    @Operation(summary = "Regist User", description = "유저 회원가입 API "
+    @Operation(summary = "회원가입", description = "유저 회원가입 API "
     		+ " \n userPk, userInfoPk, userActive값은 제외해주세요 "
     		+ " \n 이메일, 전화번호 공개 시 값 1로 설정바랍니다.")
     @PostMapping("/regist")
@@ -88,12 +85,14 @@ public class UserController {
 			
 			return new ResponseEntity<String>("Regist User Success", HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("regist fail - " + e);
+
 			return new ResponseEntity<String>("Regist User Fail", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
     
-    @Operation(summary = "Check Overlap ID", description = "회원가입시 ID 중복 검사 API")
+    @Operation(summary = "ID 중복검사", description = "회원가입시 ID 중복 검사 API")
     @GetMapping("/overlap")
 	public ResponseEntity<?> userIdOverlap(@RequestParam("userId") String userId) throws Exception {
 		logger.info("userIdOverlap - 호출");
@@ -105,12 +104,14 @@ public class UserController {
 			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("userIdOverlap fail - " + e);
+
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
     
-    @Operation(summary = "Check Overlap Tel", description = "회원가입시 전화번호 중복 검사 API")
+    @Operation(summary = "전화번호 중복 검사", description = "회원가입시 전화번호 중복 검사 API")
     @GetMapping("/telOverlap")
 	public ResponseEntity<?> userTelOverlap(@RequestParam("tel") String tel) throws Exception {
 		logger.info("userTelOverlap - 호출");
@@ -122,12 +123,14 @@ public class UserController {
 			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("userTelOverlap fail - " + e);
+
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
     
-    @Operation(summary = "Check Overlap Email", description = "회원가입시 이메일 중복 검사 API")
+    @Operation(summary = "이메일 중복 검사", description = "회원가입시 이메일 중복 검사 API")
     @GetMapping("/emailOverlap")
 	public ResponseEntity<?> userEmailOverlap(@RequestParam("email") String email) throws Exception {
 		logger.info("userTelOverlap - 호출");
@@ -139,12 +142,14 @@ public class UserController {
 			
 			return new ResponseEntity<Integer>(result, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("userEmailOverlap fail - " + e);
+
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
     
-    @Operation(summary = "Search ID", description = "email 혹은 전화번호 기반 ID 찾기 "
+    @Operation(summary = "ID 찾기", description = "email 혹은 전화번호 기반 ID 찾기 "
     		+ " \n type은 [email] 혹은 [tel]로 입력해주세요")
     @GetMapping("/search-id")
 	public ResponseEntity<?> searchId(@RequestParam("type") String type, @RequestParam("data") String data) throws Exception {
@@ -166,12 +171,14 @@ public class UserController {
 			
 			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("searchId fail - " + e);
+
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
     
-    @Operation(summary = "Forgot PW", description = "ID와 email 혹은 전화번호 기반 PW 수정 자격 확인 "
+    @Operation(summary = "패스워드 수정 자격 확인", description = "ID와 email 혹은 전화번호 기반 PW 수정 자격 확인 "
     		+ " \n type은 [email] 혹은 [tel]로 입력해주세요")
     @GetMapping("/forgot-pw")
 	public ResponseEntity<?> forgotPw(@RequestParam("userId") String userId, 
@@ -193,12 +200,14 @@ public class UserController {
 			
 			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("forgotPw fail - " + e);
+
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
     
-    @Operation(summary = "Edit PW", description = "PW 수정")
+    @Operation(summary = "패스워드 수정", description = "PW 수정")
     @PutMapping("/edit-pw")
 	public ResponseEntity<?> editPw(@RequestParam("userId") String userId, @RequestParam("password") String password) throws Exception {
     	logger.info("editPw - 호출");
@@ -210,12 +219,14 @@ public class UserController {
 			
 			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.warn("editPw fail - " + e);
+
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
     
-    @Operation(summary = "Get MyPage Info", description = "MyPage 유저 정보 확인 "
+    @Operation(summary = "유저 본인 정보 확인", description = "유저 정보 확인 "
     		+ " \n 헤더에 담긴 토큰으로 확인")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
@@ -240,7 +251,8 @@ public class UserController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				logger.info("사용자 정보 조회 실패" + " " + e);
+				logger.warn("getMyProfile fail - " + e);
+
 				resultMap.put("message", FAIL);
 				status = HttpStatus.UNAUTHORIZED;
 			} 
@@ -253,9 +265,39 @@ public class UserController {
 		
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
 	}
+
+	@Operation(summary = "다른 유저 정보 확인", description = "다른 유저의 정보 얻기 " +
+			" \n 얻을 유저의 정보(userPk)를 ,로 구분하여 문자열 형태로 전달, 한 사람 정보만 필요하면 ,는 제외 " +
+			" \n 공개설정이 0(비공개)라면 '비공개'로 처리")
+	@GetMapping(value="/userInfoList", produces = "application/json;charset=utf-8")
+	public ResponseEntity<?> getUserInfoList(@RequestParam("userPkList") String userPkList) throws Exception {
+		logger.info("getUserInfoList - 호출");
+
+		try {
+			List<UserDto> userList = userService.getUserInfoList(userPkList);
+
+			if (userList != null) {
+				for (UserDto user : userList) {
+					if (user.getEmailPublic() == 0) {
+						user.setEmail("비공개");
+					}
+
+					if (user.getTelPublic() == 0) {
+						user.setTel("비공개");
+					}
+				}
+			}
+
+			return new ResponseEntity<List<UserDto>>(userList, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.warn("getUserInfoList fail - " + e);
+
+			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
     
     
-    @Operation(summary = "Edit User Profile", description = "유저 프로필 수정 "
+    @Operation(summary = "프로필 수정", description = "유저 프로필 정보 수정 "
     		+ " \n 프로필 사진, 이메일, 전화번호, 닉네임 수정")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
@@ -280,8 +322,8 @@ public class UserController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				logger.info("사용자 정보 수정 실패" + " " + e);
-				
+				logger.warn("editProfile fail - " + e);
+
 				resultMap.put("message", FAIL);
 				status = HttpStatus.UNAUTHORIZED;
 			} 
@@ -298,7 +340,8 @@ public class UserController {
     
 
 	@Transactional(readOnly = false)
-	@Operation(summary = "Resign", description = "회원탈퇴")
+	@Operation(summary = "회원탈퇴", description = "회원탈퇴 " +
+			" \n ")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -317,8 +360,8 @@ public class UserController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				logger.info("유저 회원탈퇴 실패" + " " + e);
-				
+				logger.warn("resign fail - " + e);
+
 				resultMap.put("message", FAIL);
 				status = HttpStatus.UNAUTHORIZED;
 			} 
@@ -332,6 +375,5 @@ public class UserController {
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
 		
 	}
-    
     
 }
