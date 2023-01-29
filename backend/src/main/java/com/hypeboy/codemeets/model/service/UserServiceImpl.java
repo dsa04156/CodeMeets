@@ -1,6 +1,7 @@
 package com.hypeboy.codemeets.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -28,17 +29,17 @@ public class UserServiceImpl implements UserService{
     private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public List<UserDto> getUserList(String userId) throws Exception {
-		logger.info("getUserList - 실행");
+	public List<UserDto> devGetUserInfoList(String userId) throws Exception {
+		logger.info("devGetUserInfoList - 실행");
 		
-		return sqlSession.getMapper(UserDao.class).getUserList(userId);
+		return sqlSession.getMapper(UserDao.class).devGetUserInfoList(userId);
 	}
 	
 	@Override
-	public List<UserDto> getAllUserList() throws Exception {
-		logger.info("getAllUserList - 실행");
+	public List<UserDto> devGetUserInfoAllList() throws Exception {
+		logger.info("devGetUserInfoAllList - 실행");
 		
-		return sqlSession.getMapper(UserDao.class).getAllUserList();
+		return sqlSession.getMapper(UserDao.class).devGetUserInfoAllList();
 	}
 
 	@Override
@@ -129,6 +130,13 @@ public class UserServiceImpl implements UserService{
 		logger.info("getMyProfile - 실행");
 		
 		return sqlSession.getMapper(UserDao.class).getMyProfile(userPk);
+	}
+
+	@Override
+	public List<UserDto> getUserInfoList(String userPkList) throws Exception {
+		logger.info("getUserInfoList - 실행");
+
+		return sqlSession.getMapper(UserDao.class).getUserInfoList(userPkList);
 	}
 
 	@Override

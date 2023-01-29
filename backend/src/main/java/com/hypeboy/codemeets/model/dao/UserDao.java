@@ -2,6 +2,7 @@ package com.hypeboy.codemeets.model.dao;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,9 +12,9 @@ import com.hypeboy.codemeets.model.dto.UserDto;
 public interface UserDao {
 	// 개발용 기능
 	// 특정 유저 확인
-	public List<UserDto> getUserList(String userId) throws SQLException;
+	public List<UserDto> devGetUserInfoList(String userId) throws SQLException;
 	// 모든 유저 목록 확인
-	public List<UserDto> getAllUserList() throws SQLException;
+	public List<UserDto> devGetUserInfoAllList() throws SQLException;
 	
 	// 회원가입
 	public void registUser(UserDto userDto) throws SQLException;
@@ -35,6 +36,9 @@ public interface UserDao {
 	
 	// myProfile 정보 획득
 	public UserDto getMyProfile(int userPk) throws SQLException;
+
+	// 다른 유저 정보 획득
+	public List<UserDto> getUserInfoList(String userPkList) throws Exception;
 	
 	// myProfile 정보 수정
 	public int editMyProfile(UserDto userDto) throws SQLException;
