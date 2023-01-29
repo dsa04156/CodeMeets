@@ -5,30 +5,30 @@
 <mapper namespace="com.hypeboy.codemeets.model.dao.QnaAnswerDao">
 	
 	<resultMap type="QnaAnswerDto" id="qnaAnswer">
-		<result column="group_answer_Pk" property="groupAnswerPk" />
+		<result column="group_answer_pk" property="groupAnswerPk" />
 		<result column="group_answer_contents" property="groupAnswerContents" />
 		<result column="group_answer_date" property="groupQnaAnswerDate" />
 		<result column="group_answer_update" property="groupQnaAnswerUpdate" />
-		<result column="group_qusetion_Pk" property="groupQusetionPk" />
-		<result column="userPk" property="userPk" />
+		<result column="group_qusetion_pk" property="groupQusetionPk" />
+		<result column="user_pk" property="userPk" />
 		
 		<result column="group_answer_like" property="groupQnaAnswerLike" />
 			<result column="group_answer_like_cnt" property="groupQnaAnswerLikeCnt"/>
 	</resultMap>
 
 	<insert id="writeQnaAnswer" parameterType="QnaAnswerDto">
-		INSERT INTO group_answer (group_answer_contents,group_answer_date, group_qusetion_Pk, userPk)
+		INSERT INTO group_answer (group_answer_contents,group_answer_date, group_qusetion_pk, userPk)
 		VALUES (#{groupQnaAnswerContents}, now(), #{groupQusetionPk}, #{userPk})
 	</insert>
 	
 	<select id="getList" parameterType="int" resultMap="qnaAnswer">
-		select Q.group_answer_Pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_qusetion_Pk, Q.userPk,
+		select Q.group_answer_pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_qusetion_pk, Q.userPk,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk) group_answer_like_cnt
 		from group_answer Q
 		where group_qusetion_Pk = #{group_qusetion_Pk}	
 	</select>
 	<select id="getQnaAnswer" parameterType="int" resultMap="qnaAnswer">
-		select Q.group_answer_Pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_qusetion_Pk, Q.user_pk,
+		select Q.group_answer_pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_qusetion_pk, Q.user_pk,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like
 		from group_question Q
 		where group_answer_Pk = #{groupAnswerPk}
@@ -37,28 +37,28 @@
 	<update id="modifyQnaAnswer" parameterType="QnaAnswerDto">
 		update group_answer
 		set group_answer_contents = #{groupAnswerContents}, group_answer_date = now(), group_answer_update = 1
-		where group_answer_Pk = #{groupAnswerPk}
+		where group_answer_pk = #{groupAnswerPk}
 	</update>
 
 	<delete id="deleteQnaAnswer" parameterType="int">
 		delete from group_answer
-		where group_answer_Pk = #{groupAnswerPk}
+		where group_answer_pk = #{groupAnswerPk}
 	</delete>
 
 	<select id="searchLike" parameterType="QnaAnswerDto" resultType="int">
 		SELECT count(*)
 		FROM group_answer_user
-		WHERE group_answer_Pk = #{groupAnswerPk} AND user_pk = #{userPk}
+		WHERE group_answer_pk = #{groupAnswerPk} AND user_pk = #{userPk}
 	</select>
 
 	<insert id="likeQnaAnswer" parameterType="QnaAnswerDto">
-		INSERT INTO group_answer_user (group_answer_Pk, user_pk)
+		INSERT INTO group_answer_user (group_answer_pk, user_pk)
 		VALUES (#{groupAnswerPk}, #{userPk})
 	</insert>
 
 	<delete id="deleteLike" parameterType="QnaAnswerDto">
 		delete from group_answer_user
-		where group_answer_Pk = #{groupAnswerPk} AND user_pk = #{userPk}
+		where group_answer_pk = #{groupAnswerPk} AND user_pk = #{userPk}
 	</delete>
 	
 	
