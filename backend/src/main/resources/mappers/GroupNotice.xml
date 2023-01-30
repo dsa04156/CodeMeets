@@ -8,7 +8,8 @@
 		<result column="group_notice_pk" property="groupNoticePk" />
 		<result column="group_notice_title" property="groupNoticeTitle" />
 		<result column="group_notice_contents" property="groupNoticeContents" />
-		<result column="upload_file" property="uploadFile" />
+		<result column="origin_filename" property="originFilename" />
+		<result column="db_filename" property="dbFilename" />
 		<result column="group_notice_date" property="groupNoticeDate" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_pk" property="userPk" />
@@ -18,8 +19,8 @@
 	<!-- ==================== 공지 작성 ======================================== -->
 	
 	<insert id="writeGroupNotice" parameterType="GroupNoticeDto" >
-		INSERT INTO `group_notice` (group_notice_title, group_notice_contents, upload_file, group_notice_date, group_pk, user_pk, group_notice_hit)
-		VALUES (#{groupNoticeTitle}, #{groupNoticeContents}, #{uploadFile}, now(), #{groupPk}, #{userPk}, 0)
+		INSERT INTO `group_notice` (group_notice_title, group_notice_contents, origin_filename, db_filename, group_notice_date, group_pk, user_pk, group_notice_hit)
+		VALUES (#{groupNoticeTitle}, #{groupNoticeContents}, #{originFilename}, #{dbFilename}, now(), #{groupPk}, #{userPk}, 0)
 	</insert>
 	
 	<!-- ==================== 공지 목록 조회, 상세 조회 ======================================== -->
@@ -50,7 +51,8 @@
 		UPDATE `group_notice`
 		SET group_notice_title = #{groupNoticeTitle},
 		group_notice_contents = #{groupNoticeContents},
-		upload_file = #{uploadFile}
+		origin_filename = #{originFilename},
+		db_filename = #{dbFilename}
 		WHERE group_notice_pk = #{groupNoticePk};
 	</update>
 	

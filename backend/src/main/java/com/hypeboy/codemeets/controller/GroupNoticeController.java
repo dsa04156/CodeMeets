@@ -35,9 +35,7 @@ public class GroupNoticeController {
 	@Autowired
 	private GroupNoticeServiceImpl groupNoticeService;
 	
-	@Operation(summary = "그룹 공지사항 작성", description = "groupNoticeDate, groupNoticeHit, groupNoticePk 제외 "
-			+ " \n uploadFile은 json 형태를 String으로 보내주세요 "
-			+ " \n 예시 \"{\"파일 원래이름\" : \"db에 저장된 파일 이름\"}\" ")
+	@Operation(summary = "그룹 공지사항 작성", description = "groupNoticeDate, groupNoticeHit, groupNoticePk 제외하셔도 됩니다")
     @PostMapping
 	public ResponseEntity<?> write(@RequestBody GroupNoticeDto groupNoticeDto) {
 		logger.info("write - 호출");
@@ -89,22 +87,20 @@ public class GroupNoticeController {
 		}
 	}
     
-	@Operation(summary = "그룹 공지사항 수정", description = "그룹 공지사항 수정")
+	@Operation(summary = "그룹 공지사항 수정", description = "groupNoticeDate, groupNoticeHit, groupPk, userPk는 제외하셔도 됩니다")
     @PutMapping
-	public ResponseEntity<?> editGroupNotice(@RequestParam("groupNoticePk") int groupNoticePk,
-			@RequestParam("groupNoticeTitle") String groupNoticeTitle,
-			@RequestParam("groupNoticeContents") String groupNoticeContents,
-			@RequestParam("uploadFile") String uploadFile) {
+	public ResponseEntity<?> editGroupNotice(@RequestBody GroupNoticeDto groupNoticeDto) {
 		logger.info("editGroupNotice - 호출");
 		
-		GroupNoticeDto groupNoticeDto = null;
-		groupNoticeDto.setGroupNoticePk(groupNoticePk);
-		groupNoticeDto.setGroupNoticeTitle(groupNoticeTitle);
-		groupNoticeDto.setGroupNoticeContents(groupNoticeContents);
-		groupNoticeDto.setUploadFile(uploadFile);
+		GroupNoticeDto newGroupNoticeDto = new GroupNoticeDto();
+		newGroupNoticeDto.setGroupNoticePk(groupNoticeDto.getGroupNoticePk());
+		newGroupNoticeDto.setGroupNoticeTitle(groupNoticeDto.getGroupNoticeTitle());
+		newGroupNoticeDto.setGroupNoticeContents(groupNoticeDto.getGroupNoticeContents());
+		newGroupNoticeDto.setOriginFilename(groupNoticeDto.getOriginFilename());
+		newGroupNoticeDto.setDbFilename(groupNoticeDto.getDbFilename());
 		
 		try {
-			groupNoticeService.editGroupNotice(groupNoticeDto);
+			groupNoticeService.editGroupNotice(newGroupNoticeDto);
 			
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
