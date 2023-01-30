@@ -23,6 +23,7 @@
 		<result column="nickname" property="nickname"/>
 		<result column="count" property="count"/>
 		<result column="callStartTime" property="csTime"/>
+		<result column="user_pk" property="userPk"/>
 	</resultMap>
 
 	
@@ -72,7 +73,7 @@
 		from 
 		`group` `group`, user_info user_info
 		where 
-		`group`.manager_id=`user_info`.user_pk;
+		`group`.manager_id=`user_info`.user_pk and `user_info`.user_pk=#{userPk};
 		]]>
 	</select>
 	
@@ -99,20 +100,43 @@
 	<select id="gpList" resultType="int">
 	<![CDATA[
 		select 
-		`group_pk`
+		`group-user`.`group_pk`
 		from 
-		`group`;
+		`group-user`
+        where `group-user`.user_pk=#{userPk};
 		]]>
 	</select>
 	<select id="callStartTime" resultType="String">
 	<![CDATA[
 		select 
-		date_format(call_start_time, '%Y-%m-%d')
+		date_format(max(call_start_time), '%Y-%m-%d')
 		from 
 		conference 
 		where 
 		group_pk=#{gpk};
 	]]>
 	</select>
+	
+	<select id="groupDetail" resultMap="group">
+		<![CDATA[
+			select
+			*
+			from
+			`group`
+			where
+			group_pk=#{gpk};
+		]]>
+	</select>
+	<!-- <update id="groupModify">
+		<![CDATA[
+			UPDATE
+			 `group`
+			  set 
+			  group_name=#{gname}, group_desc=#{gdesc},group_url=#{gurl} 
+			  where 
+			  `group_pk` = #{gpk};
+		]]>
+	</update>
+	 -->
 	</mapper>
 	

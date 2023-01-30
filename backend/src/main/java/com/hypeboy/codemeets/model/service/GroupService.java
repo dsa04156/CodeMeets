@@ -22,15 +22,20 @@ public interface GroupService {
 
 //	int countMember() throws SQLException;
 
-	int countGroup() throws SQLException;
-
-	List<GroupListDto> getList() throws SQLException;
-
-	List<Integer> gpList() throws SQLException;
 
 	int countMember(Integer groupPk) throws SQLException;
 
 	String callStartTime(Integer groupPk) throws SQLException;
+
+	GroupDto groupDetail(int groupPk) throws SQLException;
+
+	void groupModify(GroupDto guDto) throws SQLException;
+
+	List<GroupListDto> getList(int userPk) throws SQLException;
+
+	List<Integer> gpList(int userPk) throws SQLException;
+
+	int countGroup(int userPk) throws SQLException;
 
 	
 }	
