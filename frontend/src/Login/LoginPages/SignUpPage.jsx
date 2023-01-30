@@ -1,14 +1,17 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import imageCompression from "browser-image-compression"; // npm install browser-image-compression --save
-import { useEffect } from "react";
 import styled from "styled-components";
+
+import { APIroot } from "../../Store"
+import { useRecoilValue } from "recoil";
 
 import axios from "axios";
 import FormData from "form-data";
 
 const SignUpPage = () => {
   const imageinput = useRef();
+  const API = useRecoilValue(APIroot)
 
   // 초기값 세팅 - 이름, 아이디, 비밀번호 등
   const [inputName, setInputName] = useState("");
@@ -41,15 +44,18 @@ const SignUpPage = () => {
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
   const [isPhone, setIsPhone] = useState(false);
-  const [isBirth, setIsBirth] = useState(false);
 
-  // useEffect(()=>{twitSubmit()}, [inputImage])
+  // 중복 검사
+  const [overlapId, setOverlapId] = useState(false);
+  const [overlapPhone, setOverlapPhone] = useState(false);
+  const [overlapEmail, setOverlapEmail] = useState(false);
 
   const navigate = useNavigate();
 
   const inputNameHandler = (event) => {
     setInputName(event.target.value);
   };
+
   const inputIdHandler = (e) => {
     const currentId = e.target.value;
     setInputId(currentId);
@@ -63,6 +69,7 @@ const SignUpPage = () => {
       setIsId(true);
     }
   };
+
   const inputPwHandler = (e) => {
     const currentPassword = e.target.value;
     setInputPw(currentPassword);
@@ -78,9 +85,10 @@ const SignUpPage = () => {
       setIsPassword(true);
     }
   };
+
   const inputSecondPwHandler = (e) => {
     const currentPasswordConfirm = e.target.value;
-    setInputSecondPw(currentPasswordConfirm);
+    // setInputSecondPw(currentPasswordConfirm);
     if (inputPw !== currentPasswordConfirm) {
       setPasswordConfirmMessage("떼잉~ 비밀번호가 똑같지 않아요!");
       setIsPasswordConfirm(false);
@@ -89,6 +97,7 @@ const SignUpPage = () => {
       setIsPasswordConfirm(true);
     }
   };
+
   const inputEmailHandler = (e) => {
     const currentEmail = e.target.value;
     setInputEmail(currentEmail);
@@ -103,11 +112,12 @@ const SignUpPage = () => {
       setIsEmail(true);
     }
   };
-  const onChangePhone = (getNumber) => {
-    const currentPhone = getNumber;
+
+  const inputPhoneNumHandler = (e) => {
+    const currentPhone = e.target.value;
     setInputPhoneNum(currentPhone);
-    const phoneRegExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
- 
+    const phoneRegExp = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+
     if (!phoneRegExp.test(currentPhone)) {
       setPhoneMessage("올바른 형식이 아닙니다!");
       setIsPhone(false);
@@ -116,19 +126,6 @@ const SignUpPage = () => {
       setIsPhone(true);
     }
   };
-
-  const inputPhoneNumHandler = (e) => {
-    const currentNumber = e.target.value;
-    setInputPhoneNum(currentNumber);
-    if (currentNumber.length == 3 || currentNumber.length == 8) {
-      setInputPhoneNum(currentNumber + "-");
-      onChangePhone(currentNumber + "-");
-    } else {
-      onChangePhone(currentNumber);
-    }
-  };
-
-
 
   const inputImageHandler = (event) => {
     //이미지 미리보기 코드 해석 참고: https://velog.io/@devyouth94/react-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%A6%AC%EC%82%AC%EC%9D%B4%EC%A7%95%EC%9D%84-%ED%95%B4%EB%B3%B4%EC%9E%90-%EC%9D%B4%EB%AF%B8%EC%A7%80-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0
@@ -164,7 +161,7 @@ const SignUpPage = () => {
       for (const keyValue of formData) console.log(keyValue);
       axios({
         method: "POST",
-        url: "http://aeoragy.iptime.org:18081/file/images",
+        url: `${API}/file/images`,
         data: formData,
       })
         .then((response) => {
@@ -186,7 +183,7 @@ const SignUpPage = () => {
   const inputNickNameHandler = (e) => {
     const currentName = e.target.value;
     setInputNickName(currentName);
- 
+
     if (currentName.length < 3 || currentName.length > 9) {
       setNameMessage("닉네임은 3글자 이상 9글자 이하로 입력해주세요!");
       setIsName(false);
@@ -210,42 +207,72 @@ const SignUpPage = () => {
 
   const JoinSuccessHandler = (e) => {
     e.preventDefault();
-    axios({
-      method: "POST",
-      url: "http://aeoragy.iptime.org:18081/user/regist",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: JSON.stringify({
-        email: inputEmail,
-        emailPublic: +privateEmail, // 최종 privateEmail이 + true 면 1 ,  + false 면 0 결과로 보내줌
-        nickname: inputNickName,
-        password: inputPw,
-        profilePhoto: `${inputImage}`,
-        tel: inputPhoneNum,
-        telPublic: +privatePhoneNum,
-        userId: inputId,
-        userName: inputName,
-      }),
-    })
-      .then((response) => {
-        console.log(response);
-        navigate("/codemeets/login");
+    console.log(
+      isId,
+      isname,
+      inputNickName,
+      isPassword,
+      isPasswordConfirm,
+      isEmail,
+      isPhone,
+      overlapId,
+      overlapPhone,
+      overlapEmail,
+      checkInformation
+    );
+    if (
+      isId &&
+      (inputNickName === "Unregistered" || inputNickName === "" || isname) &&
+      isPassword &&
+      isPasswordConfirm &&
+      isEmail &&
+      isPhone &&
+      overlapId &&
+      overlapPhone &&
+      overlapEmail &&
+      checkInformation
+    ) {
+      axios({
+        method: "POST",
+        url: `${API}/user/regist`,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: JSON.stringify({
+          email: inputEmail,
+          emailPublic: +privateEmail, // 최종 privateEmail이 + true 면 1 ,  + false 면 0 결과로 보내줌
+          nickname: inputNickName,
+          password: inputPw,
+          profilePhoto: `${inputImage}`,
+          tel: inputPhoneNum,
+          telPublic: +privatePhoneNum,
+          userId: inputId,
+          userName: inputName,
+        }),
       })
-      .catch((error) => {
-        alert(error);
-      });
+        .then((response) => {
+          console.log(response);
+          navigate("/codemeets/login");
+        })
+        .catch((error) => {
+          alert(error);
+        });
+    } else {
+      alert("입력을 확인해주시기 바랍니다.");
+    }
   };
 
   // 현재 등록되어 있는 아이디 admin01
   const IdOverlapConfirm = () => {
-    fetch(`http://aeoragy.iptime.org:18081/user/overlap?userId=${inputId}`)
+    fetch(`${API}/user/overlap?userId=${inputId}`)
       .then((response) => response.json())
       .then((response) => {
         if (JSON.stringify(response) === "1") {
           alert("이미 존재하는 아이디 입니다.");
+          setOverlapId(false);
         } else {
           alert("사용 가능한 ID입니다.");
+          setOverlapId(true);
         }
       })
       .catch((err) => console.log(err));
@@ -254,14 +281,16 @@ const SignUpPage = () => {
   // 사용중인 이메일 : ssafy@naver.com
   const EmailOverlapConfirm = () => {
     fetch(
-      `http://aeoragy.iptime.org:18081/user/emailOverlap?email=${inputEmail}`
+      `${API}/user/emailOverlap?email=${inputEmail}`
     )
       .then((response) => response.json())
       .then((response) => {
         if (JSON.stringify(response) === "1") {
           alert("이미 사용되고 있는 이메일 입니다.");
+          setOverlapEmail(false);
         } else {
           alert("사용 가능한 이메일 입니다.");
+          setOverlapEmail(true);
         }
       })
       .catch((err) => console.log(err));
@@ -270,14 +299,16 @@ const SignUpPage = () => {
   // 사용중인 번호 : f
   const PhoneNumOverlapConfirm = () => {
     fetch(
-      `http://aeoragy.iptime.org:18081/user/telOverlap?tel=${inputPhoneNum}`
+      `${API}/user/telOverlap?tel=${inputPhoneNum}`
     )
       .then((response) => response.json())
       .then((response) => {
         if (JSON.stringify(response) === "1") {
           alert("이미 등록된 번호 입니다.");
+          setOverlapPhone(false);
         } else {
           alert("사용가능한 번호 입니다.");
+          setOverlapPhone(true);
         }
       })
       .catch((err) => console.log(err));
@@ -344,11 +375,11 @@ const SignUpPage = () => {
               중복 확인
             </button>
             <MessageBox>
-            <MessageStyle>{emailMessage}</MessageStyle>
-            <CheckBoxStyle>
-              <input type="checkbox" onClick={changePrivateEmailHandler} />
-              비공개
-            </CheckBoxStyle>
+              <MessageStyle>{emailMessage}</MessageStyle>
+              <CheckBoxStyle>
+                <input type="checkbox" onClick={changePrivateEmailHandler} />
+                비공개
+              </CheckBoxStyle>
             </MessageBox>
           </span>
         </div>
@@ -363,11 +394,11 @@ const SignUpPage = () => {
             중복 확인
           </button>
           <MessageBox>
-          <MessageStyle>{phoneMessage}</MessageStyle>
-          <CheckBoxStyle>
-            <input type="checkbox" onClick={changePrivatePhoneNumHandler} />
-            비공개
-          </CheckBoxStyle>
+            <MessageStyle>{phoneMessage}</MessageStyle>
+            <CheckBoxStyle>
+              <input type="checkbox" onClick={changePrivatePhoneNumHandler} />
+              비공개
+            </CheckBoxStyle>
           </MessageBox>
         </span>
         <h4>선택 사항</h4>
@@ -401,7 +432,7 @@ const SignUpPage = () => {
           </LastCheckBox>
         </div>
         <div>
-          <button type="button" onClick={JoinSuccessHandler}>
+          <button type="button" onClick={JoinSuccessHandler} style={{marginRight:"5px"}}>
             가입
           </button>
           <button type="button" onClick={JoinCancelHandler}>

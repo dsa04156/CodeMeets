@@ -1,24 +1,51 @@
 import GroupListItem from "../GroupComponents/GroupListItem";
+import Pagination from "../../CommonComponents/Pagination/Pagination";
+
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+import { APIroot } from "../../Store";
+
+import { user } from "../../Store";
+import { useRecoilValue } from "recoil";
+
+import styled from "styled-components";
 
 const GroupList = () => {
-  const dummy = [
-    { id: "1", title: "title 1", content: "content 1" },
-    { id: "2", title: "title 2", content: "content 2" },
-    { id: "3", title: "title 3", content: "content 3" },
-  ];
+  const API = useRecoilValue(APIroot);
+  const loginUser = useRecoilValue(user);
+
+  const [groupList, setGroupList] = useState({});
+  console.log(loginUser.userPk);
+
+  useEffect(() => {
+    axios.get(`${API}/group/${loginUser.userPk}`).then((response) => {
+      setGroupList(response.data);
+    });
+    console.log(groupList);
+  }, []);
 
   return (
-    <ul>
-      {dummy.map((groupitem) => (
-        <GroupListItem
-          key={groupitem.id}
-          id={groupitem.id}
-          title={groupitem.title}
-          content={groupitem.content}
-        />
-      ))}
-    </ul>
+    <div>
+      <ContentBox>
+      <ul>
+        {dummy.map((groupitem) => (
+          <GroupListItem
+            key={groupitem.id}
+            id={groupitem.id}
+            title={groupitem.title}
+            content={groupitem.content}
+          />
+        ))}
+      </ul>
+      </ContentBox>
+      <Pagination></Pagination>
+    </div>
   );
 };
 
 export default GroupList;
+
+const ContentBox = styled.div`
+
+`;

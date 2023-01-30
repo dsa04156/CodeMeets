@@ -58,6 +58,8 @@ const LoginPage = () => {
       const data = response.data.userInfo;
       setLogin(data);
       navigate("/")
+      console.log("리코일 데이터")
+      console.log(recoilUser)
     });
   };
 

@@ -5,7 +5,7 @@ export const user = atom({
     default:{},
 })
 
-export const API = atom({
-    key:"API",
+export const APIroot = atom({
+    key:"APIroot",
     default: "http://aeoragy.iptime.org:18081"
 })
