@@ -19,7 +19,7 @@ public interface GroupNoticeDao {
 	public int addGroupNoticeHit(int groupNoticePk) throws SQLException;
 	
 	// 그룹 공지 리스트 확인
-	public List<GroupNoticeDto> getGroupNoticeList(int groupPk, int nowPage, int items) throws SQLException;
+	public List<GroupNoticeDto> getGroupNoticeList(int groupPk, int nowPage, int items, String order) throws SQLException;
 	
 	// 그룹 공지 수정
 	public int editGroupNotice(GroupNoticeDto groupNoticeDto) throws SQLException;
