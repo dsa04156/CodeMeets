@@ -12,17 +12,17 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ConferenceGroupDto {
-	int groupPk;
-	int conferencePk;
-	String callStartTime;
-	String callEndTime;
-	String conferenceTitle;
-	String conferenceContents;
-	int conferenceActive;
-	int userPk; // 회의 생성한 유저의 pk값
-	String groupName;
-	String groupDesc;
-	int managerId; // 그룹 생성한 유저의 pk값
-	String groupUrl;
-	int total;
+	private int groupPk;
+	private int conferencePk;
+	private String callStartTime;
+	private String callEndTime;
+	private String conferenceTitle;
+	private String conferenceContents;
+	private int conferenceActive;
+	private int userPk; // 회의 생성한 유저의 pk값
+	private String groupName;
+	private String groupDesc;
+	private int managerId; // 그룹 생성한 유저의 pk값
+	private String groupUrl;
+	private int total;
 }
