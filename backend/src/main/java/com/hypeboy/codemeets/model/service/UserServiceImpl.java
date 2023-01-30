@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.UserDao;
+import com.hypeboy.codemeets.model.dto.ConferenceGroupDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
 import lombok.RequiredArgsConstructor;
@@ -87,6 +88,8 @@ public class UserServiceImpl implements UserService{
 				result = sqlSession.getMapper(UserDao.class).searchIdFromTel(data);
 			}
 		} catch (Exception e) {
+			logger.warn("searchId fail - " + e);
+			
 			return null;
 		}
 		
@@ -107,6 +110,8 @@ public class UserServiceImpl implements UserService{
 				result = sqlSession.getMapper(UserDao.class).forgotPwFromTel(userId, data);
 			}
 		} catch (Exception e) {
+			logger.warn("forgotPw fail - " + e);
+			
 			return result;
 		}
 		
@@ -120,6 +125,8 @@ public class UserServiceImpl implements UserService{
 		try {
 			return sqlSession.getMapper(UserDao.class).editPw(userId, passwordEncoder.encode(password)) == 1 ? true : false;
 		} catch (Exception e) {
+			logger.warn("editPw fail - " + e);			
+			
 			return false;
 		}
 
@@ -151,6 +158,21 @@ public class UserServiceImpl implements UserService{
 		logger.info("resign - 실행");
 		
 		return sqlSession.getMapper(UserDao.class).resign(userPk);
+	}
+	
+	@Override
+	public List<ConferenceGroupDto> getMyMeetingRecord(int nowPage, int items, int userPk) throws Exception {
+		logger.info("getMyMeetingRecord - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).getMyMeetingRecord(nowPage, items, userPk);
+	}
+
+	@Override
+	public List<ConferenceGroupDto> getMyMeetingRecordFilter(int nowPage, int items, int userPk, int groupPk)
+			throws Exception {
+		logger.info("getMyMeetingRecordFilter - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).getMyMeetingRecordFilter(nowPage, items, userPk, groupPk);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.hypeboy.codemeets.model.dto.ConferenceGroupDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
 public interface UserService {
@@ -29,6 +30,10 @@ public interface UserService {
 
 	// 다른 유저 정보 획득
 	public List<UserDto> getUserInfoList(String userPkList) throws Exception;
+	
+	// 자신의 회의 참석 기록 획득
+	public List<ConferenceGroupDto> getMyMeetingRecord(int nowPage, int items, int userPk) throws Exception;
+	public List<ConferenceGroupDto> getMyMeetingRecordFilter(int nowPage, int items, int userPk, int groupPk) throws Exception;
 	
 	// myProfile 수정
 	public int editMyProfile(UserDto userDto) throws Exception;

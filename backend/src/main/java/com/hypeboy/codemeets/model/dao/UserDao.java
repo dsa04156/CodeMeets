@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.hypeboy.codemeets.model.dto.ConferenceGroupDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
 @Mapper
@@ -38,7 +39,11 @@ public interface UserDao {
 	public UserDto getMyProfile(int userPk) throws SQLException;
 
 	// 다른 유저 정보 획득
-	public List<UserDto> getUserInfoList(String userPkList) throws Exception;
+	public List<UserDto> getUserInfoList(String userPkList) throws SQLException;
+
+	// 자신의 회의 참석 기록 획득
+	public List<ConferenceGroupDto> getMyMeetingRecord(int nowPage, int items, int userPk) throws SQLException;
+	public List<ConferenceGroupDto> getMyMeetingRecordFilter(int nowPage, int items, int userPk, int groupPk) throws SQLException;
 	
 	// myProfile 정보 수정
 	public int editMyProfile(UserDto userDto) throws SQLException;
