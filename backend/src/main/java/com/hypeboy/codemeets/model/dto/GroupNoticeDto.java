@@ -1,17 +1,22 @@
 package com.hypeboy.codemeets.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class GroupNoticeDto {
 	private int groupNoticePk;
 	private String groupNoticeTitle;
 	private String groupNoticeContents;
-	private String uploadFile;
+	private String originFilename;
+	private String dbFilename;
 	private String groupNoticeDate;
 	private int groupPk;
 	private int userPk;

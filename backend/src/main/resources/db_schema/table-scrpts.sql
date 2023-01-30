@@ -128,7 +128,6 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_notice` (
   `group_notice_hit` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`group_notice_pk`),
   UNIQUE INDEX `group_notice_pk_UNIQUE` (`group_notice_pk` ASC),
-  UNIQUE INDEX `db_filename_UNIQUE` (`db_filename` ASC),
   INDEX `group_notice.user_pk_idx` (`user_pk` ASC),
   INDEX `group_notice.group_pk_idx` (`group_pk` ASC),
   CONSTRAINT `group_notice.group_pk`
