@@ -68,12 +68,12 @@
 	
 	<select id="getList" resultMap="glDto">
 	<![CDATA[
-		select 
+	        select 
 		`group`.group_name, `user_info`.nickname
 		from 
-		`group` `group`, user_info user_info
+		`group` `group`, user_info user_info,`group-user` `group-user`
 		where 
-		`group`.manager_id=`user_info`.user_pk and `user_info`.user_pk=#{userPk};
+		`group`.group_pk=`group-user`.group_pk and `user_info`.user_pk=`group-user`.user_pk and `user_info`.user_pk=#{userPk};
 		]]>
 	</select>
 	
