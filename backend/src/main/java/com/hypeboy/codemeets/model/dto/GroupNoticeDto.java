@@ -18,8 +18,10 @@ public class GroupNoticeDto {
 	private String originFilename;
 	private String dbFilename;
 	private String groupNoticeDate;
+	private String nickname;
 	private int groupPk;
 	private int userPk;
 	private int groupNoticeHit;
-
+	private int total;
+	
 }
