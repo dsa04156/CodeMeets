@@ -12,9 +12,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class LoginDto {
-	int userPk;
-	String userId;
-	String password;
-	String token;
-	int userActive;
+	private int userPk;
+	private String userId;
+	private String password;
+	private String token;
+	private int userActive;
 }
