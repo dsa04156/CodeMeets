@@ -49,8 +49,8 @@ public class GroupServiceImpl implements GroupService {
 
 
 	@Override
-	public List<GroupListDto> getList() throws SQLException {
-		return dao.getList();
+	public List<GroupListDto> getList(int userPk) throws SQLException {
+		return dao.getList(userPk);
 	}
 
 
@@ -67,21 +67,32 @@ public class GroupServiceImpl implements GroupService {
 
 
 	@Override
-	public int countGroup() throws SQLException {
-		return dao.countGroup();//그룹 몇개?
+	public int countGroup(int userPk) throws SQLException {
+		return dao.countGroup(userPk);//그룹 몇개?
 	}
 
 
 	@Override
-	public List<Integer> gpList() throws SQLException{
-		// TODO Auto-generated method stub
-		return dao.gpList();
+	public List<Integer> gpList(int userPk) throws SQLException{
+		return dao.gpList(userPk);
 	}
 
 
 	@Override
 	public String callStartTime(Integer groupPk) throws SQLException {
 		return dao.callStartTime(groupPk);
+	}
+
+
+	@Override
+	public GroupDto groupDetail(int groupPk) throws SQLException {
+		return dao.groupDetail(groupPk);
+	}
+
+
+	@Override
+	public void groupModify(GroupDto guDto) throws SQLException {
+		dao.groupModify(guDto);
 	}
 
 

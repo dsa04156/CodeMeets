@@ -19,16 +19,20 @@ public interface GroupDao {
 
 	int groupJoin(GroupUserDto guDto) throws SQLException;
 
-	List<GroupListDto> getList() throws SQLException;
+	List<GroupListDto> getList(int userPk) throws SQLException;
 
 	void createGroupUser(GroupUserDto guDto) throws SQLException ;
 
 	int countMember(Integer groupPk) throws SQLException;
 
-	int countGroup() throws SQLException;
+	int countGroup(int userPk) throws SQLException;
 
-	List<Integer> gpList() throws SQLException;
+	List<Integer> gpList(int userPk) throws SQLException;
 
 	String callStartTime(Integer groupPk) throws SQLException;
+
+	GroupDto groupDetail(int groupPk) throws SQLException;
+
+	void groupModify(GroupDto guDto) throws SQLException;
 
 }
