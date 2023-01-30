@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hypeboy.codemeets.model.dto.QnaAnswerDto;
 import com.hypeboy.codemeets.model.service.QnaAnswerService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 
 @RestController
 @RequestMapping("/answer")
+@Api(tags = "그룹 Q&A 답변 API")
 public class QnaAnswerController {
 
 	private static final Logger Logger = LoggerFactory.getLogger(QnaController.class);
@@ -44,40 +46,55 @@ public class QnaAnswerController {
 		
 		Logger.info("wirteAnswerQna - 호출");
 		
-		if (service.writeQnaAnswer(qnaAnswerDto) != 0) {
+		try {
+			service.writeQnaAnswer(qnaAnswerDto);
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		} else
-			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+            Logger.warn("writeQnaAnswer fail - " + e);
+
+            return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping("/list/{questionPk}")
 	public ResponseEntity<?> getList(@PathVariable("questionPk") int questionPk) throws Exception {
 		
 		System.out.println("qna list hi");
-		List<QnaAnswerDto> qnaAnswerDtoList = service.getList(questionPk);
-		
-		return new ResponseEntity<List<QnaAnswerDto>>(qnaAnswerDtoList, HttpStatus.OK);
+		try {
+			List<QnaAnswerDto> qnaAnswerDtoList = service.getList(questionPk);
+			return new ResponseEntity<List<QnaAnswerDto>>(qnaAnswerDtoList, HttpStatus.OK);
+		} catch (Exception e) {
+            Logger.warn("getList fail - " + e);
+
+            return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@GetMapping("/{qnaAnswerPK}")
 	public ResponseEntity<?> getQna(@PathVariable("qnaAnswerPK") int qnaAnswerPK, @RequestParam int userPk) throws Exception {
 		
 		System.out.println("info hi");
-		
-		return new ResponseEntity<QnaAnswerDto>(service.getQnaAnswer(qnaAnswerPK, userPk), HttpStatus.OK);
+		try {
+			return new ResponseEntity<QnaAnswerDto>(service.getQnaAnswer(qnaAnswerPK, userPk), HttpStatus.OK);
+		} catch (Exception e) {
+            Logger.warn("getQna fail - " + e);
+
+            return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 	@PutMapping
 	public ResponseEntity<String> modifyQna(@RequestBody QnaAnswerDto qnaAnswerDto) throws Exception {
 		
-		System.out.println("qna modify");
-		
-		Logger.info("modifyQnaAnswer - 호출 {}", qnaAnswerDto);
-		
-		if (service.modifyQnaAnswer(qnaAnswerDto)!=0) {
+
+		try {
+			service.modifyQnaAnswer(qnaAnswerDto);
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		} catch (Exception e) {
+            Logger.warn("modifyQna fail - " + e);
+
+            return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{qnaAnswerPK}")
@@ -85,10 +102,14 @@ public class QnaAnswerController {
 		
 		Logger.info("deleteQna - 호출");
 		
-		if (service.deleteQnaAnswer(qnaAnswerPK)!=0) {
+		try {
+			service.deleteQnaAnswer(qnaAnswerPK);
 			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+		} catch (Exception e) {
+            Logger.warn("deleteQnaAnswer fail - " + e);
+
+            return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<String>(FAIL,HttpStatus.NO_CONTENT);
 	}
 	
 	@PutMapping("/like")
@@ -96,10 +117,14 @@ public class QnaAnswerController {
 		
 		Logger.info("likeQnaAnswer - 호출");
 		
-		if (service.likeQnaAnswer(qnaAnswerDto)!=0) {
+		try {
+			service.likeQnaAnswer(qnaAnswerDto);
 			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+		} catch (Exception e) {
+            Logger.warn("likeQna fail - " + e);
+
+            return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<String>(FAIL,HttpStatus.NO_CONTENT);
 	}
 	
 	

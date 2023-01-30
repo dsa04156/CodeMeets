@@ -13,7 +13,7 @@
 		<result column="user_pk" property="userPk" />
 		
 		<result column="group_answer_like" property="groupQnaAnswerLike" />
-			<result column="group_answer_like_cnt" property="groupQnaAnswerLikeCnt"/>
+		<result column="group_answer_like_cnt" property="groupQnaAnswerLikeCnt"/>
 	</resultMap>
 
 	<insert id="writeQnaAnswer" parameterType="QnaAnswerDto">
@@ -28,6 +28,7 @@
 		from group_answer Q
 		where group_qusetion_Pk = #{group_qusetion_Pk}	
 	</select>
+	
 	<select id="getQnaAnswer" parameterType="int" resultMap="qnaAnswer">
 		select Q.group_answer_pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_qusetion_pk, Q.user_pk,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like
@@ -61,8 +62,5 @@
 		delete from group_answer_user
 		where group_answer_pk = #{groupAnswerPk} AND user_pk = #{userPk}
 	</delete>
-	
-	
-	
 	
 </mapper>
