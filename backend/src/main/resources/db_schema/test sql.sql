@@ -98,3 +98,24 @@ WHERE group_notice_pk = 1;
 
 DELETE FROM `group_notice` 
 WHERE group_notice_pk = 3;
+
+SELECT con.group_pk, con.conference_pk, con.call_start_time, con.conference_title, con.conference_active, gro.group_name, gro.group_url
+FROM conference as con NATURAL JOIN `group` as gro
+WHERE user_pk = 3
+ORDER BY call_start_time DESC;
+
+SELECT *
+FROM conference as con NATURAL JOIN `group` as gro
+WHERE user_pk = 3
+ORDER BY call_start_time DESC;
+
+SELECT con.group_pk, con.conference_pk, con.call_start_time,
+ con.conference_title, con.conference_active, gro.group_name, gro.group_url, count(*) OVER() AS total
+FROM conference as con NATURAL JOIN `group` as gro
+WHERE con.conference_pk in (
+	SELECT conference_pk
+    FROM `conference-user`
+    WHERE user_pk = 3
+	)
+GROUP BY con.conference_pk
+ORDER BY call_start_time DESC;

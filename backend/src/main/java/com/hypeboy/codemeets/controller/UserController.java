@@ -1,5 +1,6 @@
 package com.hypeboy.codemeets.controller;
 
+import com.hypeboy.codemeets.model.dto.ConferenceGroupDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.model.service.UserServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
@@ -68,6 +69,7 @@ public class UserController {
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+    
     
     @Operation(summary = "회원가입", description = "유저 회원가입 API "
     		+ " \n userPk, userInfoPk, userActive값은 제외해주세요 "
@@ -224,7 +226,7 @@ public class UserController {
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-    
+
     
     @Operation(summary = "유저 본인 정보 확인", description = "유저 정보 확인 "
     		+ " \n 헤더에 담긴 토큰으로 확인")
@@ -233,7 +235,6 @@ public class UserController {
     })
     @GetMapping("/{userPk}/myprofile")
 	public ResponseEntity<?> getMyProfile(HttpServletRequest request) throws Exception {
-
 		logger.info("getMyProfile - 호출");
 		
     	Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -266,6 +267,7 @@ public class UserController {
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
 	}
 
+    
 	@Operation(summary = "다른 유저 정보 확인", description = "다른 유저의 정보 얻기 " +
 			" \n 얻을 유저의 정보(userPk)를 ,로 구분하여 문자열 형태로 전달, 한 사람 정보만 필요하면 ,는 제외 " +
 			" \n 공개설정이 0(비공개)라면 '비공개'로 처리")
@@ -295,8 +297,94 @@ public class UserController {
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
+    @Operation(summary = "유저 회의 참석 기록 확인", description = "헤더에 담긴 토큰으로 확인 "
+    		+ " \n 현재 페이지와 필요한 행 개수 입력 "
+    		+ " \n total은 총 결과 갯수")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @GetMapping("/my-meeting-record")
+	public ResponseEntity<?> getMyMeetingRecord(@RequestParam("nowPage") int nowPage, 
+			@RequestParam("items") int items, 
+			HttpServletRequest request) throws Exception {
+		logger.info("getMyMeetingRecord - 호출");
+		
+    	Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+			
+			try {
+				List<ConferenceGroupDto> conferenceGroupDto = userService.getMyMeetingRecord((nowPage - 1) * items, items, userPk);
+				resultMap.put("meeting_record", conferenceGroupDto);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				logger.warn("getMyMeetingRecord fail - " + e);
+
+				resultMap.put("message", FAIL);
+				status = HttpStatus.UNAUTHORIZED;
+			} 
+		} else {
+			logger.info("사용 불가능한 토큰입니다");
+			
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String,Object>>(resultMap, status);
+	}
     
+    @Operation(summary = "유저 회의 참석 기록 확인 (그룹 필터링)", description = "헤더에 담긴 토큰으로 확인 "
+    		+ " \n 필터링할 그룹, 현재 페이지와 필요한 행 개수 입력 "
+    		+ " \n total은 총 결과 갯수")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @GetMapping("/my-meeting-record/{group_pk}")
+	public ResponseEntity<?> getMyMeetingRecordFilter(@PathVariable("group_pk") int groupPk,
+			@RequestParam("nowPage") int nowPage, 
+			@RequestParam("items") int items, 
+			HttpServletRequest request) throws Exception {
+		logger.info("getMyMeetingRecordFilter - 호출");
+		
+    	Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+			
+			try {
+				List<ConferenceGroupDto> conferenceGroupDto = userService.getMyMeetingRecordFilter((nowPage - 1) * items, items, userPk, groupPk);
+				resultMap.put("meeting_record", conferenceGroupDto);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				logger.warn("getMyMeetingRecordFilter fail - " + e);
+
+				resultMap.put("message", FAIL);
+				status = HttpStatus.UNAUTHORIZED;
+			} 
+		} else {
+			logger.info("사용 불가능한 토큰입니다");
+			
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String,Object>>(resultMap, status);
+	}
     
+	
     @Operation(summary = "프로필 수정", description = "유저 프로필 정보 수정 "
     		+ " \n 프로필 사진, 이메일, 전화번호, 닉네임 수정")
 	@ApiImplicitParams({
@@ -304,7 +392,6 @@ public class UserController {
     })
     @PutMapping("/{userPk}/edit-profile")
 	public ResponseEntity<?> editProfile(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
-    	
 		logger.info("editProfile - 호출");
 		
     	Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -335,10 +422,9 @@ public class UserController {
 		}
 		
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
-		
 	}
     
-
+    
 	@Transactional(readOnly = false)
 	@Operation(summary = "회원탈퇴", description = "회원탈퇴 " +
 			" \n ")
@@ -373,7 +459,7 @@ public class UserController {
 		}
 		
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
-		
 	}
     
+	
 }
