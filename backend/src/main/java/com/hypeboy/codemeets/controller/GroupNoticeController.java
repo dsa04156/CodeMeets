@@ -69,15 +69,17 @@ public class GroupNoticeController {
 		}
 	}
     
-	@Operation(summary = "그룹 공지사항 목록 확인", description = "nowPage = 현재 페이지, items = 불러올 공지 목록 수")
+	@Operation(summary = "그룹 공지사항 목록 확인", description = "nowPage = 현재 페이지, items = 불러올 공지 목록 수 "
+			+ " \n order = ['group_notice_pk', 'nickname', 'group_notice_date'] 중 하나를 선택해 보내주세요 (번호 순, 작성자 순, 작성일 순)")
     @GetMapping
 	public ResponseEntity<?> getGroupNoticeList(@RequestParam("groupPk") int groupPk,
 			@RequestParam("nowPage") int nowPage,
-			@RequestParam("items") int items) {
+			@RequestParam("items") int items,
+			@RequestParam("order") String order) {
 		logger.info("getGroupNoticeList - 호출");
 		
 		try {
-			List<GroupNoticeDto> groupNoticeList = groupNoticeService.getGroupNoticeList(groupPk, nowPage - 1, items);
+			List<GroupNoticeDto> groupNoticeList = groupNoticeService.getGroupNoticeList(groupPk, (nowPage - 1) * items, items, order);
 			
 			return new ResponseEntity<List<GroupNoticeDto>>(groupNoticeList, HttpStatus.OK);
 		} catch (Exception e) {

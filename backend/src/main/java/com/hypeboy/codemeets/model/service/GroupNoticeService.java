@@ -13,7 +13,7 @@ public interface GroupNoticeService {
 	public GroupNoticeDto getGroupNotice(int groupNoticePk) throws Exception;
 	
 	// 그룹 공지 리스트 확인
-	public List<GroupNoticeDto> getGroupNoticeList(int groupPk, int nowPage, int items) throws Exception;
+	public List<GroupNoticeDto> getGroupNoticeList(int groupPk, int nowPage, int items, String order) throws Exception;
 	
 	// 그룹 공지 수정
 	public int editGroupNotice(GroupNoticeDto groupNoticeDto) throws Exception;
