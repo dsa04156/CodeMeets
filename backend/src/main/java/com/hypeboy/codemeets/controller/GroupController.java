@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import com.hypeboy.codemeets.model.dto.GroupUserDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.model.service.GroupService;
 import com.hypeboy.codemeets.model.service.GroupServiceImpl;
+import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,7 +48,9 @@ public class GroupController {
 	@Autowired
 	GroupServiceImpl groupService;
 	
-	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "400", description = "BAD REQUEST !!"),
@@ -100,22 +105,47 @@ public class GroupController {
 	}
     
     @Operation(summary = "Group List", description = "그룹 리스트")
-    @GetMapping("/")
-    public ResponseEntity<?> groupList() throws Exception{
+    @GetMapping("/{userPk}")
+    public ResponseEntity<?> groupList(HttpServletRequest request) throws Exception{
     	logger.info("group list 호출");
-    	List<GroupListDto> groupList = groupService.getList();
+    	Map<String, Object> resultMap = new HashMap<String, Object>();
+    	HttpStatus status = HttpStatus.UNAUTHORIZED;
+    	int userPk=0;
+    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+    	}
+    	
+    	List<GroupListDto> groupList = groupService.getList(userPk);
     	logger.info("gpList 호출");
-    	List<Integer> groupPkList = groupService.gpList();
-    	int gc = groupService.countGroup();
+    	List<Integer> groupPkList = groupService.gpList(userPk);
+    	logger.info(groupPkList.toString());
+    	int gc = groupPkList.size();
     	for(int i=0;i<gc;i++) {
     		groupList.get(i).setCnt(i+1);
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(i)));
     	}
-    	System.out.println(groupList);
     	return new ResponseEntity<List<GroupListDto>>(groupList,HttpStatus.OK);
     }
     
     
+    @Operation(summary = "Group Modify", description = "그룹 수정")
+    @PutMapping("/{groupPk}/modify")
+	public ResponseEntity<?> groupModify(@PathVariable("groupPk") int groupPk) {
+		try {
+			logger.info("group detail - 호출");
+			GroupDto guDto = groupService.groupDetail(groupPk);
+			logger.info("group detail - 호출 성공");
+			logger.info("group modify - 호출");
+			groupService.groupModify(guDto);
+			logger.info("group modify - 호출 성공");
+			return new ResponseEntity<GroupDto>(guDto, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
     
 }
