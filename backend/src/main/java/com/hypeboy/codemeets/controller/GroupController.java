@@ -32,6 +32,8 @@ import com.hypeboy.codemeets.model.service.GroupService;
 import com.hypeboy.codemeets.model.service.GroupServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -105,8 +107,12 @@ public class GroupController {
 	}
     
     @Operation(summary = "Group List", description = "그룹 리스트")
-    @GetMapping("/{userPk}")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @GetMapping("/list")
     public ResponseEntity<?> groupList(HttpServletRequest request) throws Exception{
+//    	public ResponseEntity<?> groupList(@PathVariable("userPk") int userPk) throws Exception{
     	logger.info("group list 호출");
     	Map<String, Object> resultMap = new HashMap<String, Object>();
     	HttpStatus status = HttpStatus.UNAUTHORIZED;
@@ -117,12 +123,16 @@ public class GroupController {
 			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
 			logger.info("userPk - " + userPk);
     	}
-    	
+    	else {
+    		logger.info("토큰 실패");
+    	}
     	List<GroupListDto> groupList = groupService.getList(userPk);
     	logger.info("gpList 호출");
+    	logger.info(groupList.toString());
     	List<Integer> groupPkList = groupService.gpList(userPk);
     	logger.info(groupPkList.toString());
     	int gc = groupPkList.size();
+    	System.out.println(gc);
     	for(int i=0;i<gc;i++) {
     		groupList.get(i).setCnt(i+1);
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
