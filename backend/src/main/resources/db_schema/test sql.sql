@@ -39,6 +39,12 @@ ADD `tel_public` TINYINT NOT NULL DEFAULT 1;
 ALTER TABLE  `s08p11d109`.`conference_question`
 DROP `conference_question_like`;
 
+ALTER TABLE  `s08p11d109`.`conference_answer`
+DROP `conference_answer_like`;
+
+ALTER TABLE `s08p11d109`.`conference_answer`
+CHANGE `conference_answer_pk` `conference_answer_pk` INT NOT NULL AUTO_INCREMENT;
+
 START TRANSACTION;
 	INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
 	VALUES('test03', '1234', 'token', 1);
