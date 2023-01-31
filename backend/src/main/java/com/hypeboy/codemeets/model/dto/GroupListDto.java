@@ -10,7 +10,7 @@ import lombok.ToString;
 public class GroupListDto {
 	private int cnt;
 	private String groupName;
-	private String nickName;
+	private String nickname;
 	private int count;
 	private String callStartTime;
 	private int groupPk;
