@@ -299,7 +299,6 @@ DROP TABLE IF EXISTS `s08p11d109`.`conference_question` ;
 CREATE TABLE IF NOT EXISTS `s08p11d109`.`conference_question` (
   `conference_question_pk` INT NOT NULL AUTO_INCREMENT,
   `conference_question_contents` VARCHAR(500) NOT NULL,
-  `conference_question_like` INT NOT NULL DEFAULT 0,
   `conference_question_date` DATETIME NOT NULL,
   `conference_question_update` TINYINT NOT NULL DEFAULT 0,
   `conference_pk` INT NOT NULL,
@@ -329,6 +328,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `s08p11d109`.`conference_question_user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `s08p11d109`.`conference_question_user`;
+
+CREATE TABLE IF NOT EXISTS `s08p11d109`.`conference_question_user`(
+`conference_question_pk` int not null,
+`user_pk` int not null,
+PRIMARY KEY (`conference_question_pk`, `user_pk`),
+FOREIGN KEY (`conference_question_pk`) REFERENCES conference_question(`conference_question_pk`),
+FOREIGN KEY (`user_pk`) REFERENCES `conference-user`(`user_pk`)
+)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `s08p11d109`.`conference_answer`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `s08p11d109`.`conference_answer` ;
@@ -338,7 +352,6 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`conference_answer` (
   `conference_answer_contents` VARCHAR(500) NOT NULL,
   `conference_answer_date` DATETIME NOT NULL,
   `conference_answer_update` TINYINT NOT NULL DEFAULT 0,
-  `conference_answer_like` INT NOT NULL DEFAULT 0,
   `conference_question_pk` INT NOT NULL,
   `user_pk` INT NOT NULL,
   PRIMARY KEY (`conference_answer_pk`),
@@ -354,6 +367,21 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`conference_answer` (
     REFERENCES `s08p11d109`.`user` (`user_pk`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `s08p11d109`.`conference_answer_user`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `s08p11d109`.`conference_answer_user`;
+
+CREATE TABLE IF NOT EXISTS `s08p11d109`.`conference_answer_user`(
+`conference_answer_pk` int not null,
+`user_pk` int not null,
+PRIMARY KEY (`conference_answer_pk`, `user_pk`),
+FOREIGN KEY (`conference_answer_pk`) REFERENCES conference_answer(`conference_answer_pk`),
+FOREIGN KEY (`user_pk`) REFERENCES `conference-user`(`user_pk`)
+)
 ENGINE = InnoDB;
 
 
