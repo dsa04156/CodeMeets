@@ -63,18 +63,31 @@ public class GroupController {
     @Operation(summary = "Regist Group", description = "그룹 만들기 API "
     		+ " \n group_Pk값은 제외해주세요"
     		+ "\n manager_id 값은 회원 pk 번호입니다 ")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @PostMapping("/create")
-	public ResponseEntity<?> regist(@RequestBody @ApiParam(value="그룹 만들기",required = true) GroupDto groupDto) throws Exception {
+	public ResponseEntity<?> regist(@RequestBody @ApiParam(value="그룹 만들기",required = true) GroupDto groupDto,HttpServletRequest request) throws Exception {
 			logger.info("create group - 호출");
 			GroupUserDto guDto = new GroupUserDto();
+			int userPk=0;
+			if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+				logger.info("사용가능한 토큰입니다");
+				
+				userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+				logger.info("userPk - " + userPk);
+	    	}
+	    	else {
+	    		logger.info("토큰 실패");
+	    	}
+			groupDto.setManagerId(userPk);
 			if(groupService.createGroup(groupDto)!=0) {
 				logger.info("createGroup - 성공");
-				
 				logger.info(groupDto.toString());
 				guDto.setGroupPk(groupDto.getGroupPk());
 				guDto.setUserPk(groupDto.getManagerId());
-				logger.info(guDto.toString());
 				groupService.createGroupUser(guDto);
+				logger.info(guDto.toString());
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 			}else
 				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -95,10 +108,26 @@ public class GroupController {
 	}
     
     @Operation(summary = "Group Join", description = "그룹 가입 API ")
-    @PostMapping("/join")
-	public ResponseEntity<?> groupJoin(@RequestBody @ApiParam(value="그룹 가입하기",required = true) GroupUserDto guDto) throws SQLException  {
+    @PostMapping("/{groupPk}/join")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
+	public ResponseEntity<?> groupJoin(@PathVariable("groupPk") int groupPk,HttpServletRequest request) throws SQLException  {
     	logger.info("group join - 호출");
-    	System.out.println(guDto);
+    	System.out.println(groupPk);
+    	int userPk=0;
+     	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
+     	GroupUserDto guDto = new GroupUserDto();
+     	guDto.setGroupPk(groupPk);
+     	guDto.setUserPk(userPk);
     	if(groupService.groupJoin(guDto)!=0) {
     		logger.info("group-join 성공");
     		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
