@@ -18,6 +18,8 @@ public class QnaDto {
 	private int userPk;
 	
 	//join 으로 찾아야하는값
+	// 게시글 작성자 닉네임
+	private String username;
 	// like 수
 	private int groupQuestionLikeCnt;
 	// 회원의 like 유무

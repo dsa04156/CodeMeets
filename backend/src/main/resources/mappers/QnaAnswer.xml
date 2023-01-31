@@ -14,6 +14,7 @@
 		
 		<result column="group_answer_like" property="groupQnaAnswerLike" />
 		<result column="group_answer_like_cnt" property="groupQnaAnswerLikeCnt"/>
+		<result column="user_name" property="username"/>
 	</resultMap>
 
 	<insert id="writeQnaAnswer" parameterType="QnaAnswerDto">
@@ -24,7 +25,8 @@
 	<select id="getList" parameterType="int" resultMap="qnaAnswer">
 		select Q.group_answer_pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_question_pk, Q.user_pk,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk) group_answer_like_cnt,
-		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like
+		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like,
+		(select user_name from user A where Q.user_pk = A.user_pk) user_name
 		from group_answer Q
 		where group_question_pk = #{groupQuestionPk}
 		ORDER BY group_answer_pk
@@ -33,7 +35,8 @@
 	
 	<select id="getQnaAnswer" parameterType="int" resultMap="qnaAnswer">
 		select Q.group_answer_pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_question_pk, Q.user_pk,
-		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like
+		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like,
+		(select user_name from user A where Q.user_pk = A.user_pk) user_name
 		from group_answer Q
 		where group_answer_Pk = #{qnaAnswerPk}
 	</select>
