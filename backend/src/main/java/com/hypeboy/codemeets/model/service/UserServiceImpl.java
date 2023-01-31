@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.UserDao;
 import com.hypeboy.codemeets.model.dto.ConferenceGroupDto;
+import com.hypeboy.codemeets.model.dto.ConferenceQuestionDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
 import lombok.RequiredArgsConstructor;
@@ -161,18 +162,25 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	public List<ConferenceGroupDto> getMyMeetingRecord(int nowPage, int items, int userPk) throws Exception {
-		logger.info("getMyMeetingRecord - 실행");
+	public List<ConferenceGroupDto> getMyConferenceRecord(int nowPage, int items, int userPk) throws Exception {
+		logger.info("getMyConferenceRecord - 실행");
 		
-		return sqlSession.getMapper(UserDao.class).getMyMeetingRecord(nowPage, items, userPk);
+		return sqlSession.getMapper(UserDao.class).getMyConferenceRecord(nowPage, items, userPk);
 	}
 
 	@Override
-	public List<ConferenceGroupDto> getMyMeetingRecordFilter(int nowPage, int items, int userPk, int groupPk)
+	public List<ConferenceGroupDto> getMyConferenceRecordFilter(int nowPage, int items, int userPk, int groupPk)
 			throws Exception {
-		logger.info("getMyMeetingRecordFilter - 실행");
+		logger.info("getMyConferenceRecordFilter - 실행");
 		
-		return sqlSession.getMapper(UserDao.class).getMyMeetingRecordFilter(nowPage, items, userPk, groupPk);
+		return sqlSession.getMapper(UserDao.class).getMyConferenceRecordFilter(nowPage, items, userPk, groupPk);
+	}
+
+	@Override
+	public List<ConferenceQuestionDto> getMyQuestionRecord(int nowPage, int items, int userPk) throws Exception {
+		logger.info("getMyQuestionRecord - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).getMyQuestionRecord(nowPage, items, userPk);
 	}
 
 }
