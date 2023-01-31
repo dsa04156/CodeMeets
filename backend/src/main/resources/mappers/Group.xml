@@ -4,36 +4,36 @@
 	<mapper namespace="com.hypeboy.codemeets.model.dao.GroupDao">
 	
 	<resultMap type="GroupDto" id="group">
-		<result column="group_pk" property="gpk" />
-		<result column="group_name" property="gname" />
-		<result column="group_desc" property="gdesc" />
-		<result column="manager_id" property="mid" />
-		<result column="group_url" property="gurl" />
+		<result column="group_pk" property="groupPk" />
+		<result column="group_name" property="groupName" />
+		<result column="group_desc" property="groupDesc" />
+		<result column="manager_id" property="managerId" />
+		<result column="group_url" property="groupUrl" />
 	</resultMap>
 	
 	<resultMap type="GroupUserDto" id="guDto">
-		<result column="group_pk" property="gpk" />
+		<result column="group_pk" property="groupPk" />
 		<result column="user_id" property="userId"/>
-		<result column="user_name" property="userName"/>	
+		<result column="user_name" property="username"/>	
 	</resultMap>
 	
 	<resultMap type="GroupListDto" id="glDto">
 		<result column="cnt" property="cnt"/>
-		<result column="group_name" property="gname"/>
+		<result column="group_name" property="groupName"/>
 		<result column="nickname" property="nickname"/>
 		<result column="count" property="count"/>
-		<result column="callStartTime" property="csTime"/>
+		<result column="callStartTime" property="callStartTime"/>
 		<result column="user_pk" property="userPk"/>
-		<result column="group_pk" property="gpk"/>
+		<result column="group_pk" property="groupPk"/>
 	</resultMap>
 
 	
-	<insert id="createGroup" useGeneratedKeys="true" keyProperty="gpk" >
+	<insert id="createGroup" useGeneratedKeys="true" keyProperty="groupPk" >
 	<![CDATA[
 		INSERT INTO
 		 `s08p11d109`.`group`(group_name,group_desc,manager_id,group_url)
 		VALUES
-		  (#{gname}, #{gdesc}, #{mid},#{gurl});
+		  (#{groupName}, #{groupDesc}, #{managerId},#{groupUrl});
 		  ]]>
 	</insert>
 	
@@ -42,7 +42,7 @@
 		insert into
 		 `group-user`
 		 (group_user_position,group_pk,user_pk) 
-		 values (1,#{gpk},#{userPk});
+		 values (1,#{groupPk},#{userPk});
 		  ]]>
 	</insert>
 	<select id="groupMemberList" resultMap="guDto" parameterType="int">
@@ -54,7 +54,7 @@
  			where 
  			user.user_pk=user_info.user_pk
  			 and `group-user`.user_pk=user_info.user_pk 
- 			 and `group-user`.group_pk=#{gpk};
+ 			 and `group-user`.group_pk=#{groupPk};
 		]]>
 	</select>
 	
@@ -63,7 +63,7 @@
 		insert into
 		`group-user`(group_pk,user_pk)
 		values
-		(#{gpk},#{userPk});
+		(#{groupPk},#{userPk});
 		  ]]>
 	</insert>
 	
@@ -85,7 +85,7 @@
 		from 
 		`group-user` 
 		where 
-		group_pk = #{gpk};
+		group_pk = #{groupPk};
 		]]>
 	</select>
 	
@@ -114,7 +114,7 @@
 		from 
 		conference 
 		where 
-		group_pk=#{gpk};
+		group_pk=#{groupPk};
 	]]>
 	</select>
 	
@@ -125,7 +125,7 @@
 			from
 			`group`
 			where
-			group_pk=#{gpk};
+			group_pk=#{groupPk};
 		]]>
 	</select>
 	<!-- <update id="groupModify">

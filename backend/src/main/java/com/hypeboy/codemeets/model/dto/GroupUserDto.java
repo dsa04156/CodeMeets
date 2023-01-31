@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class GroupUserDto {
-	private int gpk;
+	private int groupPk;
 	private int userPk;
 	private String userId;
 	private String userName;

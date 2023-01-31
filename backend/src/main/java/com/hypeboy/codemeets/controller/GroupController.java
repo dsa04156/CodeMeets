@@ -71,8 +71,8 @@ public class GroupController {
 				logger.info("createGroup - 성공");
 				
 				logger.info(groupDto.toString());
-				guDto.setGpk(groupDto.getGpk());
-				guDto.setUserPk(groupDto.getMid());
+				guDto.setGroupPk(groupDto.getGroupPk());
+				guDto.setUserPk(groupDto.getManagerId());
 				logger.info(guDto.toString());
 				groupService.createGroupUser(guDto);
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -135,7 +135,7 @@ public class GroupController {
     	System.out.println(gc);
     	for(int i=0;i<gc;i++) {
     		groupList.get(i).setCnt(i+1);
-    		groupList.get(i).setGpk(groupPkList.get(i));
+    		groupList.get(i).setGroupPk(groupPkList.get(i));
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(i)));
     	}

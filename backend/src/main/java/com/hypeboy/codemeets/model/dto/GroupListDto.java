@@ -9,9 +9,9 @@ import lombok.ToString;
 @ToString
 public class GroupListDto {
 	private int cnt;
-	private String gname;
-	private String nickname;
+	private String groupName;
+	private String nickName;
 	private int count;
 	private String callStartTime;
-	private int gpk;
+	private int groupPk;
 }
