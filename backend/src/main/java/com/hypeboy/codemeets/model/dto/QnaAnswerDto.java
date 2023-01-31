@@ -13,7 +13,7 @@ public class QnaAnswerDto {
 	private String groupQnaAnswerContents;
 	private String groupQnaAnswerDate;
 	private int groupQnaAnswerUpdate;
-	private int groupQusetionPk;
+	private int groupQuestionPk;
 	private int userPk;
 
 	// like 수

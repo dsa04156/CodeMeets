@@ -11,7 +11,7 @@ public interface QnaAnswerService {
 	//QNA 목록 조회
 	List<QnaAnswerDto> getList(int groupQuestioonPk, int userPk, int nowPage, int items) throws Exception;
 	//QNA 상세 조회
-	QnaAnswerDto getQnaAnswer(int groupQuestioonPk, int userPk) throws Exception;
+	QnaAnswerDto getQnaAnswer(int qnaAnswerPk, int userPk) throws Exception;
 	//QNA 수정
 	int modifyQnaAnswer(QnaAnswerDto qnaAnswerDto) throws Exception;
 	//QNA 삭제

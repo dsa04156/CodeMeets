@@ -36,13 +36,13 @@ public class QnaAnswerServiceImpl implements QnaAnswerService{
 	}
 
 	@Override
-	public int modifyQnaAnswer(QnaAnswerDto qnaAnswerDto) throws Exception {
-		return qnaAnswerDao.modifyQnaAnswer(qnaAnswerDto);
+	public int modifyQnaAnswer(QnaAnswerDto groupQnaAnswerPk) throws Exception {
+		return qnaAnswerDao.modifyQnaAnswer(groupQnaAnswerPk);
 	}
 
 	@Override
-	public int deleteQnaAnswer(int qnaAnswerPk) throws Exception {
-		return qnaAnswerDao.deleteQnaAnswer(qnaAnswerPk);
+	public int deleteQnaAnswer(int groupQnaAnswerPk) throws Exception {
+		return qnaAnswerDao.deleteQnaAnswer(groupQnaAnswerPk);
 	}
 	
 	@Override

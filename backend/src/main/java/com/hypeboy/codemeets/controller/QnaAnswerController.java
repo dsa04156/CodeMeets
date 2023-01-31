@@ -57,13 +57,13 @@ public class QnaAnswerController {
 	}
 	
 	@GetMapping("/list/{questionPk}")
-	public ResponseEntity<?> getList(@PathVariable("questionPk") int questionPk, @RequestParam int userPk,
+	public ResponseEntity<?> getList(@PathVariable("questionPk") int groupQnaAnswerPk, @RequestParam int userPk,
 			@RequestParam("nowPage") int nowPage,
 			@RequestParam("items") int items) throws Exception {
 		
 		System.out.println("qna list hi");
 		try {
-			List<QnaAnswerDto> qnaAnswerDtoList = service.getList(questionPk, userPk, nowPage -1, items);
+			List<QnaAnswerDto> qnaAnswerDtoList = service.getList(groupQnaAnswerPk, userPk, nowPage -1, items);
 			return new ResponseEntity<List<QnaAnswerDto>>(qnaAnswerDtoList, HttpStatus.OK);
 		} catch (Exception e) {
             Logger.warn("getList fail - " + e);
@@ -73,11 +73,11 @@ public class QnaAnswerController {
 	}
 	
 	@GetMapping("/{qnaAnswerPK}")
-	public ResponseEntity<?> getQna(@PathVariable("qnaAnswerPK") int qnaAnswerPK, @RequestParam int userPk) throws Exception {
+	public ResponseEntity<?> getQna(@PathVariable("qnaAnswerPK") int qnaAnswerPk, @RequestParam int userPk) throws Exception {
 		
 		System.out.println("info hi");
 		try {
-			return new ResponseEntity<QnaAnswerDto>(service.getQnaAnswer(qnaAnswerPK, userPk), HttpStatus.OK);
+			return new ResponseEntity<QnaAnswerDto>(service.getQnaAnswer(qnaAnswerPk, userPk), HttpStatus.OK);
 		} catch (Exception e) {
             Logger.warn("getQna fail - " + e);
 
