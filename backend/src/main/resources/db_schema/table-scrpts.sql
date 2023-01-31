@@ -348,7 +348,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `s08p11d109`.`conference_answer` ;
 
 CREATE TABLE IF NOT EXISTS `s08p11d109`.`conference_answer` (
-  `conference_answer_pk` INT NOT NULL,
+  `conference_answer_pk` INT NOT NULL AUTO_INCREMENT,
   `conference_answer_contents` VARCHAR(500) NOT NULL,
   `conference_answer_date` DATETIME NOT NULL,
   `conference_answer_update` TINYINT NOT NULL DEFAULT 0,
