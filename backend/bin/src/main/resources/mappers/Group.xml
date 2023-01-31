@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.hypeboy.codemeets.model.dao.GroupDao">
+	
+	<resultMap type="GroupDto" id="group">
+		<result column="group_pk" property="groupPk" />
+		<result column="group_name" property="groupName" />
+		<result column="group_desc" property="groupDesc" />
+		<result column="manager_id" property="managerId" />
+		<result column="group_url" property="groupUrl" />
+	</resultMap>
+	
+	<resultMap type="GroupUserDto" id="guDto">
+		<result column="group_pk" property="groupPk" />
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="username"/>	
+	</resultMap>
+	
+	<resultMap type="GroupListDto" id="glDto">
+		<result column="cnt" property="cnt"/>
+		<result column="group_name" property="groupName"/>
+		<result column="nickname" property="nickname"/>
+		<result column="count" property="count"/>
+		<result column="callStartTime" property="callStartTime"/>
+		<result column="user_pk" property="userPk"/>
+		<result column="group_pk" property="groupPk"/>
+	</resultMap>
+
+	
+	<insert id="createGroup" useGeneratedKeys="true" keyProperty="groupPk" >
+	<![CDATA[
+		INSERT INTO
+		 `s08p11d109`.`group`(group_name,group_desc,manager_id,group_url)
+		VALUES
+		  (#{groupName}, #{groupDesc}, #{managerId},#{groupUrl});
+		  ]]>
+	</insert>
+	
+	<insert id="createGroupUser" >
+	<![CDATA[
+		insert into
+		 `group-user`
+		 (group_user_position,group_pk,user_pk) 
+		 values (1,#{groupPk},#{userPk});
+		  ]]>
+	</insert>
+	<select id="groupMemberList" resultMap="guDto" parameterType="int">
+		<![CDATA[
+			select 
+			user.user_id,user_info.user_name,`group-user`.group_pk 
+			from
+			 user user, user_info user_info,`group-user` `group-user`
+ 			where 
+ 			user.user_pk=user_info.user_pk
+ 			 and `group-user`.user_pk=user_info.user_pk 
+ 			 and `group-user`.group_pk=#{groupPk};
+		]]>
+	</select>
+	
+	<insert id="groupJoin" >
+	<![CDATA[
+		insert into
+		`group-user`(group_pk,user_pk)
+		values
+		(#{groupPk},#{userPk});
+		  ]]>
+	</insert>
+	
+	<select id="getList" resultMap="glDto">
+	<![CDATA[
+	        select 
+		`group`.group_name, `user_info`.nickname
+		from 
+		`group` `group`, user_info user_info,`group-user` `group-user`
+		where 
+		`group`.group_pk=`group-user`.group_pk and `user_info`.user_pk=`group-user`.user_pk and `user_info`.user_pk=#{userPk};
+		]]>
+	</select>
+	
+	<select id="countMember" resultType="int">
+	<![CDATA[
+		select 
+		count(*) 
+		from 
+		`group-user` 
+		where 
+		group_pk = #{groupPk};
+		]]>
+	</select>
+	
+	<select id="countGroup" resultType="int">
+	<![CDATA[
+		select 
+		count(*) 
+		from 
+		`group`;
+		]]>
+	</select>
+	
+	<select id="gpList" resultType="int">
+	<![CDATA[
+		select 
+		`group-user`.`group_pk`
+		from 
+		`group-user`
+        where `group-user`.user_pk=#{userPk};
+		]]>
+	</select>
+	<select id="callStartTime" resultType="String">
+	<![CDATA[
+		select 
+		date_format(max(call_start_time), '%Y-%m-%d')
+		from 
+		conference 
+		where 
+		group_pk=#{groupPk};
+	]]>
+	</select>
+	
+	<select id="groupDetail" resultMap="group">
+		<![CDATA[
+			select
+			*
+			from
+			`group`
+			where
+			group_pk=#{groupPk};
+		]]>
+	</select>
+	<!-- <update id="groupModify">
+		<![CDATA[
+			UPDATE
+			 `group`
+			  set 
+			  group_name=#{gname}, group_desc=#{gdesc},group_url=#{gurl} 
+			  where 
+			  `group_pk` = #{gpk};
+		]]>
+	</update>
+	 -->
+	</mapper>
+	
