@@ -7,7 +7,7 @@ const AlarmButton = () => {
     };
 
     return (
-            <AiOutlineBell onClick={AlarmButtonHandler} size="20" style={{marginRight:"20px", cursor:'pointer'}} />
+            <AiOutlineBell onClick={AlarmButtonHandler} size="25" style={{marginTop:"10px", marginRight:"20px", cursor:'pointer'}} />
     );
 
 };

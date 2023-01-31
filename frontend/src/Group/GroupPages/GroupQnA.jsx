@@ -10,58 +10,65 @@ import GroupQnAItem from "../GroupComponents/GroupQnAItem";
 import CreateTable from "../../CommonComponents/CreateTable";
 
 const GroupQnA = () => {
-  const API = useRecoilValue(APIroot)
+  const API = useRecoilValue(APIroot);
 
-  const [qnaList, setQnaList] = useState([])
+  const [qnaList, setQnaList] = useState([]);
 
-  const params = useParams()
+  const params = useParams();
 
   useEffect(() => {
     axios({
-      method:"GET",
-      url:`${API}/qna/list/${params.group_pk}`,
+      method: "GET",
+      url: `${API}/qna/list/${params.group_pk}?nowPage=1&items=7`,
     }).then((response) => {
-      console.log(response.data)
-      setQnaList(response.data)
-    })
-  },[API])
+      console.log(response.data);
+      setQnaList(response.data);
+    });
+  }, [API, params]);
 
-  const data = React.useMemo(
-    () => qnaList,
-    [qnaList]
-  )
+  const data = React.useMemo(() => qnaList, [qnaList]);
 
   const columns = React.useMemo(
     () => [
       {
-        Header: '번호',
-        accessor: 'cnt', // accessor is the "key" in the data
+        Header: "번호",
+        accessor: "cnt", // accessor is the "key" in the data
         width: 100,
       },
       {
-        Header: '제목',
-        accessor: 'groupName',
+        Header: "제목",
+        accessor: "groupQuestionTitle",
         width: 400,
       },
       {
-        Header: '작성자',
-        accessor: 'nickname',
+        Header: "작성자",
+        accessor: "username",
         width: 100,
       },
       {
-        Header: '등록일자',
-        accessor: 'callStartTime',
+        Header: "좋아요",
+        accessor: "groupQuestionLikeCnt",
+        width: 100,
+      },
+      {
+        Header: "등록일자",
+        accessor: "userPk",
+        width: 100,
+      },
+      {
+        Header: "등록일자",
+        accessor: "groupQuestionDate",
         width: 100,
       },
     ],
     []
-  )
+  );
 
-    return (
+  return (
     <Styles>
-      <CreateTable columns={columns} data={data}/>
+      <CreateTable columns={columns} data={data} />
     </Styles>
-    );
+  );
 };
 
 export default GroupQnA;
@@ -89,4 +96,4 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;

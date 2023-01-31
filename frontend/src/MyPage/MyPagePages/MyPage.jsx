@@ -6,6 +6,7 @@ import { Outlet } from "react-router-dom";
 
 import styled from "styled-components";
 
+
 const MyPage = () => {
   const MyPageUserId = useParams();
   console.log(MyPageUserId);

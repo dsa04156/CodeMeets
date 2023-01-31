@@ -50,7 +50,7 @@ function CreateTable({ columns, data, TableNavHandler}) {
             return (
               <div {...row.getRowProps()} 
               className="tr" 
-              onClick={() => {TableNavHandler(row.original.groupPk);
+              onClick={() => {TableNavHandler(row);
                 console.log(row.original)
               
               }}>

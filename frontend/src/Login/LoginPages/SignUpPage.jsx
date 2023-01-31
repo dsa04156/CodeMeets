@@ -220,6 +220,17 @@ const SignUpPage = () => {
       overlapEmail,
       checkInformation
     );
+    console.log(JSON.stringify({
+      email: inputEmail,
+      emailPublic: +privateEmail, // 최종 privateEmail이 + true 면 1 ,  + false 면 0 결과로 보내줌
+      nickname: inputNickName,
+      password: inputPw,
+      profilePhoto: `${inputImage}`,
+      tel: inputPhoneNum,
+      telPublic: +privatePhoneNum,
+      userId: inputId,
+      userName: inputName,
+    }),)
     if (
       isId &&
       (inputNickName === "Unregistered" || inputNickName === "" || isname) &&

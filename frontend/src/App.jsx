@@ -69,7 +69,7 @@ function App() {
               />
               CODEMeets
             </div>
-            <div>
+            <div style={{display:"flex", alignContent:"center"}}>
               <AlarmButton />
               <HeaderProfile />
             </div>

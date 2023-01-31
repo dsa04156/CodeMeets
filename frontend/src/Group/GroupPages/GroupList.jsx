@@ -19,8 +19,9 @@ import { useNavigate } from "react-router-dom";
 const GroupList = () => {
   const navigate = useNavigate()
 
-  const TableNavHandler = (gpk) => {
-    navigate(`/group/${gpk}/notice`)
+  const TableNavHandler = (row) => {
+    
+    navigate(`/group/${row.original.groupPk}/notice`)
   }
 
   const API = useRecoilValue(APIroot);

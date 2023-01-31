@@ -4,11 +4,16 @@ import { NavLink } from "react-router-dom";
 
 import axios from "axios";
 
+import { APIroot } from "../../Store";
+import { useRecoilValue } from "recoil";
+
 const SideBarLogoutButton = () => {
+  const API = useRecoilValue(APIroot)
+
   const SideBarLogoutHandler = () => {
     axios({
       method: "PUT",
-      url: `http://aeoragy.iptime.org:18081/login/logout`,
+      url: `${API}/login/logout`,
       headers: {
         ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
