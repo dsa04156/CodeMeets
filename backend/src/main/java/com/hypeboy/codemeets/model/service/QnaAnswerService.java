@@ -9,7 +9,7 @@ public interface QnaAnswerService {
 	//QNA 등록
 	int writeQnaAnswer(QnaAnswerDto qnaAnswerDto) throws Exception;
 	//QNA 목록 조회
-	List<QnaAnswerDto> getList(int groupQuestioonPk) throws Exception;
+	List<QnaAnswerDto> getList(int groupQuestioonPk, int userPk, int nowPage, int items) throws Exception;
 	//QNA 상세 조회
 	QnaAnswerDto getQnaAnswer(int groupQuestioonPk, int userPk) throws Exception;
 	//QNA 수정

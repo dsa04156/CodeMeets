@@ -12,7 +12,7 @@ public interface QnaAnswerDao {
 	//QNA 작성
 	int writeQnaAnswer(QnaAnswerDto qnaAnswerDto);
 	//QNA 목록
-	List<QnaAnswerDto> getList(int groupQuestioonPk);
+	List<QnaAnswerDto> getList(int groupQuestioonPk, int userPk, int nowPage, int items);
 	//QNA 조회
 	QnaAnswerDto getQnaAnswer(int qnaAnswerPK, int userPk);
 	//QNA 수정

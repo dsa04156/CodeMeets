@@ -58,10 +58,12 @@ public class QnaController {
 	}
 	
 	@GetMapping("/list/{groupPk}")
-	public ResponseEntity<?> getList(@PathVariable("groupPk") int groupPk) throws Exception {
+	public ResponseEntity<?> getList(@PathVariable("groupPk") int groupPk,
+			@RequestParam("nowPage") int nowPage,
+			@RequestParam("items") int items) throws Exception {
 		
 		try {
-			List<QnaDto> qnaDtoList = service.getList(groupPk);
+			List<QnaDto> qnaDtoList = service.getList(groupPk, nowPage -1, items);
 			
 			return new ResponseEntity<List<QnaDto>>(qnaDtoList, HttpStatus.OK);
 		} catch (Exception e) {
