@@ -135,6 +135,7 @@ public class GroupController {
     	System.out.println(gc);
     	for(int i=0;i<gc;i++) {
     		groupList.get(i).setCnt(i+1);
+    		groupList.get(i).setGpk(groupPkList.get(i));
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(i)));
     	}

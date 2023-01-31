@@ -63,7 +63,7 @@ public class QnaAnswerController {
 		
 		System.out.println("qna list hi");
 		try {
-			List<QnaAnswerDto> qnaAnswerDtoList = service.getList(groupQnaAnswerPk, userPk, nowPage -1, items);
+			List<QnaAnswerDto> qnaAnswerDtoList = service.getList(groupQnaAnswerPk, userPk, nowPage -1 * items, items);
 			return new ResponseEntity<List<QnaAnswerDto>>(qnaAnswerDtoList, HttpStatus.OK);
 		} catch (Exception e) {
             Logger.warn("getList fail - " + e);
