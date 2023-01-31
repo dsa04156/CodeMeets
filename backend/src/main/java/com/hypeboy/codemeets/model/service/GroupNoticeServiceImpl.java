@@ -26,37 +26,38 @@ public class GroupNoticeServiceImpl implements GroupNoticeService {
 
 	@Override
 	public void writeGroupNotice(GroupNoticeDto groupNoticeDto) throws Exception {
-		logger.info("writeGroupNotice - 실행");
+		logger.info("Service writeGroupNotice - 실행");
 		
 		sqlSession.getMapper(GroupNoticeDao.class).writeGroupNotice(groupNoticeDto);
 	}
 
 	@Override
 	public GroupNoticeDto getGroupNotice(int groupNoticePk) throws Exception {
-		logger.info("getGroupNotice - 실행");
+		logger.info("Service getGroupNotice - 실행");
 		
-		sqlSession.getMapper(GroupNoticeDao.class).getGroupNotice(groupNoticePk);
+		// 조회수 증가
+		sqlSession.getMapper(GroupNoticeDao.class).addGroupNoticeHit(groupNoticePk);
 		
 		return sqlSession.getMapper(GroupNoticeDao.class).getGroupNotice(groupNoticePk);
 	}
 
 	@Override
 	public List<GroupNoticeDto> getGroupNoticeList(int groupPk, int nowPage, int items, String order) throws Exception {
-		logger.info("getGroupNoticeList - 실행");
+		logger.info("Service getGroupNoticeList - 실행");
 		
 		return sqlSession.getMapper(GroupNoticeDao.class).getGroupNoticeList(groupPk, nowPage, items, order);
 	}
 
 	@Override
 	public int editGroupNotice(GroupNoticeDto groupNoticeDto) throws Exception {
-		logger.info("editGroupNotice - 실행");
+		logger.info("Service editGroupNotice - 실행");
 		
 		return sqlSession.getMapper(GroupNoticeDao.class).editGroupNotice(groupNoticeDto);
 	}
 
 	@Override
 	public int deleteGroupNotice(int groupNoticePk) throws Exception {
-		logger.info("deleteGroupNotice - 실행");
+		logger.info("Service deleteGroupNotice - 실행");
 
 		return sqlSession.getMapper(GroupNoticeDao.class).deleteGroupNotice(groupNoticePk);
 	}
