@@ -26,8 +26,8 @@ public class QnaAnswerServiceImpl implements QnaAnswerService{
 	}
 	
 	@Override
-	public List<QnaAnswerDto> getList(int questionPk) throws Exception {
-		return qnaAnswerDao.getList(questionPk);
+	public List<QnaAnswerDto> getList(int questionPk, int userPk, int nowPage, int items) throws Exception {
+		return qnaAnswerDao.getList(questionPk, userPk, nowPage, items );
 	}
 
 	@Override

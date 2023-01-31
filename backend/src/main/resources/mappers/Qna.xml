@@ -24,7 +24,9 @@
 		select Q.group_question_pk, Q.group_question_title, Q.group_question_contents, Q.group_question_date, Q.group_question_update, Q.group_pk, Q.user_pk,
 		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk) group_question_like_cnt
 		from group_question Q
-		where group_pk = #{groupPk}	
+		where group_pk = #{groupPk}
+		ORDER BY group_question_pk DESC
+		LIMIT #{nowPage}, #{items};
 	</select>
 	<select id="getQna" parameterType="int" resultMap="qna">
 		select Q.group_question_pk, Q.group_question_title, Q.group_question_contents, Q.group_question_date, Q.group_question_update, Q.group_pk, Q.user_pk,
