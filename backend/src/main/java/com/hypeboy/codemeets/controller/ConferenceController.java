@@ -24,7 +24,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/conference")
 @Api(tags = "회의 API")
 public class ConferenceController {
-	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private final Logger logger = LoggerFactory.getLogger(ConferenceController.class);
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";

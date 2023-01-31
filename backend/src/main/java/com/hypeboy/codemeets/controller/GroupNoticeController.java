@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/group-notice")
 @Api(tags = "그룹 공지 API")
 public class GroupNoticeController {
-	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private final Logger logger = LoggerFactory.getLogger(GroupNoticeController.class);
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";

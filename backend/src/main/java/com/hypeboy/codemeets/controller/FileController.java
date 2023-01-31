@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 @RequestMapping("/file")
 @Api(tags = "파일 업로드 API")
 public class FileController {
-	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private final Logger logger = LoggerFactory.getLogger(FileController.class);
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
