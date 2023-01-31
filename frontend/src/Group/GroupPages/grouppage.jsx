@@ -1,10 +1,7 @@
 import GroupListItem from "../GroupComponents/GroupListItem";
 import Pagination from "../../CommonComponents/Pagination/Pagination";
-/////////////
-import CreateTable from "../../CommonComponents/CreateTable";
-///////////
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 import { APIroot } from "../../Store";
@@ -15,46 +12,12 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 const GroupList = () => {
-
-
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
-  
+
   const [groupList, setGroupList] = useState([]);
   console.log(loginUser.userPk);
   console.log(groupList);
-  /////////////////////////////////////
-    const data = React.useMemo(
-      () => groupList,
-      [groupList]
-    )
-  
-    const columns = React.useMemo(
-      () => [
-        {
-          Header: '번호',
-          accessor: 'cnt', // accessor is the "key" in the data
-          width: 100,
-        },
-        {
-          Header: '제목',
-          accessor: 'gname',
-          width: 400,
-        },
-        {
-          Header: '작성자',
-          accessor: 'nickname',
-          width: 100,
-        },
-        {
-          Header: '등록일자',
-          accessor: 'callStartTime',
-          width: 100,
-        },
-      ],
-      []
-    )
-  ////////////////////////////////////////
 
   useEffect(() => {
     console.log("실행");
@@ -75,11 +38,11 @@ const GroupList = () => {
     console.log(groupitem);
     return (
       <GroupListItem
-      key={index}
-      id={groupitem.cnt}
-      title={groupitem.gname}
-      nickname={groupitem.nickname}
-      count={groupitem.count}
+        key={index}
+        id={groupitem.cnt}
+        title={groupitem.gname}
+        nickname={groupitem.nickname}
+        count={groupitem.count}
       />
     );
   });
@@ -89,14 +52,10 @@ const GroupList = () => {
       <TitleStyle>
         <div className="name">"{loginUser.userName}"</div> <div className="wellcome">님의 Group List</div>
       </TitleStyle>
-    <Styles>
-      <CreateTable columns={columns} data={data} />
-    </Styles>
-
-      {/* <ContentBox>
+      <ContentBox>
         <ul>{liList}</ul>
-        {groupList}
-      </ContentBox> */}
+        {/* {groupList} */}
+      </ContentBox>
       {/* <Pagination></Pagination> */}
     </div>
   );
@@ -124,29 +83,3 @@ const TitleStyle = styled.div`
 `;
 
 const ContentBox = styled.div``;
-
-
-const Styles = styled.div`
-  padding: 1rem;
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`

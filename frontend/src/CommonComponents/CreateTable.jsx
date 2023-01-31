@@ -2,7 +2,7 @@ import React from 'react'
 import { useTable, useBlockLayout } from 'react-table'
 
 
-function GroupTable({ columns, data }) {
+function CreateTable({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
 
   const defaultColumn = React.useMemo(
@@ -47,7 +47,7 @@ function GroupTable({ columns, data }) {
           (row, i) => {
             prepareRow(row);
             return (
-              <div {...row.getRowProps()} className="tr">
+              <div {...row.getRowProps()} className="tr" onClick={() => {console.log(row)}}>
                 {row.cells.map(cell => {
                   return (
                     <div {...cell.getCellProps()} className="td">
@@ -62,4 +62,4 @@ function GroupTable({ columns, data }) {
     </div>
   )
 }
-export default GroupTable;
+export default CreateTable;

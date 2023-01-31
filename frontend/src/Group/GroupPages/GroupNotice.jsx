@@ -1,5 +1,5 @@
 import React from "react";
-import GroupTable from "../GroupComponents/GroupTable";
+import CreateTable from "../../CommonComponents/CreateTable";
 import styled from 'styled-components'
 
 const Styles = styled.div`
@@ -121,7 +121,7 @@ const GroupNotice = () => {
 
   return (
     <Styles>
-      <GroupTable columns={columns} data={data} />
+      <CreateTable columns={columns} data={data} />
     </Styles>
   )
 }

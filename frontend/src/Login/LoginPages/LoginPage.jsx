@@ -5,6 +5,7 @@ import styled from "styled-components";
 import axios from "axios";
 
 import { user } from "../../Store"
+import { APIroot } from "../../Store"
 import { useRecoilState, useRecoilValue } from "recoil";
 
 const LoginPage = () => {
@@ -13,6 +14,7 @@ const LoginPage = () => {
 
   const [login, setLogin] = useRecoilState(user);
   const recoilUser = useRecoilValue(user)
+  const API = useRecoilValue(APIroot);
 
   const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ const LoginPage = () => {
   const ToHomePageHandler = async () => {
     await axios({
       method: "POST",
-      url: `http://aeoragy.iptime.org:18081/login`,
+      url: `${API}/login`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -48,7 +50,7 @@ const LoginPage = () => {
       .catch((err) => alert("ID or password 불일치"));
     await axios({
       method: "GET",
-      url: `http://aeoragy.iptime.org:18081/login/info`,
+      url: `${API}/login/info`,
       headers: {
         "Content-Type": "application/json",
         ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..

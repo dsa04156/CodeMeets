@@ -1,12 +1,18 @@
 import styled from "styled-components";
 import Logo from "../../Images/Logo2.jpg"
 
+import { user } from "../../Store"
+import { useRecoilState, useRecoilValue } from "recoil";
+
 const MyPageProfile = () => {
+    const userInfo = useRecoilValue(user)
+    console.log(userInfo)
     return (
         <ProfileCard>
-            <ProfileImage src={Logo} alt="" />
+            <ProfileImage src={userInfo.profilePhoto} alt="" />
             <ProfileInformation>
                 <p>여기 information</p>
+                <p>{userInfo.userName}</p>
             </ProfileInformation>
         </ProfileCard>
     );
