@@ -118,13 +118,26 @@ FROM conference as con NATURAL JOIN `group` as gro
 WHERE user_pk = 3
 ORDER BY call_start_time DESC;
 
-SELECT con.group_pk, con.conference_pk, con.call_start_time,
+SELECT con.group_pk, con.conference_pk, date_format(con.call_start_time, "%Y-%m-%d") as call_start_time,
  con.conference_title, con.conference_active, gro.group_name, gro.group_url, count(*) OVER() AS total
-FROM conference as con NATURAL JOIN `group` as gro
+FROM `conference` as con NATURAL JOIN `group` as gro
 WHERE con.conference_pk in (
 	SELECT conference_pk
-    FROM `conference-user`
-    WHERE user_pk = 3
+	FROM `conference-user`
+	WHERE user_pk = 3
 	)
-GROUP BY con.conference_pk
-ORDER BY call_start_time DESC;
+	AND
+	con.group_pk = 2
+ORDER BY call_start_time DESC
+LIMIT 0, 100;
+
+SELECT Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
+Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, 
+	(SELECT count(*) 
+    FROM conference_question_user L 
+    WHERE Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
+count(*) OVER() AS total
+FROM `conference_question` Q
+WHERE user_pk = 3
+ORDER BY conference_question_date DESC
+LIMIT 0, 100;

@@ -1,10 +1,9 @@
 package com.hypeboy.codemeets.model.service;
 
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import com.hypeboy.codemeets.model.dto.ConferenceGroupDto;
+import com.hypeboy.codemeets.model.dto.ConferenceQuestionDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
 public interface UserService {
@@ -25,15 +24,18 @@ public interface UserService {
 	public int forgotPw(String userId, String type, String data) throws Exception;
 	public boolean editPw(String userId, String password) throws Exception;
 	
-	// myProfile 정보 획득
+	// myProfile 정보 조회
 	public UserDto getMyProfile(int userPk) throws Exception;
 
-	// 다른 유저 정보 획득
+	// 다른 유저 정보 조회
 	public List<UserDto> getUserInfoList(String userPkList) throws Exception;
 	
-	// 자신의 회의 참석 기록 획득
-	public List<ConferenceGroupDto> getMyMeetingRecord(int nowPage, int items, int userPk) throws Exception;
-	public List<ConferenceGroupDto> getMyMeetingRecordFilter(int nowPage, int items, int userPk, int groupPk) throws Exception;
+	// 자신의 회의 참석 기록 조회
+	public List<ConferenceGroupDto> getMyConferenceRecord(int nowPage, int items, int userPk) throws Exception;
+	public List<ConferenceGroupDto> getMyConferenceRecordFilter(int nowPage, int items, int userPk, int groupPk) throws Exception;
+	
+	// 자신의 질문 목록 조회
+	public List<ConferenceQuestionDto> getMyQuestionRecord(int nowPage, int items, int userPk) throws Exception;
 	
 	// myProfile 수정
 	public int editMyProfile(UserDto userDto) throws Exception;
