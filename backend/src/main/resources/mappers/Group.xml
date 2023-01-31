@@ -24,6 +24,7 @@
 		<result column="count" property="count"/>
 		<result column="callStartTime" property="csTime"/>
 		<result column="user_pk" property="userPk"/>
+		<result column="group_pk" property="gpk"/>
 	</resultMap>
 
 	
