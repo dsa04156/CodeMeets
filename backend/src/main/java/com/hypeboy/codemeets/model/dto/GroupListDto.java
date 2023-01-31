@@ -13,4 +13,5 @@ public class GroupListDto {
 	private String nickname;
 	private int count;
 	private String callStartTime;
+	private int gpk;
 }
