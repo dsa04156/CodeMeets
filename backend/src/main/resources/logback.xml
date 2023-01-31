@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.miningLogs}"/>
+  <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+  <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+
+  <appender name="SLACK_WARN" class="com.github.maricn.logback.SlackAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%-4relative [%thread] %-5level %class - %msg%n</pattern>
+    </layout>
+    <webhookUri>https://hooks.slack.com/services/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</webhookUri>
+    <username>CODE_Meets-warn-logger</username>
+    <iconEmoji>:stuck_out_tongue_winking_eye:</iconEmoji>
+    <colorCoding>true</colorCoding>
+  </appender>
+  
+   <appender name="SLACK_INFO" class="com.github.maricn.logback.SlackAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%-4relative [%thread] %-5level %class - %msg%n</pattern>
+    </layout>
+    <webhookUri>https://hooks.slack.com/services/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</webhookUri>
+    <username>CODE_Meets-info-logger</username>
+    <iconEmoji>:rocket:</iconEmoji>
+    <colorCoding>true</colorCoding>
+  </appender>
+
+  <!-- Currently recommended way of using Slack appender -->
+  <appender name="ASYNC_SLACK_WARN" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="SLACK_WARN"/>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+  
+  <!-- Currently recommended way of using Slack appender -->
+  <appender name="ASYNC_SLACK_INFO" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="SLACK_INFO"/>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>INFO</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+  
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+    <appender-ref ref="ASYNC_SLACK_WARN"/>
+    <appender-ref ref="ASYNC_SLACK_INFO"/>
+  </root>
+</configuration>

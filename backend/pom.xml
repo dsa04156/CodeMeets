@@ -130,8 +130,13 @@
 			<version>1.3.3</version>
 		</dependency>
 		
+		<!-- Slack과 로그 연동 -->
+		<dependency>
+		    <groupId>com.github.maricn</groupId>
+		    <artifactId>logback-slack-appender</artifactId>
+		    <version>1.4.0</version>
+		</dependency>
 		
-
 	</dependencies>
 
 	<build>
