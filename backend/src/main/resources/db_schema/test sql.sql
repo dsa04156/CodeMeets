@@ -141,3 +141,16 @@ FROM `conference_question` Q
 WHERE user_pk = 3
 ORDER BY conference_question_date DESC
 LIMIT 0, 100;
+
+SELECT conference_pk, call_start_time, call_end_time, conference_title, 
+conference_contents, conference_active, conference_url, group_pk, user_pk,
+(SELECT GROUP_CONCAT(user_name SEPARATOR ', ')
+FROM `conference-user` NATURAL JOIN `user_info`
+WHERE conference_pk = 5
+GROUP BY conference_pk) join_user,
+(SELECT count(*)
+FROM `conference-user` NATURAL JOIN `user_info`
+WHERE conference_pk = 5
+GROUP BY conference_pk) join_user_cnt
+FROM `conference`
+WHERE conference_pk = 5;
