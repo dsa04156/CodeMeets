@@ -12,6 +12,8 @@
 		<result column="group_question_update" property="groupQuestionUpdate" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_pk" property="userPk"/>
+		
+		<result column="group_question_answer_cnt" property="groupQuestionAnswerCnt"/>
 		<result column="group_question_like_cnt" property="groupQuestionLikeCnt"/>
 		<result column="group_question_like" property="groupQuestionLike"/>
 		<result column="user_name" property="username"/>
@@ -23,7 +25,8 @@
 	</insert>
 	<select id="getList" parameterType="int" resultMap="qna">
 		select *,
-		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk) group_question_like_cnt
+		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk) group_question_like_cnt,
+		(select count(*) form group_answer L where Q.group_question_pk = L.group_question_pk) group_question_answer_cnt
 		from `group_question` Q
 		NATURAL JOIN `user_info`
 		where group_pk = #{groupPk}
