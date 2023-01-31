@@ -1,26 +1,36 @@
 package com.hypeboy.codemeets.controller;
 
-import com.hypeboy.codemeets.model.dto.ConferenceGroupDto;
-import com.hypeboy.codemeets.model.dto.UserDto;
-import com.hypeboy.codemeets.model.service.UserServiceImpl;
-import com.hypeboy.codemeets.utils.JwtTokenProvider;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.v3.oas.annotations.Operation;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.hypeboy.codemeets.model.dto.ConferenceGroupDto;
+import com.hypeboy.codemeets.model.dto.ConferenceQuestionDto;
+import com.hypeboy.codemeets.model.dto.UserDto;
+import com.hypeboy.codemeets.model.service.UserServiceImpl;
+import com.hypeboy.codemeets.utils.JwtTokenProvider;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/user")
@@ -228,7 +238,7 @@ public class UserController {
 	}
 
     
-    @Operation(summary = "유저 본인 정보 확인", description = "유저 정보 확인 "
+    @Operation(summary = "유저 본인 정보 조회", description = "유저 정보 조회 "
     		+ " \n 헤더에 담긴 토큰으로 확인")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
@@ -268,7 +278,7 @@ public class UserController {
 	}
 
     
-	@Operation(summary = "다른 유저 정보 확인", description = "다른 유저의 정보 얻기 " +
+	@Operation(summary = "다른 유저 정보 조회", description = "다른 유저의 정보 조회 " +
 			" \n 얻을 유저의 정보(userPk)를 ,로 구분하여 문자열 형태로 전달, 한 사람 정보만 필요하면 ,는 제외 " +
 			" \n 공개설정이 0(비공개)라면 '비공개'로 처리")
 	@GetMapping(value="/userInfoList", produces = "application/json;charset=utf-8")
@@ -299,17 +309,18 @@ public class UserController {
 	}
 	
 	
-    @Operation(summary = "유저 회의 참석 기록 확인", description = "헤더에 담긴 토큰으로 확인 "
+    @Operation(summary = "유저 회의 참석 기록 조회", description = "헤더에 담긴 토큰으로 확인 "
     		+ " \n 현재 페이지와 필요한 행 개수 입력 "
-    		+ " \n total은 총 결과 갯수")
+    		+ " \n total은 총 결과 개수 "
+    		+ " \n 결과값 중 callEndTime, conferenceContents, userPk, groupDesc, managerId은 반환하지 않습니다")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @GetMapping("/my-meeting-record")
-	public ResponseEntity<?> getMyMeetingRecord(@RequestParam("nowPage") int nowPage, 
+    @GetMapping("/my-conference-record")
+	public ResponseEntity<?> getMyConferenceRecord(@RequestParam("nowPage") int nowPage, 
 			@RequestParam("items") int items, 
 			HttpServletRequest request) throws Exception {
-		logger.info("getMyMeetingRecord - 호출");
+		logger.info("getMyConferenceRecord - 호출");
 		
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
@@ -321,12 +332,12 @@ public class UserController {
 			logger.info("userPk - " + userPk);
 			
 			try {
-				List<ConferenceGroupDto> conferenceGroupDto = userService.getMyMeetingRecord((nowPage - 1) * items, items, userPk);
-				resultMap.put("meeting_record", conferenceGroupDto);
+				List<ConferenceGroupDto> conferenceGroupDto = userService.getMyConferenceRecord((nowPage - 1) * items, items, userPk);
+				resultMap.put("conference_record", conferenceGroupDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				logger.warn("getMyMeetingRecord fail - " + e);
+				logger.warn("getMyConferenceRecord fail - " + e);
 
 				resultMap.put("message", FAIL);
 				status = HttpStatus.UNAUTHORIZED;
@@ -341,18 +352,20 @@ public class UserController {
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
 	}
     
-    @Operation(summary = "유저 회의 참석 기록 확인 (그룹 필터링)", description = "헤더에 담긴 토큰으로 확인 "
+    
+    @Operation(summary = "유저 회의 참석 기록 조회 (그룹 필터링)", description = "헤더에 담긴 토큰으로 확인 "
     		+ " \n 필터링할 그룹, 현재 페이지와 필요한 행 개수 입력 "
-    		+ " \n total은 총 결과 갯수")
+    		+ " \n total은 총 결과 개수"
+    		+ " \n 결과값 중 callEndTime, conferenceContents, userPk, groupDesc, managerId은 반환하지 않습니다")
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @GetMapping("/my-meeting-record/{group_pk}")
-	public ResponseEntity<?> getMyMeetingRecordFilter(@PathVariable("group_pk") int groupPk,
+    @GetMapping("/my-conference-record/{group_pk}")
+	public ResponseEntity<?> getMyConferenceRecordFilter(@PathVariable("group_pk") int groupPk,
 			@RequestParam("nowPage") int nowPage, 
 			@RequestParam("items") int items, 
 			HttpServletRequest request) throws Exception {
-		logger.info("getMyMeetingRecordFilter - 호출");
+		logger.info("getMyConferenceRecordFilter - 호출");
 		
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
@@ -364,12 +377,55 @@ public class UserController {
 			logger.info("userPk - " + userPk);
 			
 			try {
-				List<ConferenceGroupDto> conferenceGroupDto = userService.getMyMeetingRecordFilter((nowPage - 1) * items, items, userPk, groupPk);
-				resultMap.put("meeting_record", conferenceGroupDto);
+				List<ConferenceGroupDto> conferenceGroupDto = userService.getMyConferenceRecordFilter((nowPage - 1) * items, items, userPk, groupPk);
+				resultMap.put("conference_record", conferenceGroupDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} catch (Exception e) {
-				logger.warn("getMyMeetingRecordFilter fail - " + e);
+				logger.warn("getMyConferenceRecordFilter fail - " + e);
+
+				resultMap.put("message", FAIL);
+				status = HttpStatus.UNAUTHORIZED;
+			} 
+		} else {
+			logger.info("사용 불가능한 토큰입니다");
+			
+			resultMap.put("message", FAIL);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		return new ResponseEntity<Map<String,Object>>(resultMap, status);
+	}
+    
+    
+    @Operation(summary = "유저 질문 목록 조회", description = "헤더에 담긴 토큰으로 확인 "
+    		+ " \n 현재 페이지와 필요한 행 개수 입력 "
+    		+ " \n total은 총 결과 개수")
+	@ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @GetMapping("/my-question-record")
+	public ResponseEntity<?> getMyQuestionRecord(@RequestParam("nowPage") int nowPage, 
+			@RequestParam("items") int items, 
+			HttpServletRequest request) throws Exception {
+		logger.info("getMyQuestionRecord - 호출");
+		
+    	Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.UNAUTHORIZED;
+		
+		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+			
+			try {
+				List<ConferenceQuestionDto> conferenceQuestionDto = userService.getMyQuestionRecord((nowPage - 1) * items, items, userPk);
+				resultMap.put("question_record", conferenceQuestionDto);
+				resultMap.put("message", SUCCESS);
+				status = HttpStatus.ACCEPTED;
+			} catch (Exception e) {
+				logger.warn("getMyQuestionRecord fail - " + e);
 
 				resultMap.put("message", FAIL);
 				status = HttpStatus.UNAUTHORIZED;
@@ -423,7 +479,7 @@ public class UserController {
 		
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
 	}
-    
+
     
 	@Transactional(readOnly = false)
 	@Operation(summary = "회원탈퇴", description = "회원탈퇴 " +
