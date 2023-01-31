@@ -11,7 +11,7 @@ public interface QnaDao {
 	//QNA 작성
 	int writeQna(QnaDto qnaDto);
 	//QNA 목록
-	List<QnaDto> getList(int groupPk);
+	List<QnaDto> getList(int groupPk, int nowPage, int items);
 	//QNA 조회
 	QnaDto getQna(int groupQuestionPk, int userPk);
 	//QNA 수정
