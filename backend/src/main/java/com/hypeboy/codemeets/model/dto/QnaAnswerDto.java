@@ -15,7 +15,9 @@ public class QnaAnswerDto {
 	private int groupQnaAnswerUpdate;
 	private int groupQuestionPk;
 	private int userPk;
-
+	
+	// 게시글 작성자 닉네임
+	private String username;
 	// like 수
 	private int groupQnaAnswerLikeCnt;
 	// 회원의 like 유무	
