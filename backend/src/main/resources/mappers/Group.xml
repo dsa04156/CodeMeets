@@ -12,6 +12,7 @@
 	</resultMap>
 	
 	<resultMap type="GroupUserDto" id="guDto">
+		<result column="user_pk" property="userPk" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_id" property="userId"/>
 		<result column="user_name" property="username"/>	
@@ -26,14 +27,23 @@
 		<result column="user_pk" property="userPk"/>
 		<result column="group_pk" property="groupPk"/>
 	</resultMap>
-
+<resultMap type="UserDto" id="user">
+		<result column="user_pk" property="userPk" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_active" property="userActive" />
+		<result column="user_info_pk" property="userInfoPk" />
+		<result column="profile_photo" property="profilePhoto" />
+		<result column="email_public" property="emailPublic" />
+		<result column="tel_public" property="telPublic"/>
+	</resultMap>
 	
 	<insert id="createGroup" useGeneratedKeys="true" keyProperty="groupPk" >
 	<![CDATA[
 		INSERT INTO
-		 `s08p11d109`.`group`(group_name,group_desc,manager_id,group_url)
+		 `group`(group_name,group_desc,group_url,manager_id)
 		VALUES
-		  (#{groupName}, #{groupDesc}, #{managerId},#{groupUrl});
+		  (#{groupName}, #{groupDesc},#{groupUrl},#{managerId});
 		  ]]>
 	</insert>
 	
@@ -45,10 +55,10 @@
 		 values (1,#{groupPk},#{userPk});
 		  ]]>
 	</insert>
-	<select id="groupMemberList" resultMap="guDto" parameterType="int">
+	<select id="groupMemberList" resultMap="user" parameterType="int">
 		<![CDATA[
 			select 
-			user.user_id,user_info.user_name,`group-user`.group_pk 
+			user.user_id,user.user_pk,user_info.user_name,`group-user`.group_pk 
 			from
 			 user user, user_info user_info,`group-user` `group-user`
  			where 
