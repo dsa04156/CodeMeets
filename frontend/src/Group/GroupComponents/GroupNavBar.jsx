@@ -6,19 +6,14 @@ import { useState } from "react";
 
 
 const GroupNavBar = (props) => {
-
-  const [groupTitle, setGroupTitle] = useState('Notice');
-
-
   return (
     <div>
-      <h1>{groupTitle}</h1>
       <NavBarBoard>
-        <NavBarStyle to={`/group/${props.grouppk}/notice`} onClick={() => {props.groupTitleFunc('Notice'); setGroupTitle("Notice")}}> Notice </NavBarStyle>
-        <NavBarStyle to={`/group/${props.grouppk}/schedule`} onClick={() => {props.groupTitleFunc('Schedule'); setGroupTitle("Schedule")}}> Schedule </NavBarStyle>
-        <NavBarStyle to={`/group/${props.grouppk}/meeting-list`} onClick={() => {props.groupTitleFunc('Record'); setGroupTitle("Record")}}>  Record </NavBarStyle>
-        <NavBarStyle to={`/group/${props.grouppk}/qna`} onClick={() => {props.groupTitleFunc('Q & A'); setGroupTitle("Q&A")}}> Q & A </NavBarStyle>
-        <NavBarStyle to={`/group/${props.grouppk}/member`} onClick={() => {props.groupTitleFunc('Member'); setGroupTitle("Member")}}> Member </NavBarStyle>
+        <NavBarStyle to={`/group/${props.grouppk}/notice`} onClick={() => {props.groupTitleFunc('Notice');}}> Notice </NavBarStyle>
+        <NavBarStyle to={`/group/${props.grouppk}/schedule`} onClick={() => {props.groupTitleFunc('Schedule');}}> Schedule </NavBarStyle>
+        <NavBarStyle to={`/group/${props.grouppk}/meeting-list`} onClick={() => {props.groupTitleFunc('Record');}}>  Record </NavBarStyle>
+        <NavBarStyle to={`/group/${props.grouppk}/qna`} onClick={() => {props.groupTitleFunc('Q & A');}}> Q & A </NavBarStyle>
+        <NavBarStyle to={`/group/${props.grouppk}/member`} onClick={() => {props.groupTitleFunc('Member');}}> Member </NavBarStyle>
       </NavBarBoard>
     </div>
   );

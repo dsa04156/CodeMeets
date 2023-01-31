@@ -14,8 +14,14 @@ import { useRecoilValue } from "recoil";
 
 import styled from "styled-components";
 
-const GroupList = () => {
+import { useNavigate } from "react-router-dom";
 
+const GroupList = () => {
+  const navigate = useNavigate()
+
+  const TableNavHandler = (gpk) => {
+    navigate(`/group/${gpk}/notice`)
+  }
 
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
@@ -38,7 +44,7 @@ const GroupList = () => {
         },
         {
           Header: '제목',
-          accessor: 'gname',
+          accessor: 'groupName',
           width: 400,
         },
         {
@@ -90,7 +96,7 @@ const GroupList = () => {
         <div className="name">"{loginUser.userName}"</div> <div className="wellcome">님의 Group List</div>
       </TitleStyle>
     <Styles>
-      <CreateTable columns={columns} data={data} />
+      <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler}/>
     </Styles>
 
       {/* <ContentBox>

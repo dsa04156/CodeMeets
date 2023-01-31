@@ -1,8 +1,9 @@
 import React from 'react'
 import { useTable, useBlockLayout } from 'react-table'
+import { useState } from 'react'
 
 
-function CreateTable({ columns, data }) {
+function CreateTable({ columns, data, TableNavHandler}) {
   // Use the state and functions returned from useTable to build your UI
 
   const defaultColumn = React.useMemo(
@@ -41,13 +42,18 @@ function CreateTable({ columns, data }) {
           </div>
         ))}
       </div>
-
+            
       <div {...getTableBodyProps()}>
         {rows.map(
           (row, i) => {
             prepareRow(row);
             return (
-              <div {...row.getRowProps()} className="tr" onClick={() => {console.log(row)}}>
+              <div {...row.getRowProps()} 
+              className="tr" 
+              onClick={() => {TableNavHandler(row.original.groupPk);
+                console.log(row.original)
+              
+              }}>
                 {row.cells.map(cell => {
                   return (
                     <div {...cell.getCellProps()} className="td">

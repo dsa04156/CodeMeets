@@ -1,28 +1,92 @@
 import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import styled from "styled-components";
+
+import { APIroot } from "../../Store";
+import { useRecoilValue } from "recoil";
+import axios from "axios";
+
 import GroupQnAItem from "../GroupComponents/GroupQnAItem";
+import CreateTable from "../../CommonComponents/CreateTable";
 
 const GroupQnA = () => {
-    const Noticedummy = [
-        { id: "1", title: "title 1", content: "content 1" },
-        { id: "2", title: "title 2", content: "content 2" },
-        { id: "3", title: "title 3", content: "content 3" },
-      ];
+  const API = useRecoilValue(APIroot)
 
-    const grouppk = useParams()
-    console.log(grouppk)
+  const [qnaList, setQnaList] = useState([])
+
+  const params = useParams()
+
+  useEffect(() => {
+    axios({
+      method:"GET",
+      url:`${API}/qna/list/${params.group_pk}`,
+    }).then((response) => {
+      console.log(response.data)
+      setQnaList(response.data)
+    })
+  },[API])
+
+  const data = React.useMemo(
+    () => qnaList,
+    [qnaList]
+  )
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: '번호',
+        accessor: 'cnt', // accessor is the "key" in the data
+        width: 100,
+      },
+      {
+        Header: '제목',
+        accessor: 'groupName',
+        width: 400,
+      },
+      {
+        Header: '작성자',
+        accessor: 'nickname',
+        width: 100,
+      },
+      {
+        Header: '등록일자',
+        accessor: 'callStartTime',
+        width: 100,
+      },
+    ],
+    []
+  )
 
     return (
-        <ul>
-        {Noticedummy.map((meetListItem) => (
-          <GroupQnAItem
-            key={meetListItem.id}
-            id={meetListItem.id}
-            title={meetListItem.title}
-            content={meetListItem.content}
-          />
-        ))}
-      </ul>
+    <Styles>
+      <CreateTable columns={columns} data={data}/>
+    </Styles>
     );
 };
 
 export default GroupQnA;
+
+const Styles = styled.div`
+  padding: 1rem;
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+      :last-child {
+        border-right: 0;
+      }
+    }
+  }
+`

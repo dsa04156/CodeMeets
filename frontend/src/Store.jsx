@@ -14,3 +14,9 @@ export const APIroot = atom({
     default: "http://aeoragy.iptime.org:18081",
     effects_UNSTABLE: [persistAtom],
 })
+
+export const groupNavTitle = atom({
+    key:"groupNavTitle",
+    default: "Notice",
+    effects_UNSTABLE: [persistAtom],
+})

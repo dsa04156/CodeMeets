@@ -1,118 +1,62 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CreateTable from "../../CommonComponents/CreateTable";
 import styled from 'styled-components'
 
-const Styles = styled.div`
-  padding: 1rem;
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`
+import { useParams } from "react-router-dom";
+
+import { APIroot } from "../../Store";
+import { useRecoilValue } from "recoil";
+
+import { useState } from "react";
+import axios from "axios";
 
 const GroupNotice = () => {
+  const API = useRecoilValue(APIroot);
+  const params = useParams();
+  console.log('이건 notice', params)
+
+  const [noticeList, setNoticeList] = useState([])
+  const [order, setOrder] = useState("group_notice_date")
+  console.log(noticeList)
+  
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `${API}/group-notice?groupPk=${params.group_pk}&nowPage=1&items=10&order=${order}`,
+      headers: {
+        "Content-Type": "application/json",
+      }
+    }).then((response) => {
+      console.log(response.data);
+      setNoticeList(response.data)
+    })
+    console.log(noticeList)
+  },[API, params, order])
   const data = React.useMemo(
-    () => [
-      {
-        col1: 'Hello',
-        col2: 'World',
-        col3: 'Hello',
-        col4: 'World',
-      },
-      {
-        col1: 'react-table',
-        col2: 'rocks',
-        col3: 'Hello',
-        col4: 'World',
-      },
-      {
-        col1: 'whatever',
-        col2: 'you want',
-        col3: 'Hello',
-        col4: 'World',
-      },
-      {
-        col1: 'Hello',
-        col2: 'World',
-        col3: 'Hello',
-        col4: 'World',
-      },
-      {
-        col1: 'Hello',
-        col2: 'World',
-        col3: 'Hello',
-        col4: 'World',
-      },
-      {
-        col1: 'react-table',
-        col2: 'rocks',
-        col3: 'Hello',
-        col4: 'World',
-      },
-      {
-        col1: 'whatever',
-        col2: 'you want',
-        col3: 'Hello',
-        col4: 'World',
-      },
-      {
-        col1: 'whatever',
-        col2: 'you want',
-        col3: 'Hello',
-        col4: 'World',
-      },
-      {
-        col1: 'whatever',
-        col2: 'you want',
-        col3: 'Hello',
-        col4: 'World',
-      },
-    ],
-    []
+    () => noticeList,
+    [noticeList]
   )
 
   const columns = React.useMemo(
     () => [
       {
         Header: '번호',
-        accessor: 'col1', // accessor is the "key" in the data
+        accessor: 'userPk', // accessor is the "key" in the data
         width: 100,
       },
       {
         Header: '제목',
-        accessor: 'col2',
+        accessor: 'groupNoticeTitle',
         width: 400,
       },
       {
         Header: '작성자',
-        accessor: 'col3',
+        accessor: 'nickname',
         width: 100,
       },
       {
         Header: '등록일자',
-        accessor: 'col4',
-        width: 100,
-      },
-      {
-        Header: '조회수',
-        accessor: 'col5',
+        accessor: 'groupNoticeDate',
         width: 100,
       },
     ],
@@ -128,3 +72,28 @@ const GroupNotice = () => {
 
 export default GroupNotice;
 
+
+  const Styles = styled.div`
+    padding: 1rem;
+    table {
+      border-spacing: 0;
+      border: 1px solid black;
+      tr {
+        :last-child {
+          td {
+            border-bottom: 0;
+          }
+        }
+      }
+      th,
+      td {
+        margin: 0;
+        padding: 0.5rem;
+        border-bottom: 1px solid black;
+        border-right: 1px solid black;
+        :last-child {
+          border-right: 0;
+        }
+      }
+    }
+  `;

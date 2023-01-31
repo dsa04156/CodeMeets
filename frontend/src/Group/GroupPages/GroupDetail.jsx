@@ -2,12 +2,15 @@ import GroupNavBar from "../GroupComponents/GroupNavBar";
 import { Outlet } from "react-router-dom";
 // import { useLocation } from 'react-router-dom';
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+// import { useState } from "react";
 
 import styled from "styled-components";
 
+import { groupNavTitle } from "../../Store";
+import { useRecoilState } from "recoil";
+
 const GroupDetail = () => {
-  const [groupTitle, setGroupTitle] = useState('Notice');
+  const [groupTitle, setGroupTitle] = useRecoilState(groupNavTitle);
   
   const groupTitleHandler = (title) => {
     setGroupTitle(title)

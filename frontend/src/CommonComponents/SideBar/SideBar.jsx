@@ -10,14 +10,17 @@ import { BsPeople } from "react-icons/bs";
 import { AiOutlineMessage } from "react-icons/ai";
 import { AiOutlineSetting } from "react-icons/ai";
 
+import { user } from "../../Store";
+import { useRecoilValue } from "recoil";
+
 const SideBar = () => {
-  const dummyuserId = "1";
+  const LoginUser = useRecoilValue(user);
 
   const menus1 = [
     { name: "Home", path: "/", icon: <AiOutlineHome size="24" /> },
     {
       name: "My-page",
-      path: `/my-page/${dummyuserId}/meeting-list`,
+      path: `/my-page/${LoginUser.userPk}/meeting-list`,
       icon: <BsPerson size="24" />,
     },
     { name: "Group", path: "/grouplist", icon: <BsPeople size="24" /> },
