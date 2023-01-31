@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hypeboy.codemeets.model.dao.ConferenceDao">
+
+	<resultMap type="ConferenceDto" id="conference">
+		<result column="conference_pk" property="conferencePk" />
+		<result column="call_start_time" property="callStartTime" />
+		<result column="call_end_time" property="callEndTime" />
+		<result column="conference_title" property="conferenceTitle" />
+		<result column="conference_contents" property="conferenceContents" />
+		<result column="conference_active" property="conferenceActive" />
+		<result column="conference_url" property="conferenceUrl" />
+		<result column="group_pk" property="groupPk" />
+		<result column="user_pk" property="userPk" />
+		<result column="join_user" property="joinUser" />
+		<result column="join_user_cnt" property="joinUserCnt" />
+	</resultMap>
+
+	<!-- ==================== 회의 상세 페이지 조회 ======================================== -->
+
+	<select id="getConferenceDetail" resultMap="conference">
+		<![CDATA[
+			SELECT conference_pk, call_start_time, call_end_time, conference_title, 
+			conference_contents, conference_active, conference_url, group_pk, user_pk,
+			(SELECT GROUP_CONCAT(user_name SEPARATOR ', ')
+			FROM `conference-user` NATURAL JOIN `user_info`
+			WHERE conference_pk = #{conferencePk}
+			GROUP BY conference_pk) join_user
+			FROM `conference`
+			WHERE conference_pk =  #{conferencePk};
+		]]>
+	</select>
+
+</mapper>
