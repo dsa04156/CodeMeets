@@ -37,17 +37,15 @@ public class GroupNoticeController {
 	
 	@Operation(summary = "그룹 공지사항 작성", description = "groupNoticeDate, groupNoticeHit, groupNoticePk 제외하셔도 됩니다")
     @PostMapping
-	public ResponseEntity<?> write(@RequestBody GroupNoticeDto groupNoticeDto) {
-		logger.info("write - 호출");
+	public ResponseEntity<?> writeGroupNotice(@RequestBody GroupNoticeDto groupNoticeDto) {
+		logger.info("Controller writeGroupNotice - 호출");
 		
 		try {
-			logger.info("writeGroupNotice - 호출");
-			
 			groupNoticeService.writeGroupNotice(groupNoticeDto);
 			
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.warn("writeGroupNotice fail - " + e);
+			logger.warn("Controller writeGroupNotice fail - " + e);
 			
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -56,34 +54,34 @@ public class GroupNoticeController {
 	@Operation(summary = "그룹 공지사항 확인", description = "그룹 공지사항 상세 확인")
     @GetMapping("/{groupNoticePk}")
 	public ResponseEntity<?> getGroupNotice(@PathVariable("groupNoticePk") int groupNoticePk) {
-		logger.info("getGroupNotice - 호출");
+		logger.info("Controller getGroupNotice - 호출");
 		
 		try {
 			GroupNoticeDto groupNoticeDto = groupNoticeService.getGroupNotice(groupNoticePk);
 			
 			return new ResponseEntity<GroupNoticeDto>(groupNoticeDto, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.warn("getGroupNotice fail - " + e);
+			logger.warn("Controller getGroupNotice fail - " + e);
 			
 			return new ResponseEntity<String>("Write GroupNotice Fail", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
     
 	@Operation(summary = "그룹 공지사항 목록 확인", description = "nowPage = 현재 페이지, items = 불러올 공지 목록 수 "
-			+ " \n order = ['group_notice_pk', 'nickname', 'group_notice_date'] 중 하나를 선택해 보내주세요 (번호 순, 작성자 순, 작성일 순)")
+			+ " \n order = ['group_notice_pk', 'user_name', 'group_notice_date'] 중 하나를 선택해 보내주세요 (번호 순, 작성자 순, 작성일 순)")
     @GetMapping
 	public ResponseEntity<?> getGroupNoticeList(@RequestParam("groupPk") int groupPk,
 			@RequestParam("nowPage") int nowPage,
 			@RequestParam("items") int items,
 			@RequestParam("order") String order) {
-		logger.info("getGroupNoticeList - 호출");
+		logger.info("Controller getGroupNoticeList - 호출");
 		
 		try {
 			List<GroupNoticeDto> groupNoticeList = groupNoticeService.getGroupNoticeList(groupPk, (nowPage - 1) * items, items, order);
 			
 			return new ResponseEntity<List<GroupNoticeDto>>(groupNoticeList, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.warn("getGroupNoticeList fail - " + e);
+			logger.warn("Controller getGroupNoticeList fail - " + e);
 			
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -92,7 +90,7 @@ public class GroupNoticeController {
 	@Operation(summary = "그룹 공지사항 수정", description = "groupNoticeDate, groupNoticeHit, groupPk, userPk는 제외하셔도 됩니다")
     @PutMapping
 	public ResponseEntity<?> editGroupNotice(@RequestBody GroupNoticeDto groupNoticeDto) {
-		logger.info("editGroupNotice - 호출");
+		logger.info("Controller editGroupNotice - 호출");
 		
 		GroupNoticeDto newGroupNoticeDto = new GroupNoticeDto();
 		newGroupNoticeDto.setGroupNoticePk(groupNoticeDto.getGroupNoticePk());
@@ -106,7 +104,7 @@ public class GroupNoticeController {
 			
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.warn("editGroupNotice fail - " + e);
+			logger.warn("Controller editGroupNotice fail - " + e);
 			
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -115,14 +113,14 @@ public class GroupNoticeController {
 	@Operation(summary = "그룹 공지사항 삭제", description = "그룹 공지사항 삭제")
     @DeleteMapping
 	public ResponseEntity<?> deleteGroupNotice(@RequestParam("groupNoticePk") int groupNoticePk) {
-		logger.info("deleteGroupNotice - 호출");
+		logger.info("Controller deleteGroupNotice - 호출");
 		
 		try {
 			groupNoticeService.deleteGroupNotice(groupNoticePk);
 			
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
-			logger.warn("deleteGroupNotice fail - " + e);
+			logger.warn("Controller deleteGroupNotice fail - " + e);
 			
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
