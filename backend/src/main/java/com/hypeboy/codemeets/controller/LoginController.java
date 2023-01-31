@@ -34,7 +34,7 @@ import io.swagger.v3.oas.annotations.Operation;
 @RequestMapping("/login")
 @Api(tags = "로그인 API")
 public class LoginController {
-	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
