@@ -20,6 +20,9 @@ public class ConferenceQuestionDto {
 	private int groupPk;
 	private int userPk;
 	
+	// 질문에 달린 답글 수
+	private int answerCnt;
+	
 	// 질문의 like 수
 	private int conference_question_like_cnt;
 		
