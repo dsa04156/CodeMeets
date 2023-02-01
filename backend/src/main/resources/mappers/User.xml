@@ -39,6 +39,7 @@
 		<result column="conference_pk" property="conferencePk" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_pk" property="userPk" />
+		<result column="answer_cnt" property="answerCnt" />
 		<result column="conference_question_like_cnt" property="conference_question_like_cnt" />
 		<result column="conference_question_like" property="conference_question_like" />
 		<result column="total" property="total"/>
@@ -226,14 +227,17 @@
 	<select id="getMyQuestionRecord" resultMap="conferenceQuestion">
 		<![CDATA[
 			SELECT Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
-			Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, 
+			Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, count(A.conference_answer_pk) answer_cnt,
 				(SELECT count(*) 
 			    FROM conference_question_user L 
 			    WHERE Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
 			count(*) OVER() AS total
-			FROM `conference_question` Q
-			WHERE user_pk = #{userPk}
-			ORDER BY conference_question_date DESC
+			FROM `conference_question` Q LEFT JOIN `conference_answer` A
+			on Q.conference_question_pk = A.conference_question_pk
+			WHERE Q.user_pk = #{userPk}
+			GROUP BY Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
+			Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk
+			ORDER BY Q.conference_question_date DESC
 			LIMIT #{nowPage}, #{items};
 		]]>
 	</select>

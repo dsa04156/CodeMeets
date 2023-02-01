@@ -131,26 +131,20 @@ WHERE con.conference_pk in (
 ORDER BY call_start_time DESC
 LIMIT 0, 100;
 
+
+-- 본인 질문 기록 조회
+-- 답글 수 추가
+
 SELECT Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
-Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, 
+Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, count(A.conference_answer_pk) answer_cnt,
 	(SELECT count(*) 
     FROM conference_question_user L 
     WHERE Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
 count(*) OVER() AS total
-FROM `conference_question` Q
-WHERE user_pk = 3
-ORDER BY conference_question_date DESC
-LIMIT 0, 100;
-
-SELECT conference_pk, call_start_time, call_end_time, conference_title, 
-conference_contents, conference_active, conference_url, group_pk, user_pk,
-(SELECT GROUP_CONCAT(user_name SEPARATOR ', ')
-FROM `conference-user` NATURAL JOIN `user_info`
-WHERE conference_pk = 5
-GROUP BY conference_pk) join_user,
-(SELECT count(*)
-FROM `conference-user` NATURAL JOIN `user_info`
-WHERE conference_pk = 5
-GROUP BY conference_pk) join_user_cnt
-FROM `conference`
-WHERE conference_pk = 5;
+FROM `conference_question` Q LEFT JOIN `conference_answer` A
+on Q.conference_question_pk = A.conference_question_pk
+WHERE Q.user_pk = 3
+GROUP BY Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
+Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk
+ORDER BY Q.conference_question_date DESC
+LIMIT 0, 10;
