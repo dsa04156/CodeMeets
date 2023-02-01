@@ -29,13 +29,15 @@ public interface GroupService {
 
 	GroupDto groupDetail(int groupPk) throws SQLException;
 
-	void groupModify(GroupDto guDto) throws SQLException;
+	void groupModify(GroupDto groupDto) throws SQLException;
 
 	List<GroupListDto> getList(int userPk) throws SQLException;
 
 	List<Integer> gpList(int userPk) throws SQLException;
 
 	int countGroup(int userPk) throws SQLException;
+
+	void groupDelete(int groupPk) throws SQLException;
 
 	
 }	

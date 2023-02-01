@@ -474,6 +474,8 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_question_user`(
 PRIMARY KEY (`group_question_pk`, `user_pk`),
 FOREIGN KEY (`group_question_pk`) REFERENCES group_question(`group_question_pk`),
 FOREIGN KEY (`user_pk`) REFERENCES user(`user_pk`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
 
@@ -489,6 +491,8 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`group_answer_user`(
 PRIMARY KEY (`group_answer_pk`, `user_pk`),
 FOREIGN KEY (`group_answer_pk`) REFERENCES group_answer(`group_answer_pk`),
 FOREIGN KEY (`user_pk`) REFERENCES user(`user_pk`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
 

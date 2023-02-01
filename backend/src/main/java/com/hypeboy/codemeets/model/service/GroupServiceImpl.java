@@ -91,8 +91,14 @@ public class GroupServiceImpl implements GroupService {
 
 
 	@Override
-	public void groupModify(GroupDto guDto) throws SQLException {
-		dao.groupModify(guDto);
+	public void groupModify(GroupDto groupDto) throws SQLException {
+		dao.groupModify(groupDto);
+	}
+
+
+	@Override
+	public void groupDelete(int groupPk) throws SQLException {
+		dao.groupDelete(groupPk);
 	}
 
 
