@@ -128,26 +128,34 @@
 	]]>
 	</select>
 	
-	<select id="groupDetail" resultMap="group">
+	<select id="groupDetail" parameterType="int" resultMap="group">
 		<![CDATA[
 			select
-			*
+			group_pk,group_name,group_desc,manager_id,group_url
 			from
 			`group`
 			where
 			group_pk=#{groupPk};
 		]]>
 	</select>
-	<!-- <update id="groupModify">
+	
+	 <update id="groupModify">
 		<![CDATA[
 			UPDATE
 			 `group`
 			  set 
-			  group_name=#{gname}, group_desc=#{gdesc},group_url=#{gurl} 
+			  `group`.group_name= #{groupName}, `group`.group_desc= #{groupDesc}
 			  where 
-			  `group_pk` = #{gpk};
+			  `group`.`group_pk` = #{groupPk};
 		]]>
 	</update>
-	 -->
+	
+	<delete id="groupDelete">
+		DELETE FROM
+		`group`
+		where
+		`group_pk`=#{groupPk};
+	</delete>
+	 
 	</mapper>
 	
