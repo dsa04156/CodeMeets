@@ -1,10 +1,13 @@
 import React from 'react'
 import { useTable, useBlockLayout } from 'react-table'
-import { useState } from 'react'
-
+import { useRecoilState } from 'recoil'
+import { TableData } from '../Store'
 
 function CreateTable({ columns, data, TableNavHandler}) {
   // Use the state and functions returned from useTable to build your UI
+  const [tableData, setTableData] = useRecoilState(TableData)
+
+
 
   const defaultColumn = React.useMemo(
     () => ({
@@ -52,6 +55,7 @@ function CreateTable({ columns, data, TableNavHandler}) {
               className="tr" 
               onClick={() => {TableNavHandler(row);
                 console.log(row.original)
+                setTableData(row.original)
               
               }}>
                 {row.cells.map(cell => {

@@ -12,6 +12,9 @@ import GroupMeetingList from "./Group/GroupPages/GroupMeetingList";
 import GroupNotice from "./Group/GroupPages/GroupNotice";
 import GroupSchedule from "./Group/GroupPages/GroupSchedule";
 import GroupMember from "./Group/GroupPages/GroupMember";
+//Detail
+import GroupNoticeDetail from "./Group/GroupDetailPage/GroupNoticeDetail";
+import GroupQnADetail from "./Group/GroupDetailPage/GroupQnADetail";
 
 import LoginFrame from "./Login/LoginComponents/LoginFrame";
 import FindIdPage from "./Login/LoginPages/FindIdPage";
@@ -99,6 +102,11 @@ function App() {
                   element={<MyPageQuestionList />}
                 ></Route>
               </Route>
+
+              {/* 디테일 페이지 */}
+              <Route path="/group/notice/:notice_pk" element={<GroupNoticeDetail />}></Route>
+              <Route path="/group/qna/:qna_pk" element={<GroupQnADetail />}></Route>
+
               <Route path="/group/:group_pk" element={<GroupDetail />}>
                 <Route path="notice" element={<GroupNotice />}></Route>
                 <Route path="schedule" element={<GroupSchedule />}></Route>

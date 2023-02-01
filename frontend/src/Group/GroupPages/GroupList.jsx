@@ -17,50 +17,46 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 const GroupList = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const TableNavHandler = (row) => {
-    
-    navigate(`/group/${row.original.groupPk}/notice`)
-  }
+    navigate(`/group/${row.original.groupPk}/notice`);
+  };
 
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
-  
+
   const [groupList, setGroupList] = useState([]);
   console.log(loginUser.userPk);
   console.log(groupList);
   /////////////////////////////////////
-    const data = React.useMemo(
-      () => groupList,
-      [groupList]
-    )
-  
-    const columns = React.useMemo(
-      () => [
-        {
-          Header: '번호',
-          accessor: 'cnt', // accessor is the "key" in the data
-          width: 100,
-        },
-        {
-          Header: '제목',
-          accessor: 'groupName',
-          width: 400,
-        },
-        {
-          Header: '작성자',
-          accessor: 'nickname',
-          width: 100,
-        },
-        {
-          Header: '등록일자',
-          accessor: 'callStartTime',
-          width: 100,
-        },
-      ],
-      []
-    )
+  const data = React.useMemo(() => groupList, [groupList]);
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: "번호",
+        accessor: "cnt", // accessor is the "key" in the data
+        width: 100,
+      },
+      {
+        Header: "제목",
+        accessor: "groupName",
+        width: 400,
+      },
+      {
+        Header: "작성자",
+        accessor: "nickname",
+        width: 100,
+      },
+      {
+        Header: "등록일자",
+        accessor: "callStartTime",
+        width: 100,
+      },
+    ],
+    []
+  );
   ////////////////////////////////////////
 
   useEffect(() => {
@@ -82,11 +78,11 @@ const GroupList = () => {
     console.log(groupitem);
     return (
       <GroupListItem
-      key={index}
-      id={groupitem.cnt}
-      title={groupitem.gname}
-      nickname={groupitem.nickname}
-      count={groupitem.count}
+        key={index}
+        id={groupitem.cnt}
+        title={groupitem.gname}
+        nickname={groupitem.nickname}
+        count={groupitem.count}
       />
     );
   });
@@ -94,11 +90,18 @@ const GroupList = () => {
   return (
     <div>
       <TitleStyle>
-        <div className="name">"{loginUser.userName}"</div> <div className="wellcome">님의 Group List</div>
+        <div className="name">"{loginUser.userName}"</div>{" "}
+        <div className="wellcome">님의 Group List</div>
       </TitleStyle>
-    <Styles>
-      <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler}/>
-    </Styles>
+      <ContentBox>
+        <Styles>
+          <CreateTable
+            columns={columns}
+            data={data}
+            TableNavHandler={TableNavHandler}
+          />
+        </Styles>
+      </ContentBox>
 
       {/* <ContentBox>
         <ul>{liList}</ul>
@@ -111,27 +114,35 @@ const GroupList = () => {
 
 export default GroupList;
 
-
 const TitleStyle = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: end;
-  margin: 2vh;
-  height: 8vh;
+  padding: 1vh;
+  margin-bottom: 2vh;
+  height: 7vh;
+  box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2);
+  border-radius: 20px;
   .name {
     display: flex;
+    align-items: center;
     font-size: 2em;
     margin-right: 5px;
-  };
+  }
   .wellcome {
     display: flex;
+    align-items: end;
     font-size: 1em;
-  };
+  }
   border: 1px solid black;
 `;
 
-const ContentBox = styled.div``;
-
+const ContentBox = styled.div`
+  border: 1px solid black;
+  box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2);
+  border-radius: 20px;
+  height: 68vh;
+  padding-left: 5vh;
+`;
 
 const Styles = styled.div`
   padding: 1rem;
@@ -156,4 +167,4 @@ const Styles = styled.div`
       }
     }
   }
-`
+`;

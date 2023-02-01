@@ -20,3 +20,9 @@ export const groupNavTitle = atom({
     default: "Notice",
     effects_UNSTABLE: [persistAtom],
 })
+
+export const TableData = atom({
+    key: "TableData",
+    default:[],
+    effects_UNSTABLE: [persistAtom],
+})

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { APIroot } from "../../Store";
 import { useRecoilValue } from "recoil";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"
 
 import GroupQnAItem from "../GroupComponents/GroupQnAItem";
 import CreateTable from "../../CommonComponents/CreateTable";
@@ -15,11 +16,16 @@ const GroupQnA = () => {
   const [qnaList, setQnaList] = useState([]);
 
   const params = useParams();
+  const navigate = useNavigate()
+
+  const TableNavHandler = (row) =>{
+    navigate(`/group/qna/${row.original.groupQuestionPk}`)
+  }
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: `${API}/qna/list/${params.group_pk}?nowPage=1&items=7`,
+      url: `${API}/qna/list/${params.group_pk}?nowPage=1&items=20`,
     }).then((response) => {
       console.log(response.data);
       setQnaList(response.data);
@@ -66,7 +72,7 @@ const GroupQnA = () => {
 
   return (
     <Styles>
-      <CreateTable columns={columns} data={data} />
+      <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler}/>
     </Styles>
   );
 };

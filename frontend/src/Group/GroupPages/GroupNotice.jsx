@@ -3,6 +3,7 @@ import CreateTable from "../../CommonComponents/CreateTable";
 import styled from 'styled-components'
 
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
 import { APIroot } from "../../Store";
 import { useRecoilValue } from "recoil";
@@ -18,6 +19,14 @@ const GroupNotice = () => {
   const [noticeList, setNoticeList] = useState([])
   const [order, setOrder] = useState("group_notice_date")
   console.log(noticeList)
+
+  const navigate = useNavigate()
+
+  const TableNavHandelr = (row) => {
+    navigate(`/group/notice/${row.original.groupNoticePk}`)
+    console.log(`/group/notice/${row.original.groupNoticePk}`)
+  };
+
   
   useEffect(() => {
     axios({
@@ -51,7 +60,7 @@ const GroupNotice = () => {
       },
       {
         Header: '작성자',
-        accessor: 'nickname',
+        accessor: 'userName',
         width: 100,
       },
       {
@@ -65,7 +74,7 @@ const GroupNotice = () => {
 
   return (
     <Styles>
-      <CreateTable columns={columns} data={data} />
+      <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandelr}/>
     </Styles>
   )
 }
