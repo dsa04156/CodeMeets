@@ -1,4 +1,2 @@
 # CODE Meets Project
-#testss
-sss
-.est
+#test한다!!!
