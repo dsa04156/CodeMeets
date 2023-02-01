@@ -33,6 +33,8 @@ public interface GroupDao {
 
 	GroupDto groupDetail(int groupPk) throws SQLException;
 
-	void groupModify(GroupDto guDto) throws SQLException;
+	void groupModify(GroupDto groupDto) throws SQLException;
+
+	void groupDelete(int groupPk);
 
 }

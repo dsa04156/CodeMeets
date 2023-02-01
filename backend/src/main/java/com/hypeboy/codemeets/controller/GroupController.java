@@ -32,6 +32,7 @@ import com.hypeboy.codemeets.model.service.GroupService;
 import com.hypeboy.codemeets.model.service.GroupServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiParam;
@@ -41,6 +42,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/group")
+@Api(tags = "그룹 API")
 public class GroupController {
 	private final Logger logger = LoggerFactory.getLogger(GroupController.class);
 
@@ -60,7 +62,7 @@ public class GroupController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     
-    @Operation(summary = "Regist Group", description = "그룹 만들기 API "
+    @Operation(summary = "그룹 만들기", description = "그룹 만들기 API "
     		+ " \n group_Pk값은 제외해주세요"
     		+ "\n manager_id 값은 회원 pk 번호입니다 ")
     @ApiImplicitParams({
@@ -93,7 +95,7 @@ public class GroupController {
 				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
     
-    @Operation(summary = "Group Member List", description = "그룹 멤버 리스트 API ")
+    @Operation(summary = "그룹 회원 목록", description = "그룹 멤버 리스트 API ")
     @GetMapping("/{groupPk}/member")
 	public ResponseEntity<?> groupMemberList(@PathVariable("groupPk") int groupPk) {
 		try {
@@ -107,7 +109,7 @@ public class GroupController {
 		}
 	}
     
-    @Operation(summary = "Group Join", description = "그룹 가입 API ")
+    @Operation(summary = "그룹 가입하기", description = "그룹 가입 API ")
     @PostMapping("/{groupPk}/join")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
@@ -135,7 +137,7 @@ public class GroupController {
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
     
-    @Operation(summary = "Group List", description = "그룹 리스트")
+    @Operation(summary = "그룹 목록", description = "그룹 리스트")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
@@ -172,17 +174,29 @@ public class GroupController {
     }
     
     
-    @Operation(summary = "Group Modify", description = "그룹 수정")
+    @Operation(summary = "그룹 수정하기", description = "그룹 수정")
     @PutMapping("/{groupPk}/modify")
-	public ResponseEntity<?> groupModify(@PathVariable("groupPk") int groupPk) {
+	public ResponseEntity<?> groupModify(@PathVariable("groupPk") int groupPk,@RequestBody GroupDto groupDto) {
 		try {
-			logger.info("group detail - 호출");
-			GroupDto guDto = groupService.groupDetail(groupPk);
-			logger.info("group detail - 호출 성공");
 			logger.info("group modify - 호출");
-			groupService.groupModify(guDto);
+			groupDto.setGroupPk(groupPk);
+			groupService.groupModify(groupDto);
 			logger.info("group modify - 호출 성공");
-			return new ResponseEntity<GroupDto>(guDto, HttpStatus.OK);
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.info(String.valueOf(e));
+			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+    
+    @Operation(summary = "그룹 삭제하기", description = "그룹 삭제하기")
+    @PutMapping("/{groupPk}/delete")
+	public ResponseEntity<?> groupDelete(@PathVariable("groupPk") int groupPk) {
+		try {
+			logger.info("group delete - 호출");
+			groupService.groupDelete(groupPk);
+			logger.info("group delete - 호출 성공");
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
