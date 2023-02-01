@@ -1,13 +1,12 @@
 import React from 'react'
 import { useTable, useBlockLayout } from 'react-table'
-import { useRecoilState } from 'recoil'
-import { TableData } from '../Store'
+import { useState } from 'react'
+import styled from 'styled-components';
+import { NavLink } from "react-router-dom";
+
 
 function CreateTable({ columns, data, TableNavHandler}) {
   // Use the state and functions returned from useTable to build your UI
-  const [tableData, setTableData] = useRecoilState(TableData)
-
-
 
   const defaultColumn = React.useMemo(
     () => ({
@@ -33,14 +32,15 @@ function CreateTable({ columns, data, TableNavHandler}) {
 
   // Render the UI for your table
   return (
+    <Styles>
     <div {...getTableProps()} className="table">
       <div>
         {headerGroups.map(headerGroup => (
           <div {...headerGroup.getHeaderGroupProps()} className="tr">
             {headerGroup.headers.map(column => (
-              <div {...column.getHeaderProps()} className="th">
+              <HeadSize {...column.getHeaderProps()} className="th">
                 {column.render('Header')}
-              </div>
+              </HeadSize>
             ))}
           </div>
         ))}
@@ -55,14 +55,13 @@ function CreateTable({ columns, data, TableNavHandler}) {
               className="tr" 
               onClick={() => {TableNavHandler(row);
                 console.log(row.original)
-                setTableData(row.original)
               
               }}>
                 {row.cells.map(cell => {
                   return (
-                    <div {...cell.getCellProps()} className="td">
+                    <NavBarStyle {...cell.getCellProps()} className="td">
                       {cell.render('Cell')}
-                    </div>
+                    </NavBarStyle>
                   )
                 })}
               </div>
@@ -70,6 +69,52 @@ function CreateTable({ columns, data, TableNavHandler}) {
         )}
       </div>
     </div>
+    </Styles>
   )
 }
 export default CreateTable;
+
+const Styles = styled.div`
+  text-align: center;
+  line-height: 2.5;
+  padding: 1rem;
+  padding-top: 0px;
+  table {
+    border-spacing: 0;
+    border: 1px solid black;
+    font-size: 5em;
+    tr {
+      :last-child {
+        td {
+          border-bottom: 0;
+        }
+      }
+    }
+    th,
+    td {
+      margin: 0;
+      padding: 0.5rem;
+      border-bottom: 1px solid black;
+      border-right: 1px solid black;
+      :last-child {
+        border-right: 0;
+      }
+    }
+  }
+`;
+
+const NavBarStyle = styled(NavLink)`
+  color: black;
+  outline: invert;
+  &:link {
+    transition : 0.5s;
+    text-decoration: none;
+  }
+  &:hover {
+    color: #10f14c;
+  }
+`;
+
+const HeadSize = styled.div`
+  font-size: large;
+`;
