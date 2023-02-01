@@ -26,9 +26,6 @@ public class QnaServiceImpl implements QnaService{
 	
 	@Override
 	public List<QnaDto> getList(int groupPk, int nowPage, int items) throws Exception {
-		System.out.println(groupPk);
-		System.out.println(nowPage);
-		System.out.println(items);
 		
 		return qnaDao.getList(groupPk, nowPage, items);
 	}

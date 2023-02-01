@@ -23,13 +23,13 @@
 	</insert>
 	
 	<select id="getList" parameterType="int" resultMap="qnaAnswer">
-		select Q.group_answer_pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_question_pk, Q.user_pk,
+		select *
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk) group_answer_like_cnt,
-		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like,
-		(select user_name from user A where Q.user_pk = A.user_pk) user_name
-		from group_answer Q
+		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like
+		from `group_answer` Q
+		NATURAL JOIN `user_info`
 		where group_question_pk = #{groupQuestionPk}
-		ORDER BY group_answer_pk
+		ORDER BY group_answer_pk DESC
 		LIMIT #{nowPage}, #{items};
 	</select>
 	
