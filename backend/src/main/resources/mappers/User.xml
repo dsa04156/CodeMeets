@@ -37,7 +37,9 @@
 		<result column="conference_question_date" property="conferenceQuestionDate" />
 		<result column="conference_question_update" property="conferenceQuestionUpdate" />
 		<result column="conference_pk" property="conferencePk" />
+		<result column="conference_title" property="conferenceTitle" />
 		<result column="group_pk" property="groupPk" />
+		<result column="group_name" property="groupName" />
 		<result column="user_pk" property="userPk" />
 		<result column="answer_cnt" property="answerCnt" />
 		<result column="conference_question_like_cnt" property="conference_question_like_cnt" />
@@ -227,16 +229,19 @@
 	<select id="getMyQuestionRecord" resultMap="conferenceQuestion">
 		<![CDATA[
 			SELECT Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
-			Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, count(A.conference_answer_pk) answer_cnt,
+			Q.conference_pk, C.conference_title, Q.group_pk, G.group_name, Q.conference_question_update, 
+			Q.user_pk, count(A.conference_answer_pk) answer_cnt,
 				(SELECT count(*) 
 			    FROM conference_question_user L 
 			    WHERE Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
 			count(*) OVER() AS total
-			FROM `conference_question` Q LEFT JOIN `conference_answer` A
-			on Q.conference_question_pk = A.conference_question_pk
+			FROM `conference_question` Q
+			LEFT JOIN `conference_answer` A on Q.conference_question_pk = A.conference_question_pk
+			LEFT JOIN `conference` C on Q.conference_pk = C.conference_pk
+			LEFT JOIN `group` G on C.group_pk = G.group_pk
 			WHERE Q.user_pk = #{userPk}
 			GROUP BY Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
-			Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk
+			Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, C.conference_title, G.group_name
 			ORDER BY Q.conference_question_date DESC
 			LIMIT #{nowPage}, #{items};
 		]]>
