@@ -17,7 +17,9 @@ public class ConferenceQuestionDto {
 	private String conferenceQuestionDate;
 	private int conferenceQuestionUpdate;
 	private int conferencePk;
+	private String conferenceTitle;
 	private int groupPk;
+	private String groupName;
 	private int userPk;
 	
 	// 질문에 달린 답글 수
