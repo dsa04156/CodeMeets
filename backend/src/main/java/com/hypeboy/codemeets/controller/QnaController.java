@@ -63,7 +63,7 @@ public class QnaController {
 			@RequestParam("items") int items) throws Exception {
 		
 		try {
-			List<QnaDto> qnaDtoList = service.getList(groupPk, nowPage -1, items);
+			List<QnaDto> qnaDtoList = service.getList(groupPk, (nowPage -1) * items, items);
 			
 			return new ResponseEntity<List<QnaDto>>(qnaDtoList, HttpStatus.OK);
 		} catch (Exception e) {
