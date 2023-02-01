@@ -102,6 +102,18 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 
+	@Override
+	public GroupDto checkUrl(String groupUrl) throws SQLException {
+		return dao.checkUrl(groupUrl);
+	}
+
+
+	@Override
+	public Integer duplicated(int userPk, int groupPk) throws SQLException {
+		return dao.duplicated(userPk,groupPk);
+	}
+
+
 
 	
 

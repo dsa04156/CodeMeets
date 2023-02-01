@@ -157,5 +157,22 @@
 		`group_pk`=#{groupPk};
 	</delete>
 	 
+	 <select id="checkUrl" resultMap="group">
+		select 
+		* 
+		from 
+		`group` 
+		where 
+		group_url = #{groupUrl};	 	
+	 </select>
+	 
+	 <select id="duplicated" resultType="int">
+	 	select 
+	 	* 
+	 	from 
+	 	`group-user` 
+	 	where
+	 	user_pk=#{userPk} and group_pk=#{groupPk};
+	 </select>
 	</mapper>
 	
