@@ -1,69 +1,68 @@
-import { APIroot } from "../../Store";
-import { useRecoilValue } from "recoil";
-
-import styled from "styled-components";
-import React, { useEffect, useState } from "react";
-
-import CreateTable from "../../CommonComponents/CreateTable";
-import axios from "axios";
+import { APIroot } from '../../Store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import CreateTable from '../../CommonComponents/CreateTable';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const MyPageMeetingList = () => {
+  const [meetingRecord, setMeetingRecord] = useState([]);
   const API = useRecoilValue(APIroot);
+  const navigate = useNavigate();
 
-  const [meetingList, setMeetingList] = useState([]);
+  const TableNavHandler = () => {
+    navigate('/MyPageMeetingListDetail');
+  };
 
-  useEffect(() => {
-    axios({
-      method: "GET",
-      url: `${API}/user/my-conference-record?nowPage=1&items=7`,
-      headers: {
-        "Content-Type": "application/json",
-        ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`,
-      },
-    }).then((response) => {
-      console.log(response.data);
-      setMeetingList(response.data.conference_record);
-    });
-  }, [API]);
-
-  const data = React.useMemo(() => meetingList, [meetingList]);
+  const data = React.useMemo(() => meetingRecord, [meetingRecord]);
 
   const columns = React.useMemo(
     () => [
-      {
-        Header: "번호",
-        accessor: "cnt", // accessor is the "key" in the data
-        width: 100,
-      },
-      {
-        Header: "제목",
-        accessor: "groupName",
-        width: 400,
-      },
-      {
-        Header: "작성자",
-        accessor: "nickname",
-        width: 100,
-      },
-      {
-        Header: "등록일자",
-        accessor: "callStartTime",
-        width: 100,
-      },
+      { Header: '번호', accessor: 'conferencePk', width: 90 },
+      { Header: '미팅명', accessor: 'conferenceTitle', width: 400 },
+      { Header: '그룹명', accessor: 'groupName', width: 200 },
+      { Header: '최근 활동', accessor: 'callStartTime', width: 200 },
     ],
     []
   );
 
+  useEffect(() => {
+    console.log('실행');
+    axios({
+      method: 'GET',
+      url: `${API}/user/my-conference-record?nowPage=1&items=6`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
+      headers: {
+        'Content-Type': 'application/json',
+        ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
+      },
+    }).then((response) => {
+      console.log(response.data);
+      setMeetingRecord(response.data.conference_record);
+    });
+    //   .catch((err) => console.log(err));
+  }, [API]);
+
   return (
-    <Styles>
-      <CreateTable columns={columns} data={data} />
-    </Styles>
+    <div>
+      <Scrollsize>
+        <Styles>
+          <CreateTable
+            columns={columns}
+            data={data}
+            TableNavHandler={TableNavHandler}
+          />
+        </Styles>
+      </Scrollsize>
+    </div>
   );
 };
 
 export default MyPageMeetingList;
 
 const Styles = styled.div`
+  text-align: center;
   padding: 1rem;
   table {
     border-spacing: 0;
@@ -85,5 +84,24 @@ const Styles = styled.div`
         border-right: 0;
       }
     }
+  }
+`;
+const Scrollsize = styled.div`
+  height: 46vh;
+  overflow-y: scroll;
+`;
+const NavBarStyle = styled(NavLink)`
+  color: black;
+  font-size: 20px;
+  outline: invert;
+  &:link {
+    transition: 0.5s;
+    text-decoration: none;
+  }
+  &:hover {
+    color: #10f14c;
+  }
+  &.active {
+    color: #29a846;
   }
 `;
