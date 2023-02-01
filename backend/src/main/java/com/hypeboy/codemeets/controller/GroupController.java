@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
-@RequestMapping("/group")
+@RequestMapping(value="/group",produces="application/json;charset=UTF-8")
 @Api(tags = "그룹 API")
 public class GroupController {
 	private final Logger logger = LoggerFactory.getLogger(GroupController.class);
@@ -82,6 +83,9 @@ public class GroupController {
 	    	else {
 	    		logger.info("토큰 실패");
 	    	}
+			logger.info("난수 생성");
+			String url = RandomStringUtils.randomAlphanumeric(10);
+			groupDto.setGroupUrl(url);
 			groupDto.setManagerId(userPk);
 			if(groupService.createGroup(groupDto)!=0) {
 				logger.info("createGroup - 성공");
@@ -89,7 +93,7 @@ public class GroupController {
 				guDto.setGroupPk(groupDto.getGroupPk());
 				guDto.setUserPk(groupDto.getManagerId());
 				groupService.createGroupUser(guDto);
-				logger.info(guDto.toString());
+				logger.info("createGroup 성공");
 				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 			}else
 				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -109,7 +113,8 @@ public class GroupController {
 		}
 	}
     
-    @Operation(summary = "그룹 가입하기", description = "그룹 가입 API ")
+
+        @Operation(summary = "그룹 가입하기", description = "그룹 가입 API ")
     @PostMapping("/{groupPk}/join")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
@@ -136,6 +141,46 @@ public class GroupController {
     	}else
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+        
+        @Operation(summary = "그룹 url 가입", description = "그룹 url 가입 API ")
+        @PostMapping("/join/{groupUrl}")
+        @ApiImplicitParams({
+            @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        })
+    	public ResponseEntity<?> groupUrlJoin(@PathVariable("groupUrl") String groupUrl, HttpServletRequest request) throws SQLException  {
+        	logger.info("group join - 호출");
+        	System.out.println(groupUrl);
+        	int userPk=0;
+         	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    			logger.info("사용가능한 토큰입니다");
+    			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+    			logger.info("userPk - " + userPk);
+        	}
+        	else {
+        		logger.info("토큰 실패");
+        	}
+         	
+         	GroupDto groupDto = groupService.checkUrl(groupUrl);
+         	if(groupDto.getGroupPk()!=0) {
+         		logger.info(groupDto.toString());
+         	GroupUserDto guDto = new GroupUserDto();
+         	guDto.setGroupPk(groupDto.getGroupPk());
+         	int groupPk = guDto.getGroupPk();
+         	guDto.setUserPk(userPk);
+         	logger.info("중복검사 시작");
+         	if(groupService.duplicated(userPk,groupPk)!=null) {
+         		return new ResponseEntity<String>("이미 가입된 유저입니다", HttpStatus.IM_USED);
+         	}
+        	if(groupService.groupJoin(guDto)!=0) {
+        		logger.info("group-join 성공");
+        		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+        	}
+        }
+		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+     	
+        
+        }
+    
     
     @Operation(summary = "그룹 목록", description = "그룹 리스트")
     @ApiImplicitParams({

@@ -39,5 +39,9 @@ public interface GroupService {
 
 	void groupDelete(int groupPk) throws SQLException;
 
+	GroupDto checkUrl(String groupUrl) throws SQLException;
+
+	Integer duplicated(int userPk, int groupPk) throws SQLException;
+
 	
 }	

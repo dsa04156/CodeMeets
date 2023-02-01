@@ -37,4 +37,8 @@ public interface GroupDao {
 
 	void groupDelete(int groupPk);
 
+	GroupDto checkUrl(String groupUrl);
+
+	Integer duplicated(int userPk, int groupPk);
+
 }
