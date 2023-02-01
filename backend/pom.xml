@@ -136,6 +136,13 @@
 		    <artifactId>logback-slack-appender</artifactId>
 		    <version>1.4.0</version>
 		</dependency>
+
+		<!-- MatterMost와 로그 연동 -->		
+		<dependency>
+			 <groupId>io.github.pendula95</groupId>
+			 <artifactId>logback-mattermost-appender</artifactId>
+			 <version>1.0.0</version>
+		</dependency>
 		
 	</dependencies>
 
