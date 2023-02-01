@@ -23,7 +23,7 @@
 	</insert>
 	
 	<select id="getList" parameterType="int" resultMap="qnaAnswer">
-		select *
+		select *,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk) group_answer_like_cnt,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like
 		from `group_answer` Q
