@@ -15,7 +15,6 @@ public interface GroupDao {
 
 	int createGroup(GroupDto groupDto) throws SQLException;
 
-	List<UserDto> groupMemberList(int groupPk) throws SQLException;
 
 	int groupJoin(GroupUserDto guDto) throws SQLException;
 
@@ -35,12 +34,16 @@ public interface GroupDao {
 
 	void groupModify(GroupDto groupDto) throws SQLException;
 
-	void groupDelete(int groupPk);
+	void groupDelete(int groupPk) throws SQLException;
 
-	GroupDto checkUrl(String groupUrl);
+	GroupDto checkUrl(String groupUrl) throws SQLException;
 
-	Integer duplicated(int userPk, int groupPk);
+	Integer duplicated(int userPk, int groupPk) throws SQLException;
 
-	void groupLeft(int groupPk, int userPk);
+	void groupLeft(int groupPk, int userPk) throws SQLException;
+
+	List<UserDto> groupMemberList(int groupPk, int nowPage, int items, String order) throws SQLException;
+
+	int checkManager(int userPk, int groupPk) throws SQLException;
 
 }

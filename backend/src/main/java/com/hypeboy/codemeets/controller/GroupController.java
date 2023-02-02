@@ -77,7 +77,6 @@ public class GroupController {
 			int userPk=0;
 			if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
 				logger.info("사용가능한 토큰입니다");
-				
 				userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
 				logger.info("userPk - " + userPk);
 	    	}
@@ -101,14 +100,39 @@ public class GroupController {
 	}
     
     @Operation(summary = "그룹 회원 목록", description = "그룹 멤버 리스트 API ")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
     @GetMapping("/{groupPk}/member")
-	public ResponseEntity<?> groupMemberList(@PathVariable("groupPk") int groupPk) {
+	public ResponseEntity<?> groupMemberList(@PathVariable("groupPk") int groupPk,HttpServletRequest request,
+	  		@RequestParam("nowPage") int nowPage,
+				@RequestParam("items") int items,
+				@RequestParam("order") String order) {
+    	
+    	int userPk=0;
+    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
 		try {
+			Map<String,List<UserDto>> resultMap = new HashMap<String, List<UserDto>>();
 			logger.info("group member list - 호출");
-			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk);
+			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk,(nowPage - 1) * items, items, order);
+			int position = groupService.checkManager(userPk,groupPk);
+			if(position==1||position==2) {
+				resultMap.put("Manager", groupMemberList);
+				System.out.println(123);
+			}
+			else {
+				resultMap.put("Normal", groupMemberList);
+			}
 			logger.info("group member list - 호출 성공");
 			System.out.println(groupMemberList.toString());
-			return new ResponseEntity<List<UserDto>>(groupMemberList, HttpStatus.OK);
+			return new ResponseEntity<Map<String,List<UserDto>>>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
