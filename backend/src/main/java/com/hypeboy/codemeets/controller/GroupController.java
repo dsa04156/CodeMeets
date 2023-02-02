@@ -209,7 +209,7 @@ public class GroupController {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
-        @GetMapping("/list")
+    @GetMapping("/list")
     public ResponseEntity<?> groupList(HttpServletRequest request,
     		@RequestParam("nowPage") int nowPage,
 			@RequestParam("items") int items,
@@ -227,7 +227,6 @@ public class GroupController {
     	}
     	List<GroupListDto> groupList = groupService.getList(userPk,(nowPage - 1) * items, items, order);
     	Map<String,List<GroupListDto>> resultMap = new HashMap<String, List<GroupListDto>>();
-    	int total = groupList.size();
     	logger.info("gpList 호출");
     	logger.info(groupList.toString());
     	List<Integer> groupPkList = groupService.gpList(userPk);
@@ -240,7 +239,6 @@ public class GroupController {
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(i)));
     	}
-    	resultMap.put("total", total);
     	resultMap.put("groupList", groupList);
     	
     	return new ResponseEntity<Map<String,List<GroupListDto>>>(resultMap,HttpStatus.OK);
