@@ -226,7 +226,7 @@ public class GroupController {
     		logger.info("토큰 실패");
     	}
     	List<GroupListDto> groupList = groupService.getList(userPk,(nowPage - 1) * items, items, order);
-    	Map<Integer,List<GroupListDto>> resultMap = new HashMap<Integer, List<GroupListDto>>();
+    	Map<String,List<GroupListDto>> resultMap = new HashMap<String, List<GroupListDto>>();
     	int total = groupList.size();
     	logger.info("gpList 호출");
     	logger.info(groupList.toString());
@@ -240,8 +240,10 @@ public class GroupController {
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(i)));
     	}
-    	resultMap.put(total, groupList);
-    	return new ResponseEntity<Map<Integer,List<GroupListDto>>>(resultMap,HttpStatus.OK);
+    	resultMap.put("total", total);
+    	resultMap.put("groupList", groupList);
+    	
+    	return new ResponseEntity<Map<String,List<GroupListDto>>>(resultMap,HttpStatus.OK);
     }
     
     
