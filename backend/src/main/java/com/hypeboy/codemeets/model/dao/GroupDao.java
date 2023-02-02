@@ -19,7 +19,7 @@ public interface GroupDao {
 
 	int groupJoin(GroupUserDto guDto) throws SQLException;
 
-	List<GroupListDto> getList(int userPk) throws SQLException;
+	List<GroupListDto> getList(int userPk, int nowPage, int items, String order) throws SQLException;
 
 	void createGroupUser(GroupUserDto guDto) throws SQLException ;
 
@@ -40,5 +40,7 @@ public interface GroupDao {
 	GroupDto checkUrl(String groupUrl);
 
 	Integer duplicated(int userPk, int groupPk);
+
+	void groupLeft(int groupPk, int userPk);
 
 }

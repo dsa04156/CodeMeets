@@ -15,7 +15,7 @@
 		<result column="user_pk" property="userPk" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_id" property="userId"/>
-		<result column="user_name" property="username"/>	
+		<result column="user_name" property="username"/>
 	</resultMap>
 	
 	<resultMap type="GroupListDto" id="glDto">
@@ -43,7 +43,7 @@
 		INSERT INTO
 		 `group`(group_name,group_desc,group_url,manager_id)
 		VALUES
-		  (#{groupName}, #{groupDesc},#{groupUrl},#{managerId});
+		  (#{groupName}, #{groupDesc},#{groupUrl},#{managerId},1);
 		  ]]>
 	</insert>
 	
@@ -55,7 +55,7 @@
 		 values (1,#{groupPk},#{userPk});
 		  ]]>
 	</insert>
-	<select id="groupMemberList" resultMap="user" parameterType="int">
+	<select id="groupMemberList" resultMap="user">
 		<![CDATA[
 			select 
 			user.user_id,user.user_pk,user_info.user_name,`group-user`.group_pk 
@@ -64,16 +64,18 @@
  			where 
  			user.user_pk=user_info.user_pk
  			 and `group-user`.user_pk=user_info.user_pk 
- 			 and `group-user`.group_pk=#{groupPk};
+ 			 and `group-user`.group_pk=#{groupPk}
+		 	ORDER BY #{order} DESC
+			LIMIT #{nowPage}, #{items};
 		]]>
 	</select>
 	
 	<insert id="groupJoin" >
 	<![CDATA[
 		insert into
-		`group-user`(group_pk,user_pk)
+		`group-user`(group_pk,user_pk,group_user_position)
 		values
-		(#{groupPk},#{userPk});
+		(#{groupPk},#{userPk},3);
 		  ]]>
 	</insert>
 	
@@ -166,7 +168,7 @@
 		group_url = #{groupUrl};	 	
 	 </select>
 	 
-	 <select id="duplicated" resultType="int">
+	 <select id="duplicated" resultType="Integer">
 	 	select 
 	 	* 
 	 	from 
@@ -174,5 +176,12 @@
 	 	where
 	 	user_pk=#{userPk} and group_pk=#{groupPk};
 	 </select>
+	 
+	 <delete id="groupLeft">
+	 	delete from 
+	 	`group-user` 
+	 	where 
+	 	user_pk=#{userPk} and group_pk=#{groupPk};
+	 </delete>
 	</mapper>
 	

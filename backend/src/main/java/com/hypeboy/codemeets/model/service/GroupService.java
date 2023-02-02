@@ -31,7 +31,6 @@ public interface GroupService {
 
 	void groupModify(GroupDto groupDto) throws SQLException;
 
-	List<GroupListDto> getList(int userPk) throws SQLException;
 
 	List<Integer> gpList(int userPk) throws SQLException;
 
@@ -42,6 +41,10 @@ public interface GroupService {
 	GroupDto checkUrl(String groupUrl) throws SQLException;
 
 	Integer duplicated(int userPk, int groupPk) throws SQLException;
+
+	List<GroupListDto> getList(int userPk, int nowPage, int items, String order) throws SQLException;
+
+	void groupLeft(int groupPk, int userPk) throws SQLException;
 
 	
 }	

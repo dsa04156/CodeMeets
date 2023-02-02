@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -187,11 +188,11 @@ public class GroupController {
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/list")
-    public ResponseEntity<?> groupList(HttpServletRequest request) throws Exception{
-//    	public ResponseEntity<?> groupList(@PathVariable("userPk") int userPk) throws Exception{
+    public ResponseEntity<?> groupList(HttpServletRequest request,
+    		@RequestParam("nowPage") int nowPage,
+			@RequestParam("items") int items,
+			@RequestParam("order") String order) throws Exception{
     	logger.info("group list 호출");
-    	Map<String, Object> resultMap = new HashMap<String, Object>();
-    	HttpStatus status = HttpStatus.UNAUTHORIZED;
     	int userPk=0;
     	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
 			logger.info("사용가능한 토큰입니다");
@@ -202,7 +203,7 @@ public class GroupController {
     	else {
     		logger.info("토큰 실패");
     	}
-    	List<GroupListDto> groupList = groupService.getList(userPk);
+    	List<GroupListDto> groupList = groupService.getList(userPk,(nowPage - 1) * items, items, order);
     	logger.info("gpList 호출");
     	logger.info(groupList.toString());
     	List<Integer> groupPkList = groupService.gpList(userPk);
@@ -245,6 +246,35 @@ public class GroupController {
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+    
+    @Operation(summary = "그룹 탈퇴하기", description = "그룹 탈퇴하기")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping("/{groupPk}/left")
+	public ResponseEntity<?> groupleft(@PathVariable("groupPk") int groupPk, HttpServletRequest request) {
+    	int userPk=0;
+    	
+    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+			try {
+				logger.info("group left - 호출");
+				groupService.groupLeft(groupPk,userPk);
+				logger.info("group left - 호출 성공");
+				return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			} catch (Exception e) {
+				return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
+    	return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+		
 	}
     
 }
