@@ -26,4 +26,6 @@ public class QnaDto {
 	private int groupQuestionLike;
 	// 답변 수
 	private int groupQuestionAnswerCnt;
+	// 글 수
+	private int total;
 }
