@@ -11,8 +11,8 @@ const MyPageQuestionList = () => {
     const API = useRecoilValue(APIroot);
     const navigate = useNavigate();
     
-    const TableNavHandler = () => {
-        navigate('/MyPageQuestionListDetail');
+    const TableNavHandler = (row) => {
+        navigate(`/my-question-record/${row.original.conferenceQuestionPk}/detail`);
     }
     
     const data = React.useMemo(() => questionRecord, [questionRecord]);
@@ -37,7 +37,7 @@ const MyPageQuestionList = () => {
             },
         })
         .then((response) => {
-            console.log(response.data.question_record)
+            console.log(response.data)
             setQuestionRecord(response.data.question_record);
         })
     }, [API]);
