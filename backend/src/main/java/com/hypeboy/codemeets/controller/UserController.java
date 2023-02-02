@@ -446,7 +446,7 @@ public class UserController {
 	@ApiImplicitParams({
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
-    @PutMapping("/{userPk}/edit-profile")
+    @PutMapping("/edit-profile")
 	public ResponseEntity<?> editProfile(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
 		logger.info("editProfile - 호출");
 		
