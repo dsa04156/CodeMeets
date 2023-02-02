@@ -33,7 +33,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @Api(tags = "유저 API")
 public class UserController {
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
