@@ -16,6 +16,9 @@ import GroupMember from "./Group/GroupPages/GroupMember";
 import GroupNoticeDetail from "./Group/GroupDetailPage/GroupNoticeDetail";
 import GroupQnADetail from "./Group/GroupDetailPage/GroupQnADetail";
 
+import MeetingListDetail from "./MyPage/MyPagePages/MeetingListDetail";
+import QuestionListDetail from "./MyPage/MyPagePages/QuestionListDetail";
+
 import LoginFrame from "./Login/LoginComponents/LoginFrame";
 import FindIdPage from "./Login/LoginPages/FindIdPage";
 import FindPasswordPage from "./Login/LoginPages/FindPasswordPage";
@@ -106,6 +109,8 @@ function App() {
               {/* 디테일 페이지 */}
               <Route path="/group/notice/:notice_pk" element={<GroupNoticeDetail />}></Route>
               <Route path="/group/qna/:qna_pk" element={<GroupQnADetail />}></Route>
+              <Route path="/my-meeting-record/:conference_Pk/detail" element={<MeetingListDetail />}></Route>
+              <Route path="/my-question-record/:conference_Pk/detail" element={<QuestionListDetail />}></Route>
 
               <Route path="/group/:group_pk" element={<GroupDetail />}>
                 <Route path="notice" element={<GroupNotice />}></Route>

@@ -12,8 +12,8 @@ const MyPageMeetingList = () => {
   const API = useRecoilValue(APIroot);
   const navigate = useNavigate();
 
-  const TableNavHandler = () => {
-    navigate('/MyPageMeetingListDetail');
+  const TableNavHandler = (row) => {
+    navigate(`/my-meeting-record/${row.original.conferencePk}/detail`);
   };
 
   const data = React.useMemo(() => meetingRecord, [meetingRecord]);
