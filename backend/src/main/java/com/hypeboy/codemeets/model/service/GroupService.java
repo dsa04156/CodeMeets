@@ -45,10 +45,11 @@ public interface GroupService {
 
 	void groupLeft(int groupPk, int userPk) throws SQLException;
 
-	List<UserDto> groupMemberList(int groupPk, int nowPage, int items, String order) throws SQLException;
-
 
 	int checkManager(int userPk, int groupPk) throws SQLException;
+
+
+	List<UserDto> groupMemberList(int groupPk) throws SQLException;
 
 	
 }	
