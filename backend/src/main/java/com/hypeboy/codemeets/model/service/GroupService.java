@@ -11,7 +11,6 @@ import com.hypeboy.codemeets.model.dto.UserDto;
 public interface GroupService {
 	int createGroup(GroupDto groupDto) throws SQLException;
 
-	List<UserDto> groupMemberList(int groupPk) throws SQLException;
  
 	int groupJoin(GroupUserDto guDto) throws SQLException;
 	
@@ -45,6 +44,11 @@ public interface GroupService {
 	List<GroupListDto> getList(int userPk, int nowPage, int items, String order) throws SQLException;
 
 	void groupLeft(int groupPk, int userPk) throws SQLException;
+
+	List<UserDto> groupMemberList(int groupPk, int nowPage, int items, String order) throws SQLException;
+
+
+	int checkManager(int userPk, int groupPk) throws SQLException;
 
 	
 }	
