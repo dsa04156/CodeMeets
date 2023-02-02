@@ -240,7 +240,6 @@ public class GroupController {
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(i)));
     	}
-    	resultMap.put("total", total);
     	resultMap.put("groupList", groupList);
     	
     	return new ResponseEntity<Map<String,List<GroupListDto>>>(resultMap,HttpStatus.OK);
