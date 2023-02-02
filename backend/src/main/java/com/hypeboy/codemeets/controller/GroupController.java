@@ -104,10 +104,7 @@ public class GroupController {
         @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/{groupPk}/member")
-	public ResponseEntity<?> groupMemberList(@PathVariable("groupPk") int groupPk,HttpServletRequest request,
-	  		@RequestParam("nowPage") int nowPage,
-				@RequestParam("items") int items,
-				@RequestParam("order") String order) {
+	public ResponseEntity<?> groupMemberList(@PathVariable("groupPk") int groupPk,HttpServletRequest request) {
     	
     	int userPk=0;
     	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
@@ -121,7 +118,8 @@ public class GroupController {
 		try {
 			Map<String,List<UserDto>> resultMap = new HashMap<String, List<UserDto>>();
 			logger.info("group member list - 호출");
-			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk,(nowPage - 1) * items, items, order);
+			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk);
+			int total = groupMemberList.size();
 			int position = groupService.checkManager(userPk,groupPk);
 			if(position==1||position==2) {
 				resultMap.put("Manager", groupMemberList);
@@ -228,6 +226,8 @@ public class GroupController {
     		logger.info("토큰 실패");
     	}
     	List<GroupListDto> groupList = groupService.getList(userPk,(nowPage - 1) * items, items, order);
+    	Map<Integer,List<GroupListDto>> resultMap = new HashMap<Integer, List<GroupListDto>>();
+    	int total = groupList.size();
     	logger.info("gpList 호출");
     	logger.info(groupList.toString());
     	List<Integer> groupPkList = groupService.gpList(userPk);
@@ -240,7 +240,8 @@ public class GroupController {
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(i)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(i)));
     	}
-    	return new ResponseEntity<List<GroupListDto>>(groupList,HttpStatus.OK);
+    	resultMap.put(total, groupList);
+    	return new ResponseEntity<Map<Integer,List<GroupListDto>>>(resultMap,HttpStatus.OK);
     }
     
     
