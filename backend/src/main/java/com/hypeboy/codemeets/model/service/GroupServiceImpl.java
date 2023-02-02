@@ -38,8 +38,8 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public List<UserDto> groupMemberList(int groupPk, int nowPage, int items, String order) throws SQLException {
-		return dao.groupMemberList(groupPk,nowPage, items,order);
+	public List<UserDto> groupMemberList(int groupPk) throws SQLException {
+		return dao.groupMemberList(groupPk);
 	}
 
 	@Override
