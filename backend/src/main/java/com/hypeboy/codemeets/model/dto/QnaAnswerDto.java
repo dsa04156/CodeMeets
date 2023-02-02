@@ -22,4 +22,6 @@ public class QnaAnswerDto {
 	private int groupQnaAnswerLikeCnt;
 	// 회원의 like 유무	
 	private int groupQnaAnswerLike;
+	// 글 수
+	private int total;
 }
