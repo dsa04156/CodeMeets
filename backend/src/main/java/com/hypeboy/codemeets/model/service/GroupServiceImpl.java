@@ -49,8 +49,8 @@ public class GroupServiceImpl implements GroupService {
 
 
 	@Override
-	public List<GroupListDto> getList(int userPk) throws SQLException {
-		return dao.getList(userPk);
+	public List<GroupListDto> getList(int userPk, int nowPage, int items, String order) throws SQLException {
+		return dao.getList(userPk,nowPage,items,order);
 	}
 
 
@@ -111,6 +111,12 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public Integer duplicated(int userPk, int groupPk) throws SQLException {
 		return dao.duplicated(userPk,groupPk);
+	}
+
+
+	@Override
+	public void groupLeft(int groupPk, int userPk) throws SQLException {
+		dao.groupLeft(groupPk,userPk);
 	}
 
 
