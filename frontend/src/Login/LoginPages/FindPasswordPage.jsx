@@ -58,7 +58,7 @@ const FindPasswordPage = () => {
     .then((response) => {
       if (((inputId != '') && (inputEmail != null)) || ((inputId != '') && (inputPhoneNum != null))){
         if (response.data.result == '1'){
-          navigate("/codemeets/newpassword", {state:{ findId: inputId}})
+          navigate("/codemeets/newpassword", {state:{findId: inputId}})
           console.log(inputId)
         }
       } else {
