@@ -11,7 +11,6 @@ import { AiOutlinePlusCircle } from "react-icons/ai";
 const Home = () => {
   const [isOpen1, setIsOpen1] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
-  
 
   const onClickButton1 = () => {
     setIsOpen1(true);
@@ -51,7 +50,7 @@ const Home = () => {
         )}
       </PositionIcon>
       <HomeMeetDiv>
-        <HomeMeetingList /> 
+        <HomeMeetingList />
       </HomeMeetDiv>
     </div>
   );

@@ -16,6 +16,7 @@ import GroupMember from "./Group/GroupPages/GroupMember";
 //Detail
 import GroupNoticeDetail from "./Group/GroupDetailPage/GroupNoticeDetail";
 import GroupQnADetail from "./Group/GroupDetailPage/GroupQnADetail";
+import GroupModify from "./Group/GroupComponents/GroupModify";
 import MeetingListDetail from "./MyPage/MyPagePages/MeetingListDetail";
 import QuestionListDetail from "./MyPage/MyPagePages/QuestionListDetail";
 
@@ -111,6 +112,9 @@ function App() {
               <Route path="/group/qna/:qna_pk" element={<GroupQnADetail />}></Route>
               <Route path="/my-meeting-record/:conference_Pk/detail" element={<MeetingListDetail />}></Route>
               <Route path="/my-question-record/:conference_Pk/detail" element={<QuestionListDetail />}></Route>
+
+              {/* 수정 페이지*/}
+              <Route path="/group/notice/modify" element={<GroupModify />}></Route>
 
               <Route path="/group/:group_pk" element={<GroupDetail />}>
                 <Route path="notice" element={<GroupNotice />}></Route>
