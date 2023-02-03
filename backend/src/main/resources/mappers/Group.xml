@@ -37,6 +37,8 @@
 		<result column="profile_photo" property="profilePhoto" />
 		<result column="email_public" property="emailPublic" />
 		<result column="tel_public" property="telPublic"/>
+		<result column="group_user_position" property="groupUserPosition"/>
+		
 	</resultMap>
 	
 	<insert id="createGroup" useGeneratedKeys="true" keyProperty="groupPk" >
@@ -59,7 +61,7 @@
 	<select id="groupMemberList" resultMap="user">
 		<![CDATA[
 			select 
-			user.user_id,user.user_pk,user_info.user_name,`group-user`.group_pk 
+			user.user_id,user.user_pk,user_info.user_name,`group-user`.group_pk,`group-user`.group_user_position 
 			from
 			 user user, user_info user_info,`group-user` `group-user`
  			where 
