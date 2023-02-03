@@ -116,22 +116,18 @@ public class GroupController {
     		logger.info("토큰 실패");
     	}
 		try {
-			Map<String,List<UserDto>> resultMap = new HashMap<String, List<UserDto>>();
+			Map<String,Object> resultMap = new HashMap<String, Object>();
 			logger.info("group member list - 호출");
 			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk);
 			int total = groupMemberList.size();
 			System.out.println(groupMemberList.toString());
 			int position = groupService.checkManager(userPk,groupPk);
-			if(position==1||position==2) {
-				resultMap.put("Manager", groupMemberList);
-				System.out.println(123);
-			}
-			else {
-				resultMap.put("Normal", groupMemberList);
-			}
+			resultMap.put("position", position);
+			resultMap.put("List", groupMemberList);
+		
 			logger.info("group member list - 호출 성공");
 			System.out.println(groupMemberList.toString());
-			return new ResponseEntity<Map<String,List<UserDto>>>(resultMap, HttpStatus.OK);
+			return new ResponseEntity<Map<String,Object>>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
