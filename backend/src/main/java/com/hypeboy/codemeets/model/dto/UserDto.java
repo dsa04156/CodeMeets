@@ -25,5 +25,6 @@ public class UserDto {
 	private String profilePhoto;
 	private int emailPublic;
 	private int telPublic;
+	private int groupUserPosition;
 		
 }
