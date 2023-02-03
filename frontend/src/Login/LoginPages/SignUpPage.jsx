@@ -413,7 +413,7 @@ const SignUpPage = () => {
           </MessageBox>
         </span>
         <h4>선택 사항</h4>
-        <label htmlFor="">프로필 사진</label>
+        <label htmlFor="">프로필 이미지</label>
         <div>
           <img src={previewImage} />
           <InputStyle
