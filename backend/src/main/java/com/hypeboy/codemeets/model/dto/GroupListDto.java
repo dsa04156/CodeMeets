@@ -14,6 +14,7 @@ public class GroupListDto {
 	private int count;
 	private String callStartTime;
 	private int groupPk;
+	private int userPk;
 	private int managerId;
-	
+	private int total;
 }
