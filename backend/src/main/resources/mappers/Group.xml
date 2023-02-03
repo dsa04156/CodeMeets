@@ -65,9 +65,7 @@
  			where 
  			user.user_pk=user_info.user_pk
  			 and `group-user`.user_pk=user_info.user_pk 
- 			 and `group-user`.group_pk=#{groupPk}
-		 	ORDER BY #{order} DESC
-			LIMIT #{nowPage}, #{items};
+ 			 and `group-user`.group_pk=#{groupPk};
 		]]>
 	</select>
 	
