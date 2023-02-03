@@ -120,6 +120,7 @@ public class GroupController {
 			logger.info("group member list - 호출");
 			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk);
 			int total = groupMemberList.size();
+			System.out.println(groupMemberList.toString());
 			int position = groupService.checkManager(userPk,groupPk);
 			if(position==1||position==2) {
 				resultMap.put("Manager", groupMemberList);
@@ -137,33 +138,33 @@ public class GroupController {
 	}
     
 
-    //     @Operation(summary = "그룹 가입하기", description = "그룹 가입 API ")
-    // @PostMapping("/{groupPk}/join")
-    // @ApiImplicitParams({
-    //     @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
-    // })
-	// public ResponseEntity<?> groupJoin(@PathVariable("groupPk") int groupPk,HttpServletRequest request) throws SQLException  {
-    // 	logger.info("group join - 호출");
-    // 	System.out.println(groupPk);
-    // 	int userPk=0;
-    //  	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
-	// 		logger.info("사용가능한 토큰입니다");
-			
-	// 		userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
-	// 		logger.info("userPk - " + userPk);
-    // 	}
-    // 	else {
-    // 		logger.info("토큰 실패");
-    // 	}
-    //  	GroupUserDto guDto = new GroupUserDto();
-    //  	guDto.setGroupPk(groupPk);
-    //  	guDto.setUserPk(userPk);
-    // 	if(groupService.groupJoin(guDto)!=0) {
-    // 		logger.info("group-join 성공");
-    // 		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-    // 	}else
-	// 		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
-	// }
+//        @Operation(summary = "그룹 가입하기", description = "그룹 가입 API ")
+//    @PostMapping("/{groupPk}/join")
+//    @ApiImplicitParams({
+//        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+//    })
+//	public ResponseEntity<?> groupJoin(@PathVariable("groupPk") int groupPk,HttpServletRequest request) throws SQLException  {
+//    	logger.info("group join - 호출");
+//    	System.out.println(groupPk);
+//    	int userPk=0;
+//     	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+//			logger.info("사용가능한 토큰입니다");
+//			
+//			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+//			logger.info("userPk - " + userPk);
+//    	}
+//    	else {
+//    		logger.info("토큰 실패");
+//    	}
+//     	GroupUserDto guDto = new GroupUserDto();
+//     	guDto.setGroupPk(groupPk);
+//     	guDto.setUserPk(userPk);
+//    	if(groupService.groupJoin(guDto)!=0) {
+//    		logger.info("group-join 성공");
+//    		return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+//    	}else
+//			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
         
         @Operation(summary = "그룹 url 가입", description = "그룹 url 가입 API ")
         @PostMapping("/join/{groupUrl}")
