@@ -226,23 +226,21 @@ public class GroupController {
     		logger.info("토큰 실패");
     	}
     	List<GroupListDto> groupList = groupService.getList(userPk,(nowPage - 1) * items, items, order);
-    	groupList.add(0,null);
     	Map<String,List<GroupListDto>> resultMap = new HashMap<String, List<GroupListDto>>();
     	logger.info("gpList 호출");
     	logger.info(groupList.toString());
     	List<Integer> groupPkList = groupService.gpList(userPk);
-    	groupPkList.add(0,null);
     	logger.info(groupPkList.toString());
     	int gc = groupPkList.size();
-    	
+    	System.out.println(gc);
 //    	for(int i=(nowPage-1)*items+1;i<=items*nowPage;i++) {
-		for(int i=1;i<=items;i++) {
+		for(int i=0;i<items;i++) {
     		if(i>=groupList.size()) {
     			break;
     		}
     		int k =(nowPage-1)*items+i;
 	    		System.out.println(k);
-    		groupList.get(i).setCnt(k);
+    		groupList.get(i).setCnt(k+1);
     		groupList.get(i).setGroupPk(groupPkList.get(k));
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(k)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(k)));
