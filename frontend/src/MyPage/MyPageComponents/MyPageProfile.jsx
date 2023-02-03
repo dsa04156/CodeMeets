@@ -3,12 +3,19 @@ import defaultImage from '../../Images/Logo.png';
 import { useState, useEffect } from 'react';
 import { user, APIroot } from '../../Store';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import MyPageEditModal from './MyPageEditModal';
 
 const MyPageProfile = () => {
   const userInfo = useRecoilValue(user);
   const API = useRecoilValue(APIroot);
 
   const [imageNotExist, setImageNotExist] = useState(defaultImage);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+
+  const editModalOpenHandler = () => {
+    setEditModalOpen(true);
+  };
+
   useEffect(() => {
     console.log(userInfo.profilePhoto);
     if (userInfo.profileImage === '') {
@@ -28,12 +35,22 @@ const MyPageProfile = () => {
             <div className='nickname'>( {userInfo.nickname} )</div>
         </TitleStyle>
         <TitleStyle>
-        <div>{userInfo.email}</div>
+        <div className='nickname'>{userInfo.email} {userInfo.emailPublic === 0? <p> (비공개)</p> : <p>(공개)</p>}</div>
         </TitleStyle>
         <TitleStyle>
-        <div>{userInfo.tel}</div>
-        <div className='edit'>Edit</div>
-        </TitleStyle>
+          <TitleStyle>
+        <div className='nickname'>{userInfo.tel} {userInfo.tel === 0? <p> (비공개)</p> : <p>(공개)</p>}</div>
+          </TitleStyle>
+        <div className='edit' onClick={editModalOpenHandler}>Edit</div>
+        {editModalOpen && (
+          <MyPageEditModal
+          open={editModalOpen}
+          onClose={() => {
+            setEditModalOpen(false);
+          }}
+          ></MyPageEditModal>
+          )}
+          </TitleStyle>
       </ProfileInformation>
     </ProfileCard>
   );
@@ -63,7 +80,7 @@ const ProfileInformation = styled.div`
 `;
 
 const TitleStyle = styled.div`
-    display: flex;
+  display: flex;
   flex-direction: row;
   align-items: end; // 세로 기준 맨 아래
   height: 6vh;
@@ -74,10 +91,18 @@ const TitleStyle = styled.div`
   };
   .nickname {
     display: flex;
+    align-items: center;
     font-size: 1em;
   };
   .edit {
     margin-left: 70%;
     color: #5454e2;
+    cursor: pointer;
+  
+    &:hover {
+    color: #10f14c;
+    transition : 0.5s;
+    text-decoration: none;
   }
+}
 `;

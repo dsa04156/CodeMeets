@@ -12,13 +12,11 @@ import GroupMeetingList from "./Group/GroupPages/GroupMeetingList";
 import GroupNotice from "./Group/GroupPages/GroupNotice";
 import GroupSchedule from "./Group/GroupPages/GroupSchedule";
 import GroupMember from "./Group/GroupPages/GroupMember";
+
 //Detail
 import GroupNoticeDetail from "./Group/GroupDetailPage/GroupNoticeDetail";
 import GroupQnADetail from "./Group/GroupDetailPage/GroupQnADetail";
-
-// modify
 import GroupModify from "./Group/GroupComponents/GroupModify";
-
 import MeetingListDetail from "./MyPage/MyPagePages/MeetingListDetail";
 import QuestionListDetail from "./MyPage/MyPagePages/QuestionListDetail";
 
