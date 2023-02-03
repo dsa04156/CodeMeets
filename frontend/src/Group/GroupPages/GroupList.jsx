@@ -1,5 +1,6 @@
 import GroupListItem from "../GroupComponents/GroupListItem";
-import Pagination from "../../CommonComponents/Pagination/Pagination";
+import Pagination from "../../CommonComponents/Pagination";
+import GroupInModal from "../GroupModal/GroupInModal";
 /////////////
 import CreateTable from "../../CommonComponents/CreateTable";
 ///////////
@@ -22,6 +23,15 @@ const GroupList = () => {
   const TableNavHandler = (row) => {
     navigate(`/group/${row.original.groupPk}/notice`);
   };
+
+
+  //그룹 가입하기 Modal 부분
+  const [isOpen, setIsOpen] = useState(false);
+  const groupInHandler = () => {
+    setIsOpen(true);
+  }
+
+
 
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
@@ -63,35 +73,33 @@ const GroupList = () => {
     console.log("실행");
     axios({
       method: "GET",
-      url: `${API}/group/list`,
+      url: `${API}/group/list?nowPage=1&items=7&order=444`,
       headers: {
         "Content-Type": "application/json",
         ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
       console.log(response.data);
-      setGroupList(response.data);
+      setGroupList(response.data.groupList);
     });
   }, [API]);
-
-  const liList = groupList.map((groupitem, index) => {
-    console.log(groupitem);
-    return (
-      <GroupListItem
-        key={index}
-        id={groupitem.cnt}
-        title={groupitem.gname}
-        nickname={groupitem.nickname}
-        count={groupitem.count}
-      />
-    );
-  });
 
   return (
     <div>
       <TitleStyle>
         <div className="name">"{loginUser.userName}"</div>{" "}
         <div className="wellcome">님의 Group List</div>
+        {/* modal 부분 */}
+        <button onClick={groupInHandler}>가입 !</button>
+        {isOpen && (
+          // 연결된 모달 component
+          <GroupInModal
+            open={isOpen}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+          />
+        )}
       </TitleStyle>
       <ContentBox>
         <Styles>
@@ -102,12 +110,6 @@ const GroupList = () => {
           />
         </Styles>
       </ContentBox>
-
-      {/* <ContentBox>
-        <ul>{liList}</ul>
-        {groupList}
-      </ContentBox> */}
-      {/* <Pagination></Pagination> */}
     </div>
   );
 };

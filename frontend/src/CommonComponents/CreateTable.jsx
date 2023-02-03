@@ -36,7 +36,7 @@ function CreateTable({ columns, data, TableNavHandler}) {
     <div {...getTableProps()} className="table">
       <div>
         {headerGroups.map(headerGroup => (
-          <div {...headerGroup.getHeaderGroupProps()} className="tr">
+          <div {...headerGroup.getHeaderGroupProps()} className="tr" >
             {headerGroup.headers.map(column => (
               <HeadSize {...column.getHeaderProps()} className="th">
                 {column.render('Header')}
@@ -49,14 +49,15 @@ function CreateTable({ columns, data, TableNavHandler}) {
       <div {...getTableBodyProps()}>
         {rows.map(
           (row, i) => {
+            console.log(i)
             prepareRow(row);
             return (
               <div {...row.getRowProps()} 
               className="tr" 
               onClick={() => {TableNavHandler(row);
-                console.log(row.original)
-              
-              }}>
+                console.log(row.original);
+              }}
+              >
                 {row.cells.map(cell => {
                   return (
                     <NavBarStyle {...cell.getCellProps()} className="td">
@@ -106,6 +107,9 @@ const Styles = styled.div`
 const NavBarStyle = styled(NavLink)`
   color: black;
   outline: invert;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   &:link {
     transition : 0.5s;
     text-decoration: none;
