@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const MemberCard = ({ userId, nickName, profilePhoto, tel, email, userName }) => {
+const MemberCard = ({ userId, nickName, profilePhoto, tel, email, userName, position }) => {
   return (
     <Card>
       <ImageBox>
@@ -16,6 +16,7 @@ const MemberCard = ({ userId, nickName, profilePhoto, tel, email, userName }) =>
         <div>email: {email}</div>
       </PublickBox>
       <button>매니저 승급!</button>
+      {position === 1 ? <button>삭제</button> : null}
     </Card>
   );
 };

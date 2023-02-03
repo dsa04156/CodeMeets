@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 const ModalOpenInfo = () => {
     // 여기서부터 모달
+
+    // 만들 페이지에 넣어야할 부분//////////////////////////////////////////////
   const [isOpen, setIsOpen] = useState(false);
 
   const onClickButton = () => {
@@ -25,7 +27,7 @@ const ModalOpenInfo = () => {
         </AppWrap>
     );
 };
-
+///////////////////////////////////////////////////////////////////////////////////
 export default ModalOpenInfo
 
 
