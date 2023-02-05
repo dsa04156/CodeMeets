@@ -12,4 +12,10 @@ public interface ConferenceDao {
 	// 그룹 공지 작성
 	public ConferenceDto getConferenceDetail(int conferencePk) throws SQLException;
 
+	public int createConference(ConferenceDto conferenceDto) throws SQLException;
+
+	public int joinConference(int conferencePk, int userPk) throws SQLException;
+
+	public List<String> clickCreate(int userPk) throws SQLException;
+
 }

@@ -28,5 +28,23 @@ public class ConferenceServiceImpl implements ConferenceService {
 		
 		return sqlSession.getMapper(ConferenceDao.class).getConferenceDetail(conferencePk);
 	}
+	
+	@Override
+	public int createConference(ConferenceDto conferenceDto) throws Exception{
+		System.out.println(conferenceDto.toString());
+		return sqlSession.getMapper(ConferenceDao.class).createConference(conferenceDto);
+	}
+
+	@Override
+	public int joinConference(int conferencePk,int userPk) throws Exception {
+		return sqlSession.getMapper(ConferenceDao.class).joinConference(conferencePk,userPk);
+
+		
+	}
+	
+	@Override
+	public List<String> clickCreate(int userPk) throws Exception {
+		return sqlSession.getMapper(ConferenceDao.class).clickCreate(userPk);
+	}
 
 }
