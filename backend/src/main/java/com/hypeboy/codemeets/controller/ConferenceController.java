@@ -3,6 +3,8 @@ package com.hypeboy.codemeets.controller;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +12,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.ConferenceDto;
+import com.hypeboy.codemeets.model.dto.GroupUserDto;
 import com.hypeboy.codemeets.model.service.ConferenceServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
@@ -61,5 +69,71 @@ public class ConferenceController {
 			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+    
+    
+    @Operation(summary = "회의 생성 버튼 클릭",description = "회의 생성 버튼 클릭 시 데이터")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/click")
+    public ResponseEntity<?> clickCreate(HttpServletRequest request) throws Exception{
+    	logger.info("회의 생성 버튼 클릭 API 호출");
+    	int userPk=0;
+    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
+    	try {
+    		List<String> myGroup = conferenceService.clickCreate(userPk);
+    		System.out.println(myGroup.toString());	
+    		return new ResponseEntity<List<String>>(myGroup,HttpStatus.OK);
+    	}catch (Exception e) {
+    		return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+    		
+	}
 
+    
+    @Operation(summary = "회의 생성",description = "회의 생성하기 ")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/create")
+    public ResponseEntity<?> createConference(HttpServletRequest request,@RequestBody ConferenceDto conferenceDto) throws Exception{
+    	logger.info("회의 생성 API 호출");
+    	int userPk=0;
+    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
+    	conferenceDto.setUserPk(userPk);
+    	if( conferenceService.createConference(conferenceDto)!=0) {
+    		try {
+    			int conferencePk = conferenceDto.getConferencePk();
+    			conferenceService.joinConference(conferencePk, userPk);
+    			logger.info("회의 생성 성공");
+    			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+    		}catch (Exception e) {
+    			logger.info("회의 실패");
+    			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+    		
+    	}
+    	else {
+    		return new ResponseEntity<String>(FAIL,HttpStatus.BAD_REQUEST);
+    	}
+    }
+    
+    
+    
 }
