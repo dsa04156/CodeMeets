@@ -1,5 +1,6 @@
 package com.hypeboy.codemeets.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -46,5 +47,26 @@ public class ConferenceServiceImpl implements ConferenceService {
 	public List<String> clickCreate(int userPk) throws Exception {
 		return sqlSession.getMapper(ConferenceDao.class).clickCreate(userPk);
 	}
+
+	@Override
+	public int checkUrl(String conferenceUrl) throws Exception {
+		return sqlSession.getMapper(ConferenceDao.class).checkUrl(conferenceUrl);
+	}
+	
+	@Override
+	public void enterConference(int userPk, int conferencePk) throws SQLException {
+		sqlSession.getMapper(ConferenceDao.class).enterConference(userPk,conferencePk);
+	}
+
+	@Override
+	public void closeConference(int conferencePk, int userPk) throws SQLException {
+		sqlSession.getMapper(ConferenceDao.class).closeConference(conferencePk,userPk);
+	}
+
+	@Override
+	public void exitConference(int conferencePk, int userPk) throws SQLException {
+		sqlSession.getMapper(ConferenceDao.class).exitConference(conferencePk,userPk);
+	}
+
 
 }

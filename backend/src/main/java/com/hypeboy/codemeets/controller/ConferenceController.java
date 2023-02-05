@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -133,6 +134,102 @@ public class ConferenceController {
     		return new ResponseEntity<String>(FAIL,HttpStatus.BAD_REQUEST);
     	}
     }
+    
+    @Operation(summary = "회의 종료",description = "회의 종료하기 ")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping("/close")
+    public ResponseEntity<?> closeConference(HttpServletRequest request,@RequestParam int conferencePk) throws Exception{
+    	logger.info("회의 종료 API 호출");
+    	int userPk=0;
+    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
+    		try {
+    			conferenceService.closeConference(conferencePk,userPk);
+    				
+				logger.info("회의 종료 성공");
+				return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+    	
+    		}
+    		catch (Exception e) {
+    			
+    			logger.info("회의종료 실패");
+    			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+    		
+		}
+    
+    
+    @Operation(summary = "회의 참가",description = "회의 참가하기 ")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/enter")
+    public ResponseEntity<?> enterConference(HttpServletRequest request,@RequestParam String conferenceUrl) throws Exception{
+    	logger.info("회의 참가 API 호출");
+    	int userPk=0;
+    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
+    	logger.info("회의참가하기");
+		try {
+			logger.info("url 확인");
+			int conferencePk = conferenceService.checkUrl(conferenceUrl);
+			logger.info("url 체크 완료" + conferencePk);
+			conferenceService.enterConference(userPk,conferencePk);
+			logger.info("회의 참가 성공");
+			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+		}catch (Exception e) {
+			logger.info("회의 참가 실패"+e);
+			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+    	}
+    
+    
+    
+    @Operation(summary = "회의 나가기 개발중",description = "회의 나가기 ")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/exit")
+    public ResponseEntity<?> exitConference(HttpServletRequest request,@RequestParam int conferencePk) throws Exception{
+    	logger.info("회의 참가 API 호출");
+    	int userPk=0;
+    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
+    	logger.info("회의 나가기 API");
+		try {
+			conferenceService.exitConference(conferencePk,userPk);
+			logger.info("회의 나가기 완료");
+			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+		}catch (Exception e) {
+			logger.info("회의 나가기 실패"+e);
+			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+    	}
     
     
     

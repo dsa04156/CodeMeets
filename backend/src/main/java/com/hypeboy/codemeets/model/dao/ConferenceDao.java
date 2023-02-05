@@ -18,4 +18,11 @@ public interface ConferenceDao {
 
 	public List<String> clickCreate(int userPk) throws SQLException;
 
+	public int checkUrl(String conferenceUrl) throws SQLException;
+
+	public void enterConference(int userPk, int conferencePk) throws SQLException;
+
+	public void closeConference(int conferencePk, int userPk) throws SQLException;
+
+	public void exitConference(int conferencePk, int userPk) throws SQLException;
 }

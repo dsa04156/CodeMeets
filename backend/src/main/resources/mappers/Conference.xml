@@ -40,7 +40,7 @@
 	 (call_start_time,conference_title,conference_contents,
 	 conference_active,conference_url,group_pk,user_pk)
 	  values 
-	  (now(),#{conferenceTitle},#{conferenceContents},#{conferenceActive},#{conferenceUrl},#{groupPk},#{userPk});
+	  (now(),#{conferenceTitle},#{conferenceContents},1,#{conferenceUrl},#{groupPk},#{userPk});
 	  ]]>
 	</insert>
 	
@@ -65,4 +65,41 @@
 		  `group-user`.user_pk=#{userPk};
 	 ]]>
 	</select>
+	
+	<select id="checkUrl" parameterType="String" resultType="int">
+	<![CDATA[
+		select
+		 `conference_pk`
+		  from
+		   `conference`
+		    where
+		     `conference_url`=#{conferenceUrl};
+	]]>
+	</select>
+	
+	<insert id="enterConference">
+	<![CDATA[
+		insert into 
+		`conference-user`(conference_pk,user_pk) 
+		values 
+		(#{conferencePk},#{userPk});
+	]]>
+	</insert>
+	
+	<update id="closeConference">
+	<![CDATA[
+	update 
+	`conference`
+	 set
+	  `conference_active`=0, call_end_time=now()
+	   where
+	    conference_pk=#{conferencePk} and user_pk=#{userPk};
+	    ]]>
+	</update>
+	
+	<insert id="exitConference">
+	<![CDATA[
+		select * from `conference`;
+	]]>
+	</insert>
 </mapper>

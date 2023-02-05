@@ -1,5 +1,6 @@
 package com.hypeboy.codemeets.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import com.hypeboy.codemeets.model.dto.ConferenceDto;
@@ -13,5 +14,13 @@ public interface ConferenceService {
 	int createConference(ConferenceDto conferenceDto) throws Exception;
 
 	List<String> clickCreate(int userPk) throws Exception;
+
+	int checkUrl(String conferenceUrl) throws Exception;
+
+	void enterConference(int userPk, int conferencePk) throws SQLException;
+
+	void closeConference(int conferencePk, int userPk) throws SQLException;
+
+	void exitConference(int conferencePk, int userPk) throws SQLException;
 
 }
