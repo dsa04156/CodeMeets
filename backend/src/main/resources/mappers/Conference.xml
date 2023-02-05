@@ -31,5 +31,38 @@
 			WHERE conference_pk =  #{conferencePk};
 		]]>
 	</select>
-
+	
+	<insert id="createConference" parameterType="ConferenceDto" useGeneratedKeys="true"
+    keyProperty="conferencePk">
+	<![CDATA[
+	 insert into 
+	 `conference`
+	 (call_start_time,conference_title,conference_contents,
+	 conference_active,conference_url,group_pk,user_pk)
+	  values 
+	  (now(),#{conferenceTitle},#{conferenceContents},#{conferenceActive},#{conferenceUrl},#{groupPk},#{userPk});
+	  ]]>
+	</insert>
+	
+	 <insert id="joinConference">
+	 	<![CDATA[
+		insert into 
+		`conference-user`(conference_pk,user_pk)
+		values 
+		(#{conferencePk},#{userPk});
+		]]>
+	</insert>
+	
+	<select id="clickCreate" parameterType="int" resultType="list" >
+		<![CDATA[
+		select 
+		`group`.group_name 
+		from 
+		`group` inner join `group-user` 
+		on 
+		`group`.group_pk=`group-user`.group_pk
+		 where
+		  `group-user`.user_pk=#{userPk};
+	 ]]>
+	</select>
 </mapper>
