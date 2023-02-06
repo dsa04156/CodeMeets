@@ -13,9 +13,6 @@ const Pagination = ({ totalPosts, limit, page, setPage}) => {
   useEffect(()=>{
     setCurrPage(page)
   }, [page])
-useEffect(() =>{
-  함수이름()
-},[setiseamil])
 
   useEffect(()=>{
         if(numPages<6){

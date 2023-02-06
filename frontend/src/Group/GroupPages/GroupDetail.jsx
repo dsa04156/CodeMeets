@@ -2,28 +2,88 @@ import GroupNavBar from "../GroupComponents/GroupNavBar";
 import { Outlet } from "react-router-dom";
 // import { useLocation } from 'react-router-dom';
 import { useParams } from "react-router-dom";
-// import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import GroupLeaveModal from "../GroupModal/GroupLeaveModal";
+import GroupDeleteModal from "../GroupModal/GroupDeleteModal";
 
 import styled from "styled-components";
 
-import { groupNavTitle } from "../../Store";
-import { useRecoilState } from "recoil";
+import { groupNavTitle, APIroot } from "../../Store";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const GroupDetail = () => {
   const [groupTitle, setGroupTitle] = useRecoilState(groupNavTitle);
-  
+  const [leaveTheGroupModal, setLeaveTheGroupModal] = useState(false); //true면 탈퇴하는거로 구성
+  const [DeleteTheGroupModal, setDeleteTheGroupModal] = useState(false);
+  const API = useRecoilValue(APIroot);
+
+  const params = useParams();      // params는 각 페이지의 url에 있는 모든 변수값을 넣어 놓음.
+  console.log('이건 파람스')
+  console.log(params);
+
+  const [position, setPosition] = useState();
+
   const groupTitleHandler = (title) => {
     setGroupTitle(title)
   };
 
-  const params = useParams();
-  console.log('이건 파람스')
-  console.log(params);
+   const leaveGroupHandler = () => {
+      setLeaveTheGroupModal(true);
+  }
 
+  const DeleteGroupHandler = () => {
+    setDeleteTheGroupModal(true);
+  }
+
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `${API}/group/${params.group_pk}/member`,
+      headers: {
+        "Content-Type": "application/json",
+        ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`,
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+      setPosition(response.data.position);
+    })
+  }, [API, position]);
+
+    console.log(position)
+  
   return (
     <div>
       <MainTitle>
       <h1>{groupTitle}</h1>
+      <div>
+        <LeaveButton onClick={leaveGroupHandler}>Leave</LeaveButton>
+      </div>
+      {leaveTheGroupModal && (
+          // 연결된 모달 component
+          <GroupLeaveModal
+            open={leaveTheGroupModal}
+            onClose={() => {
+              setLeaveTheGroupModal(false);
+            }}
+            groupPk={params.group_pk}
+          />
+        )}
+      
+        <div>
+          {position === 3 ? <DeleteButton onClick={DeleteGroupHandler}>Delete</DeleteButton> : null}
+        </div>
+        {DeleteTheGroupModal && (
+          // 연결된 모달 component
+          <GroupDeleteModal
+            open={DeleteTheGroupModal}
+            onClose={() => {
+              setDeleteTheGroupModal(false);
+            }}
+            groupPk={params.group_pk}
+          />
+        )}
       </MainTitle>
     <GroupMainBoard>
     <GroupNavBar grouppk={params.group_pk} groupTitleFunc={groupTitleHandler}/>
@@ -38,7 +98,7 @@ export default GroupDetail;
 const MainTitle = styled.div`
 display:flex;
 align-items:center;
-border: 1px solid black;
+border: 1px ;
 padding-left: 30px;
 height:90px;
 
@@ -48,3 +108,29 @@ const GroupMainBoard = styled.div`
   border: 1px solid black;
   height: 500px;
 `
+const TitleStyle = styled.div`
+  display: flex;
+  flex-direction: row;
+  padding: 1vh;
+  margin-bottom: 2vh;
+  height: 7vh;
+  box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2);
+  border-radius: 20px;
+  .name {
+    display: flex;
+    align-items: center;
+    font-size: 2em;
+    margin-right: 5px;
+  }
+  .button {
+    margin: 15px 0px 0px 20px;
+  }
+`;
+
+const LeaveButton = styled.button`
+  margin-left: 620px;
+`;
+
+const DeleteButton = styled.button`
+  margin-left: 20px;
+`;

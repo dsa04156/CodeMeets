@@ -9,11 +9,14 @@ import { useNavigate } from "react-router-dom"
 
 import GroupQnAItem from "../GroupComponents/GroupQnAItem";
 import CreateTable from "../../CommonComponents/CreateTable";
+import Pagination from "../../CommonComponents/Pagination";
 
 const GroupQnA = () => {
   const API = useRecoilValue(APIroot);
 
   const [qnaList, setQnaList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
 
   const params = useParams();
   const navigate = useNavigate()
@@ -25,12 +28,13 @@ const GroupQnA = () => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `${API}/qna/list/${params.group_pk}?nowPage=1&items=20`,
+      url: `${API}/qna/list/${params.group_pk}?nowPage=${page}&items=20`,
     }).then((response) => {
       console.log(response.data);
+      setTotalPosts(response.data[0].total);
       setQnaList(response.data);
     });
-  }, [API, params]);
+  }, [API, params, page]);
 
   const data = React.useMemo(() => qnaList, [qnaList]);
 
@@ -57,7 +61,7 @@ const GroupQnA = () => {
         width: 100,
       },
       {
-        Header: "등록일자",
+        Header: "userPk??",
         accessor: "userPk",
         width: 100,
       },
@@ -72,7 +76,8 @@ const GroupQnA = () => {
 
   return (
     <Styles>
-      <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler}/>
+      <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler} isButton="0"/>
+      <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
     </Styles>
   );
 };

@@ -18,7 +18,7 @@ const MyPageMeetingListDetail = () => {
         console.log('실행');
         axios({
           method: 'GET',
-          url: `${API}/user/my-conference-record?nowPage=1&items=6`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
+          url: `${API}/user/my-conference-record?nowPage=1&items=1`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
           headers: {
             'Content-Type': 'application/json',
             ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,

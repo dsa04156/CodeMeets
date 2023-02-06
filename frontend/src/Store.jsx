@@ -11,7 +11,7 @@ export const user = atom({
 
 export const APIroot = atom({
     key:"APIroot",
-    default: "http://i8d109.p.ssafy.io:8082",
+    default: "http://i8d109.p.ssafy.io:8082/api",
     effects_UNSTABLE: [persistAtom],
 })
 

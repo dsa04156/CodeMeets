@@ -5,14 +5,18 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import styled from 'styled-components';
 import CreateTable from '../../CommonComponents/CreateTable';
+import Pagination from '../../CommonComponents/Pagination';
 
 const MyPageQuestionList = () => {
     const [questionRecord, setQuestionRecord] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPosts, setTotalPosts] = useState(0);
     const API = useRecoilValue(APIroot);
     const navigate = useNavigate();
     
     const TableNavHandler = (row) => {
-        navigate(`/my-question-record/${row.original.conferenceQuestionPk}/detail`);
+      console.log(row.original.conferenceQuestionPk)
+        navigate(`/my-question-record/${row.original.conferenceQuestionPk}/detail`); // my-question-record 의 게시글 중 한개 상세페이지로 가는 경로
     }
     
     const data = React.useMemo(() => questionRecord, [questionRecord]);
@@ -30,7 +34,7 @@ const MyPageQuestionList = () => {
     useEffect(() => {
         axios({
             method: 'GET',
-            url: `${API}/user/my-question-record?nowPage=1&items=10`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
+            url: `${API}/user/my-question-record?nowPage=${page}&items=10`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
             headers: {
                 'Content-Type': 'application/json',
                 ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -38,14 +42,16 @@ const MyPageQuestionList = () => {
         })
         .then((response) => {
             console.log(response.data)
+            setTotalPosts(response.data.question_record[0].total);
             setQuestionRecord(response.data.question_record);
         })
-    }, [API]);
+    }, [API, page]);
 
     return(
         <Scrollsize>
             <Styles>
                 <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler} />
+                <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
             </Styles>
         </Scrollsize>
     );
