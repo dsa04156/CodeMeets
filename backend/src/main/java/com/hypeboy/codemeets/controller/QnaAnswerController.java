@@ -24,7 +24,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 
 @RestController
-@RequestMapping("/answer")
+@RequestMapping("/api/answer")
 @Api(tags = "그룹 Q&A 답변 API")
 public class QnaAnswerController {
 
