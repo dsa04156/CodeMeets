@@ -104,7 +104,7 @@ public class ConferenceQuestionController {
     @Operation(summary = "회의 내 질문 상세보기", description = "회의 내 질문 상세보기 API "
     		+ " conferencePk, userPk 입력해주시면 됩니다")
 	@GetMapping("/{conferenceQuestionPk}")
-	public ResponseEntity<?> getConference(@RequestParam("conferencePk") int conferenceQuestionPk, @RequestParam int userPk)throws Exception {
+	public ResponseEntity<?> getConferenceQuestion(@RequestParam("conferencePk") int conferenceQuestionPk, @RequestParam int userPk)throws Exception {
 		Logger.info("Controller getconferenceQuestion  - 호출");
 		
 		try {
