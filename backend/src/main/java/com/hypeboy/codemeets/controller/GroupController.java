@@ -43,7 +43,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
-@RequestMapping(value="/group",produces="application/json;charset=UTF-8")
+@RequestMapping(value="/api/group",produces="application/json;charset=UTF-8")
 @Api(tags = "그룹 API")
 public class GroupController {
 	private final Logger logger = LoggerFactory.getLogger(GroupController.class);
