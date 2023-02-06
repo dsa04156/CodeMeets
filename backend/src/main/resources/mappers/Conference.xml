@@ -53,7 +53,7 @@
 		]]>
 	</insert>
 	
-	<select id="clickCreate" parameterType="int" resultType="list" >
+	<select id="clickCreate" resultType="String">
 		<![CDATA[
 		select 
 		`group`.group_name 
@@ -62,7 +62,7 @@
 		on 
 		`group`.group_pk=`group-user`.group_pk
 		 where
-		  `group-user`.user_pk=#{userPk};
+		  `group-user`.user_pk = #{userPk};
 	 ]]>
 	</select>
 	
