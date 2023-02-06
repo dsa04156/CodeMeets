@@ -17,6 +17,7 @@ public class ConferenceQuestionDto {
 	private String conferenceQuestionDate;
 	private int conferenceQuestionUpdate;
 	private int conferencePk;
+	private String conferenceTitle;
 	private int groupPk;
 	private String groupName;
 	private int userPk;
@@ -33,6 +34,6 @@ public class ConferenceQuestionDto {
 	// 결과 총 개수
 	private int total;
 	
-	//
+	// 유저 이름
 	private String username;
 }
