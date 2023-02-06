@@ -39,8 +39,6 @@ public class ConferenceServiceImpl implements ConferenceService {
 	@Override
 	public int joinConference(int conferencePk,int userPk) throws Exception {
 		return sqlSession.getMapper(ConferenceDao.class).joinConference(conferencePk,userPk);
-
-		
 	}
 	
 	@Override
