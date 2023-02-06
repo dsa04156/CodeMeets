@@ -42,8 +42,8 @@
 		<result column="group_name" property="groupName" />
 		<result column="user_pk" property="userPk" />
 		<result column="answer_cnt" property="answerCnt" />
-		<result column="conference_question_like_cnt" property="conference_question_like_cnt" />
-		<result column="conference_question_like" property="conference_question_like" />
+		<result column="conference_question_like_cnt" property="conferenceQuestionLikeCnt" />
+		<result column="conference_question_like" property="conferenceQuestionLike" />
 		<result column="total" property="total"/>
 	</resultMap>
 	
