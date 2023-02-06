@@ -4,11 +4,19 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 *.mwb.bak
+
+### Image ###
 *.png
 *.jpg
 *.gif
+
+### Log ###
 *.txt
 *.log
+
+### properties ###
+# OAuth
+application-oauth.properties
 
 ### STS ###
 .apt_generated

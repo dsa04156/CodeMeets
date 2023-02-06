@@ -50,9 +50,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .and()
           .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 
+//          .and()
+//          .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
+//              UsernamePasswordAuthenticationFilter.class) // JWT Token 필터를 id/password 인증 필터 이전에 추가
           .and()
-          .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
-              UsernamePasswordAuthenticationFilter.class); // JWT Token 필터를 id/password 인증 필터 이전에 추가
+			.oauth2Login()
+			.userInfoEndpoint()
+				.userService(customOAuth2UserService);
   }
 
   /**
