@@ -1,10 +1,12 @@
 package com.hypeboy.codemeets.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,10 +92,15 @@ public class ConferenceController {
     		logger.info("토큰 실패");
     	}
     	try {
-    		List<String> myGroup = conferenceService.clickCreate(userPk);
+			logger.info("난수 생성");
+			String url = RandomStringUtils.randomAlphanumeric(10);
+			List<String> myGroup = new ArrayList<String>();
+			myGroup.add(url);
+			myGroup.addAll((conferenceService.clickCreate(userPk)));
     		System.out.println(myGroup.toString());	
     		return new ResponseEntity<List<String>>(myGroup,HttpStatus.OK);
     	}catch (Exception e) {
+    		System.out.println(e);
     		return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     		
