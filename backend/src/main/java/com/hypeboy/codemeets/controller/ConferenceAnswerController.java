@@ -67,7 +67,7 @@ public class ConferenceAnswerController {
 		}		
 	}
 	
-	@Operation(summary = "회의 내 답변 목록", description = "회의 질문 답변 리스트")
+	@Operation(summary = "회의 내 답변 목록", description = "회의 질문 답변 리스트" + "conferenceQuestionPk, userPk 입력해주시면 됩니다")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
@@ -95,6 +95,7 @@ public class ConferenceAnswerController {
 		}
 	}
 	
+	@Operation(summary = "회의 내 질문 답변 수정", description= "답변 작성  수정 API" + "conferenceAnswerPk, content 입력해주시면 됩니다")
 	@PutMapping
 	public ResponseEntity<String> modifyconferenceAnswer(@RequestBody ConferenceAnswerDto conferenceAnswerDto) throws Exception {
 		Logger.info("modiyconferenceAnswer 호출");
@@ -108,6 +109,7 @@ public class ConferenceAnswerController {
 		
 	}
 	
+	@Operation(summary = "회의 내 질문 답변 삭제", description= "답변 작성  수정 API" + "conferenceAnswerPk 입력해주시면 됩니다")
 	@DeleteMapping
 	public ResponseEntity<?> deleteConferenceAnswer(@RequestParam("conferenceAnswerPk") int conferenceAnswerPk) throws Exception {
 		Logger.info("Controller deleteConferenceAnswer - 호출");
@@ -121,6 +123,7 @@ public class ConferenceAnswerController {
 		}
 	}
 	
+	@Operation(summary = "회의 내 질문 답변 삭제", description= "답변 작성  수정 API" + "conferenceAnswerPk, userPk 입력해주시면 됩니다")
 	@PutMapping("/Like")
 	public ResponseEntity<String> likeConferenceAnswer(@RequestBody ConferenceAnswerDto conferenceAnswerDto) throws Exception {
 		
