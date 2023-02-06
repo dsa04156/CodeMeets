@@ -1,77 +1,89 @@
-import React from 'react'
-import { useTable, useBlockLayout } from 'react-table'
-import { useState } from 'react'
+import React from 'react';
+import { useTable, useBlockLayout } from 'react-table';
+import { useState } from 'react';
 import styled from 'styled-components';
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 
+import { APIroot } from '../Store';
+import { user } from "../Store";
+import { useRecoilValue } from "recoil";
 
-function CreateTable({ columns, data, TableNavHandler}) {
+function CreateTable({ columns, data, TableNavHandler, isButton }) {
   // Use the state and functions returned from useTable to build your UI
+  // const API = useRecoilValue(APIroot);
+  const userPk = useRecoilValue(user);
+  // const [leaveTheGroup, setLeaveTheGroup] = useState(false); //true면 탈퇴하는거로 구성
 
   const defaultColumn = React.useMemo(
     () => ({
       width: 150,
     }),
     []
-  )
+  );
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data,
-      defaultColumn,
-    },
-    useBlockLayout
-  )
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable(
+      {
+        columns,
+        data,
+        defaultColumn,
+      },
+      useBlockLayout
+    );
 
   // Render the UI for your table
   return (
     <Styles>
-    <div {...getTableProps()} className="table">
-      <div>
-        {headerGroups.map(headerGroup => (
-          <div {...headerGroup.getHeaderGroupProps()} className="tr" >
-            {headerGroup.headers.map(column => (
-              <HeadSize {...column.getHeaderProps()} className="th">
-                {column.render('Header')}
-              </HeadSize>
-            ))}
-          </div>
-        ))}
-      </div>
-            
-      <div {...getTableBodyProps()}>
-        {rows.map(
-          (row, i) => {
-            console.log(i)
+      <div {...getTableProps()} className="table">
+        <div>
+          {headerGroups.map((headerGroup) => (
+            <div {...headerGroup.getHeaderGroupProps()} className="tr">
+              {headerGroup.headers.map((column) => (
+                <HeadSize {...column.getHeaderProps()} className="th">
+                  {column.render('Header')}
+                </HeadSize>
+              ))}
+              {/* <div>
+                {isButton === '1' ? (
+                  <div style={{ width: '70px' }}></div>
+                ) : null}
+                그룹 삭제
+              </div> */}
+            </div>
+          ))}
+        </div>
+
+        <div {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            console.log(i);
             prepareRow(row);
             return (
-              <div {...row.getRowProps()} 
-              className="tr" 
-              onClick={() => {TableNavHandler(row);
-                console.log(row.original);
-              }}
+              <div
+                {...row.getRowProps()}
+                className="tr"
+                onClick={() => {
+                  TableNavHandler(row);
+                  console.log(row.original);
+                }}
               >
-                {row.cells.map(cell => {
+                {row.cells.map((cell) => {
                   return (
                     <NavBarStyle {...cell.getCellProps()} className="td">
                       {cell.render('Cell')}
                     </NavBarStyle>
-                  )
+                  );
                 })}
+                {/* <div>
+                  {isButton === '1' ? <ButtonStyle onClick={leaveGroup}>Leave</ButtonStyle> : null}
+                </div> */}
               </div>
-            )}
-        )}
+            );
+          })}
+        </div>
       </div>
-    </div>
     </Styles>
-  )
+  );
 }
 export default CreateTable;
 
@@ -111,7 +123,7 @@ const NavBarStyle = styled(NavLink)`
   text-overflow: ellipsis;
   white-space: nowrap;
   &:link {
-    transition : 0.5s;
+    transition: 0.5s;
     text-decoration: none;
   }
   &:hover {
@@ -121,4 +133,8 @@ const NavBarStyle = styled(NavLink)`
 
 const HeadSize = styled.div`
   font-size: large;
+`;
+
+const ButtonStyle = styled.button`
+  margin-left: 15px;
 `;

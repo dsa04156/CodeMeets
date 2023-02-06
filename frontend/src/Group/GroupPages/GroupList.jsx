@@ -1,6 +1,7 @@
 import GroupListItem from "../GroupComponents/GroupListItem";
 import Pagination from "../../CommonComponents/Pagination";
 import GroupInModal from "../GroupModal/GroupInModal";
+import CreateGroupModal from "../GroupModal/CreateGroupModal";
 /////////////
 import CreateTable from "../../CommonComponents/CreateTable";
 ///////////
@@ -18,6 +19,12 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 const GroupList = () => {
+  const API = useRecoilValue(APIroot);
+  const loginUser = useRecoilValue(user);
+
+  const [page, setPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
+
   const navigate = useNavigate();
 
   const TableNavHandler = (row) => {
@@ -26,16 +33,16 @@ const GroupList = () => {
 
 
   //그룹 가입하기 Modal 부분
-  const [isOpen, setIsOpen] = useState(false);
+  const [joinModalIsOpen, setJoinModalIsOpen] = useState(false);
   const groupInHandler = () => {
-    setIsOpen(true);
+    setJoinModalIsOpen(true);
   }
 
-
-
-  const API = useRecoilValue(APIroot);
-  const loginUser = useRecoilValue(user);
-
+  const [createModalIsOpen, setCreateIsOpen] = useState(false);
+  const createGroupHandler = () => {
+    setCreateIsOpen(true);
+  }
+  
   const [groupList, setGroupList] = useState([]);
   console.log(loginUser.userPk);
   console.log(groupList);
@@ -47,22 +54,22 @@ const GroupList = () => {
       {
         Header: "번호",
         accessor: "cnt", // accessor is the "key" in the data
-        width: 100,
+        width: 60,
       },
       {
-        Header: "제목",
+        Header: "그룹명",
         accessor: "groupName",
         width: 400,
       },
       {
-        Header: "작성자",
+        Header: "생성자",
         accessor: "nickname",
         width: 100,
       },
       {
-        Header: "등록일자",
+        Header: "생성일자?",
         accessor: "callStartTime",
-        width: 100,
+        width: 230,
       },
     ],
     []
@@ -73,16 +80,17 @@ const GroupList = () => {
     console.log("실행");
     axios({
       method: "GET",
-      url: `${API}/group/list?nowPage=1&items=7&order=444`,
+      url: `${API}/group/list?nowPage=${page}&items=7&order=444`,
       headers: {
         "Content-Type": "application/json",
         ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
       console.log(response.data);
+      setTotalPosts(response.data.groupList[0].total);
       setGroupList(response.data.groupList);
     });
-  }, [API]);
+  }, [API, page]);
 
   return (
     <div>
@@ -90,13 +98,30 @@ const GroupList = () => {
         <div className="name">"{loginUser.userName}"</div>{" "}
         <div className="wellcome">님의 Group List</div>
         {/* modal 부분 */}
-        <button onClick={groupInHandler}>가입 !</button>
-        {isOpen && (
+        {/* <div className="button">
+          <button onClick={groupInHandler}>Create</button>
+        </div> */}
+        <div className="button">
+          <CreateButton onClick={createGroupHandler}>Create</CreateButton>
+        </div>
+        {createModalIsOpen && (
+          // 연결된 모달 component
+          <CreateGroupModal
+            open={createModalIsOpen}
+            onClose={() => {
+              setCreateIsOpen(false);
+            }}
+          />
+        )}
+        <div className="button">
+          <button onClick={groupInHandler}>Join</button>
+        </div>
+        {joinModalIsOpen && (
           // 연결된 모달 component
           <GroupInModal
-            open={isOpen}
+            open={joinModalIsOpen}
             onClose={() => {
-              setIsOpen(false);
+              setJoinModalIsOpen(false);
             }}
           />
         )}
@@ -104,10 +129,12 @@ const GroupList = () => {
       <ContentBox>
         <Styles>
           <CreateTable
+          // isButton = "1"
             columns={columns}
             data={data}
             TableNavHandler={TableNavHandler}
           />
+          <Pagination totalPosts={`${totalPosts}`} limit="7" page={page} setPage={setPage}></Pagination>
         </Styles>
       </ContentBox>
     </div>
@@ -134,6 +161,9 @@ const TitleStyle = styled.div`
     display: flex;
     align-items: end;
     font-size: 1em;
+  }
+  .button {
+    margin: 15px 0px 0px 20px;
   }
   border: 1px solid black;
 `;
@@ -169,4 +199,12 @@ const Styles = styled.div`
       }
     }
   }
+`;
+
+const CreateButton = styled.button`
+  margin-left: 450px;
+`;
+
+const JoinButton = styled.button`
+  margin-left: 50px;
 `;
