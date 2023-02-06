@@ -25,4 +25,10 @@ public interface ConferenceDao {
 	public void closeConference(int conferencePk, int userPk) throws SQLException;
 
 	public void exitConference(int conferencePk, int userPk) throws SQLException;
+
+	public void joinManager(int conferencePk, int userPk) throws SQLException;
+
+	public void enterMember(int conferencePk, int userPk) throws SQLException;
+
+	public List<String> participantsConference(int conferencePk);
 }
