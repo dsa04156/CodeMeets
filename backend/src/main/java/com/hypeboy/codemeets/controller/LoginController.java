@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 @Api(tags = "로그인 API")
 public class LoginController {
 	private final Logger logger = LoggerFactory.getLogger(LoginController.class);
