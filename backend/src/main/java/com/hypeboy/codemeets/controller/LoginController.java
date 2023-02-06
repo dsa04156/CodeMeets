@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +49,12 @@ public class LoginController {
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
+    @Value("${jwt.access-token}")
+    private String accessToken;
+    
+    @Value("${jwt.refresh-token}")
+    private String refreshToken;
+	
 	@Transactional(readOnly = false)
 	@Operation(summary = "로그인", description = "ID와 PW를 입력해주세요")
     @PostMapping
@@ -63,12 +70,12 @@ public class LoginController {
 			if (loginUserDto != null && loginUserDto.getUserActive() == 1) {
 				logger.info("LoginController - login " + loginUserDto.toString());
 				
-				String accessToken = jwtTokenProvider.createAccessToken("userPk", loginUserDto.getUserPk());
-				String refreshToken = jwtTokenProvider.createRefreshToken();
-				loginService.saveRefreshToken(loginUserDto.getUserPk(), refreshToken);
+				String newAccessToken = jwtTokenProvider.createAccessToken("userPk", loginUserDto.getUserPk());
+				String newRefreshToken = jwtTokenProvider.createRefreshToken();
+				loginService.saveRefreshToken(loginUserDto.getUserPk(), newRefreshToken);
 				
-				resultMap.put("access_token", accessToken);
-				resultMap.put("refresh_token", refreshToken);
+				resultMap.put(accessToken, newAccessToken);
+				resultMap.put(refreshToken, newRefreshToken);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 			} else {
@@ -88,9 +95,9 @@ public class LoginController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@Operation(summary = "로그인 상태의 유저 정보 획득", description = "헤더에 담긴 access_token으로 검사 및 정보 획득")
+	@Operation(summary = "로그인 상태의 유저 정보 획득", description = "헤더에 담긴 AccessToken으로 검사 및 정보 획득")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
 	@GetMapping("/info")
 	public ResponseEntity<Map<String, Object>> getInfo(HttpServletRequest request) {
@@ -99,10 +106,10 @@ public class LoginController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰");
 			
-			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
 			
 			try {
@@ -128,10 +135,10 @@ public class LoginController {
 	}
 
 	@Transactional(readOnly = false)
-	@Operation(summary = "access_token 재발급", description = "유저의 refresh_token 및 userPk를 사용하여 access_token 재발급 "
+	@Operation(summary = "AccessToken 재발급", description = "유저의 RefreshToken 및 userPk를 사용하여 AccessToken 재발급 "
 			+ " \n 토큰과 userPk값만 입력하시면 됩니다.")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "REFRESH_TOKEN", value = "로그인 성공 후 발급 받은 refresh_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
 	@PostMapping("/refresh")
 	public ResponseEntity<?> refreshToken(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
@@ -139,15 +146,15 @@ public class LoginController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		String token = request.getHeader("refresh_token");
+		String token = request.getHeader(refreshToken);
 		
 		if (jwtTokenProvider.validateToken(token)) {
 			logger.info("Refresh Token Check ... ");
 			
 			if ( token.equals( loginService.getRefreshToken(userDto.getUserPk()) ) ) {
-				String accessToken = jwtTokenProvider.createAccessToken("userPk", userDto.getUserPk());
+				String newAccessToken = jwtTokenProvider.createAccessToken("userPk", userDto.getUserPk());
 				
-				resultMap.put("access_token", accessToken);
+				resultMap.put(accessToken, newAccessToken);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 				logger.info("액세스 토큰 재발급 완료");
@@ -166,7 +173,7 @@ public class LoginController {
 	@Transactional(readOnly = false)
 	@Operation(summary = "로그아웃", description = "DB에 저장된 refresh_token 삭제")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
 	@PutMapping("/logout")
 	public ResponseEntity<?> logout(HttpServletRequest request) {
@@ -175,10 +182,10 @@ public class LoginController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰");
 			
-			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
 		
 			try {

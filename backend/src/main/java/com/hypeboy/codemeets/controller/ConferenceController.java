@@ -10,6 +10,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,6 +47,9 @@ public class ConferenceController {
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
+    @Value("${jwt.access-token}")
+    private String accessToken;
+	
     @Operation(summary = "회의 상세 조회", description = "회의 상세 페이지 조회")
 	@GetMapping(value="/detail/{conference_pk}", produces = "application/json;charset=utf-8")
 	public ResponseEntity<?> getConferenceDetail(@PathVariable("conference_pk") int conferencePk) throws Exception {
@@ -76,16 +80,16 @@ public class ConferenceController {
     
     @Operation(summary = "회의 생성 버튼 클릭",description = "회의 생성 버튼 클릭 시 데이터")
     @ApiImplicitParams({
-    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/click")
     public ResponseEntity<?> clickCreate(HttpServletRequest request) throws Exception{
     	logger.info("회의 생성 버튼 클릭 API 호출");
     	int userPk=0;
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
     	}
     	else {
@@ -109,16 +113,16 @@ public class ConferenceController {
     
     @Operation(summary = "회의 생성",description = "회의 생성하기 ")
     @ApiImplicitParams({
-    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/create")
     public ResponseEntity<?> createConference(HttpServletRequest request,@RequestBody ConferenceDto conferenceDto) throws Exception{
     	logger.info("회의 생성 API 호출");
     	int userPk=0;
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
     	}
     	else {
@@ -144,16 +148,16 @@ public class ConferenceController {
     
     @Operation(summary = "회의 종료",description = "회의 종료하기 ")
     @ApiImplicitParams({
-    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")
     })
     @PutMapping("/close")
     public ResponseEntity<?> closeConference(HttpServletRequest request,@RequestParam int conferencePk) throws Exception{
     	logger.info("회의 종료 API 호출");
     	int userPk=0;
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
     	}
     	else {
@@ -177,16 +181,16 @@ public class ConferenceController {
     
     @Operation(summary = "회의 참가",description = "회의 참가하기 ")
     @ApiImplicitParams({
-    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/enter")
     public ResponseEntity<?> enterConference(HttpServletRequest request,@RequestParam String conferenceUrl) throws Exception{
     	logger.info("회의 참가 API 호출");
     	int userPk=0;
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
     	}
     	else {
@@ -211,16 +215,16 @@ public class ConferenceController {
     
     @Operation(summary = "회의 나가기 개발중",description = "회의 나가기 ")
     @ApiImplicitParams({
-    	@ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token",required = true, dataType = "String", paramType = "header")
+    	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/exit")
     public ResponseEntity<?> exitConference(HttpServletRequest request,@RequestParam int conferencePk) throws Exception{
     	logger.info("회의 참가 API 호출");
     	int userPk=0;
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
     	}
     	else {

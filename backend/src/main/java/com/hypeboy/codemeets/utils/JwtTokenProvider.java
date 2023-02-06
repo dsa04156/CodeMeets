@@ -41,6 +41,12 @@ public class JwtTokenProvider {
     
     @Value("${jwt.refresh-token-validity-in-seconds}")
     private long refreshTokenValidMillisecond;
+    
+    @Value("${jwt.access-token}")
+    private String accessToken;
+    
+    @Value("${jwt.refresh-token}")
+    private String refreshToken;
 
     private final UserDetailsService userDetailsService;
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
@@ -63,7 +69,7 @@ public class JwtTokenProvider {
 				.setHeaderParam("typ", "JWT")
 				.setHeaderParam("regDate", System.currentTimeMillis())
 				.setExpiration(new Date(System.currentTimeMillis() + tokenValidMillisecond))
-				.setSubject("access_token")
+				.setSubject(accessToken)
 				.claim(key, data)
 				.signWith(SignatureAlgorithm.HS256, secretKey)
 				.compact();
@@ -75,7 +81,7 @@ public class JwtTokenProvider {
 				.setHeaderParam("typ", "JWT")
 				.setHeaderParam("regDate", System.currentTimeMillis())
 				.setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidMillisecond))
-				.setSubject("refresh_token")
+				.setSubject(refreshToken)
 				.signWith(SignatureAlgorithm.HS256, secretKey)
 				.compact();
 		return jwt;
@@ -131,7 +137,7 @@ public class JwtTokenProvider {
 	public Map<String, Object> get(String key) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 				.getRequest();
-		String jwt = request.getHeader("access_token");
+		String jwt = request.getHeader(accessToken);
 		Jws<Claims> claims = null;
 		try {
 			claims = Jwts.parser().setSigningKey(secretKey.getBytes("UTF-8")).parseClaimsJws(jwt);
