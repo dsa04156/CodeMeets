@@ -30,7 +30,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
-@RequestMapping("/conference")
+@RequestMapping("/api/conference")
 @Api(tags = "회의 API")
 public class ConferenceController {
 	private final Logger logger = LoggerFactory.getLogger(ConferenceController.class);
