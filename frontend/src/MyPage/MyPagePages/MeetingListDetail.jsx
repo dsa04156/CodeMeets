@@ -18,14 +18,14 @@ const MyPageMeetingListDetail = () => {
         console.log('실행');
         axios({
           method: 'GET',
-          url: `${API}/user/my-conference-record?nowPage=1&items=1`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
+          url: `${API}/conference/detail/${params.conference_Pk}`,
           headers: {
             'Content-Type': 'application/json',
-            ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
+            AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
           },
         }).then((response) => {
-          console.log(response.data.conference_record[0]);
-          setData(response.data.conference_record[0]);
+          console.log(response.data);
+          setData(response.data);
         });
         //   .catch((err) => console.log(err));
       }, [API]);

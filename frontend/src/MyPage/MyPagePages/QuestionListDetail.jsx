@@ -20,7 +20,7 @@ const MyPageQuestionListDetail = () => {
     useEffect(() => {
         axios({
             method: 'GET',
-            url: `${API}/qna/${params.conference_Pk}?userPk=${loginUser.userPk}`,     //conferenceQuestionPk를 받아야됨           params.conference_Pk가 스웨거에서 그룹 pk 넣는 자리인데 이 페이지에서는 conference_Pk 값이 들어가 10@ 번째로 떠서 안나오는 것??
+            url: `${API}/conferenceQna/{conferencePk}?conferencePk=${params.conference_Pk}&userPk=${loginUser.userPk}`,     //conferenceQuestionPk를 받아야됨           params.conference_Pk가 스웨거에서 그룹 pk 넣는 자리인데 이 페이지에서는 conference_Pk 값이 들어가 10@ 번째로 떠서 안나오는 것??
             headers: {
                 'Content-Type' : 'application/json',
             },

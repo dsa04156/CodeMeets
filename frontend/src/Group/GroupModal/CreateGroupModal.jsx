@@ -29,7 +29,7 @@ const CreateGroupModal = ({onClose}) => {
     //         method: "POST",
     //         url: `${API}/group/create`,
     //         headers: {
-    //             ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
+    //             AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
     //             'Content-Type': 'application/json',
     //         },
     //         data: JSON.stringify({

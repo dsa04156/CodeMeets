@@ -26,7 +26,7 @@ const GroupList = () => {
       url: `${API}/group/list`,
       headers: {
         "Content-Type": "application/json",
-        ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`,
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
       console.log(response.data);
