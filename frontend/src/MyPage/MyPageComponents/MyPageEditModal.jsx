@@ -219,7 +219,7 @@ const MyPageEditModal = ({ onClose }) => {
         url: `${API}/user/edit-profile`,
         headers: {
           'Content-Type': 'application/json',
-          ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
+          AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
         },
         data: JSON.stringify({
           email: newEmail,

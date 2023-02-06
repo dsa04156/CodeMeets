@@ -110,8 +110,8 @@ function App() {
               {/* 디테일 페이지 */}
               <Route path="/group/notice/:notice_pk" element={<GroupNoticeDetail />}></Route>
               <Route path="/group/qna/:qna_pk" element={<GroupQnADetail />}></Route>
-              <Route path="/my-meeting-record/:conference_Pk/detail" element={<MeetingListDetail />}></Route>
-              <Route path="/my-question-record/:conference_Pk/detail" element={<QuestionListDetail />}></Route>
+              <Route path="/my-meeting-record/:conference_Pk" element={<MeetingListDetail />}></Route>
+              <Route path="/my-question-record/:conference_Pk" element={<QuestionListDetail />}></Route>
 
               {/* 수정 페이지*/}
               <Route path="/group/notice/modify" element={<GroupModify />}></Route>
