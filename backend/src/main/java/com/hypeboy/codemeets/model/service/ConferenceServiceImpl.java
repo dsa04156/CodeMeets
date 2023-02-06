@@ -65,6 +65,21 @@ public class ConferenceServiceImpl implements ConferenceService {
 	public void exitConference(int conferencePk, int userPk) throws SQLException {
 		sqlSession.getMapper(ConferenceDao.class).exitConference(conferencePk,userPk);
 	}
+	
+	@Override
+	public void joinManager(int conferencePk, int userPk) throws SQLException {
+		sqlSession.getMapper(ConferenceDao.class).joinManager(conferencePk,userPk);
+	}
+
+	@Override
+	public void enterMember(int conferencePk, int userPk) throws SQLException {
+		sqlSession.getMapper(ConferenceDao.class).enterMember(conferencePk,userPk);
+	}
+	
+	@Override
+	public List<String> participantsConference(int conferencePk) throws SQLException {
+		return sqlSession.getMapper(ConferenceDao.class).participantsConference(conferencePk);
+	}
 
 
 }

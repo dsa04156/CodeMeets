@@ -23,4 +23,10 @@ public interface ConferenceService {
 
 	void exitConference(int conferencePk, int userPk) throws SQLException;
 
+	void joinManager(int conferencePk, int userPk) throws SQLException;
+
+	void enterMember(int userPk, int conferencePk) throws SQLException;
+
+	List<String> participantsConference(int conferencePk) throws SQLException;
+
 }

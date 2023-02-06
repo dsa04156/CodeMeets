@@ -53,6 +53,24 @@
 		]]>
 	</insert>
 	
+	<insert id="joinManager">
+	<![CDATA[
+	insert into
+	 `conference_history`(action,inserted_time,conference_pk,user_pk)
+	  values
+	   (1,now(),#{conferencePk},#{userPk});
+	]]>
+	</insert>
+	
+	<insert id="enterMember">
+	<![CDATA[
+		insert into
+	 `conference_history`(action,inserted_time,conference_pk,user_pk)
+	  values
+	   (2,now(),#{conferencePk},#{userPk});
+	]]>
+	</insert>
+	
 	<select id="clickCreate" resultType="String">
 		<![CDATA[
 		select 
@@ -99,7 +117,25 @@
 	
 	<insert id="exitConference">
 	<![CDATA[
-		select * from `conference`;
+		UPDATE
+		 `conference_history`
+		  set
+		   action=3 where user_pk=#{userPk}
+		    and
+		     conference_pk=#{conferencePk};
 	]]>
 	</insert>
+	
+	<select id="participantsConference" resultType="String">
+	<![CDATA[
+	select
+	 a.user_name
+	  from
+	   user_info as a inner join conference_history as b
+	    on
+	     a.user_pk=b.user_pk
+	      where
+	       b.conference_pk=#{conferencePk};
+	]]>
+	</select>
 </mapper>
