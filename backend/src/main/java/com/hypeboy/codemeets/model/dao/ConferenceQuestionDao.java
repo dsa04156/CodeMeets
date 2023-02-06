@@ -2,15 +2,18 @@ package com.hypeboy.codemeets.model.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.hypeboy.codemeets.model.dto.ConferenceQuestionDto;
 
+@Mapper
 public interface ConferenceQuestionDao {
 	//질문 작성
 	int writeConferenceQuestion(ConferenceQuestionDto ConferenceQuestionDto);
 	//질문 목록
 	List<ConferenceQuestionDto> getList(int conferencePk, int userPk);
 	//질문 조회
-	ConferenceQuestionDto getConferenceQuestion(int conferencQuestionPk, int userPk);
+	ConferenceQuestionDto getConferenceQuestion(int conferenceQuestionPk, int userPk);
 	//질문 수정하기
 	int modifyConferenceQuestion(ConferenceQuestionDto conferenceQuestionDto);
 	//질문 삭제

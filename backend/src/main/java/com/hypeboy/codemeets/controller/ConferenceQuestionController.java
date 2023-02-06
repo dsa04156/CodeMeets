@@ -30,7 +30,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @Api(tags = "회의내 질문")
-@RequestMapping("/conferenceQna")
+@RequestMapping("/api/conferenceQna")
 public class ConferenceQuestionController {
 	
 	private static final Logger Logger = LoggerFactory.getLogger(QnaController.class);
@@ -38,6 +38,7 @@ public class ConferenceQuestionController {
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
+	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
 	private ConferenceQuestionService service;
@@ -74,18 +75,20 @@ public class ConferenceQuestionController {
 	public ResponseEntity<?> getList(HttpServletRequest request, @RequestParam("conferencePk") int conferencePk) throws Exception {
     	
     	Logger.info("conferenceQna List 호출");
-    	int userPk=0;
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_Token"))) {
-    		Logger.info("사용가능한 토큰입니다");
-    		
-    		userPk = jwtTokenProvider.getUserPk(request.getHeader("acess_token"));
-    		Logger.info("userPk - " + userPk);
-    	}
-    	else {
-    		Logger.info("토큰 실패");
-    	}
+    	int userPk = 0;
     	
     	try {
+    		Logger.info("token check");
+    		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    			Logger.info("사용가능한 토큰입니다");
+    			
+    			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+    			Logger.info("userPk - " + userPk);
+    			
+    		}
+    		else {
+    			Logger.info("토큰 실패");
+    		}
     		List<ConferenceQuestionDto> conferenceQuestionList = service.getList(conferencePk, userPk);
     	return new ResponseEntity<List<ConferenceQuestionDto>>(conferenceQuestionList, HttpStatus.OK);
     	} catch (Exception e) {
@@ -122,7 +125,7 @@ public class ConferenceQuestionController {
 	}
 		
 	@DeleteMapping
-	public ResponseEntity<String> deleteConferenceQuestion(@RequestBody int conferenceQuestionPk) {
+	public ResponseEntity<String> deleteConferenceQuestion(@RequestParam("conferenceQuestionPk") int conferenceQuestionPk) {
 		try {
 			service.deleteConferenceQuestion(conferenceQuestionPk);
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);

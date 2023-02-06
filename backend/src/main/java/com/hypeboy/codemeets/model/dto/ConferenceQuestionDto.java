@@ -28,8 +28,11 @@ public class ConferenceQuestionDto {
 	private int conferenceQuestionLikeCnt;
 		
 	// 유저의 like 여부
-	private int conference_question_like;
+	private int conferenceQuestionLike;
 	
 	// 결과 총 개수
 	private int total;
+	
+	//
+	private String username;
 }

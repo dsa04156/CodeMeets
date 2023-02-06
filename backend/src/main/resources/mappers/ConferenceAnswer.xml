@@ -21,26 +21,26 @@
 	
 	<insert id="writeConferenceAnswer" parameterType="ConferenceAnswerDto">
 		INSERT INTO `conference_answer` (conference_answer_contents, conference_answer_date, conference_question_pk, user_pk)
-		VALUES (#{conferenceAnswerContenst}, now(), #{conferenceQuestionPk}, #{userPk})
+		VALUES (#{conferenceAnswerContents}, now(), #{conferenceQuestionPk}, #{userPk})
 	</insert>
 	
-	<select id="getList" parameterType="int" resultMap="conferenceAnswer">
+ 	<select id="getList" parameterType="int" resultMap="conferenceAnswer">
 		SELECT *,
 		(SELECT count(*) FROM conference_answer_user L WHERE Q.conference_answer_pk=L.conference_answer_pk) conference_answer_like_cnt,
-		(SELECT count(*) FROM conference_answer_user L WHERE Q.conference_answer_pk=L.conference_answer_pk and L.user_pk = #{userPk)) conference_answer_like
-		count(*) over() AS total
-		FROM `conference_answer` Q
-		NATURAL JOIN `user_info`
-		WHERE conferecne_question_pk = #{conferenceQuestionPk}
+		(SELECT count(*) FROM conference_answer_user L WHERE Q.conference_answer_pk=L.conference_answer_pk and L.user_pk = #{userPk}) conference_answer_like,
+		count(*) over() as total
+		FROM conference_answer Q
+		NATURAL JOIN user_info
+		WHERE conference_question_pk = #{conferenceQuestionPk}
 		ORDER BY conference_answer_pk DESC
 	</select>
-	
+
 	<update id="modifyConferenceAnswer" parameterType="ConferenceAnswerDto">
 		UPDATE conference_answer
 		SET conference_answer_contents = #{conferenceAnswerContents}, 
 		conference_answer_date = now(),
 		conference_answer_update = 1
-		WHRER conference_answer_pk = #{conferenceAnswerPk}
+		WHERE conference_answer_pk = #{conferenceAnswerPk}
 	</update>
 	
 	<delete id="deleteConferenceAnswer" parameterType="int">
@@ -56,7 +56,7 @@
 	
 	<insert id="likeConferenceAnswer" parameterType="ConferenceAnswerDto">
 		INSERT INTO conference_answer_user (conference_answer_pk, user_pk)
-		VALUES (#{conferenceAnswerPk), #{userPk})
+		VALUES (#{conferenceAnswerPk}, #{userPk})
 	</insert>
 	
 	<delete id="deleteLike" parameterType="ConferenceAnswerDto">

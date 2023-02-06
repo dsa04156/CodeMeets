@@ -20,7 +20,7 @@ public class ConferenceAnswerDto {
 	private int userPk;
 	
 	// 질문의 like 수
-	private int conferenceAnswernLikeCnt;
+	private int conferenceAnswerLikeCnt;
 		
 	// 유저의 like 여부
 	private int conferenceAnswerLike;

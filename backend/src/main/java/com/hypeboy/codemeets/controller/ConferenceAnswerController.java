@@ -30,7 +30,7 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @Api(tags="회의내 질문 답변")
-@RequestMapping("/conferenceAnswer")
+@RequestMapping("/api/conferenceAnswer")
 public class ConferenceAnswerController {
 	
 	private static final Logger Logger = LoggerFactory.getLogger(QnaController.class);
@@ -38,6 +38,7 @@ public class ConferenceAnswerController {
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
+	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
 	private ConferenceAnswerService service;

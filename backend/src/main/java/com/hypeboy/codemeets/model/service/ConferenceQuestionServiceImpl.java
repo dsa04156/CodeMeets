@@ -14,7 +14,7 @@ public class ConferenceQuestionServiceImpl implements ConferenceQuestionService 
 	private ConferenceQuestionDao conferenceQuestionDao;
 	
 	@Autowired
-	public ConferenceQuestionServiceImpl (ConferenceQuestionDao conferenceQuestionDao) throws Exception {
+	public ConferenceQuestionServiceImpl(ConferenceQuestionDao conferenceQuestionDao) throws Exception {
 		super();
 		this.conferenceQuestionDao = conferenceQuestionDao;
 	}

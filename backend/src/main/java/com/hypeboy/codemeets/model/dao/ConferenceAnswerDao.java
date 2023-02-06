@@ -11,7 +11,7 @@ public interface ConferenceAnswerDao {
 	//회의 질문 답변 작성
 	int writeConferenceAnswer(ConferenceAnswerDto conferenceAnswerDto) throws Exception;
 	//회의 답변 리스트
-	List<ConferenceAnswerDto> getList(int conferenceAnswerPk, int userPk) throws Exception;
+	List<ConferenceAnswerDto> getList(int conferenceQuestionPk, int userPk) throws Exception;
 	//회의 답변 수정
 	int modifyConferenceAnswer(ConferenceAnswerDto conferenceAnswerDto) throws Exception;
 	//답변 삭제
