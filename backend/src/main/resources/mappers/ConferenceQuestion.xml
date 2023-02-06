@@ -45,6 +45,18 @@
 		ORDER BY conference_question_like_cnt DESC
 	</select>
 	
+	<select id="pageList" resultMap="conferenceQuestion">
+		select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
+		(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk and L.user_pk = #{userPk}) conference_question_like,
+		(select count(*) from conference_answer A where Q.conference_question_pk = A.conference_question_pk) conference_question_answer_cnt,
+		count(*) over() As total
+		from `conference_question` Q
+		NATURAL JOIN `user_info`
+		where conference_pk = #{conferencePk}
+		ORDER BY conference_question_like_cnt DESC
+		LIMIT #{nowPage}, #{items};
+	</select>
+	
 	
     <select id="getConferenceQuestion" resultMap="conferenceQuestion" >
 select Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date, Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, user_name,

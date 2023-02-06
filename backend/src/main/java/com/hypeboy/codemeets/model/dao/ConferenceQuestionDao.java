@@ -25,4 +25,5 @@ public interface ConferenceQuestionDao {
 	//질문 좋아요시 삭제
 	int deleteLike(ConferenceQuestionDto conferenceQuestionDto);
 	
+	List<ConferenceQuestionDto> pageList(int conferencePk, int userPk, int nowPage, int items);
 }

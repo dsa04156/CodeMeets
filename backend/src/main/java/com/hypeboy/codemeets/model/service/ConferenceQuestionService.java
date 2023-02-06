@@ -19,4 +19,5 @@ public interface ConferenceQuestionService {
 	//질문 좋아요
 	int likeConferenceQuestion(ConferenceQuestionDto conferenceQuestionDto) throws Exception;
 
+	List<ConferenceQuestionDto> pageList(int conferencePk, int userPk, int nowPage, int items) throws Exception;
 }
