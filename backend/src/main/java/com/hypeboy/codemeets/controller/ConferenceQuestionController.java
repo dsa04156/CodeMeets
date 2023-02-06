@@ -101,6 +101,8 @@ public class ConferenceQuestionController {
     	}
     }
 	
+    @Operation(summary = "회의 내 질문 상세보기", description = "회의 내 질문 상세보기 API "
+    		+ " conferencePk, userPk 입력해주시면 됩니다")
 	@GetMapping("/{conferencePk}")
 	public ResponseEntity<?> getConference(@RequestParam("conferencePk") int conferencePk, @RequestParam int userPk)throws Exception {
 		Logger.info("Controller getconferenceQuestion  - 호출");
@@ -115,6 +117,8 @@ public class ConferenceQuestionController {
 		}
 	}
 	
+    @Operation(summary = "회의 내 질문 수정", description = "회의 내 질문 수정 API "
+    		+ " conferenceQuestionPk, contents 입력해주시면 됩니다")
 	@PutMapping
 	public ResponseEntity<?> modiftConferenceQuestion(@RequestBody ConferenceQuestionDto conferenceQuestionDto) throws Exception {
 		
@@ -127,7 +131,9 @@ public class ConferenceQuestionController {
 		return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	}
-		
+	
+    @Operation(summary = "회의 내 질문 삭제", description = "회의 내 질문 삭제 API "
+    		+ " conferenceQuestionPk 입력해주시면 됩니다")
 	@DeleteMapping
 	public ResponseEntity<String> deleteConferenceQuestion(@RequestParam("conferenceQuestionPk") int conferenceQuestionPk) {
 		try {
@@ -139,6 +145,8 @@ public class ConferenceQuestionController {
 		}
 	}
 	
+    @Operation(summary = "회의 내 질문 좋아요", description = "회의 내 질문 좋아요 API "
+    		+ " conferenceQuestionPk, userPk 입력해주시면 됩니다")
 	@PutMapping("/like")
 	public ResponseEntity<String> likeConferenceQuestion(@RequestBody ConferenceQuestionDto conferenceQuestionDto) throws Exception {
 		
@@ -155,7 +163,7 @@ public class ConferenceQuestionController {
     @ApiImplicitParams({
         @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
-	@GetMapping
+	@GetMapping("/pageList")
 	public ResponseEntity<?> pageList(HttpServletRequest request, @RequestParam("conferencePk") int conferencePk,
 			@RequestParam("nowPage") int nowPage,
 			@RequestParam("items") int items) throws Exception {
