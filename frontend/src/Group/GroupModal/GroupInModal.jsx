@@ -34,7 +34,7 @@ const GroupInModal = ({ onClose }) => {
       url: `${API}/group/join/${url}`,
       headers: {
         'Content-Type': 'application/json',
-        ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).catch((err) => console.log(err));
   };

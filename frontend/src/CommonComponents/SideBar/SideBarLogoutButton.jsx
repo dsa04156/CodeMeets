@@ -18,7 +18,7 @@ const SideBarLogoutButton = () => {
       method: "PUT",
       url: `${API}/login/logout`,
       headers: {
-        ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`,
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     })
       .then((response) => {

@@ -16,7 +16,7 @@ const MyPageMeetingList = () => {
   const navigate = useNavigate();
 
   const TableNavHandler = (row) => {
-    navigate(`/my-meeting-record/${row.original.conferencePk}/detail`);
+    navigate(`/my-meeting-record/${row.original.conferencePk}`);
   };
 
   const data = React.useMemo(() => meetingRecord, [meetingRecord]);
@@ -38,7 +38,7 @@ const MyPageMeetingList = () => {
       url: `${API}/user/my-conference-record?nowPage=${page}&items=6`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
       headers: {
         'Content-Type': 'application/json',
-        ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
       console.log(response.data);

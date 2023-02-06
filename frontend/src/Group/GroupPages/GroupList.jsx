@@ -83,7 +83,7 @@ const GroupList = () => {
       url: `${API}/group/list?nowPage=${page}&items=7&order=444`,
       headers: {
         "Content-Type": "application/json",
-        ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`,
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
       console.log(response.data);

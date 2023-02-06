@@ -39,12 +39,12 @@ const LoginPage = () => {
       }),
     })
       .then((response) => {
-        localStorage.setItem("ACCESS_TOKEN", response.data.access_token);
-        localStorage.setItem("REFRESH_TOKEN", response.data.refresh_token);
+        localStorage.setItem("ACCESS_TOKEN", response.data.AccessToken);
+        localStorage.setItem("REFRESH_TOKEN", response.data.RefreshToken);
 
         console.log(response.data);
-        console.log(response.data.access_token);
-        console.log(response.data.refresh_token);
+        console.log(response.data.AccessToken);
+        console.log(response.data.RefreshToken);
         // navigate('/');
       })
       .catch((err) => alert("ID or password 불일치"));
@@ -53,7 +53,7 @@ const LoginPage = () => {
       url: `${API}/login/info`,
       headers: {
         "Content-Type": "application/json",
-        ACCESS_TOKEN: `${localStorage.getItem("ACCESS_TOKEN")}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..
       },
     }).then((response) => {
       console.log(response.data.userInfo);

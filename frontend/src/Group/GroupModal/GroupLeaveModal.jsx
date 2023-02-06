@@ -18,7 +18,7 @@ const GroupLeaveModal = ({onClose, groupPk}) => {
             method: "PUT",
             url: `${API}/group/${groupPk}/left`,
             headers: {
-              ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
+              AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
             }
           })
           .then((response) => {if(response.data === "success"){
