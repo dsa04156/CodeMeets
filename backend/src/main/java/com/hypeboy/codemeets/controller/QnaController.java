@@ -27,7 +27,7 @@ import io.swagger.annotations.ApiParam;
 
 @RestController
 @Api(tags = "그룹 내  Q&A API")
-@RequestMapping("/qna")
+@RequestMapping("/api/qna")
 public class QnaController {
 	
 	private static final Logger Logger = LoggerFactory.getLogger(QnaController.class);
