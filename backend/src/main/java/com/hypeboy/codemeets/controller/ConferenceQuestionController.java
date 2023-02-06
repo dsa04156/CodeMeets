@@ -151,6 +151,41 @@ public class ConferenceQuestionController {
 		}
 	}
 	
+	@Operation(summary = "페이지네이션 회의 내 질문 목록", description = "회의 내 질문 리스트")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
+    })
+	@GetMapping
+	public ResponseEntity<?> pageList(HttpServletRequest request, @RequestParam("conferencePk") int conferencePk,
+			@RequestParam("nowPage") int nowPage,
+			@RequestParam("items") int items) throws Exception {
+    	
+    	Logger.info("conferenceQna List 호출");
+    	int userPk = 0;
+    	
+    	try {
+    		Logger.info("token check");
+    		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
+    			Logger.info("사용가능한 토큰입니다");
+    			
+    			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
+    			Logger.info("userPk - " + userPk);
+    			
+    		}
+    		else {
+    			Logger.info("토큰 실패");
+    		}
+    		List<ConferenceQuestionDto> conferenceQuestionList = service.pageList(conferencePk, userPk, (nowPage -1) * items, items);
+    	return new ResponseEntity<List<ConferenceQuestionDto>>(conferenceQuestionList, HttpStatus.OK);
+    	} catch (Exception e) {
+    		Logger.warn("Controller conferenceQuestionList fail -" + e);
+    		return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+    	}
+    }
+	
+	
+	
+	
 }
 	
 	

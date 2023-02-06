@@ -54,6 +54,11 @@ public class ConferenceQuestionServiceImpl implements ConferenceQuestionService 
 		}
 		
 	}
+
+	@Override
+	public List<ConferenceQuestionDto> pageList(int conferencePk, int userPk, int nowPage, int items) throws Exception {
+		return conferenceQuestionDao.pageList(conferencePk, userPk, nowPage, items);
+	}
 	
 	
 }
