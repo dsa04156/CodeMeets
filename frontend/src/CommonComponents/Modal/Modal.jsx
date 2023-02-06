@@ -3,23 +3,15 @@ import styled from "styled-components";
 import ModalContainer from "./ModalContainer";
 import { AiOutlineClose } from "react-icons/ai";
 
-const Modal = ({ onClose, children, ModalTitle, submitHandler, buttonName }) => {
+const Modal = ({ onClose, children, ModalTitle }) => {
 
   // 모달의 button 부분이름 바꾸기 위한 useState 부모의 buttonName을 받아옴
-  const [customName, setCustomName] = useState("확인")
-  useEffect(()=>{
-    setCustomName(buttonName)
-    console.log(customName)
-  },[])
 
   const handleClose = () => {
     console.log("실행은 됩니다.");
     onClose?.();
   };
 
-  const modalSubmitHandler = () => {
-    submitHandler()
-  }
 
 
   useEffect(() => {
@@ -44,10 +36,6 @@ const Modal = ({ onClose, children, ModalTitle, submitHandler, buttonName }) => 
           <Contents>
             <div>
             {children}
-            <div>
-              <button onClick={modalSubmitHandler}>{customName}</button>
-              <button onClick={handleClose}>취소</button>
-            </div>
             </div>
             </Contents>
         </ModalWrap>

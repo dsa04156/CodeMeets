@@ -3,12 +3,15 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateTable from '../../CommonComponents/CreateTable';
+import Pagination from '../../CommonComponents/Pagination';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 const MyPageMeetingList = () => {
   const [meetingRecord, setMeetingRecord] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPosts, setTotalPosts] = useState(0);
   const API = useRecoilValue(APIroot);
   const navigate = useNavigate();
 
@@ -32,17 +35,18 @@ const MyPageMeetingList = () => {
     console.log('실행');
     axios({
       method: 'GET',
-      url: `${API}/user/my-conference-record?nowPage=1&items=6`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
+      url: `${API}/user/my-conference-record?nowPage=${page}&items=6`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
       headers: {
         'Content-Type': 'application/json',
         ACCESS_TOKEN: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
       console.log(response.data);
+      setTotalPosts(response.data.conference_record[0].total);
       setMeetingRecord(response.data.conference_record);
     });
     //   .catch((err) => console.log(err));
-  }, [API]);
+  }, [API, page]);
 
   return (
     <div>
@@ -53,6 +57,7 @@ const MyPageMeetingList = () => {
             data={data}
             TableNavHandler={TableNavHandler}
           />
+          <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
         </Styles>
       </Scrollsize>
     </div>

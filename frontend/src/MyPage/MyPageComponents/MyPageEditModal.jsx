@@ -312,8 +312,14 @@ const MyPageEditModal = ({ onClose }) => {
             </div>
           </ImageStyle>
         </TitleStyle>
+        <TitleStyle>
+        <ButtonStyle>
         <button onClick={ToChangeUserInfoHandler}>수정</button>
+        </ButtonStyle>
+        <ButtonStyle>
         <button onClick={CancelHandler}>취소</button>
+        </ButtonStyle>
+        </TitleStyle>
       </EditContainer>
     </Modal>
   );
@@ -352,10 +358,9 @@ const CheckBoxStyle = styled.div`
 `;
 
 const ButtonStyle = styled.div`
-  display: flex;
-  width: 20px;
-  height: 25px;
-  margin-left: 5px;
+    margin-left: 100px;
+    width: 15%;
+    height: 25px;
 `;
 
 const InputStyle = styled.input`
