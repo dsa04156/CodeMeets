@@ -34,7 +34,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 
 @RestController
-@RequestMapping("/file")
+@RequestMapping("/api/file")
 @Api(tags = "파일 업로드 API")
 public class FileController {
 	private final Logger logger = LoggerFactory.getLogger(FileController.class);
