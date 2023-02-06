@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,6 +44,9 @@ public class ConferenceQuestionController {
 	
 	private ConferenceQuestionService service;
 	
+    @Value("${jwt.access-token}")
+    private String accessToken;
+	
 	@Autowired
 	public ConferenceQuestionController(ConferenceQuestionService service) {
 		super();
@@ -69,7 +73,7 @@ public class ConferenceQuestionController {
 	
     @Operation(summary = "회의 내 질문 목록", description = "회의 내 질문 리스트")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
 	@GetMapping
 	public ResponseEntity<?> getList(HttpServletRequest request, @RequestParam("conferencePk") int conferencePk) throws Exception {
@@ -79,10 +83,10 @@ public class ConferenceQuestionController {
     	
     	try {
     		Logger.info("token check");
-    		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
     			Logger.info("사용가능한 토큰입니다");
     			
-    			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+    			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
     			Logger.info("userPk - " + userPk);
     			
     		}

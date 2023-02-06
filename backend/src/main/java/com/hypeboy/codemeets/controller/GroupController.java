@@ -12,6 +12,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,6 +57,9 @@ public class GroupController {
 	
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
+	
+    @Value("${jwt.access-token}")
+    private String accessToken;
 
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
@@ -68,16 +72,16 @@ public class GroupController {
     		+ " \n group_Pk값은 제외해주세요"
     		+ "\n manager_id 값은 회원 pk 번호입니다 ")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/create")
 	public ResponseEntity<?> regist(@RequestBody @ApiParam(value="그룹 만들기",required = true) GroupDto groupDto,HttpServletRequest request) throws Exception {
 			logger.info("create group - 호출");
 			GroupUserDto guDto = new GroupUserDto();
 			int userPk=0;
-			if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+			if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 				logger.info("사용가능한 토큰입니다");
-				userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+				userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 				logger.info("userPk - " + userPk);
 	    	}
 	    	else {
@@ -101,15 +105,15 @@ public class GroupController {
     
     @Operation(summary = "그룹 회원 목록", description = "그룹 멤버 리스트 API ")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/{groupPk}/member")
 	public ResponseEntity<?> groupMemberList(@PathVariable("groupPk") int groupPk,HttpServletRequest request) {
     	
     	int userPk=0;
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
-			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
     	}
     	else {
@@ -137,16 +141,16 @@ public class GroupController {
 //        @Operation(summary = "그룹 가입하기", description = "그룹 가입 API ")
 //    @PostMapping("/{groupPk}/join")
 //    @ApiImplicitParams({
-//        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+//        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
 //    })
 //	public ResponseEntity<?> groupJoin(@PathVariable("groupPk") int groupPk,HttpServletRequest request) throws SQLException  {
 //    	logger.info("group join - 호출");
 //    	System.out.println(groupPk);
 //    	int userPk=0;
-//     	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+//     	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 //			logger.info("사용가능한 토큰입니다");
 //			
-//			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+//			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 //			logger.info("userPk - " + userPk);
 //    	}
 //    	else {
@@ -165,15 +169,15 @@ public class GroupController {
         @Operation(summary = "그룹 url 가입", description = "그룹 url 가입 API ")
         @PostMapping("/join/{groupUrl}")
         @ApiImplicitParams({
-            @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
         })
     	public ResponseEntity<?> groupUrlJoin(@PathVariable("groupUrl") String groupUrl, HttpServletRequest request) throws SQLException  {
         	logger.info("group join - 호출");
         	System.out.println(groupUrl);
         	int userPk=0;
-         	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+         	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
     			logger.info("사용가능한 토큰입니다");
-    			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+    			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
     			logger.info("userPk - " + userPk);
         	}
         	else {
@@ -204,7 +208,7 @@ public class GroupController {
     
     @Operation(summary = "그룹 목록", description = "그룹 리스트")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/list")
     public ResponseEntity<?> groupList(HttpServletRequest request,
@@ -213,10 +217,10 @@ public class GroupController {
 			@RequestParam("order") String order) throws Exception{
     	logger.info("group list 호출");
     	int userPk=0;
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
     	}
     	else {
@@ -279,16 +283,16 @@ public class GroupController {
     
     @Operation(summary = "그룹 탈퇴하기", description = "그룹 탈퇴하기")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @PutMapping("/{groupPk}/left")
 	public ResponseEntity<?> groupleft(@PathVariable("groupPk") int groupPk, HttpServletRequest request) {
     	int userPk=0;
     	
-    	if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
 			try {
 				logger.info("group left - 호출");

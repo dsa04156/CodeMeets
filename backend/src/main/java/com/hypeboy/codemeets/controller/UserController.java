@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,11 @@ public class UserController {
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
 	
+    @Value("${jwt.access-token}")
+    private String accessToken;
+    
+    @Value("${jwt.refresh-token}")
+    private String refreshToken;
 	
     @Operation(summary = "개발용 - 유저 정보 검색", description = "유저 ID로 유저 정보 검색")
 	@GetMapping(value="/dev-search-userinfo", produces = "application/json;charset=utf-8")
@@ -241,7 +247,7 @@ public class UserController {
     @Operation(summary = "유저 본인 정보 조회", description = "유저 정보 조회 "
     		+ " \n 헤더에 담긴 토큰으로 확인")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/{userPk}/myprofile")
 	public ResponseEntity<?> getMyProfile(HttpServletRequest request) throws Exception {
@@ -250,10 +256,10 @@ public class UserController {
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
 			
 			try {
@@ -314,7 +320,7 @@ public class UserController {
     		+ " \n total은 총 결과 개수 "
     		+ " \n 결과값 중 callEndTime, conferenceContents, userPk, groupDesc, managerId은 반환하지 않습니다")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/my-conference-record")
 	public ResponseEntity<?> getMyConferenceRecord(@RequestParam("nowPage") int nowPage, 
@@ -325,10 +331,10 @@ public class UserController {
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
 			
 			try {
@@ -358,7 +364,7 @@ public class UserController {
     		+ " \n total은 총 결과 개수"
     		+ " \n 결과값 중 callEndTime, conferenceContents, userPk, groupDesc, managerId은 반환하지 않습니다")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/my-conference-record/{group_pk}")
 	public ResponseEntity<?> getMyConferenceRecordFilter(@PathVariable("group_pk") int groupPk,
@@ -370,10 +376,10 @@ public class UserController {
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
 			
 			try {
@@ -402,7 +408,7 @@ public class UserController {
     		+ " \n 현재 페이지와 필요한 행 개수 입력 "
     		+ " \n total은 총 결과 개수")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/my-question-record")
 	public ResponseEntity<?> getMyQuestionRecord(@RequestParam("nowPage") int nowPage, 
@@ -413,10 +419,10 @@ public class UserController {
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
 			
 			try {
@@ -444,7 +450,7 @@ public class UserController {
     @Operation(summary = "프로필 수정", description = "유저 프로필 정보 수정 "
     		+ " \n 프로필 사진, 이메일, 전화번호, 닉네임 수정")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS_TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
     @PutMapping("/edit-profile")
 	public ResponseEntity<?> editProfile(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception {
@@ -453,10 +459,10 @@ public class UserController {
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access_token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
-			int userPk = jwtTokenProvider.getUserPk(request.getHeader("access_token"));
+			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
 			logger.info("userPk - " + userPk);
 			
 			try {
@@ -485,7 +491,7 @@ public class UserController {
 	@Operation(summary = "회원탈퇴", description = "회원탈퇴 " +
 			" \n ")
 	@ApiImplicitParams({
-        @ApiImplicitParam(name = "ACCESS-TOKEN", value = "로그인 성공 후 발급 받은 access_token", required = true, dataType = "String", paramType = "header")
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
 	@PutMapping("/resign")
 	public ResponseEntity<?> resign(@RequestParam("userPk") int userPk, HttpServletRequest request) {
@@ -494,7 +500,7 @@ public class UserController {
     	Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.UNAUTHORIZED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader("access-token"))) {
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
 			try {
