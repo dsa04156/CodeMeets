@@ -68,7 +68,7 @@
     </select>
     
     <select id="findByEmail" resultMap="user">
-   		SELECT user_pk, user_id, user_name, nickname, email
+   		SELECT user_pk, user_id, user_name, nickname, email, profile_photo
         FROM `user` NATURAL JOIN `user_info`
         WHERE email = #{email}
     </select>
