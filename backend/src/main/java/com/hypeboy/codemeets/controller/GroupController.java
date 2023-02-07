@@ -69,7 +69,7 @@ public class GroupController {
     })
     
 
-    @Operation(summary = "그룹 만들기 버튼 클릭", description = "그룹 만들기 버튼 클릭 API ")
+      @Operation(summary = "그룹 만들기 버튼 클릭", description = "그룹 만들기 버튼 클릭 API ")
     @PostMapping("/click")
 	public ResponseEntity<?> clickCreateGroup(HttpServletRequest request) throws Exception {
 			logger.info("click create group - 호출");
@@ -78,10 +78,11 @@ public class GroupController {
 			String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
 			String r = RandomStringUtils.randomAlphanumeric(10);
 			url = url + "/api/group/join/"+r;
-			System.out.println(url);
+			List<String> list = new ArrayList<String>();
+			list.add(url);
+			list.add(r);
 	
-			return new ResponseEntity<String>(url, HttpStatus.OK);
-
+			return new ResponseEntity<List>(list, HttpStatus.OK);
 	}
     
     
