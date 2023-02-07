@@ -26,6 +26,28 @@ const LoginPage = () => {
     setInputPw(event.target.value);
   };
 
+  const googleLogin = async () => {
+    await axios({
+      method: "POST",
+      url: `http://localhost:18081/oauth2/authorization/google`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        console.log(response.data);
+        localStorage.setItem("ACCESS_TOKEN", response.data.AccessToken);
+        localStorage.setItem("REFRESH_TOKEN", response.data.RefreshToken);
+
+        console.log(response.data);
+        console.log(response.data.AccessToken);
+        console.log(response.data.RefreshToken);
+        // navigate('/');
+      })
+      .catch((err) => console.log("error!"));
+  };
+
   const ToHomePageHandler = async () => {
     await axios({
       method: "POST",
@@ -94,7 +116,13 @@ const LoginPage = () => {
       </ButtonStyle>
       <Link to="/codemeets/signup">회원가입</Link> |
       <Link to="/codemeets/findid"> 아이디 찾기</Link> |
-      <Link to="/codemeets/findpassword"> 비밀번호 찾기</Link>
+      <Link to="/codemeets/findpassword"> 비밀번호 찾기</Link> | 
+      <a href="http://localhost:18081/oauth2/authorization/google"> 구글 </a>
+      <ButtonStyle>
+        <button onClick={googleLogin} style={{ width: "100%" }}>
+          Google Login
+        </button>
+      </ButtonStyle>
     </div>
   );
 };
