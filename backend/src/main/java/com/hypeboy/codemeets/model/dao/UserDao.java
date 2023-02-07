@@ -55,4 +55,6 @@ public interface UserDao {
 	// 회원탈퇴
 	public int resign(int userPk) throws SQLException;
 	
+	public void registGroup(UserDto userDto) throws SQLException;
+	
 }
