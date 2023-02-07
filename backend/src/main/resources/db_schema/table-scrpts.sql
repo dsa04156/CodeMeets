@@ -381,6 +381,8 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`conference_answer_user`(
 PRIMARY KEY (`conference_answer_pk`, `user_pk`),
 FOREIGN KEY (`conference_answer_pk`) REFERENCES conference_answer(`conference_answer_pk`),
 FOREIGN KEY (`user_pk`) REFERENCES `conference-user`(`user_pk`)
+  ON DELETE CASCADE
+    ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
 
