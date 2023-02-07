@@ -65,6 +65,17 @@ const LoginPage = () => {
     });
   };
 
+  const accessToken = new URL(window.location.href).searchParams.get("accessToken");
+  const refreshToken = new URL(window.location.href).searchParams.get("refreshToken");
+
+  if (accessToken) {
+    localStorage.setItem("ACCESS_TOKEN", accessToken);
+    localStorage.setItem("REFRESH_TOKEN", refreshToken); 
+    // navigate("/");
+    window.location.replace("/");
+  }
+
+
   return (
     <div style={{ paddingBottom: "100px" }}>
       <h1>Login</h1>
@@ -94,7 +105,10 @@ const LoginPage = () => {
       </ButtonStyle>
       <Link to="/codemeets/signup">회원가입</Link> |
       <Link to="/codemeets/findid"> 아이디 찾기</Link> |
-      <Link to="/codemeets/findpassword"> 비밀번호 찾기</Link>
+      <Link to="/codemeets/findpassword"> 비밀번호 찾기</Link> |
+
+      <a href="http://localhost:18081/oauth2/authorization/google?redirect_uri=http://localhost:3000"> 구글 </a>
+
     </div>
   );
 };
