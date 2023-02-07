@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hypeboy.codemeets.model.dto.LoginDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.model.service.LoginServiceImpl;
-import com.hypeboy.codemeets.model.service.ResponseServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
 import io.swagger.annotations.Api;
@@ -42,9 +41,6 @@ public class LoginController {
 	
 	@Autowired
 	private LoginServiceImpl loginService;
-	
-	@Autowired
-	private ResponseServiceImpl responseService;
 	
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;

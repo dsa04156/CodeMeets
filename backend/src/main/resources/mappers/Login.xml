@@ -4,7 +4,7 @@
 	
 <mapper namespace="com.hypeboy.codemeets.model.dao.LoginDao">
 
-	<resultMap type="LoginDto" id="login_dto">
+	<resultMap type="LoginDto" id="login">
 		<result column="user_pk" property="userPk" />
 		<result column="user_id" property="userId" />
 		<result column="password" property="password" />
@@ -16,6 +16,7 @@
 		<result column="user_pk" property="userPk" />
 		<result column="user_id" property="userId" />
 		<result column="user_name" property="userName" />
+		<result column="nickname" property="nickname" />
 		<result column="user_active" property="userActive" />
 		<result column="user_info_pk" property="userInfoPk" />
 		<result column="profile_photo" property="profilePhoto" />
@@ -25,7 +26,7 @@
 	
 	<!-- ==================== login ======================================== -->
 	
-    <select id="findByUserId" resultMap="login_dto">
+    <select id="findByUserId" resultMap="login">
    		SELECT user_pk, user_id, password, token, user_active
         FROM user
         WHERE user_id = #{userId}
@@ -58,6 +59,19 @@
 		SET token = "-" 
 		WHERE user_pk = #{userPk}
 	</update>
+	
+    <!-- ==================== social login ======================================== -->
+    <select id="findByUserName" resultMap="user">
+   		SELECT user_pk, user_id, user_name, nickname
+        FROM user
+        WHERE user_name = #{userName}
+    </select>
+    
+    <select id="findByEmail" resultMap="user">
+   		SELECT user_pk, user_id, user_name, nickname, email
+        FROM `user` NATURAL JOIN `user_info`
+        WHERE email = #{email}
+    </select>
 
 </mapper>
 
