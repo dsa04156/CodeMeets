@@ -229,8 +229,9 @@ public class GroupController {
     	List<GroupListDto> groupList = groupService.getList(userPk,(nowPage - 1) * items, items, order);
     	Map<String,List<GroupListDto>> resultMap = new HashMap<String, List<GroupListDto>>();
     	logger.info("gpList 호출");
-    	logger.info(groupList.toString());
     	List<Integer> groupPkList = groupService.gpList(userPk);
+    	logger.info(groupList.toString());
+//    	groupPkList.remove(0);
     	logger.info(groupPkList.toString());
     	int gc = groupPkList.size();
     	System.out.println(gc);
@@ -240,13 +241,19 @@ public class GroupController {
     			break;
     		}
     		int k =(nowPage-1)*items+i;
-	    		System.out.println(k);
     		groupList.get(i).setCnt(k+1);
     		groupList.get(i).setGroupPk(groupPkList.get(k));
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(k)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(k)));
     		groupList.get(i).setTotal(gc);
     	}
+		for(int i=0;i<groupList.size();i++) {
+			if(groupList.get(i).getGroupPk()==0) {
+				groupList.remove(i);
+				System.out.println("지원ㅅ다"+i);
+				break;
+			}
+		}
     	resultMap.put("groupList", groupList);
     	
     	return new ResponseEntity<Map<String,List<GroupListDto>>>(resultMap,HttpStatus.OK);

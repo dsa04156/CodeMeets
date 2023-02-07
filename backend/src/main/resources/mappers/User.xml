@@ -84,6 +84,18 @@
 	    );
 	</update>
 	
+	<select id="registGroup" resultType="int">
+	insert into 
+	`group-user`(group_user_position,group_pk,user_pk) 
+	values 
+	(3,0,(SELECT
+		 user_pk
+		  FROM
+		   `user`
+		    WHERE
+		     user_id = #{userId}));
+	</select>
+	
 	<!-- ==================== ID, Email, Tel 중복 검사 ======================================== -->
 	
 	<select id="getUserIdOverlap" parameterType="string" resultType="int">
