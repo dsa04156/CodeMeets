@@ -182,8 +182,8 @@ public class GroupController {
 //			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 //	}
         
-        @Operation(summary = "그룹 url 가입", description = "그룹 url 가입 API ")
-        @PostMapping("/join/{groupUrl}")
+         @Operation(summary = "그룹 url 가입", description = "그룹 url 가입 API ")
+        @GetMapping("/join/{groupUrl}")
         @ApiImplicitParams({
             @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
         })
@@ -199,7 +199,7 @@ public class GroupController {
         	else {
         		logger.info("토큰 실패");
         	}
-         	
+         	userPk=71;
          	GroupDto groupDto = groupService.checkUrl(groupUrl);
          	if(groupDto.getGroupPk()!=0) {
          		logger.info(groupDto.toString());
