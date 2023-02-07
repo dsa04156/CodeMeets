@@ -1,6 +1,7 @@
 # CODE Meets - OCR 기능 중심 화상 회의 웹 서비스
 ---
-![nobg](/uploads/9332275ef1448b9a77f8663aa65e0684/nobg.gif)
+![로딩2](https://user-images.githubusercontent.com/82055169/217213094-9e30d520-869b-4adf-81d9-2055c448daf8.gif)
+
 
 # 프로젝트 진행 기간
 ---
