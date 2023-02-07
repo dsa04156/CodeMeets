@@ -68,6 +68,20 @@ public class GroupController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     
+
+    @Operation(summary = "그룹 만들기 버튼 클릭", description = "그룹 만들기 버튼 클릭 API ")
+    @PostMapping("/click")
+	public ResponseEntity<?> clickCreateGroup() throws Exception {
+			logger.info("click create group - 호출");
+			//그룹 리스트 마이 그룹 리스트 만들기
+			logger.info("난수 생성");
+			String url = RandomStringUtils.randomAlphanumeric(10);
+	
+			return new ResponseEntity<String>(url, HttpStatus.OK);
+
+	}
+    
+    
     @Operation(summary = "그룹 만들기", description = "그룹 만들기 API "
     		+ " \n group_Pk값은 제외해주세요"
     		+ "\n manager_id 값은 회원 pk 번호입니다 ")
@@ -88,8 +102,6 @@ public class GroupController {
 	    		logger.info("토큰 실패");
 	    	}
 			logger.info("난수 생성");
-			String url = RandomStringUtils.randomAlphanumeric(10);
-			groupDto.setGroupUrl(url);
 			groupDto.setManagerId(userPk);
 			if(groupService.createGroup(groupDto)!=0) {
 				logger.info("createGroup - 성공");
