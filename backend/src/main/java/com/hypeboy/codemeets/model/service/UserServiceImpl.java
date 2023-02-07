@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService{
 		
 		sqlSession.getMapper(UserDao.class).registUser(userDto);
 		sqlSession.getMapper(UserDao.class).registUserInfo(userDto);
+		sqlSession.getMapper(UserDao.class).registGroup(userDto);
 	}
 
 	@Override

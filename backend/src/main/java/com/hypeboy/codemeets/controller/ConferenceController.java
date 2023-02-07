@@ -215,7 +215,7 @@ public class ConferenceController {
     
     
     
-    @Operation(summary = "회의 나가기 개발중",description = "회의 나가기 ")
+    @Operation(summary = "회의 나가기",description = "회의 나가기 ")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")
     })
