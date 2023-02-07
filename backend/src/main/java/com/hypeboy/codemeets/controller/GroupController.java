@@ -199,7 +199,7 @@ public class GroupController {
         	else {
         		logger.info("토큰 실패");
         	}
-         	userPk=71;
+  
          	GroupDto groupDto = groupService.checkUrl(groupUrl);
          	if(groupDto.getGroupPk()!=0) {
          		logger.info(groupDto.toString());
