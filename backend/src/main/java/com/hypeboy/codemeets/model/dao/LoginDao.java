@@ -23,6 +23,7 @@ public interface LoginDao {
     public UserDto findByUserName(String userName) throws SQLException;
     // 이메일로 유저 찾기
     public UserDto findByEmail(String email) throws SQLException;
+    public int findByEmailPk(String email) throws SQLException;
     
     
     // token

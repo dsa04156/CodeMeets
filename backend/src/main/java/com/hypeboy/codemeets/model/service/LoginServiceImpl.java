@@ -26,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 public class LoginServiceImpl implements LoginService {
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
@@ -78,4 +77,20 @@ public class LoginServiceImpl implements LoginService {
 		
 		return sqlSession.getMapper(LoginDao.class).deleteRefreshToken(userPk);
 	}
+	
+
+	// social login ----------------------------------------------------------------------------------------------------
+	public UserDto findByEmail(String email) throws Exception {
+		logger.info("findByEmail - 실행");
+		
+		return sqlSession.getMapper(LoginDao.class).findByEmail(email);
+	}
+	
+
+    public int findByEmailPk(String email) throws Exception {
+		logger.info("findByEmailPk - 실행");
+		
+		return sqlSession.getMapper(LoginDao.class).findByEmailPk(email);
+	}
+	
 }

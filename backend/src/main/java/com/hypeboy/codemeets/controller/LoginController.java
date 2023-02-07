@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.LoginDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
+import com.hypeboy.codemeets.model.dto.response.BaseResponse;
 import com.hypeboy.codemeets.model.service.LoginServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
@@ -203,5 +204,18 @@ public class LoginController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 		
 	}
+	
+	@GetMapping("/oauth2/success")
+	public ResponseEntity<?> loginSuccess(@RequestParam("accessToken") String accessToken, @RequestParam("refreshToken") String refreshToken) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		resultMap.put("accessToken", accessToken);
+		resultMap.put("refreshToken", refreshToken);
+        
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+        
+	}
+	
 	
 }

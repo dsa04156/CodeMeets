@@ -7,12 +7,11 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.hypeboy.codemeets.config.oauth.CustomOAuth2UserService;
+import com.hypeboy.codemeets.config.oauth.OAuth2SuccessHandler;
 import com.hypeboy.codemeets.config.security.CustomAccessDeniedHandler;
 import com.hypeboy.codemeets.config.security.CustomAuthenticationEntryPoint;
-import com.hypeboy.codemeets.config.security.JwtAuthenticationFilter;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
 @Configuration
@@ -57,7 +56,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and().oauth2Login()
 				.defaultSuccessUrl("http://localhost:3000")
 				.userInfoEndpoint()
-				.userService(customOAuth2UserService);
+				.userService(customOAuth2UserService)
+				.and()
+                .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, customOAuth2UserService));
 				
 	}
 

@@ -26,5 +26,7 @@ public class UserDto {
 	private int emailPublic;
 	private int telPublic;
 	private int groupUserPosition;
+	private String provider;
+	private String providerId;
 		
 }

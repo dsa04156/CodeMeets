@@ -63,7 +63,7 @@
     <!-- ==================== social login ======================================== -->
     <select id="findByUserName" resultMap="user">
    		SELECT user_pk, user_id, user_name, nickname
-        FROM user
+        FROM `user`
         WHERE user_name = #{userName}
     </select>
     
@@ -72,6 +72,12 @@
         FROM `user` NATURAL JOIN `user_info`
         WHERE email = #{email}
     </select>
+    
+	<select id="findByEmailPk" resultType="int">
+		SELECT user_pk
+	    FROM `user` NATURAL JOIN `user_info`
+	    WHERE email = #{email}
+	</select>
 
 </mapper>
 
