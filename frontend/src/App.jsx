@@ -36,6 +36,7 @@ import HeaderProfile from "./CommonComponents/MainHeader/HeaderProfile";
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Images/LogoSwing.gif";
+import Chat from "./Message/chat";
 
 import {
   RecoilRoot,
@@ -76,7 +77,7 @@ function App() {
               />
               CODEMeets
             </div>
-            <div style={{display:"flex", alignContent:"center"}}>
+            <div style={{ display: "flex", alignContent: "center" }}>
               <AlarmButton />
               <HeaderProfile />
             </div>
@@ -108,13 +109,28 @@ function App() {
               </Route>
 
               {/* 디테일 페이지 */}
-              <Route path="/group/notice/:notice_pk" element={<GroupNoticeDetail />}></Route>
-              <Route path="/group/qna/:qna_pk" element={<GroupQnADetail />}></Route>
-              <Route path="/my-meeting-record/:conference_Pk" element={<MeetingListDetail />}></Route>
-              <Route path="/my-question-record/:conference_Pk" element={<QuestionListDetail />}></Route>
+              <Route
+                path="/group/notice/:notice_pk"
+                element={<GroupNoticeDetail />}
+              ></Route>
+              <Route
+                path="/group/qna/:qna_pk"
+                element={<GroupQnADetail />}
+              ></Route>
+              <Route
+                path="/my-meeting-record/:conference_Pk"
+                element={<MeetingListDetail />}
+              ></Route>
+              <Route
+                path="/my-question-record/:conference_Pk"
+                element={<QuestionListDetail />}
+              ></Route>
 
               {/* 수정 페이지*/}
-              <Route path="/group/notice/modify" element={<GroupModify />}></Route>
+              <Route
+                path="/group/notice/modify"
+                element={<GroupModify />}
+              ></Route>
 
               <Route path="/group/:group_pk" element={<GroupDetail />}>
                 <Route path="notice" element={<GroupNotice />}></Route>
@@ -127,7 +143,7 @@ function App() {
                 <Route path="member" element={<GroupMember />}></Route>
               </Route>
               <Route path="/grouplist/" element={<GroupList />}></Route>
-              <Route path="/message" element={<Message />}></Route>
+              <Route path="/message" element={<Chat />}></Route>
               <Route path="/setting" element={<Setting />}></Route>
             </Routes>
           </div>

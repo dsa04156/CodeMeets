@@ -24,6 +24,7 @@
     "recoil-persist": "^4.2.0",
     "redux": "^4.2.0",
     "styled-components": "^5.3.6",
+    "styled-reset": "^4.4.5",
     "swiper": "^8.4.6",
     "web-vitals": "^2.1.4"
   },

@@ -1,0 +1,262 @@
+[2023-02-06 00:00:02:6461591] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:00:02:6461592] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:00:02:6461999] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:00:02:6462000] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:00:02:6462000] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:00:02:6462032] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:00:02:6462032] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 438 ms
+[2023-02-06 00:00:02:6462169] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:00:02:6462169] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:00:03:6462351] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer :LiveReload server is running on port 35729
+[2023-02-06 00:00:03:6462400] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/v2/api-docs']
+[2023-02-06 00:00:03:6462400] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-resources/**']
+[2023-02-06 00:00:03:6462400] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-ui.html']
+[2023-02-06 00:00:03:6462400] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/webjars/**']
+[2023-02-06 00:00:03:6462400] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger/**']
+[2023-02-06 00:00:03:6462401] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/sign-api/exception']
+[2023-02-06 00:00:03:6462401] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/v3/api-docs/**']
+[2023-02-06 00:00:03:6462401] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-ui/**']
+[2023-02-06 00:00:03:6462405] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@268d85b1, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@1b3b2ab4, org.springframework.security.web.context.SecurityContextPersistenceFilter@5cc9b712, org.springframework.security.web.header.HeaderWriterFilter@7c647f9f, org.springframework.security.web.authentication.logout.LogoutFilter@1a10e401, com.hypeboy.codemeets.config.security.JwtAuthenticationFilter@8f384c9, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@4044f6a8, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@1f83e1b8, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@6871c38f, org.springframework.security.web.session.SessionManagementFilter@20568634, org.springframework.security.web.access.ExceptionTranslationFilter@6c4e1bf8, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@6e41c47c]
+[2023-02-06 00:00:03:6462428] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start :Tomcat started on port(s): 18081 (http) with context path ''
+[2023-02-06 00:00:03:6462673] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarted :Started CodeMeetsApplication in 1.138 seconds (JVM running for 6464.561)
+[2023-02-06 00:00:03:6462676] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener.onApplicationEvent :Condition evaluation unchanged
+[2023-02-06 00:00:16:6476107] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m ?.? :Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-02-06 00:00:16:6476108] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m org.springframework.web.servlet.FrameworkServlet.initServletBean :Initializing Servlet 'dispatcherServlet'
+[2023-02-06 00:00:16:6476110] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m org.springframework.web.servlet.FrameworkServlet.initServletBean :Completed initialization in 1 ms
+[2023-02-06 00:00:16:6476111] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.config.security.JwtAuthenticationFilter.doFilterInternal :[doFilterInternal] token 값 추출 완료. token : null
+[2023-02-06 00:00:16:6476111] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.config.security.JwtAuthenticationFilter.doFilterInternal :[doFilterInternal] token 값 유효성 체크 시작
+[2023-02-06 00:00:16:6476114] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.ConferenceController.closeConference :회의 종료 API 호출
+[2023-02-06 00:00:16:6476115] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.ConferenceController.closeConference :사용가능한 토큰입니다
+[2023-02-06 00:00:16:6476116] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.ConferenceController.closeConference :userPk - 1
+[2023-02-06 00:00:16:6476117] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.zaxxer.hikari.HikariDataSource.getConnection :HikariPool-12 - Starting...
+[2023-02-06 00:00:16:6476263] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.zaxxer.hikari.HikariDataSource.getConnection :HikariPool-12 - Start completed.
+[2023-02-06 00:00:16:6476285] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.ConferenceController.closeConference :회의 종료 성공
+[2023-02-06 00:02:43:6622687] [32m[File Watcher][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener.onApplicationEvent :Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+[2023-02-06 00:02:44:6623694] [32m[Thread-542][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:02:44:6623696] [32m[Thread-542][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Destroying Spring FrameworkServlet 'dispatcherServlet'
+[2023-02-06 00:02:44:6623703] [32m[Thread-542][0;39m [34mINFO [0;39m com.zaxxer.hikari.HikariDataSource.close :HikariPool-12 - Shutdown initiated...
+[2023-02-06 00:02:44:6623879] [32m[Thread-542][0;39m [34mINFO [0;39m com.zaxxer.hikari.HikariDataSource.close :HikariPool-12 - Shutdown completed.
+[2023-02-06 00:02:44:6624116] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:02:44:6624117] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:02:45:6624542] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:02:45:6624542] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:02:45:6624542] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:02:45:6624575] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:02:45:6624576] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 457 ms
+[2023-02-06 00:02:45:6624661] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:02:45:6624662] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:02:45:6624714] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:02:45:6624719] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:02:54:6633340] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:02:54:6633340] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:02:54:6633745] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:02:54:6633746] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:02:54:6633746] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:02:54:6633776] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:02:54:6633776] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 434 ms
+[2023-02-06 00:02:54:6633878] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:02:54:6633879] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:02:54:6633956] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:02:54:6633961] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:03:03:6642618] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:03:03:6642618] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:03:03:6643089] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:03:03:6643089] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:03:03:6643090] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:03:03:6643120] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:03:03:6643121] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 501 ms
+[2023-02-06 00:03:03:6643214] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:03:03:6643214] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:03:03:6643300] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:03:03:6643309] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:03:18:6657527] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:03:18:6657527] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:03:18:6657916] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:03:18:6657917] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:03:18:6657917] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:03:18:6657952] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:03:18:6657952] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 423 ms
+[2023-02-06 00:03:18:6658069] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:03:18:6658069] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:03:18:6658206] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:03:18:6658213] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:03:22:6661753] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:03:22:6661753] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:03:22:6662318] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:03:22:6662320] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:03:22:6662320] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:03:23:6662367] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:03:23:6662368] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 613 ms
+[2023-02-06 00:03:23:6662517] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:03:23:6662518] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:03:23:6662649] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:03:23:6662656] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:03:25:6665174] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:03:25:6665175] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:03:26:6665603] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:03:26:6665604] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:03:26:6665604] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:03:26:6665664] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:03:26:6665665] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 489 ms
+[2023-02-06 00:03:26:6665755] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:03:26:6665756] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:03:26:6665812] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:03:26:6665817] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:03:29:6668743] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:03:29:6668744] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:03:29:6669172] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:03:29:6669173] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:03:29:6669173] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:03:29:6669202] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:03:29:6669202] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 457 ms
+[2023-02-06 00:03:29:6669291] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:03:29:6669292] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:03:30:6669373] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:03:30:6669379] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:03:37:6677021] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:03:37:6677021] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:03:38:6677513] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:03:38:6677515] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:03:38:6677515] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:03:38:6677554] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:03:38:6677554] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 531 ms
+[2023-02-06 00:03:38:6677640] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:03:38:6677641] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:03:38:6677691] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:03:38:6677696] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:06:36:6855552] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:06:36:6855553] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:06:36:6855933] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:06:36:6855934] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:06:36:6855934] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:06:36:6855962] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:06:36:6855963] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 409 ms
+[2023-02-06 00:06:36:6856074] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:06:36:6856075] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:06:36:6856209] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:06:36:6856214] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:08:36:6975497] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:08:36:6975497] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:08:36:6975951] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:08:36:6975951] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:08:36:6975952] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:08:36:6975988] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:08:36:6975989] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 490 ms
+[2023-02-06 00:08:36:6976120] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:08:36:6976120] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:08:36:6976211] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer :LiveReload server is running on port 35729
+[2023-02-06 00:08:36:6976261] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/v2/api-docs']
+[2023-02-06 00:08:36:6976262] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-resources/**']
+[2023-02-06 00:08:36:6976262] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-ui.html']
+[2023-02-06 00:08:36:6976262] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/webjars/**']
+[2023-02-06 00:08:36:6976262] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger/**']
+[2023-02-06 00:08:36:6976263] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/sign-api/exception']
+[2023-02-06 00:08:36:6976263] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/v3/api-docs/**']
+[2023-02-06 00:08:36:6976263] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-ui/**']
+[2023-02-06 00:08:36:6976269] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@5315c116, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7853518f, org.springframework.security.web.context.SecurityContextPersistenceFilter@5d2f6d71, org.springframework.security.web.header.HeaderWriterFilter@47694487, org.springframework.security.web.authentication.logout.LogoutFilter@b1e5ff3, com.hypeboy.codemeets.config.security.JwtAuthenticationFilter@593fa5a6, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@8e60b4e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@5a63ba9, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@400f1686, org.springframework.security.web.session.SessionManagementFilter@20210a77, org.springframework.security.web.access.ExceptionTranslationFilter@48d3b9fb, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@34a5b186]
+[2023-02-06 00:08:36:6976291] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start :Tomcat started on port(s): 18081 (http) with context path ''
+[2023-02-06 00:08:37:6976402] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarted :Started CodeMeetsApplication in 0.933 seconds (JVM running for 6978.29)
+[2023-02-06 00:08:37:6976404] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener.onApplicationEvent :Condition evaluation unchanged
+[2023-02-06 00:08:53:6993123] [32m[File Watcher][0;39m [34mINFO [0;39m ?.? :Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+[2023-02-06 00:08:54:6994122] [32m[Thread-550][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:08:54:6994304] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:08:54:6994305] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:08:55:6994731] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:08:55:6994731] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:08:55:6994731] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:08:55:6994760] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:08:55:6994761] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 454 ms
+[2023-02-06 00:08:55:6994855] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:08:55:6994855] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:08:55:6994917] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:08:55:6994922] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:09:04:7003579] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:09:04:7003579] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:09:04:7004065] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:09:04:7004066] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:09:04:7004066] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:09:04:7004097] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:09:04:7004098] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 517 ms
+[2023-02-06 00:09:04:7004203] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:09:04:7004204] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:09:04:7004273] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:09:04:7004279] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.autoconfigure.logging.ConditionEvaluationReportLoggingListener.logMessage :
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+[2023-02-06 00:09:11:7010897] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:09:11:7010897] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:09:11:7011316] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:09:11:7011317] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:09:11:7011317] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:09:12:7011347] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:09:12:7011348] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 449 ms
+[2023-02-06 00:09:12:7011463] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:09:12:7011464] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:09:12:7011604] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer :LiveReload server is running on port 35729
+[2023-02-06 00:09:12:7011648] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/v2/api-docs']
+[2023-02-06 00:09:12:7011648] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-resources/**']
+[2023-02-06 00:09:12:7011649] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-ui.html']
+[2023-02-06 00:09:12:7011649] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/webjars/**']
+[2023-02-06 00:09:12:7011649] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger/**']
+[2023-02-06 00:09:12:7011649] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/sign-api/exception']
+[2023-02-06 00:09:12:7011649] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/v3/api-docs/**']
+[2023-02-06 00:09:12:7011649] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-ui/**']
+[2023-02-06 00:09:12:7011652] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@2280491, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@7f4e2c2a, org.springframework.security.web.context.SecurityContextPersistenceFilter@6319963, org.springframework.security.web.header.HeaderWriterFilter@434f2807, org.springframework.security.web.authentication.logout.LogoutFilter@61305d5c, com.hypeboy.codemeets.config.security.JwtAuthenticationFilter@484f95ab, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2ed2636d, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@14e779a0, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@57797951, org.springframework.security.web.session.SessionManagementFilter@31f88f2, org.springframework.security.web.access.ExceptionTranslationFilter@f04f9f9, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7a0cb4bf]
+[2023-02-06 00:09:12:7011676] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start :Tomcat started on port(s): 18081 (http) with context path ''
+[2023-02-06 00:09:12:7011793] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarted :Started CodeMeetsApplication in 0.925 seconds (JVM running for 7013.682)
+[2023-02-06 00:09:12:7011795] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener.onApplicationEvent :Condition evaluation unchanged
+[2023-02-06 00:09:23:7022328] [32m[File Watcher][0;39m [34mINFO [0;39m ?.? :Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+[2023-02-06 00:09:24:7023387] [32m[Thread-621][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Stopping service [Tomcat]
+[2023-02-06 00:09:24:7023575] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarting :Starting CodeMeetsApplication using Java 11.0.18 on DESKTOP-0UFK5I4 with PID 21224 (F:\download\2th\PJT1\local\S08P12D109\backend\target\classes started by jinuk in F:\download\2th\PJT1\local\S08P12D109\backend)
+[2023-02-06 00:09:24:7023576] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.SpringApplication.logStartupProfileInfo :No active profile set, falling back to 1 default profile: "default"
+[2023-02-06 00:09:24:7024046] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize :Tomcat initialized with port(s): 18081 (http)
+[2023-02-06 00:09:24:7024047] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting service [Tomcat]
+[2023-02-06 00:09:24:7024048] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Starting Servlet engine: [Apache Tomcat/9.0.70]
+[2023-02-06 00:09:24:7024088] [32m[restartedMain][0;39m [34mINFO [0;39m org.apache.juli.logging.DirectJDKLog.log :Initializing Spring embedded WebApplicationContext
+[2023-02-06 00:09:24:7024088] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.prepareWebApplicationContext :Root WebApplicationContext: initialization completed in 511 ms
+[2023-02-06 00:09:24:7024193] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\images
+[2023-02-06 00:09:24:7024193] [32m[restartedMain][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.FileController.<init> :F:\download\2th\PJT1\local\S08P12D109\backend\notice
+[2023-02-06 00:09:25:7024401] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.OptionalLiveReloadServer.startServer :LiveReload server is running on port 35729
+[2023-02-06 00:09:25:7024450] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/v2/api-docs']
+[2023-02-06 00:09:25:7024450] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-resources/**']
+[2023-02-06 00:09:25:7024450] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-ui.html']
+[2023-02-06 00:09:25:7024450] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/webjars/**']
+[2023-02-06 00:09:25:7024451] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger/**']
+[2023-02-06 00:09:25:7024451] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/sign-api/exception']
+[2023-02-06 00:09:25:7024451] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/v3/api-docs/**']
+[2023-02-06 00:09:25:7024451] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will not secure Ant [pattern='/swagger-ui/**']
+[2023-02-06 00:09:25:7024455] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.security.web.DefaultSecurityFilterChain.<init> :Will secure any request with [org.springframework.security.web.session.DisableEncodeUrlFilter@1808f058, org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@55e72389, org.springframework.security.web.context.SecurityContextPersistenceFilter@71a92f13, org.springframework.security.web.header.HeaderWriterFilter@285d348f, org.springframework.security.web.authentication.logout.LogoutFilter@7263f800, com.hypeboy.codemeets.config.security.JwtAuthenticationFilter@5a45121d, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@467fabbf, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@7c716b3, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@4a81c508, org.springframework.security.web.session.SessionManagementFilter@649693f, org.springframework.security.web.access.ExceptionTranslationFilter@603aeb62, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@5d2b0c5]
+[2023-02-06 00:09:25:7024481] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.web.embedded.tomcat.TomcatWebServer.start :Tomcat started on port(s): 18081 (http) with context path ''
+[2023-02-06 00:09:25:7024605] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.StartupInfoLogger.logStarted :Started CodeMeetsApplication in 1.091 seconds (JVM running for 7026.492)
+[2023-02-06 00:09:25:7024606] [32m[restartedMain][0;39m [34mINFO [0;39m org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener.onApplicationEvent :Condition evaluation unchanged
+[2023-02-06 00:10:33:7092460] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m ?.? :Initializing Spring DispatcherServlet 'dispatcherServlet'
+[2023-02-06 00:10:33:7092461] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m org.springframework.web.servlet.FrameworkServlet.initServletBean :Initializing Servlet 'dispatcherServlet'
+[2023-02-06 00:10:33:7092463] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m org.springframework.web.servlet.FrameworkServlet.initServletBean :Completed initialization in 1 ms
+[2023-02-06 00:10:33:7092464] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.config.security.JwtAuthenticationFilter.doFilterInternal :[doFilterInternal] token 값 추출 완료. token : null
+[2023-02-06 00:10:33:7092465] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.config.security.JwtAuthenticationFilter.doFilterInternal :[doFilterInternal] token 값 유효성 체크 시작
+[2023-02-06 00:10:33:7092467] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.ConferenceController.closeConference :회의 종료 API 호출
+[2023-02-06 00:10:33:7092469] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.ConferenceController.closeConference :사용가능한 토큰입니다
+[2023-02-06 00:10:33:7092470] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.ConferenceController.closeConference :userPk - 1
+[2023-02-06 00:10:33:7092471] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.zaxxer.hikari.HikariDataSource.getConnection :HikariPool-13 - Starting...
+[2023-02-06 00:10:33:7092575] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.zaxxer.hikari.HikariDataSource.getConnection :HikariPool-13 - Start completed.
+[2023-02-06 00:10:33:7092599] [32m[http-nio-0.0.0.0-18081-exec-1][0;39m [34mINFO [0;39m com.hypeboy.codemeets.controller.ConferenceController.closeConference :회의 종료 성공
