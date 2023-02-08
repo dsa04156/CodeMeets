@@ -35,7 +35,7 @@ const MyPageMeetingList = () => {
     console.log('실행');
     axios({
       method: 'GET',
-      url: `${API}/user/my-conference-record?nowPage=${page}&items=6`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
+      url: `${API}/user/my-conference-record?nowPage=${page}&items=7`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
       headers: {
         'Content-Type': 'application/json',
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -50,7 +50,7 @@ const MyPageMeetingList = () => {
 
   return (
     <div>
-      <Scrollsize>
+      {/* <Scrollsize> */}
         <Styles>
           <CreateTable
             columns={columns}
@@ -59,7 +59,7 @@ const MyPageMeetingList = () => {
           />
           <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
         </Styles>
-      </Scrollsize>
+      {/* </Scrollsize> */}
     </div>
   );
 };
@@ -91,10 +91,10 @@ const Styles = styled.div`
     }
   }
 `;
-const Scrollsize = styled.div`
-  height: 46vh;
-  overflow-y: scroll;
-`;
+// const Scrollsize = styled.div`
+//   height: 46vh;
+//   overflow-y: scroll;
+// `;
 const NavBarStyle = styled(NavLink)`
   color: black;
   font-size: 20px;

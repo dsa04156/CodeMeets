@@ -1,12 +1,11 @@
 import styled from "styled-components";
 
-const CommentContentStyle = ({Content, Like}) => {
+const CommentContentStyle = ({Content}) => {
     return (
         <div>
-        <ContentBox>
-        {Content}
-        </ContentBox>
-<LikeBox>좋아요: {Like}</LikeBox>
+          <ContentBox>
+            {Content}
+          </ContentBox>
         </div>
     );
 };
@@ -20,8 +19,8 @@ const ContentBox = styled.div`
   height: 30vh;
 `;
 
-const LikeBox = styled.div`
-  display: flex;
-  justify-content: right;
-  margin-right: 3vh;
-`;
+// const LikeBox = styled.div`
+//   display: flex;
+//   justify-content: right;
+//   margin-right: 3vh;
+// `;

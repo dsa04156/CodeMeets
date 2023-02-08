@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
-const ContentStyle = ({ Content, Hit }) => {
+const ContentStyle = ({ Content}) => {
   return (
     <div>
       <ContentBox>{Content}</ContentBox>
-      <HitBox>조회수: {Hit}</HitBox>
     </div>
   );
 };

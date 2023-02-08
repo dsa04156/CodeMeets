@@ -32,8 +32,8 @@ const MyPageMeetingListDetail = () => {
 
     return(
         <>
-        <TitleStyle TitleContent={data.conferenceTitle}/>
-        <ContentStyle Content={data.conferenceContents}/>
+        <TitleStyle TitleContent={data.conferenceTitle} />
+        <ContentStyle Content={data.conferenceContents} />
         </>
     );
 };
