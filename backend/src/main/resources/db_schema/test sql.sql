@@ -45,6 +45,18 @@ DROP `conference_answer_like`;
 ALTER TABLE `s08p11d109`.`conference_answer`
 CHANGE `conference_answer_pk` `conference_answer_pk` INT NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `s08p11d109`.`user_info`
+CHANGE `user_name` `user_name` VARCHAR(30);
+
+ALTER TABLE `s08p11d109`.`user_info`
+CHANGE `nickname` `nickname` VARCHAR(30);
+
+ALTER TABLE `s08p11d109`.`user` 
+ADD `provider` VARCHAR(20) NOT NULL DEFAULT 'codemeets';
+
+ALTER TABLE `s08p11d109`.`user` 
+ADD `provider_id` VARCHAR(50) NULL;
+
 START TRANSACTION;
 	INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
 	VALUES('test03', '1234', 'token', 1);
