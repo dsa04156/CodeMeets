@@ -46,4 +46,7 @@ public interface GroupDao {
 
 	int checkManager(int userPk, int groupPk) throws SQLException;
 
+
+	GroupDto detailGroup(int groupPk) throws SQLException;
+
 }

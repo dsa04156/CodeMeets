@@ -17,4 +17,5 @@ public class GroupListDto {
 	private int userPk;
 	private int managerId;
 	private int total;
+	private String groupUrl;
 }

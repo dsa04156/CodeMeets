@@ -68,6 +68,35 @@ public class GroupController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR !!")
     })
     
+
+      @Operation(summary = "그룹 만들기 버튼 클릭", description = "그룹 만들기 버튼 클릭 API ")
+    @PostMapping("/click")
+	public ResponseEntity<?> clickCreateGroup(HttpServletRequest request) throws Exception {
+			logger.info("click create group - 호출");
+			//그룹 리스트 마이 그룹 리스트 만들기
+			logger.info("난수 생성");
+			String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+			String r = RandomStringUtils.randomAlphanumeric(10);
+			url = url + "/api/group/join/"+r;
+			List<String> list = new ArrayList<String>();
+			list.add(url);
+			list.add(r);
+	
+			return new ResponseEntity<List>(list, HttpStatus.OK);
+	}
+    
+
+    @Operation(summary = "그룹 상세보기", description = "그룹 상세보기 API ")
+    @PostMapping("/{groupPk}/detail")
+	public ResponseEntity<?> detailGroup(@PathVariable int groupPk) throws Exception {
+			logger.info("detail group - 호출");
+			
+			GroupDto groupDto = new GroupDto();
+			groupDto = groupService.detailGroup(groupPk);
+	
+			return new ResponseEntity<GroupDto>(groupDto, HttpStatus.OK);
+	}
+    
     @Operation(summary = "그룹 만들기", description = "그룹 만들기 API "
     		+ " \n group_Pk값은 제외해주세요"
     		+ "\n manager_id 값은 회원 pk 번호입니다 ")
@@ -88,8 +117,6 @@ public class GroupController {
 	    		logger.info("토큰 실패");
 	    	}
 			logger.info("난수 생성");
-			String url = RandomStringUtils.randomAlphanumeric(10);
-			groupDto.setGroupUrl(url);
 			groupDto.setManagerId(userPk);
 			if(groupService.createGroup(groupDto)!=0) {
 				logger.info("createGroup - 성공");
@@ -166,8 +193,8 @@ public class GroupController {
 //			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 //	}
         
-        @Operation(summary = "그룹 url 가입", description = "그룹 url 가입 API ")
-        @PostMapping("/join/{groupUrl}")
+         @Operation(summary = "그룹 url 가입", description = "그룹 url 가입 API ")
+        @GetMapping("/join/{groupUrl}")
         @ApiImplicitParams({
             @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
         })
@@ -183,7 +210,7 @@ public class GroupController {
         	else {
         		logger.info("토큰 실패");
         	}
-         	
+  
          	GroupDto groupDto = groupService.checkUrl(groupUrl);
          	if(groupDto.getGroupPk()!=0) {
          		logger.info(groupDto.toString());
@@ -229,8 +256,9 @@ public class GroupController {
     	List<GroupListDto> groupList = groupService.getList(userPk,(nowPage - 1) * items, items, order);
     	Map<String,List<GroupListDto>> resultMap = new HashMap<String, List<GroupListDto>>();
     	logger.info("gpList 호출");
-    	logger.info(groupList.toString());
     	List<Integer> groupPkList = groupService.gpList(userPk);
+    	logger.info(groupList.toString());
+//    	groupPkList.remove(0);
     	logger.info(groupPkList.toString());
     	int gc = groupPkList.size();
     	System.out.println(gc);
@@ -240,13 +268,19 @@ public class GroupController {
     			break;
     		}
     		int k =(nowPage-1)*items+i;
-	    		System.out.println(k);
     		groupList.get(i).setCnt(k+1);
     		groupList.get(i).setGroupPk(groupPkList.get(k));
     		groupList.get(i).setCount(groupService.countMember(groupPkList.get(k)));
     		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(k)));
     		groupList.get(i).setTotal(gc);
     	}
+		for(int i=0;i<groupList.size();i++) {
+			if(groupList.get(i).getGroupPk()==0) {
+				groupList.remove(i);
+				System.out.println("지원ㅅ다"+i);
+				break;
+			}
+		}
     	resultMap.put("groupList", groupList);
     	
     	return new ResponseEntity<Map<String,List<GroupListDto>>>(resultMap,HttpStatus.OK);

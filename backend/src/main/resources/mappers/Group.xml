@@ -27,6 +27,7 @@
 		<result column="manager_id" property="managerId"/>
 		<result column="user_pk" property="userPk"/>
 		<result column="group_pk" property="groupPk"/>
+		<result column="group_url" property="groupUrl"/>
 	</resultMap>
 <resultMap type="UserDto" id="user">
 		<result column="user_pk" property="userPk" />
@@ -49,6 +50,17 @@
 		  (#{groupName}, #{groupDesc},#{groupUrl},#{managerId});
 		  ]]>
 	</insert>
+	
+	<select id="detailGroup" resultMap="group">
+	<![CDATA[
+		SELECT
+		*
+		FROM
+		`group`
+		where
+		`group_pk`=#{groupPk}
+	]]>
+	</select>
 	
 	<insert id="createGroupUser" >
 	<![CDATA[
@@ -91,8 +103,8 @@
 		 -->
 	<select id="getList" resultMap="glDto">
 	<![CDATA[
-		select 
-		a.group_name,b.nickname, a.manager_id
+			select 
+		a.group_name,b.nickname, a.manager_id,a.group_url
 		from 
 		`group` 
 		as a inner join user_info as b 

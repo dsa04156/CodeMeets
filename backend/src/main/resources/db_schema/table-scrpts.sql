@@ -28,6 +28,8 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`user` (
   `password` VARCHAR(1000) NOT NULL,
   `token` VARCHAR(256) NULL,
   `user_active` TINYINT NULL DEFAULT 1,
+  `provider` VARCHAR(20) NOT NULL DEFAULT 'codemeets',
+  `provider_id` VARCHAR(50) NULL,
   PRIMARY KEY (`user_pk`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC))
 ENGINE = InnoDB;
@@ -40,8 +42,8 @@ DROP TABLE IF EXISTS `s08p11d109`.`user_info` ;
 
 CREATE TABLE IF NOT EXISTS `s08p11d109`.`user_info` (
   `user_info_pk` INT NOT NULL AUTO_INCREMENT,
-  `user_name` VARCHAR(10) NOT NULL,
-  `nickname` VARCHAR(16) NULL,
+  `user_name` VARCHAR(30) NOT NULL,
+  `nickname` VARCHAR(30) NULL,
   `tel` VARCHAR(13) NULL,
   `email` VARCHAR(45) NULL,
   `profile_photo` VARCHAR(512) NULL,
@@ -381,6 +383,8 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`conference_answer_user`(
 PRIMARY KEY (`conference_answer_pk`, `user_pk`),
 FOREIGN KEY (`conference_answer_pk`) REFERENCES conference_answer(`conference_answer_pk`),
 FOREIGN KEY (`user_pk`) REFERENCES `conference-user`(`user_pk`)
+  ON DELETE CASCADE
+    ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
 
