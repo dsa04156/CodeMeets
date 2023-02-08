@@ -7,10 +7,13 @@ import styled from "styled-components";
 import { useState } from "react";
 import { IoEnterOutline } from "react-icons/io5";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [isOpen1, setIsOpen1] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
+  // openvidu
+  const navigate = useNavigate() 
 
   const onClickButton1 = () => {
     setIsOpen1(true);
@@ -20,7 +23,7 @@ const Home = () => {
   };
   return (
     <div>
-      <PositionIcon>
+      {/* <PositionIcon>
         <IoEnterOutline
           onClick={onClickButton1}
           size="80"
@@ -33,8 +36,14 @@ const Home = () => {
               setIsOpen1(false);
             }}
           ></MeetingInModal>
-        )}
-
+        )} */}
+      <PositionIcon>
+        <IoEnterOutline
+          onClick={() => navigate("/openvidu")}
+          size="80"
+          style={{ cursor: "pointer" }}
+        ></IoEnterOutline>
+        
         <AiOutlinePlusCircle
           onClick={onClickButton2}
           size="80"

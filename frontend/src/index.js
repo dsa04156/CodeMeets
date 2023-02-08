@@ -6,6 +6,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
 import SidePadding from "./CommonComponents/SidePadding";
+import registerServiceWorker from "./CommonComponents/OpenVidu/registerServiceWorker"
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,3 +16,4 @@ root.render(
     </BrowserRouter>
   </SidePadding>
 );
+registerServiceWorker();

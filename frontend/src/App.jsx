@@ -37,6 +37,9 @@ import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "./Images/LogoSwing.gif";
 
+//open vidu
+import OpenviduMain from "./CommonComponents/OpenVidu/OpenviduMain";
+
 import {
   RecoilRoot,
   atom,
@@ -129,6 +132,8 @@ function App() {
               <Route path="/grouplist/" element={<GroupList />}></Route>
               <Route path="/message" element={<Message />}></Route>
               <Route path="/setting" element={<Setting />}></Route>
+      {/* openvidu 링크 */}
+      <Route path="/openvidu" element={<OpenviduMain />}></Route>
             </Routes>
           </div>
         </MainArea>
