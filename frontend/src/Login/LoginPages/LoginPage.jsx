@@ -8,6 +8,10 @@ import { user } from "../../Store"
 import { APIroot } from "../../Store"
 import { useRecoilState, useRecoilValue } from "recoil";
 
+import googleLogo from '../../assets/google_login.png';
+import kakaoLogo from '../../assets/kakao_login_medium.png';
+
+
 const LoginPage = () => {
   const [inputId, setInputId] = useState("");
   const [inputPw, setInputPw] = useState("");
@@ -67,6 +71,11 @@ const LoginPage = () => {
 
   const accessToken = new URL(window.location.href).searchParams.get("accessToken");
   const refreshToken = new URL(window.location.href).searchParams.get("refreshToken");
+  const myUrl = window.location.host;
+  const loginURL = API.replace("/api", "");
+  // const loginURL = "http://localhost:18081";
+  const googleLogInUrl = new URL(`${loginURL}/oauth2/authorization/google?redirect_uri=${myUrl}`);
+  const kakaoLogInUrl = new URL(`${loginURL}/oauth2/authorization/kakao?redirect_uri=${myUrl}`);
 
   if (accessToken) {
     localStorage.setItem("ACCESS_TOKEN", accessToken);
@@ -106,9 +115,12 @@ const LoginPage = () => {
       <Link to="/codemeets/signup">회원가입</Link> |
       <Link to="/codemeets/findid"> 아이디 찾기</Link> |
       <Link to="/codemeets/findpassword"> 비밀번호 찾기</Link> |
-
-      <a href="http://localhost:18081/oauth2/authorization/google?redirect_uri=http://localhost:3000"> 구글 </a>
-
+      
+      <SocialButton>
+        <a href={googleLogInUrl}><img src={googleLogo} width="100"/></a>
+        <a href={kakaoLogInUrl}><img src={kakaoLogo} /></a>
+      </SocialButton>
+      
     </div>
   );
 };
@@ -129,4 +141,12 @@ const ButtonStyle = styled.div`
   margin: 8px;
   margin-left: 0px;
   margin-bottom: 60px;
+`;
+const SocialButton = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 8px;
+  margin-left: 0px;
+  margin-bottom: 60px;
+  align-items: center;
 `;
