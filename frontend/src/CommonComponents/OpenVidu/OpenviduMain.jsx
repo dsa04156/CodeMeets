@@ -6,6 +6,7 @@ import UserVideoComponent from "./UserVideoComponent";
 import { user } from "../../Store";
 import { useRecoilValue } from "recoil";
 
+import styled from "styled-components";
 // import {
 //   getToken,
 //   APPLICATION_SERVER_URL,
@@ -112,7 +113,7 @@ const OpenviduMain = () => {
 
   const createToken = async (sessionId) => {
     const response = await axios.post(
-      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + '/connections',
+      APPLICATION_SERVER_URL + "api/sessions/" + sessionId + "/connections",
       {},
       {
         headers: { "Content-Type": "application/json" },
@@ -265,6 +266,48 @@ const OpenviduMain = () => {
     }
   };
 
+  // 화면 공유
+  const screenSharingHandler = () => {
+    let sessionScreen = OV.initSession();
+    getToken(info.mySessionId).then(() => {
+      let publisher = OV.initPublisher("html-element-id", {videoSource:"screen"});
+
+      publisher.once('accessAllowed', (event) => {
+        publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+          console.log('Useer pressed the "Stop sharing" button');
+        });
+        sessionScreen.publish(publisher);
+      })
+      publisher.once('accessDenied', (event) => {
+        console.warn('ScreenShare: Access Denied');
+      });
+    }).catch((error) => {
+      console.warn('There was an error connecting to the session:', error.code, error.message);
+    })
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div>
       {session === null ? (
@@ -305,42 +348,11 @@ const OpenviduMain = () => {
           </div>
         </div>
       ) : null}
-
+      {/* 세션 들어가서 만들어지는 부분 */}
       {session !== null ? (
         <div>
-          <div>
-            <h1>{info.mySessionId}</h1>
-            <input
-              type="button"
-              id="buttonLeaveSession"
-              onClick={leaveSession}
-              value="Leave session"
-            />
-          </div>
-
-          {info.mainStreamManager !== undefined ? (
-            <div >
-              <UserVideoComponent
-                streamManager={info.mainStreamManager}
-              />
-              <input
-                className="btn btn-large btn-success"
-                type="button"
-                onClick={switchCamera}
-                value="Switch Camera"
-              />
-            </div>
-          ) : null}
-
-          <div>
-          {info.publisher !== undefined ? (
-            <div onClick={() => handleMainVideoStream(info.publisher)}>
-              <UserVideoComponent streamManager={info.publisher} />
-            </div>
-          ) : null}
-          </div>
-
-          <div>
+          <button onClick={screenSharingHandler}>화면 공유</button>
+          <SubCameraBox>
             {info.subscribers.map((sub, i) => (
               <div
                 key={i}
@@ -351,6 +363,35 @@ const OpenviduMain = () => {
                 <UserVideoComponent streamManager={sub} />
               </div>
             ))}
+          </SubCameraBox>
+          <div>
+            <input
+              type="button"
+              id="buttonLeaveSession"
+              onClick={leaveSession}
+              value="Leave session"
+            />
+          </div>
+
+          {info.mainStreamManager !== undefined ? (
+            <div>
+              여기가 메인카메라화면
+              <UserVideoComponent streamManager={info.mainStreamManager} />
+              <input
+                className="btn btn-large btn-success"
+                type="button"
+                onClick={switchCamera}
+                value="Switch Camera"
+              />
+            </div>
+          ) : null}
+
+          <div>
+            {info.publisher !== undefined ? (
+              <div onClick={() => handleMainVideoStream(info.publisher)}>
+                <UserVideoComponent streamManager={info.publisher} />
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}
@@ -359,3 +400,9 @@ const OpenviduMain = () => {
 };
 
 export default OpenviduMain;
+
+const SubCameraBox = styled.div`
+  display: flex;
+`;
+
+const EachSubCamera = styled.div``;

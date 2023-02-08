@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 const SidePadding = (props) => {
-  return <StyledSidePadding>{props.children}</StyledSidePadding>;
+  return (
+    <StyledSidePadding>{props.children}</StyledSidePadding>
+  )
 };
 
 export default SidePadding;
