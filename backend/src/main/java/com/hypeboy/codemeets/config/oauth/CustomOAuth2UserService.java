@@ -54,7 +54,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		// OAuthAttributes: attribute를 담을 클래스 (개발자가 생성)
 		OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName,
 				oAuth2User.getAttributes());
-//		logger.info("oAuth2User.getAttributes() - " + oAuth2User.getAttributes());
+		logger.info("oAuth2User.getAttributes() - " + oAuth2User.getAttributes());
 		
 		String userId = String.valueOf(attributes.getAttributes().get("sub"));
 		String userName = String.valueOf(attributes.getAttributes().get("name"));
@@ -86,6 +86,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		try {
 			if (sqlSession.getMapper(LoginDao.class).findByEmail(email) != null) {
 				userDto = sqlSession.getMapper(LoginDao.class).findByEmail(email);
+				logger.info("userDto - " + userDto);
 			}
 			// 회원이 아닌 경우 회원가입 진행
 			else {
