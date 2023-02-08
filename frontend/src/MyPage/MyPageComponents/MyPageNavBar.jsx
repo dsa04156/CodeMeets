@@ -1,16 +1,20 @@
 import { NavLink } from "react-router-dom";
 import styled from "styled-components"
+import { useRecoilState } from "recoil";
+import { pageNumber } from "../../Store";
 
 const MyPageNavBar = (props) => {
+  const [pageNum, setPageNum] = useRecoilState(pageNumber);
   console.log(props);
+
   return (
     <div style={{borderBottom:'1px solid Black'}}>
       <NavStyle>
         <div>
-        <MyPageNavBarStyle to={`/my-page/${props.userId}/meeting-list`}>Meeting-List</MyPageNavBarStyle>
+        <MyPageNavBarStyle to={`/my-page/${props.userId}/meeting-list`} onClick={()=>{setPageNum(1)}}>Meeting-List</MyPageNavBarStyle>
         </div>
         <div>
-        <MyPageNavBarStyle to={`/my-page/${props.userId}/question-list`}>Question-List</MyPageNavBarStyle>
+        <MyPageNavBarStyle to={`/my-page/${props.userId}/question-list`} onClick={()=>{setPageNum(1)}}>Question-List</MyPageNavBarStyle>
         </div>
       </NavStyle>
     </div>

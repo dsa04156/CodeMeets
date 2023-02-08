@@ -12,8 +12,6 @@ const Modal = ({ onClose, children, ModalTitle }) => {
     onClose?.();
   };
 
-
-
   useEffect(() => {
     const $body = document.querySelector("body");
     $body.style.overflow = "hidden";

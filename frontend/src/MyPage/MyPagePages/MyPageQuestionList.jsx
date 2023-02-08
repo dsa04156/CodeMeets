@@ -1,4 +1,4 @@
-import { APIroot } from '../../Store';
+import { APIroot, pageNumber } from '../../Store';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import Pagination from '../../CommonComponents/Pagination';
 
 const MyPageQuestionList = () => {
     const [questionRecord, setQuestionRecord] = useState([]);
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useRecoilState(pageNumber);
     const [totalPosts, setTotalPosts] = useState(0);
     const API = useRecoilValue(APIroot);
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ const MyPageQuestionList = () => {
     useEffect(() => {
         axios({
             method: 'GET',
-            url: `${API}/user/my-question-record?nowPage=${page}&items=10`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
+            url: `${API}/user/my-question-record?nowPage=${page}&items=7`,
             headers: {
                 'Content-Type': 'application/json',
                 AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -48,12 +48,12 @@ const MyPageQuestionList = () => {
     }, [API, page]);
 
     return(
-        <Scrollsize>
+        // <Scrollsize>
             <Styles>
                 <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler} />
                 <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
             </Styles>
-        </Scrollsize>
+        // </Scrollsize>
     );
 };
 
@@ -84,7 +84,7 @@ const Styles = styled.div`
     }
   }
 `;
-const Scrollsize = styled.div`
-  height: 46vh;
-  overflow-y: scroll;
-`;
+// const Scrollsize = styled.div`
+//   height: 46vh;
+//   overflow-y: scroll;
+// `;

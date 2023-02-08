@@ -14,9 +14,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 const GroupDetail = () => {
   const [groupTitle, setGroupTitle] = useRecoilState(groupNavTitle);
+  const [groupUrl, setGroupUrl] = useState('');
+  // const [urlCopy, setUrlCopy] = useState('');
   const [leaveTheGroupModal, setLeaveTheGroupModal] = useState(false); //true면 탈퇴하는거로 구성
   const [DeleteTheGroupModal, setDeleteTheGroupModal] = useState(false);
   const API = useRecoilValue(APIroot);
+  
+
 
   const params = useParams();      // params는 각 페이지의 url에 있는 모든 변수값을 넣어 놓음.
   console.log('이건 파람스')
@@ -36,6 +40,29 @@ const GroupDetail = () => {
     setDeleteTheGroupModal(true);
   }
 
+  const CopyHandler = () => {
+    // setUrlCopy(groupUrl)
+    try {
+      navigator.clipboard.writeText(groupUrl);
+      alert('클립보드 복사완료');
+      console.log(groupUrl)
+    } catch (error) {
+      alert('복사 실패');
+    }
+  };
+
+  axios({
+    method: "POST",
+    url: `${API}/group/${params.group_pk}/detail`,
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then((response) => {
+    console.log(response.data.groupUrl);
+    setGroupUrl(response.data.groupUrl);
+  })
+
   useEffect(() => {
     axios({
       method: "GET",
@@ -51,12 +78,16 @@ const GroupDetail = () => {
     })
   }, [API, position]);
 
-    console.log(position)
+  console.log(position)
   
   return (
     <div>
       <MainTitle>
+        <TitlenURLStyle>
       <h1>{groupTitle}</h1>
+      <div className="url">Group URL : {groupUrl}</div>
+      <div className="url"><button onClick={CopyHandler}>Copy</button></div>
+        </TitlenURLStyle>
       <div>
         <LeaveButton onClick={leaveGroupHandler}>Leave</LeaveButton>
       </div>
@@ -72,7 +103,7 @@ const GroupDetail = () => {
         )}
       
         <div>
-          {position === 3 ? <DeleteButton onClick={DeleteGroupHandler}>Delete</DeleteButton> : null}
+          {position === 1 ? <DeleteButton onClick={DeleteGroupHandler}>Delete</DeleteButton> : null}
         </div>
         {DeleteTheGroupModal && (
           // 연결된 모달 component
@@ -128,9 +159,18 @@ const TitleStyle = styled.div`
 `;
 
 const LeaveButton = styled.button`
-  margin-left: 620px;
+  margin-left: 300px;
 `;
 
 const DeleteButton = styled.button`
   margin-left: 20px;
+`;
+
+const TitlenURLStyle = styled.div`
+  display: flex;
+  align-items: center;
+  .url{
+    margin: 10px 0px 0px 10px;
+    width: auto;
+  }
 `;

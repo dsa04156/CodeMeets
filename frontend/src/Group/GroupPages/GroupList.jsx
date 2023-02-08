@@ -11,8 +11,8 @@ import axios from "axios";
 
 import { APIroot } from "../../Store";
 
-import { user } from "../../Store";
-import { useRecoilValue } from "recoil";
+import { user, pageNumber } from "../../Store";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 import styled from "styled-components";
 
@@ -23,14 +23,15 @@ const GroupList = () => {
   const loginUser = useRecoilValue(user);
 
   const [page, setPage] = useState(1);
+  const [recoilPageNum, setRecoilPageNum] = useRecoilState(pageNumber);
   const [totalPosts, setTotalPosts] = useState(0);
+  const [createGroupUrl, setCreateGroupUrl] = useState();
 
   const navigate = useNavigate();
 
   const TableNavHandler = (row) => {
     navigate(`/group/${row.original.groupPk}/notice`);
   };
-
 
   //그룹 가입하기 Modal 부분
   const [joinModalIsOpen, setJoinModalIsOpen] = useState(false);
@@ -39,9 +40,28 @@ const GroupList = () => {
   }
 
   const [createModalIsOpen, setCreateIsOpen] = useState(false);
-  const createGroupHandler = () => {
-    setCreateIsOpen(true);
+
+  const createGroupHandler = (event) => {
+    event.preventDefault();
+    axios({
+      method: "POST",
+      url: `${API}/group/click`,
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => {
+      console.log(response.data[1])
+      setCreateGroupUrl(response.data[1])
+    })
+    .then(
+      res => {
+        setCreateIsOpen(true);
+      }
+
+    )
   }
+  console.log(createGroupUrl)
   
   const [groupList, setGroupList] = useState([]);
   console.log(loginUser.userPk);
@@ -80,7 +100,7 @@ const GroupList = () => {
     console.log("실행");
     axios({
       method: "GET",
-      url: `${API}/group/list?nowPage=${page}&items=7&order=444`,
+      url: `${API}/group/list?nowPage=${page}&items=10&order=444`,
       headers: {
         "Content-Type": "application/json",
         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
@@ -89,13 +109,15 @@ const GroupList = () => {
       console.log(response.data);
       setTotalPosts(response.data.groupList[0].total);
       setGroupList(response.data.groupList);
+      setRecoilPageNum(1);
     });
   }, [API, page]);
 
+  // console.log(createGroupUrl);
   return (
     <div>
       <TitleStyle>
-        <div className="name">"{loginUser.userName}"</div>{" "}
+        <div className="name">"{loginUser.userName}"</div>
         <div className="wellcome">님의 Group List</div>
         {/* modal 부분 */}
         {/* <div className="button">
@@ -111,8 +133,9 @@ const GroupList = () => {
             onClose={() => {
               setCreateIsOpen(false);
             }}
+            CreateURL = {createGroupUrl}
           />
-        )}
+          )}
         <div className="button">
           <button onClick={groupInHandler}>Join</button>
         </div>
@@ -134,7 +157,7 @@ const GroupList = () => {
             data={data}
             TableNavHandler={TableNavHandler}
           />
-          <Pagination totalPosts={`${totalPosts}`} limit="7" page={page} setPage={setPage}></Pagination>
+          <Pagination totalPosts={`${totalPosts}`} limit="11" page={page} setPage={setPage}></Pagination>
         </Styles>
       </ContentBox>
     </div>

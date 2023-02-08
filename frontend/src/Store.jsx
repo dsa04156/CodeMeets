@@ -21,8 +21,14 @@ export const groupNavTitle = atom({
     effects_UNSTABLE: [persistAtom],
 })
 
-export const oauthGoogleClientId = atom({
-    key:"oauthGoogleClientId",
-    default: "19361811234-q0aav7ngfp0o6kqpjtd6bkhbtbqvbade.apps.googleusercontent.com",
+// export const groupUrl = atom({
+//     key: "groupUrl",
+//     default: "",
+//     effects_UNSTABLE: [persistAtom],
+// })
+
+export const pageNumber = atom({
+    key: "pageNumber",
+    default: "1",
     effects_UNSTABLE: [persistAtom],
 })

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-import { APIroot, groupNavTitle } from "../../Store";
+import { APIroot, groupNavTitle, pageNumber } from "../../Store";
 import { useRecoilValue, useRecoilState } from "recoil";
 
 import { useState } from "react";
@@ -26,7 +26,7 @@ const GroupNotice = () => {
   const [totalPosts, setTotalPosts] = useState(0);
 
   // url의 page, pagination에 넘겨줌!
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useRecoilState(pageNumber);
 
   const navigate = useNavigate();
 

@@ -1,5 +1,6 @@
 import TitleStyle from "./GroupDetailPageComponent/TitleStyle"
 import CommentContentStyle from "./GroupDetailPageComponent/CommentContentStyle";
+import LikeStyle from "./GroupDetailPageComponent/LikeStyle";
 import Comment from "./GroupDetailPageComponent/Comment";
 
 import { useParams } from "react-router-dom";
@@ -30,7 +31,7 @@ const GroupQnADetail = () =>{
         })
     },[API])
 
-
+    // 댓글
     useEffect(()=>{
         axios({
             method: "GET",
@@ -61,11 +62,9 @@ const GroupQnADetail = () =>{
 
     return (
         <div>
-            <TitleStyle TitleContent={data.groupQuestionTitle}/>
-            <CommentContentStyle Content={data.groupQuestionContents} Like={data.groupQuestionLikeCnt}/>
-            <div>
-                {commentList}
-            </div>
+            <TitleStyle TitleContent={data.groupQuestionTitle} />
+            <LikeStyle Like={data.groupQuestionLikeCnt} />
+            <CommentContentStyle content={commentList} />
         </div>
     );
 };

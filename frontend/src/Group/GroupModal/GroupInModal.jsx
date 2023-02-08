@@ -8,6 +8,8 @@ import axios from 'axios';
 import { APIroot } from '../../Store';
 import { useRecoilValue } from 'recoil';
 
+import { useLocation } from 'react-router-dom';
+
 const GroupInModal = ({ onClose }) => {
   const Title = 'Group 가입';
 
@@ -30,13 +32,20 @@ const GroupInModal = ({ onClose }) => {
     e.preventDefault();
     console.log(url);
     axios({
-      method: 'POST',
+      method: 'GET',
       url: `${API}/group/join/${url}`,
       headers: {
         'Content-Type': 'application/json',
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
-    }).catch((err) => console.log(err));
+    })
+    .then((response) => {
+      console.log(response.data);
+      alert("가입완료");
+      onClose?.();
+      useLocation.reload();
+    })
+    .catch((err) => console.log(err));
   };
 
   return (
@@ -45,7 +54,7 @@ const GroupInModal = ({ onClose }) => {
     <Modal onClose={onClose} ModalTitle={Title}>
       {/* <form> */}
         <TitleStyle>
-          <div className="name">URL Insert </div>
+          <div className="name">Group URL</div>
           <div className="input">
             <input
               type="text"
