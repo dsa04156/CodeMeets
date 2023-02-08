@@ -24,11 +24,10 @@ import lombok.RequiredArgsConstructor;
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService{
 	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private SqlSession sqlSession;
-
-    private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public List<UserDto> devGetUserInfoList(String userId) throws Exception {
@@ -48,7 +47,7 @@ public class UserServiceImpl implements UserService{
 	public void registUser(UserDto userDto) throws Exception {
 		logger.info("registUser - 실행");
 		
-		userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		userDto.setPassword( passwordEncoder.encode(userDto.getPassword()) );
 		
 		sqlSession.getMapper(UserDao.class).registUser(userDto);
 		sqlSession.getMapper(UserDao.class).registUserInfo(userDto);
@@ -131,7 +130,6 @@ public class UserServiceImpl implements UserService{
 			
 			return false;
 		}
-
 	}
 
 	@Override
