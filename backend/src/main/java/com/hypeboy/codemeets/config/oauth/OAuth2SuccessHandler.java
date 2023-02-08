@@ -10,27 +10,32 @@ import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.model.service.LoginServiceImpl;
-import com.hypeboy.codemeets.model.service.UserServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Component
+@Service
+@RequiredArgsConstructor
 public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private final Logger logger = LoggerFactory.getLogger(OAuth2SuccessHandler.class);
 
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomOAuth2UserService customOAuth2UserService;
-
+    
+    @Value("${url.front-url}")
+    private String frontUrl;
+    
 	@Autowired
 	private SqlSession sqlSession;
 	
@@ -57,27 +62,17 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		} catch (Exception e) {
 			logger.info("CustomOAuth2UserService loadUser UserDto userDto try Error - " + e);
 		}
-        
-//        logger.info(userDto.toString());
-        
-//        try {
-//        	userPk = findUser(email);
-//		} catch (Exception e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-        
+                
         try {
-
 			newAccessToken = jwtTokenProvider.createAccessToken("userPk", userDto.getUserPk());
 			newRefreshToken = jwtTokenProvider.createRefreshToken();
-			logger.info("newAccessToken - " + newAccessToken);
+//			logger.info("newAccessToken - " + newAccessToken);
 			customOAuth2UserService.saveRefreshToken(userDto.getUserPk(), newRefreshToken);
 		} catch (Exception e) {
 			logger.info("saveRefreshToken error - " + e);
 		}
 
-        targetUrl = UriComponentsBuilder.fromUriString("http://localhost:3000/codemeets/login")
+        targetUrl = UriComponentsBuilder.fromUriString(frontUrl + "codemeets/login")
 //        targetUrl = UriComponentsBuilder.fromUriString("/api/login/oauth2/success")
                 .queryParam("accessToken", newAccessToken)
                 .queryParam("refreshToken", newRefreshToken)

@@ -1,12 +1,16 @@
 package com.hypeboy.codemeets.config;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.stereotype.Component;
 
 import com.hypeboy.codemeets.config.oauth.CustomOAuth2UserService;
 import com.hypeboy.codemeets.config.oauth.OAuth2SuccessHandler;
@@ -14,22 +18,30 @@ import com.hypeboy.codemeets.config.security.CustomAccessDeniedHandler;
 import com.hypeboy.codemeets.config.security.CustomAuthenticationEntryPoint;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
+@Component
 @Configuration
 //Spring Security에 대한 디버깅 모드를 사용하기 위한 어노테이션 (default : false)
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	private final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+	
 	private final JwtTokenProvider jwtTokenProvider;
-
+	private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    
+    @Value("${url.front-url}")
+    private String frontUrl;
+    
 	@Autowired
 	private CustomOAuth2UserService customOAuth2UserService;
 
 	@Autowired
-	public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+	public SecurityConfig(JwtTokenProvider jwtTokenProvider, OAuth2SuccessHandler oAuth2SuccessHandler) {
 		this.jwtTokenProvider = jwtTokenProvider;
+		this.oAuth2SuccessHandler = oAuth2SuccessHandler;
 	}
 
 	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
+	protected void configure(HttpSecurity httpSecurity) throws Exception {		
 		httpSecurity.httpBasic().disable() // REST API는 UI를 사용하지 않으므로 기본설정을 비활성화
 
 				.csrf().disable() // REST API는 csrf 보안이 필요 없으므로 비활성화
@@ -54,11 +66,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //						UsernamePasswordAuthenticationFilter.class); // JWT Token 필터를 id/password 인증 필터 이전에 추가
 
 				.and().oauth2Login()
-				.defaultSuccessUrl("http://localhost:3000")
+				.defaultSuccessUrl(frontUrl)
 				.userInfoEndpoint()
 				.userService(customOAuth2UserService)
 				.and()
-                .successHandler(new OAuth2SuccessHandler(jwtTokenProvider, customOAuth2UserService));
+                .successHandler(oAuth2SuccessHandler);
 				
 	}
 
