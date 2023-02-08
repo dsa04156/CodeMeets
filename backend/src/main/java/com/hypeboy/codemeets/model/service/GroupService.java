@@ -51,5 +51,8 @@ public interface GroupService {
 
 	List<UserDto> groupMemberList(int groupPk) throws SQLException;
 
+
+	GroupDto detailGroup(int groupPk) throws SQLException;
+
 	
 }	

@@ -126,6 +126,12 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 
+	@Override
+	public GroupDto detailGroup(int groupPk) throws SQLException {
+		return dao.detailGroup(groupPk);
+	}
+
+
 
 	
 
