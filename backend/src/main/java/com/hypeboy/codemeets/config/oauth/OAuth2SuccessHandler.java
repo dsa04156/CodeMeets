@@ -62,6 +62,8 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		} catch (Exception e) {
 			logger.info("CustomOAuth2UserService loadUser UserDto userDto try Error - " + e);
 		}
+        
+        logger.info("userDto - " + userDto);
                 
         try {
 			newAccessToken = jwtTokenProvider.createAccessToken("userPk", userDto.getUserPk());
@@ -77,6 +79,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 .queryParam("accessToken", newAccessToken)
                 .queryParam("refreshToken", newRefreshToken)
                 .build().toUriString();
+        logger.info("targetUrl - " + targetUrl);
         
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
