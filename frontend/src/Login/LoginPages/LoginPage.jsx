@@ -74,8 +74,8 @@ const LoginPage = () => {
   const myUrl = window.location.host;
   const loginURL = API.replace("/api", "");
   // const loginURL = "http://localhost:18081";
-  const googleLogInUrl = new URL(`${loginURL}/oauth2/authorization/google?redirect_uri=${myUrl}`);
-  const kakaoLogInUrl = new URL(`${loginURL}/oauth2/authorization/kakao?redirect_uri=${myUrl}`);
+  const googleLogInUrl = new URL(`${loginURL}/oauth2/authorization/google`);
+  const kakaoLogInUrl = new URL(`${loginURL}/oauth2/authorization/kakao`);
 
   if (accessToken) {
     localStorage.setItem("ACCESS_TOKEN", accessToken);
