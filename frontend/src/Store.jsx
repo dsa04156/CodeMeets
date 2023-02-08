@@ -20,3 +20,9 @@ export const groupNavTitle = atom({
     default: "Notice",
     effects_UNSTABLE: [persistAtom],
 })
+
+export const oauthGoogleClientId = atom({
+    key:"oauthGoogleClientId",
+    default: "19361811234-q0aav7ngfp0o6kqpjtd6bkhbtbqvbade.apps.googleusercontent.com",
+    effects_UNSTABLE: [persistAtom],
+})
