@@ -1,6 +1,7 @@
 package com.hypeboy.codemeets.config.oauth;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -46,19 +47,33 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
     	OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+    	logger.info("oAuth2User - " + oAuth2User.toString());
+    	
         String targetUrl;
         String newAccessToken = null;
         String newRefreshToken = null;
-
-		String userId = String.valueOf(oAuth2User.getAttributes().get("sub"));
-		String userName = String.valueOf(oAuth2User.getAttributes().get("name"));
-		String picture = String.valueOf(oAuth2User.getAttributes().get("picture"));
-		String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-		
+        
+        UserDto user = new UserDto();
         UserDto userDto = new UserDto();
+        String email = null;
+        
+        email = String.valueOf( oAuth2User.getAttributes().get("email") );
+        logger.info("email - " + email);
+        
+        // 구글이 아닌상황. 일단 카카오인지 확인
+        if (email.equals("null")) {
+	        Map<String, Object> kakaoAttributes = oAuth2User.getAttributes();
+	        logger.info("kakaoAttributes - " + kakaoAttributes.toString());
+	        Map<String, Object> kakao_account = (Map<String, Object>) kakaoAttributes.get("kakao_account");
+	        logger.info(kakao_account.toString());
+	        email = String.valueOf( kakao_account.get("email") );
+        }
+        logger.info("email - " + email);
+
+		user.setEmail(email);
         
         try {
-			userDto = customOAuth2UserService.saveOrUpdate(userId, userName, email, picture);
+			userDto = customOAuth2UserService.saveOrUpdate(user);
 		} catch (Exception e) {
 			logger.info("CustomOAuth2UserService loadUser UserDto userDto try Error - " + e);
 		}
