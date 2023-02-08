@@ -46,6 +46,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 		// 현재 로그인 진행 중인 서비스를 구분하는 코드
 		String registrationId = userRequest.getClientRegistration().getRegistrationId();
+		String clientId = userRequest.getClientRegistration().getClientId();
+		String clientName = userRequest.getClientRegistration().getClientName();
+		String clientSecret = userRequest.getClientRegistration().getClientSecret();
+		String providerDetails = userRequest.getClientRegistration().getProviderDetails().toString();
 
 		// oauth2 로그인 진행 시 키가 되는 필드값
 		String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint()
@@ -54,12 +58,19 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		// OAuthAttributes: attribute를 담을 클래스 (개발자가 생성)
 		OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName,
 				oAuth2User.getAttributes());
+		logger.info("clientId - " + clientId);
+		logger.info("clientName - " + clientName);
+		logger.info("clientSecret - " + clientSecret);
+		logger.info("registrationId - " + registrationId);
+		logger.info("providerDetails - " + providerDetails);
+		logger.info("userNameAttributeName - " + userNameAttributeName);
 		logger.info("oAuth2User.getAttributes() - " + oAuth2User.getAttributes());
 		
-		String userId = String.valueOf(attributes.getAttributes().get("sub"));
-		String userName = String.valueOf(attributes.getAttributes().get("name"));
-		String picture = String.valueOf(attributes.getAttributes().get("picture"));
-		String email = String.valueOf(attributes.getAttributes().get("email"));
+		String userId = String.valueOf( attributes.getAttributes().get("sub") );
+		String userName = String.valueOf( attributes.getAttributes().get("name") );
+		String picture = String.valueOf( attributes.getAttributes().get("picture") );
+		String email = String.valueOf( attributes.getAttributes().get("email") );
+		String provider = String.valueOf(registrationId);
 		
 //		logger.info(userId + " " + userName + " " + picture + " " + email);
 		UserDto userDto = new UserDto();
@@ -84,9 +95,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		UserDto userDto = new UserDto();
 		
 		try {
+			// 회원이면 정보 찾아서 전달
 			if (sqlSession.getMapper(LoginDao.class).findByEmail(email) != null) {
 				userDto = sqlSession.getMapper(LoginDao.class).findByEmail(email);
-				logger.info("userDto - " + userDto);
 			}
 			// 회원이 아닌 경우 회원가입 진행
 			else {
@@ -99,8 +110,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
 					// 패스워드 임의 생성
 					userDto.setPassword( userId.substring(0, 10) );
-
-					logger.info(userDto.toString());
 					
 					userService.registUser(userDto);
 					
@@ -112,6 +121,8 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		} catch (Exception e) {
 			logger.info("saveOrUpdate LoginDao error - " + e);
 		}
+
+		logger.info(userDto.toString());
 		
         return userDto;
     }
