@@ -51,6 +51,17 @@
 		  ]]>
 	</insert>
 	
+	<select id="detailGroup" resultMap="group">
+	<![CDATA[
+		SELECT
+		*
+		FROM
+		`group`
+		where
+		`group_pk`=#{groupPk}
+	]]>
+	</select>
+	
 	<insert id="createGroupUser" >
 	<![CDATA[
 		insert into

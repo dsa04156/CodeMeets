@@ -85,6 +85,17 @@ public class GroupController {
 			return new ResponseEntity<List>(list, HttpStatus.OK);
 	}
     
+
+    @Operation(summary = "그룹 상세보기", description = "그룹 상세보기 API ")
+    @PostMapping("/{groupPk}/detail")
+	public ResponseEntity<?> detailGroup(@PathVariable int groupPk) throws Exception {
+			logger.info("detail group - 호출");
+			
+			GroupDto groupDto = new GroupDto();
+			groupDto = groupService.detailGroup(groupPk);
+	
+			return new ResponseEntity<GroupDto>(groupDto, HttpStatus.OK);
+	}
     
     @Operation(summary = "그룹 만들기", description = "그룹 만들기 API "
     		+ " \n group_Pk값은 제외해주세요"
