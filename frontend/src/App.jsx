@@ -44,6 +44,7 @@ import {
   useRecoilState,
   useRecoilValue,
 } from "recoil";
+import VideoRoomComponent from "./openvidu/components/VideoRoomComponent";
 
 function App() {
   const router = useLocation();
@@ -129,6 +130,7 @@ function App() {
               <Route path="/grouplist/" element={<GroupList />}></Route>
               <Route path="/message" element={<Message />}></Route>
               <Route path="/setting" element={<Setting />}></Route>
+        <Route path="/openvidu" element={<VideoRoomComponent />}></Route>
             </Routes>
           </div>
         </MainArea>

@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 
+import registerServiceWorker from './registerServiceWorker';
+
 import { BrowserRouter } from "react-router-dom";
 
 import SidePadding from "./CommonComponents/SidePadding";
@@ -15,3 +17,4 @@ root.render(
     </BrowserRouter>
   </SidePadding>
 );
+registerServiceWorker();
