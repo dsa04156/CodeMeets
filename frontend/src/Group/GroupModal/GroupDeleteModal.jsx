@@ -5,7 +5,7 @@ import { APIroot } from '../../Store';
 import { user } from '../../Store';
 import { useRecoilValue } from 'recoil';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const GroupDeleteModal = ({onClose, groupPk}) => {
     const Title = "Group Delete";
@@ -21,10 +21,8 @@ const GroupDeleteModal = ({onClose, groupPk}) => {
             }
         })
         .then((response) => {
-            if(response.data === "success"){
-                CancelHandler()
-                navigate('/grouplist');
-            }
+          CancelHandler()
+          navigate('/grouplist');
         })
     }
 

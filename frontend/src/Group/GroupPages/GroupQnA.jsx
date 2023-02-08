@@ -28,7 +28,7 @@ const GroupQnA = () => {
   useEffect(() => {
     axios({
       method: "GET",
-      url: `${API}/qna/list/${params.group_pk}?nowPage=${page}&items=20`,
+      url: `${API}/qna/list/${params.group_pk}?nowPage=${page}&items=9`,
     }).then((response) => {
       console.log(response.data);
       setTotalPosts(response.data[0].total);

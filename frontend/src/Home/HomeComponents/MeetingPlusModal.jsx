@@ -1,8 +1,16 @@
 import Modal from '../../CommonComponents/Modal/Modal';
 import styled from 'styled-components';
+import React from 'react';
+import Combobox from './Combobox';
+import { times } from './data';
+
+//여기부터 드롭다운 import
 
 const MeetingPlusModal = ({ onClose }) => {
   const title = 'Meeting Create';
+
+  //여기부터 드롭다운
+
   return (
     <Modal onClose={onClose} ModalTitle={title}>
       <TitleStyle>
@@ -18,6 +26,18 @@ const MeetingPlusModal = ({ onClose }) => {
         </div>
       </TitleStyle>
       {/* 여기 그룹다운으로 그룹 선택 만들어야됨*/}
+      <TitleStyle>
+      <div className='name'>그룹 선택</div>
+      <select name="nickname" style={{ border: 'solid 2px grey' }}>
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="fiat">Fiat</option>
+        <option value="audi">Audi</option>
+      </select>
+      {/* <div>
+        <Combobox label="에약 시간" placeholder="--:--" items={times} />;
+      </div> */}
+      </TitleStyle>
       <TitleStyle>
         <div className="name">URL</div>
         <div className="nickname">

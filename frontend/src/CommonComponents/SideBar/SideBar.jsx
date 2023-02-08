@@ -10,11 +10,12 @@ import { BsPeople } from "react-icons/bs";
 import { AiOutlineMessage } from "react-icons/ai";
 import { AiOutlineSetting } from "react-icons/ai";
 
-import { user } from "../../Store";
-import { useRecoilValue } from "recoil";
+import { user, pageNumber } from "../../Store";
+import { useRecoilValue, useRecoilState } from "recoil";
 
 const SideBar = () => {
   const LoginUser = useRecoilValue(user);
+  const [recoilPageNum, setRecoilPageNum] = useRecoilState(pageNumber);
 
   const menus1 = [
     { name: "Home", path: "/", icon: <AiOutlineHome size="24" /> },
@@ -35,6 +36,10 @@ const SideBar = () => {
     console.log("logout");
   };
 
+  const PageRendering = () => {
+    setRecoilPageNum(1);
+  }
+
   const FirstMenu = menus1.map((menu, index) => {
     return (
       <NavBarStyle
@@ -47,6 +52,7 @@ const SideBar = () => {
         }}
         to={menu.path}
         key={index}
+        onClick={PageRendering}
       >
         {menu.icon}
       </NavBarStyle>
