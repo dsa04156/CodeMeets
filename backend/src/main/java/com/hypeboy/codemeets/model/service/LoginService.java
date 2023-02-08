@@ -1,5 +1,7 @@
 package com.hypeboy.codemeets.model.service;
 
+import java.sql.SQLException;
+
 import com.hypeboy.codemeets.model.dto.LoginDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
 
@@ -15,4 +17,7 @@ public interface LoginService {
 	public Object getRefreshToken(int userPk) throws Exception;
 	public int deleteRefreshToken(int userPk) throws Exception;
 
+	//social login
+    public UserDto findByEmail(String email) throws Exception;
+    public int findByEmailPk(String email) throws Exception;
 }

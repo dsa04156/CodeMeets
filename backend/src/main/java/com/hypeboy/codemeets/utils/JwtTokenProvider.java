@@ -1,6 +1,5 @@
 package com.hypeboy.codemeets.utils;
 
-
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
@@ -11,10 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -48,7 +43,7 @@ public class JwtTokenProvider {
     @Value("${jwt.refresh-token}")
     private String refreshToken;
 
-    private final UserDetailsService userDetailsService;
+//    private final UserDetailsService userDetailsService;
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     @PostConstruct
@@ -86,16 +81,13 @@ public class JwtTokenProvider {
 				.compact();
 		return jwt;
 	}
-	
-
-	
 
     // JWT 토큰에서 인증 정보 조회
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername( String.valueOf(this.getUserPk(token)) );
-
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
+//    public Authentication getAuthentication(String token) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername( String.valueOf(this.getUserPk(token)) );
+//
+//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+//    }
 
     // 유저 PK 추출
     public int getUserPk(String token) {
