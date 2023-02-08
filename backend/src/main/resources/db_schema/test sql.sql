@@ -51,8 +51,17 @@ CHANGE `user_name` `user_name` VARCHAR(30);
 ALTER TABLE `s08p11d109`.`user_info`
 CHANGE `nickname` `nickname` VARCHAR(30);
 
+ALTER TABLE `s08p11d109`.`user`
+CHANGE `user_id` `user_id` VARCHAR(25);
+
 ALTER TABLE `s08p11d109`.`user` 
 ADD `provider` VARCHAR(20) NOT NULL DEFAULT 'codemeets';
+
+ALTER TABLE `s08p11d109`.`user`
+CHANGE `provider` `provider` VARCHAR(15) NOT NULL DEFAULT 'codemeets';
+
+ALTER TABLE `s08p11d109`.`user`
+CHANGE `user_id` `user_id` VARCHAR(25);
 
 ALTER TABLE `s08p11d109`.`user` 
 ADD `provider_id` VARCHAR(50) NULL;

@@ -22,12 +22,14 @@
 		<result column="profile_photo" property="profilePhoto" />
 		<result column="email_public" property="emailPublic" />
 		<result column="tel_public" property="telPublic"/>
+		<result column="provider" property="provider"/>
+		<result column="provider_id" property="providerId"/>
 	</resultMap>
 	
 	<!-- ==================== login ======================================== -->
 	
     <select id="findByUserId" resultMap="login">
-   		SELECT user_pk, user_id, password, token, user_active
+   		SELECT user_pk, user_id, password, token, user_active, provider, provider_id
         FROM user
         WHERE user_id = #{userId}
     </select>
@@ -35,7 +37,7 @@
 	<select id="getUserInfo" resultMap="user">
    		SELECT user_pk, user_id, user_name,
    		user_active, nickname, tel, email, 
-   		profile_photo, email_public, tel_public
+   		profile_photo, email_public, tel_public, provider, provider_id
         FROM user NATURAL JOIN user_info
         WHERE user_pk = #{userPk}
     </select>
@@ -62,13 +64,13 @@
 	
     <!-- ==================== social login ======================================== -->
     <select id="findByUserName" resultMap="user">
-   		SELECT user_pk, user_id, user_name, nickname
+   		SELECT user_pk, user_id, user_name, nickname, provider, provider_id
         FROM `user`
         WHERE user_name = #{userName}
     </select>
     
     <select id="findByEmail" resultMap="user">
-   		SELECT user_pk, user_id, user_name, nickname, email, profile_photo
+   		SELECT user_pk, user_id, user_name, nickname, email, profile_photo, provider, provider_id
         FROM `user` NATURAL JOIN `user_info`
         WHERE email = #{email}
     </select>
