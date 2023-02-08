@@ -69,6 +69,27 @@ const LoginPage = () => {
     });
   };
 
+  const SocialToHomePageHandler = async () => {
+    await localStorage.setItem("ACCESS_TOKEN", accessToken);
+    await localStorage.setItem("REFRESH_TOKEN", refreshToken);
+    console.log(accessToken);
+    await axios({
+      method: "GET",
+      url: `${API}/login/info`,
+      headers: {
+        "Content-Type": "application/json",
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..
+      },
+    }).then((response) => {
+      console.log(response.data.userInfo);
+      const data = response.data.userInfo;
+      setLogin(data);
+      navigate("/")
+      console.log("리코일 데이터")
+      console.log(recoilUser)
+    });
+  };
+
   const accessToken = new URL(window.location.href).searchParams.get("accessToken");
   const refreshToken = new URL(window.location.href).searchParams.get("refreshToken");
   const myUrl = window.location.host;
@@ -78,10 +99,9 @@ const LoginPage = () => {
   const kakaoLogInUrl = new URL(`${loginURL}/oauth2/authorization/kakao`);
 
   if (accessToken) {
-    localStorage.setItem("ACCESS_TOKEN", accessToken);
-    localStorage.setItem("REFRESH_TOKEN", refreshToken); 
+    SocialToHomePageHandler();
     // navigate("/");
-    window.location.replace("/");
+    // window.location.replace("/");
   }
 
 
