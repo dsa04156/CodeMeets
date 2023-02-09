@@ -33,7 +33,7 @@
 		count(*) OVER() AS total
 		FROM `group_notice` NATURAL JOIN `user_info`
 		WHERE group_pk = #{groupPk}
-		ORDER BY #{order} DESC
+		ORDER BY ${order} DESC
 		LIMIT #{nowPage}, #{items};
 	</select>
 	
