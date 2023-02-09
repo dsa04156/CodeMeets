@@ -5,15 +5,17 @@ import { APIroot } from '../../Store';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MyPageMeetingListDetail = () => {
 
     const API = useRecoilValue(APIroot);
     const [data, setData] = useState({});
+    const navigate = useNavigate();
 
     const params = useParams();
     console.log('이거 params임', params)
+    
     useEffect(() => {
         console.log('실행');
         axios({
@@ -30,10 +32,15 @@ const MyPageMeetingListDetail = () => {
         //   .catch((err) => console.log(err));
       }, [API]);
 
+      const backHandler = () => {
+        navigate(-1)
+      }
+
     return(
         <>
         <TitleStyle TitleContent={data.conferenceTitle} />
         <ContentStyle Content={data.conferenceContents} />
+        <button onClick={backHandler}>Back</button>
         </>
     );
 };

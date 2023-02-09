@@ -1,7 +1,7 @@
 import GroupNavBar from "../GroupComponents/GroupNavBar";
 import { Outlet } from "react-router-dom";
 // import { useLocation } from 'react-router-dom';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import GroupLeaveModal from "../GroupModal/GroupLeaveModal";
@@ -19,6 +19,7 @@ const GroupDetail = () => {
   const [leaveTheGroupModal, setLeaveTheGroupModal] = useState(false); //true면 탈퇴하는거로 구성
   const [DeleteTheGroupModal, setDeleteTheGroupModal] = useState(false);
   const API = useRecoilValue(APIroot);
+  const navigate = useNavigate();
   
 
 
@@ -51,6 +52,10 @@ const GroupDetail = () => {
     }
   };
 
+  // const CreateWriteHandler = () => {
+  //   navigate(`/group/${params.group_pk}/notice/create`)
+  // }
+
   axios({
     method: "POST",
     url: `${API}/group/${params.group_pk}/detail`,
@@ -78,6 +83,7 @@ const GroupDetail = () => {
     })
   }, [API, position]);
 
+  
   console.log(position)
   
   return (
@@ -114,7 +120,7 @@ const GroupDetail = () => {
             }}
             groupPk={params.group_pk}
           />
-        )}
+          )}
       </MainTitle>
     <GroupMainBoard>
     <GroupNavBar grouppk={params.group_pk} groupTitleFunc={groupTitleHandler}/>
@@ -160,10 +166,16 @@ const TitleStyle = styled.div`
 
 const LeaveButton = styled.button`
   margin-left: 300px;
+  justify-content: right;
+  display: flex;
+  flex-direction: row;
 `;
 
 const DeleteButton = styled.button`
   margin-left: 20px;
+  justify-content: right;
+  display: flex;
+  flex-direction: row;
 `;
 
 const TitlenURLStyle = styled.div`
@@ -172,5 +184,13 @@ const TitlenURLStyle = styled.div`
   .url{
     margin: 10px 0px 0px 10px;
     width: auto;
+  }
+`;
+
+const BottomStyle = styled.div`
+  display: flex;
+  align-items: center;
+  .NewCreate {
+    justify-content: right;
   }
 `;

@@ -157,7 +157,7 @@ const GroupList = () => {
             data={data}
             TableNavHandler={TableNavHandler}
           />
-          <Pagination totalPosts={`${totalPosts}`} limit="11" page={page} setPage={setPage}></Pagination>
+          <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
         </Styles>
       </ContentBox>
     </div>

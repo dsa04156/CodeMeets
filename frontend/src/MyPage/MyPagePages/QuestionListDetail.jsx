@@ -8,15 +8,22 @@ import { user } from '../../Store';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+
+import { AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart } from "react-icons/ai";
 
 const MyPageQuestionListDetail = () => {
 
     const API = useRecoilValue(APIroot);
     const loginUser = useRecoilValue(user)
+    const navigate = useNavigate();
+
     const [data, setData] = useState({});
     const [comments, setComments] = useState([]);
-    //store에서 user 받아와서 url에 userPk값 useState
+    const [likeUnLike, setLikeUnLike] = useState(false);
+    const [myLikeState, setMyLikeState] = useState();
 
     const params = useParams();
     console.log('이거 질문 상세페이지 params임', params)
@@ -31,9 +38,12 @@ const MyPageQuestionListDetail = () => {
         .then((response) => {
             console.log(response.data)
             setData(response.data);
+            setMyLikeState(response.data.conferenceQuestionLike)
         })
     }, [API]);
+    console.log(data.conferenceQuestionPk)
 
+    // 댓글
     useEffect(() => {
         axios({
             method: "GET",
@@ -47,7 +57,28 @@ const MyPageQuestionListDetail = () => {
             console.log(response.data);
             setComments(response.data);
         })
-    }, [API])
+    }, [API, data])
+    
+
+    //질문 좋아요
+    const likeClickHandler = () => {
+        axios({
+            method: "PUT",
+            url: `${API}/conferenceQna/like`,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            data: JSON.stringify({
+                conferenceQuestionPk: data.conferenceQuestionPk,
+                userPk: data.userPk,
+            })
+        }).then((response) => {
+            console.log(response.data);
+            if (response.data === 'success'){
+                setLikeUnLike(!likeUnLike);
+            }
+        })
+    }
 
     // 1159 ~ 답변 하나씩 달려있음
     const commentList = comments.map((commentitem, index) => {
@@ -65,15 +96,35 @@ const MyPageQuestionListDetail = () => {
         );
     })
 
+    const backHandler = () => {
+        navigate(-1)
+      }
+
     return(
         <>
-
             <TitleStyle TitleContent={data.conferenceQuestionContents} />
-            <LikeStyle Like={data.conferenceQuestionLikeCnt} />
+            <LikeBox>
+                {/* 모르겠음. 안됨. 도저히 모르겠음. */}
+                <div onClick={likeClickHandler}>
+                    {(likeUnLike === true) || (myLikeState === 1) ? <AiFillHeart style={{margin: '0px 5px 0px 0px'}} /> : <AiOutlineHeart style={{margin: '0px 5px 0px 0px'}} />}
+                    좋아요 : {data.conferenceQuestionLikeCnt}
+                </div>
+            </LikeBox>
+            {/* <LikeStyle Like={data.conferenceQuestionLikeCnt} /> */}
             <CommentContentStyle Content={commentList} />
+            <button onClick={backHandler}>Back</button>
         </>
     );
 };
 
 export default MyPageQuestionListDetail;
+
+const LikeBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    align-items: center;
+    font-size: 2vh;
+    margin-right: 3vh;
+`;
 

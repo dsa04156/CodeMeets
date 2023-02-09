@@ -1,18 +1,19 @@
 const Comment = ({
-  groupQnaAnswerContents,
-  groupQnaAnswerDate,
-  groupQnaAnswerLikeCnt,
+  conferenceAnswerContents,
+  conferenceAnswerDate,
+  conferenceAnswerLikeCnt,
   groupQnaAnswerLike,
-  userName,
-  groupQnaAnswerPk,
+  conferenceAnswerLike,
+  username,
+  conferenceAnswerPk,
 }) => {
-    console.log(groupQnaAnswerLikeCnt)
+  console.log(username);
   return (
     <div>
-      {userName}
-      {groupQnaAnswerLikeCnt}
-      {groupQnaAnswerContents}
-      {groupQnaAnswerDate}
+      {username}
+      {conferenceAnswerLikeCnt}
+      {conferenceAnswerContents}
+      {conferenceAnswerDate}
     </div>
   );
 };

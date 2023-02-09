@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const GroupModify = () => {
+const GroupNoticeModify = () => {
     const API = useRecoilValue(APIroot)
     const location = useLocation()
     const navigate = useNavigate()
@@ -12,13 +12,13 @@ const GroupModify = () => {
     const [formTitle, setFormTitle] = useState(firstData.title)
     const [formContent, setFormContent] = useState(firstData.content)
 
-    const titleHandler = (e) => {
-        const currentTitle = e.target.value;
+    const titleHandler = (event) => {
+        const currentTitle = event.target.value;
         setFormTitle(currentTitle)
     };
     
-    const contentHandler = (e) => {
-        const currentContent = e.target.value;
+    const contentHandler = (event) => {
+        const currentContent = event.target.value;
         setFormContent(currentContent)
     };
 
@@ -26,8 +26,9 @@ const GroupModify = () => {
         navigate(-1)
     }
 
-    const submitHandler = (e) => {
-        e.preventDefault()
+    // 수정
+    const submitHandler = (event) => {
+        event.preventDefault()
         console.log(formTitle)
         console.log(firstData.noticePk)
         console.log(formContent)
@@ -52,16 +53,14 @@ const GroupModify = () => {
 
     return (
         <div>
-            <form>
-                <label htmlFor="">제목</label>
-                <input type="text" defaultValue={`${formTitle}`} onChange={titleHandler}/>
-                <label htmlFor="">content</label>
-                <input type="text" defaultValue={`${formContent}`} onChange={contentHandler}/>
-                <button type="submit" onClick={submitHandler}>제출</button>
-            </form>
-            <button onClick={backHandler}>뒤로</button>
+            <h3>수정 페이지</h3>
+            <div><input type="text" defaultValue={`${formTitle}`} onChange={titleHandler} style={{width:'900px', height:'30px'}}/></div> 
+            <div><textarea type="text" defaultValue={`${formContent}`} onChange={contentHandler} style={{width:'900px', height:'400px'}}/></div>
+            <button onClick={submitHandler}>Registration</button>
+            <button onClick={backHandler}>Cancel</button>
+            
         </div>
     );
 };
 
-export default GroupModify;
+export default GroupNoticeModify;

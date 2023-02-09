@@ -36,13 +36,26 @@ const GroupNoticeDetail = () => {
         })
     },[API])
 
+    // 삭제
+    const deleteHandler = () => {
+        axios({
+            method: "DELETE",
+            url: `${API}/group-notice?groupNoticePk=${params.notice_pk}`,
+        })
+        .then((response) => {
+            navigate(-1);
+        })
+    }
+
     return (
         <div>
             <TitleStyle TitleContent={data.groupNoticeTitle} />
             <HitStyle Hit={data.groupNoticeHit} />
             <ContentStyle Content={data.groupNoticeContents} />
-            { (data.userPk === loginUser.userPk)? <button onClick={ModifyHandler}>수정</button> : null } {/* 로그인 userPk와 글쓴 사람의 userPk가 같을 경우 수정 버튼 보이게 */}
-            <button onClick={ToListHandler}>목록</button>
+            { (data.userPk === loginUser.userPk)? <button onClick={ModifyHandler}>Modify</button> : null } {/* 로그인 userPk와 글쓴 사람의 userPk가 같을 경우 수정 버튼 보이게 */}
+            <button onClick={ToListHandler}>Cancel</button>
+            { (data.userPk === loginUser.userPk)? <button onClick={deleteHandler}>Delete</button> : null }
+            {/* <button onClick={deleteHandler}>Delete</button> */}
         </div>
     );
 };
