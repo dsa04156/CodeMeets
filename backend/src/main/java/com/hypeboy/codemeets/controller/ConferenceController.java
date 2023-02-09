@@ -1,7 +1,9 @@
 package com.hypeboy.codemeets.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.ConferenceDto;
-import com.hypeboy.codemeets.model.dto.GroupUserDto;
 import com.hypeboy.codemeets.model.service.ConferenceServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
@@ -85,7 +86,10 @@ public class ConferenceController {
     @PostMapping("/click")
     public ResponseEntity<?> clickCreate(HttpServletRequest request) throws Exception{
     	logger.info("회의 생성 버튼 클릭 API 호출");
-    	int userPk=0;
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+    	int userPk = 0;
+    	
     	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
@@ -95,19 +99,25 @@ public class ConferenceController {
     	else {
     		logger.info("토큰 실패");
     	}
+    	
     	try {
 			logger.info("난수 생성");
+
 			String url = RandomStringUtils.randomAlphanumeric(10);
+			resultMap.put("url", url);
+			
 			List<String> myGroup = new ArrayList<String>();
-			myGroup.add(url);
-			myGroup.addAll((conferenceService.clickCreate(userPk)));
-    		System.out.println(myGroup.toString());	
-    		return new ResponseEntity<List<String>>(myGroup,HttpStatus.OK);
+
+			myGroup.addAll( conferenceService.clickCreate(userPk) );
+			resultMap.put("list", myGroup);
+			logger.info( myGroup.toString() );
+			
+    		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
     	}catch (Exception e) {
-    		System.out.println(e);
+    		logger.info("clickCreate error - " + e);
+    		
     		return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-    		
 	}
 
     
