@@ -35,7 +35,9 @@ public class GroupNoticeController {
 	@Autowired
 	private GroupNoticeServiceImpl groupNoticeService;
 	
-	@Operation(summary = "그룹 공지사항 작성", description = "groupNoticeDate, groupNoticeHit, groupNoticePk 제외하셔도 됩니다")
+	@Operation(summary = "그룹 공지사항 작성", description = "필수 groupNoticeTitle, groupNoticeContents, groupPk, userPk "
+			+ " \n 옵션 originFilename, dbFilename "
+			+ " \n 제외 groupNoticeDate, groupNoticeHit, groupNoticePk")
     @PostMapping
 	public ResponseEntity<?> writeGroupNotice(@RequestBody GroupNoticeDto groupNoticeDto) {
 		logger.info("Controller writeGroupNotice - 호출");
