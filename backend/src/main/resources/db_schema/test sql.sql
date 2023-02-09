@@ -66,6 +66,9 @@ CHANGE `user_id` `user_id` VARCHAR(25);
 ALTER TABLE `s08p11d109`.`user` 
 ADD `provider_id` VARCHAR(50) NULL;
 
+ALTER TABLE `s08p11d109`.`user`
+ADD `role` VARCHAR(10) NOT NULL DEFAULT 'USER';
+
 START TRANSACTION;
 	INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
 	VALUES('test03', '1234', 'token', 1);
