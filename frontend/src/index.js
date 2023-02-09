@@ -7,6 +7,8 @@ import { BrowserRouter } from "react-router-dom";
 
 import SidePadding from "./CommonComponents/SidePadding";
 
+import registerServiceWorker from './registerServiceWorker';
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <SidePadding>
@@ -15,3 +17,4 @@ root.render(
     </BrowserRouter>
   </SidePadding>
 );
+registerServiceWorker();
