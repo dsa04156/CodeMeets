@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `s08p11d109`.`user` (
   `user_active` TINYINT NULL DEFAULT 1,
   `provider` VARCHAR(15) NOT NULL DEFAULT 'codemeets',
   `provider_id` VARCHAR(50) NULL,
+  `role` VARCHAR(10) NOT NULL DEFAULT 'USER',
   PRIMARY KEY (`user_pk`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC))
 ENGINE = InnoDB;
