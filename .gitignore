@@ -1,5 +1,2 @@
 *.log
 *.zip
-backend/src/main/resources/application-dev_auth.properties
-backend/src/main/resources/application-settings.properties
-backend/src/main/resources/application-prod_auth.properties
