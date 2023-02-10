@@ -82,4 +82,6 @@ const TitleStyle = styled.div`
   border: 1px solid black;
 `;
 
-const ContentBox = styled.div``;
+const ContentBox = styled.div`
+background-color: white;
+`;

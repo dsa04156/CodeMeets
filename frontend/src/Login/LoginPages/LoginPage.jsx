@@ -63,7 +63,7 @@ const LoginPage = () => {
       console.log(response.data.userInfo);
       const data = response.data.userInfo;
       setLogin(data);
-      navigate("/")
+      navigate("/home")
       console.log("리코일 데이터")
       console.log(recoilUser)
     });
@@ -132,9 +132,9 @@ const LoginPage = () => {
           Sign In
         </button>
       </ButtonStyle>
-      <Link to="/codemeets/signup">회원가입</Link> |
-      <Link to="/codemeets/findid"> 아이디 찾기</Link> |
-      <Link to="/codemeets/findpassword"> 비밀번호 찾기</Link> |
+      <Link to="/signup">회원가입</Link> |
+      <Link to="/findid"> 아이디 찾기</Link> |
+      <Link to="/findpassword"> 비밀번호 찾기</Link> |
       
       <SocialButton>
         <a href={googleLogInUrl}><img src={googleLogo} width="100"/></a>
