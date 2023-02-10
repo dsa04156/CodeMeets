@@ -97,7 +97,9 @@ public class UserController {
 		try {
 			logger.info("registUser - 호출");
 			
+			userDto.setProvider("codemeets");
 			userService.registUser(userDto);
+			
 			logger.info(userDto.toString());
 			logger.info("registUser - 성공");
 			
