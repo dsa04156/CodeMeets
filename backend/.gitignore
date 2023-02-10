@@ -15,9 +15,8 @@ target/
 *.log
 
 ### properties ###
-src/main/resources/application-dev_auth.properties
 src/main/resources/application-settings.properties
-src/main/resources/application-prod_auth.properties
+src/main/resources/application-prod.properties
 
 ### STS ###
 .apt_generated
