@@ -14,5 +14,5 @@ const StyledSidePadding = styled.div`
   margin-right: auto;
   margin-bottom: 0px;
   margin-left: auto;
-  padding-top: 1rem
+  padding-top: 1rem;
 `;

@@ -25,6 +25,11 @@ const GroupQnA = () => {
     navigate(`/group/qna/${row.original.groupQuestionPk}`)
   }
 
+  const CreateWriteHandler = () => {
+    navigate(`/group/${params.group_pk}/qna/create`)
+  }
+
+  // Q&A 리스트 불러오기
   useEffect(() => {
     axios({
       method: "GET",
@@ -78,6 +83,7 @@ const GroupQnA = () => {
     <Styles>
       <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler} isButton="0"/>
       <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
+      <button onClick={CreateWriteHandler}>Create</button>
     </Styles>
   );
 };

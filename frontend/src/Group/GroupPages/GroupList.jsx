@@ -157,7 +157,7 @@ const GroupList = () => {
             data={data}
             TableNavHandler={TableNavHandler}
           />
-          <Pagination totalPosts={`${totalPosts}`} limit="11" page={page} setPage={setPage}></Pagination>
+          <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
         </Styles>
       </ContentBox>
     </div>
@@ -174,6 +174,7 @@ const TitleStyle = styled.div`
   height: 7vh;
   box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2);
   border-radius: 20px;
+  background-color: white;
   .name {
     display: flex;
     align-items: center;
@@ -197,6 +198,7 @@ const ContentBox = styled.div`
   border-radius: 20px;
   height: 68vh;
   padding-left: 5vh;
+  background-color: white;
 `;
 
 const Styles = styled.div`

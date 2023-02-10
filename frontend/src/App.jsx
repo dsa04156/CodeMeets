@@ -16,7 +16,10 @@ import GroupMember from "./Group/GroupPages/GroupMember";
 //Detail
 import GroupNoticeDetail from "./Group/GroupDetailPage/GroupNoticeDetail";
 import GroupQnADetail from "./Group/GroupDetailPage/GroupQnADetail";
-import GroupModify from "./Group/GroupComponents/GroupModify";
+import GroupNoticeCreate from "./Group/GroupComponents/GroupNoticeCreate";
+import GroupNoticeModify from "./Group/GroupComponents/GroupNoticeModify";
+import GroupQnACreate from "./Group/GroupComponents/GroupQnACreate";
+import GroupQnAModify from "./Group/GroupComponents/GroupQnAModify";
 import MeetingListDetail from "./MyPage/MyPagePages/MeetingListDetail";
 import QuestionListDetail from "./MyPage/MyPagePages/QuestionListDetail";
 
@@ -50,10 +53,12 @@ function App() {
   const Navigate = useNavigate();
 
   const LogoHandler = () => {
-    Navigate("/codemeets/login");
+    Navigate("/home");
   };
 
   return (
+    <div>
+      
     <RecoilRoot>
       <Center>
         <SideArea>
@@ -84,8 +89,8 @@ function App() {
           <div style={{ paddingLeft: "1rem" }}>
             <Routes>
               {/* Login */}
-              <Route path="/codemeets" element={<LoginFrame />}>
-                <Route path="login" element={<LoginPage />}></Route>
+              <Route path="/" element={<LoginFrame />}>
+                <Route path="" element={<LoginPage />}></Route>
                 <Route path="signup" element={<SignUpPage />}></Route>
                 <Route path="findid" element={<FindIdPage />}></Route>
                 <Route
@@ -95,7 +100,7 @@ function App() {
                 <Route path="newpassword" element={<NewPasswordPage />}></Route>
               </Route>
               {/* MainBoard */}
-              <Route path="/" element={<Home />}></Route>
+              <Route path="/home" element={<Home />}></Route>
               <Route path="/my-page/:user_id" element={<MyPage />}>
                 <Route
                   path="meeting-list"
@@ -114,7 +119,12 @@ function App() {
               <Route path="/my-question-record/:conference_Pk" element={<QuestionListDetail />}></Route>
 
               {/* 수정 페이지*/}
-              <Route path="/group/notice/modify" element={<GroupModify />}></Route>
+              <Route path="/group/notice/modify" element={<GroupNoticeModify />}></Route>
+              <Route path="/group/qna/modify" element={<GroupQnAModify />}></Route>
+
+              {/* 글쓰기 페이지 */}
+              <Route path="/group/:group_pk/notice/create" element={<GroupNoticeCreate />}></Route>
+              <Route path="/group/:group_pk/qna/create" element={<GroupQnACreate />}></Route>
 
               <Route path="/group/:group_pk" element={<GroupDetail />}>
                 <Route path="notice" element={<GroupNotice />}></Route>
@@ -134,6 +144,7 @@ function App() {
         </MainArea>
       </Center>
     </RecoilRoot>
+    </div>
   );
 }
 
@@ -149,6 +160,9 @@ const SideArea = styled.div`
   padding-top: 2rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
+  background: rgb(22,28,68);
+  
+
 `;
 
 const MainArea = styled.div`
@@ -159,6 +173,9 @@ const MainArea = styled.div`
   padding: 1rem;
   padding-top: 0px;
   padding-left: 0px;
+  background: rgb(22,28,68);
+background: linear-gradient(149deg, rgba(22,28,68,1) 39%, rgba(52,60,117,1) 67%, rgba(188,194,236,1) 100%);
+
 `;
 
 const LogoImgae = styled.img`
@@ -174,6 +191,10 @@ const MainHeader = styled.div`
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
+`;
+
+const IndexBack = styled.div`
+
 `;
 
 //   overflow: scroll; 넘어가는 부분은 스크롤로 표현!

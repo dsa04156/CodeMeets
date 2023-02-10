@@ -263,7 +263,7 @@ const SignUpPage = () => {
       })
         .then((response) => {
           console.log(response);
-          navigate("/codemeets/login");
+          navigate("/");
         })
         .catch((error) => {
           alert(error);
@@ -326,7 +326,7 @@ const SignUpPage = () => {
   };
 
   const JoinCancelHandler = () => {
-    navigate("/codemeets/login");
+    navigate("/");
   };
 
   return (

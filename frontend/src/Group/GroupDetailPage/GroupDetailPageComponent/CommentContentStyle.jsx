@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 const CommentContentStyle = ({Content}) => {
+  console.log(Content)
     return (
         <div>
           <ContentBox>

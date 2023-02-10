@@ -1,16 +1,49 @@
 import Modal from '../../CommonComponents/Modal/Modal';
 import styled from 'styled-components';
 import React from 'react';
-import Combobox from './Combobox';
-import { times } from './data';
-
-//여기부터 드롭다운 import
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { APIroot } from '../../Store';
+import { useRecoilValue } from 'recoil';
 
 const MeetingPlusModal = ({ onClose }) => {
   const title = 'Meeting Create';
+  const API = useRecoilValue(APIroot);
 
-  //여기부터 드롭다운
+  const [groupList, setGroupList] = useState([]);
+  const [conferenceUrl, setConferenceUrl] = useState();
 
+  // 유저가 가입한 그룹 리스트 가져오기
+  useEffect(() => {
+    axios({
+      method: 'POST',
+      url: `${API}/conference/click`,
+      headers: {
+        'Content-Type': 'application/json',
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
+      },
+    }).then((response) => {
+      console.log(response);
+      setGroupList(response.data.list);
+      setConferenceUrl(response.data.url)
+      console.log(groupList);
+    });
+  }, []);
+
+  const CopyHandler = (text) => {
+    try {
+      navigator.clipboard.writeText(text);
+      alert('클립보드 복사완료');
+    } catch (error) {
+      alert('복사 실패');
+    }
+  };
+
+  const CancelHandler =() => {
+    onClose?.()
+  }
+
+  console.log(conferenceUrl);
   return (
     <Modal onClose={onClose} ModalTitle={title}>
       <TitleStyle>
@@ -27,24 +60,25 @@ const MeetingPlusModal = ({ onClose }) => {
       </TitleStyle>
       {/* 여기 그룹다운으로 그룹 선택 만들어야됨*/}
       <TitleStyle>
-      <div className='name'>그룹 선택</div>
-      <select name="nickname" style={{ border: 'solid 2px grey' }}>
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="fiat">Fiat</option>
-        <option value="audi">Audi</option>
-      </select>
-      {/* <div>
-        <Combobox label="에약 시간" placeholder="--:--" items={times} />;
-      </div> */}
+        <div className="name">그룹 선택</div>
+        <select name="nickname" style={{ border: 'solid 2px grey' }}>
+          {groupList.map((title, i) => {
+            console.log(title);
+            return (
+              <option key={i} value={`${title}`}>
+                {title}
+              </option>
+            );
+          })}
+        </select>
       </TitleStyle>
       <TitleStyle>
         <div className="name">URL</div>
         <div className="nickname">
-          <input type="text" style={{ border: 'solid 2px grey' }} />
+          <input type="text" defaultValue={conferenceUrl} style={{ border: 'solid 2px grey' }} />
         </div>
         <ButtonStyle>
-          <button>Copy</button>
+          <button onClick={() => CopyHandler(conferenceUrl)}>Copy</button>
         </ButtonStyle>
       </TitleStyle>
       <TitleStyle>
@@ -66,7 +100,7 @@ const MeetingPlusModal = ({ onClose }) => {
           <button>Create</button>
         </CreateCancelButtonStyle>
         <CreateCancelButtonStyle>
-          <button>Cancel</button>
+          <button onClick={CancelHandler}>Cancel</button>
         </CreateCancelButtonStyle>
       </TitleStyle>
     </Modal>

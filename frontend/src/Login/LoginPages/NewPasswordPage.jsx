@@ -69,7 +69,7 @@ const NewPasswordPage = ({route}) => {
         console.log(response.data.message)
         if(response.data.message === 'success'){
             alert("비밀번호 변경 완료")
-            navigate('/codemeets/login');
+            navigate('/');
         }
       })
     } else {
@@ -78,7 +78,7 @@ const NewPasswordPage = ({route}) => {
   }
 
   const CancelHandler = () => {
-    navigate("/codemeets/login");
+    navigate("/");
   };
 
   // 새 비밀번호 정규식 맞추기 
