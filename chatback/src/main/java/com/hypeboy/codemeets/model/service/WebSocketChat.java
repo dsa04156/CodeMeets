@@ -45,5 +45,6 @@ public class WebSocketChat {
     public void onClose(Session session) {
         logger.info("session close : {}", session);
         clients.remove(session);
+        
     }
 }
