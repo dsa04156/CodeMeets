@@ -1,4 +1,5 @@
 import UserListItem from "../DmChatComponents/UserListItem";
+import ChattingPage from "./ChattingPage";
 
 import styled from "styled-components";
 
@@ -10,38 +11,41 @@ import { APIroot } from "../../Store";
 import { user } from "../../Store";
 
 const DmChatPage = () => {
-
   const API = useRecoilValue(APIroot);
   // const loginUser = useRecoilValue(user);
 
   const [userList, setUserList] = useState([]);
+  const [selectRoom, setSelectRoom] = useState([]);
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: `${API}/group/list?nowPage=1&items=20&order=444`,
+      url: `http://localhost:18081/api/message/list`,
       headers: {
         "Content-Type": "application/json",
         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
-      console.log(response.data);
-      setUserList(response.data.groupList);
+      // console.log(response.data);
+      setUserList(response.data);
     });
     
   }, [API]);
 
-  
-
-  const liList = userList.map((userItem, index) => {
-    // console.log(userItem);
+  const userUlList = userList.map((userItem, index) => {
+    const getRoomDetail = () => {
+      setSelectRoom(userItem.room)
+    };
+    
     return (
-      <UserListItem
+      <div onClick={getRoomDetail}>
+        <UserListItem
         key={index}
-        userId={userItem.groupName}
-        userName={userItem.nickname}
+        nickname={userItem.other_nick}
+        contents={userItem.content}
+        room={userItem.room}
       />
-
+      </div>
     );
   });
 
@@ -52,11 +56,17 @@ const DmChatPage = () => {
           <h1>UserSearchFrame</h1>
         </UserSearchFrame>
         <UserListFrame>
-          <ul>{liList}</ul>          
+          <ul>{userUlList}</ul>          
         </UserListFrame>
       </UserFrame>
-      <ChattingFrame>
-        <h1>ChattingFrame</h1>
+      <ChattingFrame> 
+        {
+          selectRoom.length !== 0
+            ? <ChattingPage
+              key={selectRoom}
+              room={selectRoom} />
+          : <h1>ChattingFrame</h1>
+        }
       </ChattingFrame>
     </MainFrame>
   );
@@ -96,12 +106,15 @@ const UserSearchFrame = styled.div`
 `;
 
 const UserListFrame = styled.div`
+  overflow: scroll;
   width: 100%;
   border: 1px solid black;
   height: 90%;
   ul {
     width: 100%;
-    margin: 0 0 0 0;
+    margin: 0px;
+    list-style: none;
+    padding: 0px;
   }
 `;
 
