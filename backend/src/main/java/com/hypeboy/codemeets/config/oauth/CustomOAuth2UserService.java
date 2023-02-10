@@ -58,44 +58,31 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		logger.info("attributes - " + attributes.getAttributes());
 		
 		UserDto user = new UserDto();
-		String userId = null;
-		String userName = null;
-		String nickname = null;
-		String email = null;
-		String profilePhoto = null;
-		String provider = null;
-		String providerId = null;
-		
+
 		if ( registrationId.equals("google") ) {
-			email = String.valueOf(attributes.getAttributes().get("email"));
-			userId = email.split("@")[0] + "@" + registrationId;
-			userName = String.valueOf(attributes.getAttributes().get("name"));
-			nickname = userName;
-			profilePhoto = String.valueOf(attributes.getAttributes().get("picture"));
-			provider = String.valueOf(registrationId);
-			providerId = String.valueOf(attributes.getAttributes().get("sub"));
+			user.setEmail( String.valueOf(attributes.getAttributes().get("email")) );
+			user.setUserName( String.valueOf(attributes.getAttributes().get("name")) );
+			user.setNickname( user.getNickname() );
+			user.setProfilePhoto( String.valueOf(attributes.getAttributes().get("picture")) );
 		} else if ( registrationId.equals("kakao") ) {
 	        Map<String, Object> kakaoAttributes = oAuth2User.getAttributes();
 	        Map<String, Object> kakao_account = (Map<String, Object>) kakaoAttributes.get("kakao_account");
-	        email = (String) kakao_account.get("email");
 	        Map<String, Object> properties = (Map<String, Object>) kakaoAttributes.get("properties");
-	        nickname = String.valueOf( properties.get("nickname") );
-	        
-			userId = email.split("@")[0] + "@" + registrationId;
-			userName = nickname;
-			profilePhoto = String.valueOf( properties.get("profile_image") );
-			provider = String.valueOf(registrationId);
-			providerId = String.valueOf(attributes.getAttributes().get("id"));
+			user.setEmail( (String) kakao_account.get("email") );
+			user.setNickname( String.valueOf( properties.get("nickname") ) );
+			user.setUserName( user.getNickname()  );
+			user.setProfilePhoto( String.valueOf( properties.get("profile_image") ) );
 		}
 		
-		user.setUserId(userId);
-		user.setUserName(userName);
-		user.setNickname(nickname);
-		user.setEmail(email);
+		// ID 설정
+		user.setUserId( user.getEmail().split("@")[0] + "@" + registrationId );
+		
+		// provider 설정
+		user.setProvider( String.valueOf(registrationId) );
+		user.setProviderId( String.valueOf(attributes.getAttributes().get("sub")) );
+		
+		// 이메일 공개 기본 설정 : 공개
 		user.setEmailPublic(1);
-		user.setProfilePhoto(profilePhoto);
-		user.setProvider(provider);
-		user.setProviderId(providerId);
 
 		// 패스워드 임의 생성
 		user.setPassword( user.getUserId().substring(0, 10) );
@@ -124,10 +111,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		logger.info("saveOrUpdate user - " + user);
 		
 		try {
-			// 회원이면 정보 찾아서 전달
+			// 회원이면 유저 조회
 			if (sqlSession.getMapper(LoginDao.class).findByEmail(user.getEmail()) != null) {
 				userDto = sqlSession.getMapper(LoginDao.class).findByEmail(user.getEmail());
-				logger.info(userDto.getProvider() + " 유저 로그인 진행");
+				logger.info(userDto.getProvider() + " 유저 조회 성공");
 			}
 			// 회원이 아닌 경우 회원가입 진행
 			else {
