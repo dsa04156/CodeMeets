@@ -1,4 +1,4 @@
-const Comment = ({
+const ConferenceComment = ({
   conferenceAnswerContents,
   conferenceAnswerDate,
   conferenceAnswerLikeCnt,
@@ -18,4 +18,4 @@ const Comment = ({
   );
 };
 
-export default Comment;
+export default ConferenceComment;

@@ -47,7 +47,7 @@ const FindPasswordPage = () => {
   const navigate = useNavigate();
 
   const CancelHandler = () => {
-    navigate('/codemeets/login');
+    navigate('/');
   }
 
   const ToNewPasswordHandler = () => { // 데이터에 저장된 유저의 정보가 확인(1)이 되면 넘어감
@@ -58,7 +58,7 @@ const FindPasswordPage = () => {
     .then((response) => {
       if (((inputId != '') && (inputEmail != null)) || ((inputId != '') && (inputPhoneNum != null))){
         if (response.data.result == '1'){
-          navigate("/codemeets/newpassword", {state:{findId: inputId}})
+          navigate("/newpassword", {state:{findId: inputId}})
           console.log(inputId)
         }
       } else {

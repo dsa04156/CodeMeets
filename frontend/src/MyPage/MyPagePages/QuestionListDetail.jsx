@@ -1,6 +1,6 @@
 import TitleStyle from "../../Group/GroupDetailPage/GroupDetailPageComponent/TitleStyle";
 import CommentContentStyle from "../../Group/GroupDetailPage/GroupDetailPageComponent/CommentContentStyle";
-import Comment from "../../Group/GroupDetailPage/GroupDetailPageComponent/Comment";
+import ConferenceComment from "../../Group/GroupDetailPage/GroupDetailPageComponent/ConferenceComment";
 import LikeStyle from "../../Group/GroupDetailPage/GroupDetailPageComponent/LikeStyle";
 import { Fragment } from "react";
 import { APIroot } from '../../Store';
@@ -36,9 +36,12 @@ const MyPageQuestionListDetail = () => {
             },
         })
         .then((response) => {
-            console.log(response.data)
+            // console.log(response.data)
             setData(response.data);
             setMyLikeState(response.data.conferenceQuestionLike)
+            if (response.data.conferenceQuestionLike){
+                setLikeUnLike(prev => !prev)
+            }
         })
     }, [API]);
     console.log(data.conferenceQuestionPk)
@@ -54,7 +57,7 @@ const MyPageQuestionListDetail = () => {
             },
         })
         .then((response) => {
-            console.log(response.data);
+            // console.log(response.data);
             setComments(response.data);
         })
     }, [API, data])
@@ -75,16 +78,28 @@ const MyPageQuestionListDetail = () => {
         }).then((response) => {
             console.log(response.data);
             if (response.data === 'success'){
-                setLikeUnLike(!likeUnLike);
+                console.log(data)
+                setLikeUnLike(prev => !prev);
+                if (likeUnLike) {
+                    setData(prev => {
+                        const cnt = (prev.conferenceQuestionLikeCnt-1)
+                        return {...prev, "conferenceQuestionLikeCnt": cnt}})
+
+                } else {
+                    setData(prev => {
+                        const cnt = (prev.conferenceQuestionLikeCnt+1)
+                        return {...prev, "conferenceQuestionLikeCnt": cnt}
+                    })
+                }
             }
         })
     }
 
     // 1159 ~ 답변 하나씩 달려있음
     const commentList = comments.map((commentitem, index) => {
-        console.log(commentitem)
+        // console.log(commentitem)
         return (
-            <Comment
+            <ConferenceComment
             key={index}
             conferenceAnswerContents = {commentitem.conferenceAnswerContents}
             conferenceAnswerDate = {commentitem.conferenceAnswerDate}
@@ -106,7 +121,7 @@ const MyPageQuestionListDetail = () => {
             <LikeBox>
                 {/* 모르겠음. 안됨. 도저히 모르겠음. */}
                 <div onClick={likeClickHandler}>
-                    {(likeUnLike === true) || (myLikeState === 1) ? <AiFillHeart style={{margin: '0px 5px 0px 0px'}} /> : <AiOutlineHeart style={{margin: '0px 5px 0px 0px'}} />}
+                    {(likeUnLike === true) ? <AiFillHeart style={{margin: '0px 5px 0px 0px'}} /> : <AiOutlineHeart style={{margin: '0px 5px 0px 0px'}} />}
                     좋아요 : {data.conferenceQuestionLikeCnt}
                 </div>
             </LikeBox>

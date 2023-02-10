@@ -18,7 +18,7 @@ const SideBar = () => {
   const [recoilPageNum, setRecoilPageNum] = useRecoilState(pageNumber);
 
   const menus1 = [
-    { name: "Home", path: "/", icon: <AiOutlineHome size="24" /> },
+    { name: "Home", path: "/home", icon: <AiOutlineHome size="24" /> },
     {
       name: "My-page",
       path: `/my-page/${LoginUser.userPk}/meeting-list`,
@@ -100,6 +100,7 @@ const Side = styled.div`
   justify-content: space-between;
   width: 20%;
   height: 95%;
+  
 `;
 
 const Menu = styled.div`
@@ -122,6 +123,8 @@ const NavBarStyle = styled(NavLink)`
   color: black;
   font-size: 20px;
   outline: invert;
+  background: rgb(174,175,176);
+background: linear-gradient(176deg, rgba(174,175,176,1) 100%, rgba(93,95,96,1) 100%, rgba(93,95,96,1) 100%);
   &:link {
     transition : 0.5s;
     text-decoration: none;
