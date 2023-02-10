@@ -38,7 +38,7 @@
 	<select id="getQnaAnswer" parameterType="int" resultMap="qnaAnswer">
 		select Q.group_answer_pk, Q.group_answer_contents, Q.group_answer_date, Q.group_answer_update, Q.group_question_pk, Q.user_pk,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like,
-		(select user_name from user A where Q.user_pk = A.user_pk) user_name,
+		(select user_name from user_info A where Q.user_pk = A.user_pk) user_name,
 		count(*) over() As total
 		from group_answer Q
 		where group_answer_Pk = #{qnaAnswerPk}
