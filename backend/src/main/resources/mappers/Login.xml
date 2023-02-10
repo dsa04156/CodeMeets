@@ -10,6 +10,8 @@
 		<result column="password" property="password" />
 		<result column="token" property="token" />
 		<result column="user_active" property="userActive" />
+		<result column="provider" property="provider"/>
+		<result column="provider_id" property="providerId"/>
 	</resultMap>
 	
 	<resultMap type="UserDto" id="user">
@@ -29,15 +31,17 @@
 	<!-- ==================== login ======================================== -->
 	
     <select id="findByUserId" resultMap="login">
-   		SELECT user_pk, user_id, password, token, user_active, provider, provider_id
+   		SELECT user_pk, user_id, password, token, 
+   		user_active, provider, provider_id
         FROM user
         WHERE user_id = #{userId}
     </select>
     
 	<select id="getUserInfo" resultMap="user">
-   		SELECT user_pk, user_id, user_name,
+   		SELECT user_pk, user_id, user_name, 
    		user_active, nickname, tel, email, 
-   		profile_photo, email_public, tel_public, provider, provider_id
+   		profile_photo, email_public, tel_public, 
+   		provider, provider_id
         FROM user NATURAL JOIN user_info
         WHERE user_pk = #{userPk}
     </select>
@@ -64,13 +68,15 @@
 	
     <!-- ==================== social login ======================================== -->
     <select id="findByUserName" resultMap="user">
-   		SELECT user_pk, user_id, user_name, nickname, provider, provider_id
+   		SELECT user_pk, user_id, user_name, nickname, 
+   		provider, provider_id
         FROM `user`
         WHERE user_name = #{userName}
     </select>
     
     <select id="findByEmail" resultMap="user">
-   		SELECT user_pk, user_id, user_name, nickname, email, profile_photo, provider, provider_id
+   		SELECT user_pk, user_id, user_name, nickname, 
+   		email, profile_photo, provider, provider_id
         FROM `user` NATURAL JOIN `user_info`
         WHERE email = #{email}
     </select>

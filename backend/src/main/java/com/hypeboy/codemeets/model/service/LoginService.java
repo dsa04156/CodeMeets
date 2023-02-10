@@ -14,7 +14,7 @@ public interface LoginService {
 	
 	// token
 	public void saveRefreshToken(int userPk, String refreshToken) throws Exception;
-	public Object getRefreshToken(int userPk) throws Exception;
+	public String getRefreshToken(int userPk) throws Exception;
 	public int deleteRefreshToken(int userPk) throws Exception;
 
 	//social login

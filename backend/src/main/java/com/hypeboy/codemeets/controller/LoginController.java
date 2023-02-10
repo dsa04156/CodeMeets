@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.LoginDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
-import com.hypeboy.codemeets.model.dto.response.BaseResponse;
 import com.hypeboy.codemeets.model.service.LoginServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
@@ -75,6 +74,8 @@ public class LoginController {
 				resultMap.put(refreshToken, newRefreshToken);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
+				
+				logger.info("로그인 성공");
 			} else {
 				logger.info("로그인 실패");
 				
@@ -103,7 +104,7 @@ public class LoginController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = null;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
+		if ( jwtTokenProvider.validateToken(request.getHeader(accessToken)) ) {
 			logger.info("사용가능한 토큰");
 			
 			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
@@ -115,6 +116,8 @@ public class LoginController {
 				resultMap.put("userInfo", userDto);
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
+				
+				logger.info("사용자 정보 조회 성공");
 			} catch (Exception e) {
 				logger.info("사용자 정보 조회 실패" + " " + e);
 				
@@ -145,7 +148,7 @@ public class LoginController {
 		HttpStatus status = HttpStatus.ACCEPTED;
 		String token = request.getHeader(refreshToken);
 		
-		if (jwtTokenProvider.validateToken(token)) {
+		if ( jwtTokenProvider.validateToken(token) ) {
 			logger.info("Refresh Token Check ... ");
 			
 			if ( token.equals( loginService.getRefreshToken(userDto.getUserPk()) ) ) {
@@ -155,7 +158,6 @@ public class LoginController {
 				resultMap.put("message", SUCCESS);
 				status = HttpStatus.ACCEPTED;
 				logger.info("액세스 토큰 재발급 완료");
-				
 			}
 		} else {
 			logger.info("사용 불가능한 리프레쉬 토큰");
@@ -179,7 +181,7 @@ public class LoginController {
 		Map<String, Object> resultMap = new HashMap<>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		
-		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
+		if ( jwtTokenProvider.validateToken(request.getHeader(accessToken)) ) {
 			logger.info("사용가능한 토큰");
 			
 			int userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
@@ -188,6 +190,8 @@ public class LoginController {
 			try {
 				loginService.deleteRefreshToken(userPk);
 				resultMap.put("message", SUCCESS);
+
+				logger.info("로그아웃 성공");
 			} catch (Exception e) {
 				logger.info("로그아웃 실패 - " + e);
 	
@@ -202,9 +206,9 @@ public class LoginController {
 		}
 		
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-		
 	}
-	
+
+	// OAuth 로그인 성공 후 실행되는 메소드. 현재 미사용
 	@GetMapping("/oauth2/success")
 	public ResponseEntity<?> loginSuccess(@RequestParam("accessToken") String accessToken, @RequestParam("refreshToken") String refreshToken) {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
@@ -214,8 +218,6 @@ public class LoginController {
 		resultMap.put("refreshToken", refreshToken);
         
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-        
 	}
-	
 	
 }

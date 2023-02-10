@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LoginServiceImpl implements LoginService {
-	private final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private final Logger logger = LoggerFactory.getLogger(LoginServiceImpl.class);
 
     private final PasswordEncoder passwordEncoder;
 	
@@ -65,7 +65,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 	
 	@Override
-	public Object getRefreshToken(int userPk) throws Exception {
+	public String getRefreshToken(int userPk) throws Exception {
 		logger.info("getRefreshToken - 실행");
 		
 		return sqlSession.getMapper(LoginDao.class).getRefreshToken(userPk);
@@ -77,16 +77,15 @@ public class LoginServiceImpl implements LoginService {
 		
 		return sqlSession.getMapper(LoginDao.class).deleteRefreshToken(userPk);
 	}
-	
 
 	// social login ----------------------------------------------------------------------------------------------------
+	
 	public UserDto findByEmail(String email) throws Exception {
 		logger.info("findByEmail - 실행");
 		
 		return sqlSession.getMapper(LoginDao.class).findByEmail(email);
 	}
 	
-
     public int findByEmailPk(String email) throws Exception {
 		logger.info("findByEmailPk - 실행");
 		
