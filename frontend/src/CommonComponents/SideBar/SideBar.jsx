@@ -7,6 +7,7 @@ import SideBarLogoutButton from "./SideBarLogoutButton";
 import { AiOutlineHome } from "react-icons/ai";
 import { BsPerson } from "react-icons/bs";
 import { BsPeople } from "react-icons/bs";
+import { AiOutlineWechat } from "react-icons/ai";
 import { AiOutlineMessage } from "react-icons/ai";
 import { AiOutlineSetting } from "react-icons/ai";
 
@@ -28,6 +29,8 @@ const SideBar = () => {
   ];
 
   const menus2 = [
+    
+    { name: "DmChat", path: "/dmChat", icon: <AiOutlineWechat size="24" /> },
     { name: "Message", path: "/message", icon: <AiOutlineMessage size="24" /> },
     { name: "Setting", path: "/setting", icon: <AiOutlineSetting size="24" /> },
   ];

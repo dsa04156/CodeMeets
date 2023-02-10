@@ -30,6 +30,8 @@ import SignUpPage from "./Login/LoginPages/SignUpPage";
 import MyPageMeetingList from "./MyPage/MyPagePages/MyPageMeetingList";
 import MyPageQuestionList from "./MyPage/MyPagePages/MyPageQuestionList";
 
+import DmChatPage from "./DmChat/DmChatPages/DmChatPage";
+
 import AlarmButton from "./CommonComponents/MainHeader/AlarmButton";
 import HeaderProfile from "./CommonComponents/MainHeader/HeaderProfile";
 
@@ -129,6 +131,9 @@ function App() {
               <Route path="/grouplist/" element={<GroupList />}></Route>
               <Route path="/message" element={<Message />}></Route>
               <Route path="/setting" element={<Setting />}></Route>
+
+              {/* DmChat Page */}
+              <Route path="/dmChat" element={<DmChatPage />}></Route>
             </Routes>
           </div>
         </MainArea>
