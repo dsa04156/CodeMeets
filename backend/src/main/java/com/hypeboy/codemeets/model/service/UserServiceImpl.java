@@ -28,12 +28,14 @@ public class UserServiceImpl implements UserService{
 	
 	@Autowired
 	private SqlSession sqlSession;
+	
+	// 개발용 --------------------------------------------------
 
 	@Override
-	public List<UserDto> devGetUserInfoList(String userId) throws Exception {
+	public List<UserDto> devGetUserInfo(String userId) throws Exception {
 		logger.info("devGetUserInfoList - 실행");
 		
-		return sqlSession.getMapper(UserDao.class).devGetUserInfoList(userId);
+		return sqlSession.getMapper(UserDao.class).devGetUserInfo(userId);
 	}
 	
 	@Override
@@ -43,6 +45,8 @@ public class UserServiceImpl implements UserService{
 		return sqlSession.getMapper(UserDao.class).devGetUserInfoAllList();
 	}
 
+	// 회원가입 --------------------------------------------------
+	
 	@Override
 	public void registUser(UserDto userDto) throws Exception {
 		logger.info("registUser - 실행");
@@ -54,6 +58,8 @@ public class UserServiceImpl implements UserService{
 		sqlSession.getMapper(UserDao.class).registGroup(userDto);
 	}
 
+	// 유저 중복검사 --------------------------------------------------
+	
 	@Override
 	public int getUserIdOverlap(String userId) throws Exception {
 		logger.info("getUserIdOverlap - 실행");
@@ -75,6 +81,8 @@ public class UserServiceImpl implements UserService{
 		return sqlSession.getMapper(UserDao.class).getUserEmailOverlap(userId);
 	}
 
+	// ID 찾기, PW 찾기 및 수정 --------------------------------------------------
+	
 	@Override
 	public String searchId(String type, String data) throws Exception {
 		logger.info("searchId - 실행");
@@ -132,20 +140,17 @@ public class UserServiceImpl implements UserService{
 		}
 	}
 
+	// myProfile 조회 --------------------------------------------------
+	
 	@Override
 	public UserDto getMyProfile(int userPk) throws Exception {
 		logger.info("getMyProfile - 실행");
 		
 		return sqlSession.getMapper(UserDao.class).getMyProfile(userPk);
 	}
-
-	@Override
-	public List<UserDto> getUserInfoList(String userPkList) throws Exception {
-		logger.info("getUserInfoList - 실행");
-
-		return sqlSession.getMapper(UserDao.class).getUserInfoList(userPkList);
-	}
-
+	
+	// myProfile 수정 --------------------------------------------------
+	
 	@Override
 	public int editMyProfile(UserDto userDto) throws Exception {
 		logger.info("editMyProfile - 실행");
@@ -153,12 +158,16 @@ public class UserServiceImpl implements UserService{
 		return sqlSession.getMapper(UserDao.class).editMyProfile(userDto);
 	}
 
+	// 다른 유저 조회 --------------------------------------------------
+	
 	@Override
-	public int resign(int userPk) throws Exception {
-		logger.info("resign - 실행");
-		
-		return sqlSession.getMapper(UserDao.class).resign(userPk);
+	public List<UserDto> getUserInfoList(String userPkList) throws Exception {
+		logger.info("getUserInfoList - 실행");
+
+		return sqlSession.getMapper(UserDao.class).getUserInfoList(userPkList);
 	}
+	
+	// 자신의 회의 참석 기록 조회 --------------------------------------------------
 	
 	@Override
 	public List<ConferenceGroupDto> getMyConferenceRecord(int nowPage, int items, int userPk) throws Exception {
@@ -166,7 +175,7 @@ public class UserServiceImpl implements UserService{
 		
 		return sqlSession.getMapper(UserDao.class).getMyConferenceRecord(nowPage, items, userPk);
 	}
-
+	
 	@Override
 	public List<ConferenceGroupDto> getMyConferenceRecordFilter(int nowPage, int items, int userPk, int groupPk)
 			throws Exception {
@@ -175,11 +184,22 @@ public class UserServiceImpl implements UserService{
 		return sqlSession.getMapper(UserDao.class).getMyConferenceRecordFilter(nowPage, items, userPk, groupPk);
 	}
 
+	// 자신의 질문 목록 조회 --------------------------------------------------
+		
 	@Override
 	public List<ConferenceQuestionDto> getMyQuestionRecord(int nowPage, int items, int userPk) throws Exception {
 		logger.info("getMyQuestionRecord - 실행");
 		
 		return sqlSession.getMapper(UserDao.class).getMyQuestionRecord(nowPage, items, userPk);
+	}
+
+	// 회원탈퇴 --------------------------------------------------
+	
+	@Override
+	public int resign(int userPk) throws Exception {
+		logger.info("resign - 실행");
+		
+		return sqlSession.getMapper(UserDao.class).resign(userPk);
 	}
 
 }
