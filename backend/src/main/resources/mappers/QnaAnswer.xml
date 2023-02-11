@@ -46,7 +46,7 @@
 
 	<update id="modifyQnaAnswer" parameterType="QnaAnswerDto">
 		update group_answer
-		set group_answer_contents = #{groupAnswerContents}, group_answer_date = now(), group_answer_update = 1
+		set group_answer_contents = #{groupAnswerContents}, group_answer_update = 1
 		where group_answer_pk = #{groupAnswerPk}
 	</update>
 
