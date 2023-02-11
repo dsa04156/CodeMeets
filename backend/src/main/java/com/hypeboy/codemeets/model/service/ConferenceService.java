@@ -29,4 +29,6 @@ public interface ConferenceService {
 
 	List<String> participantsConference(int conferencePk) throws SQLException;
 
+	List<ConferenceDto> listConference(int userPk) throws SQLException;
+
 }

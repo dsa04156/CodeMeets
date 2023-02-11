@@ -138,4 +138,12 @@
 	       b.conference_pk=#{conferencePk};
 	]]>
 	</select>
+	
+	<select id="listConference" resultMap="conference">
+		<![CDATA[
+			select * from conference 
+			where user_pk=#{userPk};
+		]]>
+		
+	</select>
 </mapper>
