@@ -93,8 +93,8 @@ const LoginPage = () => {
   const accessToken = new URL(window.location.href).searchParams.get("accessToken");
   const refreshToken = new URL(window.location.href).searchParams.get("refreshToken");
   const myUrl = window.location.host;
-  // const loginURL = API.replace("/api", "");
-  const loginURL = "http://localhost:18081";
+  const loginURL = API.replace("/api", "");
+  // const loginURL = "http://localhost:18081";
   const googleLogInUrl = new URL(`${loginURL}/oauth2/authorization/google`);
   const kakaoLogInUrl = new URL(`${loginURL}/oauth2/authorization/kakao`);
 
