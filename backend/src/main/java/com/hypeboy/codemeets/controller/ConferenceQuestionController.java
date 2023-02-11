@@ -100,12 +100,12 @@ public class ConferenceQuestionController {
     }
 	
     @Operation(summary = "회의 내 질문 상세보기", description = "회의 내 질문 상세보기 API "
-    		+ " conferencePk, userPk 입력해주시면 됩니다")
+    		+ " \n 필수값 AccessToken, conferenceQuestionPk")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
 	@GetMapping("/detail")
-	public ResponseEntity<?> getConferenceQuestion(HttpServletRequest request, @RequestParam("conferencePk") int conferenceQuestionPk)throws Exception {
+	public ResponseEntity<?> getConferenceQuestion(HttpServletRequest request, @RequestParam("conferenceQuestionPk") int conferenceQuestionPk)throws Exception {
 		Logger.info("Controller getconferenceQuestion  - 호출");
     	int userPk = 0;
 		
