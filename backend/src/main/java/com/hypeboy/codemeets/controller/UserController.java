@@ -60,7 +60,7 @@ public class UserController {
 		logger.info("userInfoList - 호출");
 
 		try {
-			List<UserDto> user = userService.devGetUserInfoList(userId);
+			List<UserDto> user = userService.devGetUserInfo(userId);
 			return new ResponseEntity<List<UserDto>>(user, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.warn("userInfoList fail - " + e);
@@ -525,5 +525,4 @@ public class UserController {
 		return new ResponseEntity<Map<String,Object>>(resultMap, status);
 	}
     
-	
 }
