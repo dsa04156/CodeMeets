@@ -58,7 +58,6 @@ public class ConferenceQuestionController {
     		+ " conferencePk, groupPk, content, userPk 입력해주시면 됩니다")
 	@PostMapping
 	public ResponseEntity<String> writeConferenceQna(@ApiParam(value = "conferenceQna 작성.", required = true)@RequestBody ConferenceQuestionDto conferenceQuestionDto) throws Exception {
-		
 		Logger.info("writeConferenceQna - 호출");
 		try {
 			service.writeConferenceQuestion(conferenceQuestionDto);
@@ -76,8 +75,7 @@ public class ConferenceQuestionController {
         @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
 	@GetMapping
-	public ResponseEntity<?> getList(HttpServletRequest request, @RequestParam("conferencePk") int conferencePk) throws Exception {
-    	
+	public ResponseEntity<?> getList(HttpServletRequest request, @RequestParam("conferencePk") int conferencePk) throws Exception {    	
     	Logger.info("conferenceQna List 호출");
     	int userPk = 0;
     	
@@ -103,12 +101,29 @@ public class ConferenceQuestionController {
 	
     @Operation(summary = "회의 내 질문 상세보기", description = "회의 내 질문 상세보기 API "
     		+ " conferencePk, userPk 입력해주시면 됩니다")
-	@GetMapping("/{conferenceQuestionPk}")
-	public ResponseEntity<?> getConferenceQuestion(@RequestParam("conferencePk") int conferenceQuestionPk, @RequestParam int userPk)throws Exception {
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
+    })
+	@GetMapping("/detail")
+	public ResponseEntity<?> getConferenceQuestion(HttpServletRequest request, @RequestParam("conferencePk") int conferenceQuestionPk)throws Exception {
 		Logger.info("Controller getconferenceQuestion  - 호출");
+    	int userPk = 0;
 		
 		try {
+			Logger.info("token check");
+    		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
+    			Logger.info("사용가능한 토큰입니다");
+    			
+    			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
+    			Logger.info("userPk - " + userPk);
+    			
+    		}
+    		else {
+    			Logger.info("토큰 실패");
+    		}
+    		
 			ConferenceQuestionDto conferenceQuestionDto = service.getConferenceQuestion(conferenceQuestionPk, userPk);
+			
 			return new ResponseEntity<ConferenceQuestionDto>(conferenceQuestionDto, HttpStatus.OK);		
 		} catch (Exception e) {
 			Logger.warn("Controller getconferenceQuestion fail -" + e);
@@ -121,15 +136,15 @@ public class ConferenceQuestionController {
     		+ " conferenceQuestionPk, contents 입력해주시면 됩니다")
 	@PutMapping
 	public ResponseEntity<?> modiftConferenceQuestion(@RequestBody ConferenceQuestionDto conferenceQuestionDto) throws Exception {
-		
 		try {
 			service.modifyConferenceQuestion(conferenceQuestionDto);
+			
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-	} catch (Exception e) {
-		Logger.warn("modifyConferenceQuestion fail - " + e);
-		
-		return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+		} catch (Exception e) {
+			Logger.warn("modifyConferenceQuestion fail - " + e);
+			
+			return new ResponseEntity<String>("Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
     @Operation(summary = "회의 내 질문 삭제", description = "회의 내 질문 삭제 API "
@@ -149,7 +164,6 @@ public class ConferenceQuestionController {
     		+ " conferenceQuestionPk, userPk 입력해주시면 됩니다")
 	@PutMapping("/like")
 	public ResponseEntity<String> likeConferenceQuestion(@RequestBody ConferenceQuestionDto conferenceQuestionDto) throws Exception {
-		
 		try {
 			service.likeConferenceQuestion(conferenceQuestionDto);
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -167,7 +181,6 @@ public class ConferenceQuestionController {
 	public ResponseEntity<?> pageList(HttpServletRequest request, @RequestParam("conferencePk") int conferencePk,
 			@RequestParam("nowPage") int nowPage,
 			@RequestParam("items") int items) throws Exception {
-    	
     	Logger.info("conferenceQna List 호출");
     	int userPk = 0;
     	
