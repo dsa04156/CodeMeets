@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.ConferenceDto;
+import com.hypeboy.codemeets.model.dto.ConferenceThreeDto;
 import com.hypeboy.codemeets.model.service.ConferenceServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
@@ -106,13 +107,13 @@ public class ConferenceController {
 			String url = RandomStringUtils.randomAlphanumeric(10);
 			resultMap.put("url", url);
 			
-			List<String> myGroup = new ArrayList<String>();
+			List<ConferenceThreeDto> myGroup = new ArrayList<ConferenceThreeDto>();
 
-			myGroup.addAll( conferenceService.clickCreate(userPk) );
-			resultMap.put("list", myGroup);
+			myGroup = conferenceService.clickCreate(userPk);
+			
 			logger.info( myGroup.toString() );
 			
-    		return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
+    		return new ResponseEntity<List>(myGroup, HttpStatus.OK);
     	}catch (Exception e) {
     		logger.info("clickCreate error - " + e);
     		
