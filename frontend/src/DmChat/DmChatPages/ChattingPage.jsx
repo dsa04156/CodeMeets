@@ -1,15 +1,13 @@
 import styled from "styled-components";
 import DefaultImage from "../../Images/Logo.png"
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-// import io from "socket.io-client";
 
 import { useRecoilValue } from "recoil";
 import { APIroot } from "../../Store";
 import { user } from "../../Store";
 
-// const socket = io.connect("http://localhost:18081/api/message/chatt");
 
 const ChattingPage = (props) => {
     const API = useRecoilValue(APIroot);
@@ -19,13 +17,11 @@ const ChattingPage = (props) => {
     const [room, setRoom] = useState([]);
     const [message, setMessage] = useState('');
     const [myProfileImage, setMyProfileImage] = useState("");
-    const [other, setOther] = useState("");
-    // const ws = new WebSocket(`ws://localhost:18081/api/chating/${props.room}`);
-    const ws = new WebSocket(`ws://localhost:18081/api/ws/chat`);
-    // const [ws, setWs] = useState("");
+    const ws = useRef({});
 
     useEffect(() => {
-        setOther(props.other);
+        ws.current = new WebSocket(`ws://i8d109.p.ssafy.io/api/chating/${props.room}`);
+        // ws.current = new WebSocket(`ws://localhost:18081/api/chating/${props.room}`);
         getMessage();
         
         if(USER.profilePhoto === ""){
@@ -34,16 +30,15 @@ const ChattingPage = (props) => {
             setMyProfileImage(`${API}/file/images/${USER.profilePhoto}`)
         }
 
-        // setWs(new WebSocket("ws://localhost:18081/api/message/chatt"));
-
+        return () => {
+            ws.current.close();
+        };
         
     }, [API]);
     
     useEffect(() => {
-        ws.onmessage = (readMsg) => {
+        ws.current.onmessage = (readMsg) => {
             const dataSet = JSON.parse(readMsg.data);
-            console.log("dataSet - " + dataSet);
-            // setRoom(dataSet);
             setRoom([...room, dataSet]);
         }
         
@@ -54,7 +49,8 @@ const ChattingPage = (props) => {
     const getMessage = async () => {
         await axios({
             method: "GET",
-            url: `http://localhost:18081/api/message/messagecontentlist?room=${props.room}`,
+            url: `${API}/message/messagecontentlist?room=${props.room}`,
+            // url: `${API}/message/messagecontentlist?room=${props.room}`,
             headers: {
                 "Content-Type": "application/json",
                 AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
@@ -87,19 +83,18 @@ const ChattingPage = (props) => {
     }
 
     const handleClick = () => {
-        const otherPk = room[0].recvPk !== USER.userPk ? room[0].recvPk : room[0].sendPk;
-
-        // axios({
-        //     method: "POST",
-        //     url: `http://localhost:18081/api/message/send?room=${props.room}&otherPk=${otherPk}&content=` + encodeURI(message),
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
-        //     },
-        //     }).then((response) => {
-        //         // getMessage();
-        //         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;   
-        //     });
+        axios({
+            method: "POST",
+            url: `${API}/message/send?room=${props.room}&otherPk=${props.other}&content=` + encodeURI(message),
+            // url: `http://localhost:18081/api/message/send?room=${props.room}&otherPk=${props.other}&content=` + encodeURI(message),
+            headers: {
+                "Content-Type": "application/json",
+                AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+            },
+            }).then((response) => {
+                // getMessage();
+                scrollRef.current.scrollTop = scrollRef.current.scrollHeight;   
+            });
         
         send();
         setMessage('');
@@ -114,12 +109,12 @@ const ChattingPage = (props) => {
             data.profilePhoto = USER.profilePhoto;
             // data.date = new Date().toLocaleString();
             data.sendPk = USER.userPk;
-            data.recvPk = other;
+            data.room = props.room;
+            data.recvPk = props.other;
             var temp = JSON.stringify(data);
             console.log("send " + temp);
-            ws.send(temp);
+            ws.current.send(temp);
         }
-        console.log(ws);
     }
     
     return (

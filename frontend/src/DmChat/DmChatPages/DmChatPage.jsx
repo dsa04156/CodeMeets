@@ -1,4 +1,5 @@
 import UserListItem from "../DmChatComponents/UserListItem";
+import SearchUserListItem from "../DmChatComponents/SearchUserListItem";
 import ChattingPage from "./ChattingPage";
 
 import styled from "styled-components";
@@ -8,21 +9,22 @@ import axios from "axios";
 
 import { useRecoilValue } from "recoil";
 import { APIroot } from "../../Store";
-import { user } from "../../Store";
 
 const DmChatPage = () => {
   const API = useRecoilValue(APIroot);
-  const USER = useRecoilValue(user);
-  // const loginUser = useRecoilValue(user);
 
   const [userList, setUserList] = useState([]);
+  const [userPkList, setUserPkList] = useState([]);
   const [selectRoom, setSelectRoom] = useState([]);
   const [other, setOther] = useState([]);
+  const [search, setSearch] = useState("");
+  const [searchUserList, setSearchUserList] = useState([]);
 
   useEffect(() => {
     axios({
       method: "GET",
-      url: `http://localhost:18081/api/message/list`,
+      url: `${API}/message/list`,
+      // url: `http://localhost:18081/api/message/list`,
       headers: {
         "Content-Type": "application/json",
         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
@@ -33,6 +35,65 @@ const DmChatPage = () => {
     });
     
   }, [API]);
+
+  const onChange = (e) => {
+    setSearch(e.target.value);
+    setSearchUserList([]);
+  }
+
+  const searchUser = () => {
+    axios({
+      method: "GET",
+      url: `${API}/message/search-user?nickname=${search}`,
+      // url: `http://localhost:18081/api/message/search-user?nickname=${search}`,
+      headers: {
+        "Content-Type": "application/json",
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+      },
+    }).then((response) => {
+      setSearchUserList(response.data);
+    });
+  }
+
+  const getNewRoomNo = async () => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `${API}/message/room-no`,
+        // url: `http://localhost:18081/api/message/room-no`,
+      });
+  
+      return response.data;
+    } catch (err) {
+      console.log("Error >>", err);
+    }
+  }
+
+  const searchUsers = searchUserList.map((searchUserItem, index) => {
+    const addRoom = async () => {
+      const data = {};
+      data.email = searchUserItem.email;
+      data.other_nick = searchUserItem.nickname;
+      data.otherPk = searchUserItem.userPk;
+      data.profilePhoto = searchUserItem.profilePhoto;
+      data.room = await getNewRoomNo();
+      data.content = "첫 대화를 시작하세요";
+
+      setUserList([ ...userList, data])
+    };
+
+    return (
+      <div onClick={addRoom}>
+        <SearchUserListItem
+          key={index}
+          nickname={searchUserItem.nickname}
+          email={searchUserItem.email}
+          profilePhoto={searchUserItem.profilePhoto}
+        />
+      </div>
+      
+    );
+  });
 
   const userUlList = userList.map((userItem, index) => {
     const getRoomDetail = () => {
@@ -56,7 +117,17 @@ const DmChatPage = () => {
     <MainFrame>
       <UserFrame>
         <UserSearchFrame>
-          <h1>UserSearchFrame</h1>
+          <input type="text"
+            style={{ border: 'solid 2px grey', width: '100%', height: '25px', alignItems: 'top'}}
+            value={search}
+            onChange={onChange}
+            onKeyPress={event => {
+              if (event.code === "Enter") {
+                  event.preventDefault();
+                  searchUser();
+                  }
+              }}/>
+          {searchUsers}
         </UserSearchFrame>
         <UserListFrame>
           <ul>{userUlList}</ul>          
@@ -70,7 +141,7 @@ const DmChatPage = () => {
               room={selectRoom}
               other={other}
             />
-          : <h1>ChattingFrame</h1>
+          : <h1> 대화 시작을 기다리는 중... </h1>
         }
       </ChattingFrame>
     </MainFrame>
@@ -104,8 +175,7 @@ const UserFrame = styled.div`
 const UserSearchFrame = styled.div`
   width: 100%;
   border: 1px solid black;
-  height: 10%;
-  display: flex;
+  height: auto;
   align-items: center;
   justify-content: center;
 `;
@@ -114,7 +184,7 @@ const UserListFrame = styled.div`
   overflow: scroll;
   width: 100%;
   border: 1px solid black;
-  height: 90%;
+  height: 70%;
   ul {
     width: 100%;
     margin: 0px;
