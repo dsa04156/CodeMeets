@@ -13,7 +13,7 @@
 		<result column="user_pk" property="userPk"/>
 	
 		<result column="conference_answer_like_cnt" property="conferenceAnswerLikeCnt"/>
-		<result column="conference_answer_like" property="conferenceAnswerLike"/>
+		<result column="conference_answer_liked" property="conferenceAnswerLiked"/>
 		<result column="total" property="total"/>
 	
 		<result column="user_name" property="username"/>
@@ -27,7 +27,7 @@
  	<select id="getList" parameterType="int" resultMap="conferenceAnswer">
 		SELECT *,
 		(SELECT count(*) FROM conference_answer_user L WHERE Q.conference_answer_pk=L.conference_answer_pk) conference_answer_like_cnt,
-		(SELECT count(*) FROM conference_answer_user L WHERE Q.conference_answer_pk=L.conference_answer_pk and L.user_pk = #{userPk}) conference_answer_like,
+		(SELECT count(*) FROM conference_answer_user L WHERE Q.conference_answer_pk=L.conference_answer_pk and L.user_pk = #{userPk}) conference_answer_liked,
 		count(*) over() as total
 		FROM conference_answer Q
 		NATURAL JOIN user_info

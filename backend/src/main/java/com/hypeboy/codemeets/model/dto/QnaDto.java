@@ -23,7 +23,7 @@ public class QnaDto {
 	// like 수
 	private int groupQuestionLikeCnt;
 	// 회원의 like 유무
-	private int groupQuestionLike;
+	private int groupQuestionLiked;
 	// 답변 수
 	private int groupQuestionAnswerCnt;
 	// 글 수

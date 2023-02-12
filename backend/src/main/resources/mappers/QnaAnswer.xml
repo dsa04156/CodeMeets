@@ -12,7 +12,7 @@
 		<result column="group_question_pk" property="groupQuestionPk" />
 		<result column="user_pk" property="userPk" />
 		
-		<result column="group_answer_like" property="groupQnaAnswerLike" />
+		<result column="group_answer_liked" property="groupQnaAnswerLiked" />
 		<result column="group_answer_like_cnt" property="groupQnaAnswerLikeCnt"/>
 		<result column="user_name" property="username"/>
 		<result column="total" property="total"/>
@@ -26,7 +26,7 @@
 	<select id="getList" parameterType="int" resultMap="qnaAnswer">
 		select *,
 		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk) group_answer_like_cnt,
-		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_like,
+		(select count(*) from group_answer_user L where Q.group_answer_pk = L.group_answer_pk and L.user_pk = #{userPk}) group_answer_liked,
 		count(*) over() AS total
 		from `group_answer` Q
 		NATURAL JOIN `user_info`

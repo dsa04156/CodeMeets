@@ -23,7 +23,7 @@ public class ConferenceAnswerDto {
 	private int conferenceAnswerLikeCnt;
 		
 	// 유저의 like 여부
-	private int conferenceAnswerLike;
+	private int conferenceAnswerLiked;
 	
 	// 결과 총 개수
 	private int total;

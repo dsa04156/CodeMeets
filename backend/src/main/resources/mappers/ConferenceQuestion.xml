@@ -15,7 +15,7 @@
 		
 		<result column="conference_question_answer_cnt" property="answerCnt"/>
 		<result column="conference_question_like_cnt" property="conferenceQuestionLikeCnt"/>
-		<result column="conference_question_like" property="conferenceQuestionLike"/>
+		<result column="conference_question_liked" property="conferenceQuestionLiked"/>
 		<result column="total" property="total"/>
 		
 		<result column="user_name" property="username"/>
@@ -36,7 +36,7 @@
 	<select id="getList" resultMap="conferenceQuestion" >
 		select *,
 		(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
-		(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk and L.user_pk = #{userPk}) conference_question_like,
+		(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk and L.user_pk = #{userPk}) conference_question_liked,
 		(select count(*) from conference_answer A where Q.conference_question_pk = A.conference_question_pk) conference_question_answer_cnt,
 		count(*) over() As total
 		from `conference_question` Q
