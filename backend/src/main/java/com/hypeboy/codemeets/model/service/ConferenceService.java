@@ -32,4 +32,6 @@ public interface ConferenceService {
 
 	List<ConferenceDto> listConference(int userPk, int i, int items, String order) throws SQLException;
 
+	int getGroupPk(int conferencePk) throws SQLException;
+
 }

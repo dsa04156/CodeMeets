@@ -217,8 +217,9 @@ public class ConferenceController {
 			logger.info("url 체크 완료" + conferencePk);
 			conferenceService.enterConference(userPk,conferencePk);
 			conferenceService.enterMember(conferencePk,userPk);
+			int groupPk = conferenceService.getGroupPk(conferencePk);
 			logger.info("회의 참가 성공");
-			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+			return new ResponseEntity<Integer>(groupPk,HttpStatus.OK);
 		}catch (Exception e) {
 			logger.info("회의 참가 실패"+e);
 			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
