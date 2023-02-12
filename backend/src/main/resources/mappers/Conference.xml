@@ -147,7 +147,9 @@
 	<select id="listConference" resultMap="conference">
 		<![CDATA[
 			select * from conference 
-			where user_pk=#{userPk};
+			where user_pk=#{userPk}
+			ORDER BY #{order} DESC
+			LIMIT #{i}, #{items};
 		]]>
 		
 	</select>
