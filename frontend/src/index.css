@@ -5,11 +5,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url(./Images/skystar.jpg);
-  background-repeat: no-repeat;
-  background-position: top center;
-  background-size: cover;
-  background-attachment:fixed;
+  /* background: rgb(219,163,154);
+background: linear-gradient(149deg, rgba(219,163,154,1) 20%, rgba(240,219,219,0.8828781512605042) 80%); */
+background: rgb(188,234,213);
+background: linear-gradient(149deg, rgba(188,234,213,1) 0%, rgba(222,245,229,0.28904061624649857) 100%);
+/* background: rgb(183,196,207);
+background: linear-gradient(149deg, rgba(183,196,207,1) 20%, rgba(238,227,203,1) 85%); */
+/* background: rgb(6,40,61);
+background: linear-gradient(149deg, rgba(6,40,61,1) 20%, rgba(37,109,133,1) 80%);   */
+background-attachment:fixed;
 }
 
 code {

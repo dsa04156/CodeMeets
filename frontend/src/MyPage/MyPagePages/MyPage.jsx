@@ -26,7 +26,7 @@ export default MyPage;
 const MyPageBottomCard = styled.div`
   margin-top: 6px;
   padding: 6px;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 20px;
   height: 400px;
 `;

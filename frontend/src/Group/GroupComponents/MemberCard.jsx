@@ -25,7 +25,7 @@ export default MemberCard;
 
 const Card = styled.div`
   display: flex;
-  border: 1px solid black;
+  border-bottom: 1px solid black;
   height: 11vh;
 `;
 
@@ -35,7 +35,7 @@ const ImageBox = styled.div`
   align-items: center;
   height: 11vh;
   width: 15vh;
-  border-right: 1px solid black;
+  /* border-right: 1px solid black; */
 `;
 
 const NameBox = styled.div`

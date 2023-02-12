@@ -18,18 +18,18 @@ const SideBar = () => {
   const [recoilPageNum, setRecoilPageNum] = useRecoilState(pageNumber);
 
   const menus1 = [
-    { name: "Home", path: "/home", icon: <AiOutlineHome size="24" /> },
+    { name: "Home", path: "/home", icon: <AiOutlineHome size="24"/> },
     {
       name: "My-page",
       path: `/my-page/${LoginUser.userPk}/meeting-list`,
-      icon: <BsPerson size="24" />,
+      icon: <BsPerson size="24"/>,
     },
-    { name: "Group", path: "/grouplist", icon: <BsPeople size="24" /> },
+    { name: "Group", path: "/grouplist", icon: <BsPeople size="24"/> },
   ];
 
   const menus2 = [
-    { name: "Message", path: "/message", icon: <AiOutlineMessage size="24" /> },
-    { name: "Setting", path: "/setting", icon: <AiOutlineSetting size="24" /> },
+    { name: "Message", path: "/message", icon: <AiOutlineMessage size="24"/> },
+    { name: "Setting", path: "/setting", icon: <AiOutlineSetting size="24"/> },
   ];
 
   const SideBarLogoutHandler = () => {

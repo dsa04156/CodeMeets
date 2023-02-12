@@ -83,44 +83,48 @@ const GroupDetail = () => {
     })
   }, [API, position]);
 
-  
   console.log(position)
   
   return (
     <div>
       <MainTitle>
-        <TitlenURLStyle>
       <h1>{groupTitle}</h1>
       <div className="url">Group URL : {groupUrl}</div>
-      <div className="url"><button onClick={CopyHandler}>Copy</button></div>
-        </TitlenURLStyle>
-      <div>
-        <LeaveButton onClick={leaveGroupHandler}>Leave</LeaveButton>
+      <div className="url">
+        <SubButtonStyle>
+          <button className="custom-btn btn-4" onClick={CopyHandler}>Copy</button>
+        </SubButtonStyle>
       </div>
+      <div className="position">
+        <ButtonStyle>
+          <button className="custom-btn btn-4" onClick={leaveGroupHandler}>Leave</button>
+        </ButtonStyle>
       {leaveTheGroupModal && (
-          // 연결된 모달 component
-          <GroupLeaveModal
-            open={leaveTheGroupModal}
-            onClose={() => {
-              setLeaveTheGroupModal(false);
-            }}
-            groupPk={params.group_pk}
-          />
+        // 연결된 모달 component
+        <GroupLeaveModal
+        open={leaveTheGroupModal}
+        onClose={() => {
+          setLeaveTheGroupModal(false);
+        }}
+        groupPk={params.group_pk}
+        />
         )}
-      
-        <div>
-          {position === 1 ? <DeleteButton onClick={DeleteGroupHandler}>Delete</DeleteButton> : null}
         </div>
+        <div>
+        <ButtonStyle>
+          {position === 1 ? <button className="custom-btn btn-4" onClick={DeleteGroupHandler}>Delete</button> : null}
+        </ButtonStyle>
         {DeleteTheGroupModal && (
           // 연결된 모달 component
           <GroupDeleteModal
-            open={DeleteTheGroupModal}
-            onClose={() => {
-              setDeleteTheGroupModal(false);
-            }}
-            groupPk={params.group_pk}
+          open={DeleteTheGroupModal}
+          onClose={() => {
+            setDeleteTheGroupModal(false);
+          }}
+          groupPk={params.group_pk}
           />
           )}
+          </div>
       </MainTitle>
     <GroupMainBoard>
     <GroupNavBar grouppk={params.group_pk} groupTitleFunc={groupTitleHandler}/>
@@ -138,59 +142,199 @@ align-items:center;
 border: 1px ;
 padding-left: 30px;
 height:90px;
-
+.url{
+    margin: 10px 0px 0px 10px;
+    width: auto;
+    align-items: flex-end;
+  }
+  .position {
+    float: right;
+    margin-left: auto;
+  }
 `;
 
 const GroupMainBoard = styled.div`
-  border: 1px solid black;
+  /* border: 1px solid black; */
   height: 500px;
 `
-const TitleStyle = styled.div`
-  display: flex;
-  flex-direction: row;
-  padding: 1vh;
-  margin-bottom: 2vh;
-  height: 7vh;
-  box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2);
-  border-radius: 20px;
-  .name {
+
+const SubButtonStyle = styled.div`
+  .custom-btn {
+    width: 50px;
+    height: 25px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
     display: flex;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+    justify-content: center;
     align-items: center;
-    font-size: 2em;
-    margin-right: 5px;
   }
-  .button {
-    margin: 15px 0px 0px 20px;
+  .btn-4 {
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-4:hover {
+    background-color: #89d8d3;
+    background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+  }
+  .btn-4 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .btn-4:before,
+  .btn-4:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4:before {
+    height: 0%;
+    width: 0.1px;
+  }
+  .btn-4:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4:hover:before {
+    height: 100%;
+  }
+  .btn-4:hover:after {
+    width: 100%;
+  }
+  .btn-4 span:before,
+  .btn-4 span:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4 span:before {
+    width: 0.1px;
+    height: 0%;
+  }
+  .btn-4 span:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4 span:hover:before {
+    height: 100%;
+  }
+  .btn-4 span:hover:after {
+    width: 100%;
   }
 `;
 
-const LeaveButton = styled.button`
-  margin-left: 300px;
-  justify-content: right;
-  display: flex;
-  flex-direction: row;
-`;
-
-const DeleteButton = styled.button`
-  margin-left: 20px;
-  justify-content: right;
-  display: flex;
-  flex-direction: row;
-`;
-
-const TitlenURLStyle = styled.div`
-  display: flex;
-  align-items: center;
-  .url{
-    margin: 10px 0px 0px 10px;
-    width: auto;
+const ButtonStyle = styled.div`
+  .custom-btn {
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    /* float: right; */
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
   }
-`;
-
-const BottomStyle = styled.div`
-  display: flex;
-  align-items: center;
-  .NewCreate {
-    justify-content: right;
+  .btn-4 {
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-4:hover {
+    background-color: #89d8d3;
+    background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+  }
+  .btn-4 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .btn-4:before,
+  .btn-4:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4:before {
+    height: 0%;
+    width: 0.1px;
+  }
+  .btn-4:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4:hover:before {
+    height: 100%;
+  }
+  .btn-4:hover:after {
+    width: 100%;
+  }
+  .btn-4 span:before,
+  .btn-4 span:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4 span:before {
+    width: 0.1px;
+    height: 0%;
+  }
+  .btn-4 span:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4 span:hover:before {
+    height: 100%;
+  }
+  .btn-4 span:hover:after {
+    width: 100%;
   }
 `;

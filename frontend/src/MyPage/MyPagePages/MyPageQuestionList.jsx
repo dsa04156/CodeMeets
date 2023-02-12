@@ -24,10 +24,10 @@ const MyPageQuestionList = () => {
     const columns = React.useMemo(
         () => [
             { Header: '번호', accessor: 'conferencePk', width: 90},
-            { Header: '질문 내용', accessor: 'conferenceQuestionContents', width: 250},
-            { Header: '미팅명', accessor: 'conferenceTitle', width: 180},
-            { Header: '그룹명', accessor: 'groupName', width: 140},
-            { Header: '질문 일자', accessor: 'conferenceQuestionDate', width: 220},
+            { Header: '질문 내용', accessor: 'conferenceQuestionContents', width: 260},
+            { Header: '미팅명', accessor: 'conferenceTitle', width: 190},
+            { Header: '그룹명', accessor: 'groupName', width: 180},
+            { Header: '질문 일자', accessor: 'conferenceQuestionDate', width: 200},
         ], []
     );
 

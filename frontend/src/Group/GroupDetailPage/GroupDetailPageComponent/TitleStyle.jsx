@@ -5,7 +5,7 @@ const TitleStyle = ({TitleContent}) => {
         <div>
         <TitleBox>
             <div>
-                Title: {TitleContent}
+                {TitleContent}
             </div>
         </TitleBox>
         </div>

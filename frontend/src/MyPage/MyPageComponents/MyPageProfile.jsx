@@ -62,7 +62,7 @@ const ProfileCard = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 20px;
   height: 170px;
 `;
@@ -70,13 +70,14 @@ const ProfileCard = styled.div`
 const ProfileImage = styled.img`
   width: 150px;
   height: 150px;
-  border-right: 1px solid black;
+  /* border-right: 1px solid black; */
   padding-left: 10px;
   padding-right: 10px;
 `;
 
 const ProfileInformation = styled.div`
   width: 75%;
+  align-items: center;
 `;
 
 const TitleStyle = styled.div`
@@ -88,6 +89,8 @@ const TitleStyle = styled.div`
     display: flex;
     font-size: 2em;
     margin-right: 5px;
+    font-family: "yanoljaBold";
+  /* src: url("./Font/yanoljaBold.ttf") */
   };
   .nickname {
     display: flex;
@@ -105,4 +108,9 @@ const TitleStyle = styled.div`
     text-decoration: none;
   }
 }
+`;
+
+const fontFace = styled.div`
+  font-family: "yanoljaBold";
+  src: url("./Font/yanoljaBold.ttf")
 `;
