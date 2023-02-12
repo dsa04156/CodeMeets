@@ -1,14 +1,3 @@
-// {
-//   "dbFilename": "string",
-//   "groupNoticeContents": "string",
-//   "groupNoticeTitle": "string",
-//   "groupPk": 0,           
-//   "originFilename": "string",
-//   "total": 0,
-//   "userName": "string",  -> loginUser.userName
-//   "userPk": 0  -> loginUser.usePk
-// }
-
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";

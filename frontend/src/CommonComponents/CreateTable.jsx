@@ -94,7 +94,7 @@ const Styles = styled.div`
   padding-top: 0px;
   table {
     border-spacing: 0;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     font-size: 5em;
     tr {
       :last-child {
@@ -108,7 +108,7 @@ const Styles = styled.div`
       margin: 0;
       padding: 0.5rem;
       border-bottom: 1px solid black;
-      border-right: 1px solid black;
+      /* border-right: 1px solid black; */
       :last-child {
         border-right: 0;
       }

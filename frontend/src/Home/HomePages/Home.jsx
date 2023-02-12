@@ -25,6 +25,7 @@ const Home = () => {
           onClick={onClickButton1}
           size="80"
           style={{ cursor: "pointer" }}
+          color="rgb(142,195,176)"
         ></IoEnterOutline>
         {isOpen1 && (
           <MeetingInModal
@@ -39,6 +40,7 @@ const Home = () => {
           onClick={onClickButton2}
           size="80"
           style={{ cursor: "pointer" }}
+          color="rgb(142,195,176)"
         ></AiOutlinePlusCircle>
         {isOpen2 && (
           <MeetingPlusModal
@@ -68,7 +70,7 @@ const PositionIcon = styled.div`
 `;
 
 const HomeMeetDiv = styled.div`
-  border: 1px solid black;
+  /* border: 1px solid black; */
   padding: 10px;
   height: 350px;
 `;

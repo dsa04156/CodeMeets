@@ -22,7 +22,7 @@ const MainFrame = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   h1 {
     text-align: center;
     align-items: top;
@@ -38,12 +38,12 @@ const ChangeFrame = styled.div`
   width: 30rem;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   height: 38rem;
 `;
 
 const ImageFrame = styled.div`
   width: 30rem;
-  border: 1px solid black;
+  /* border: 1px solid black; */
   height: 38rem;
 `;

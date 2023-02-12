@@ -57,8 +57,6 @@ function App() {
   };
 
   return (
-    <div>
-      
     <RecoilRoot>
       <Center>
         <SideArea>
@@ -79,7 +77,9 @@ function App() {
                 onClick={LogoHandler}
                 style={{ cursor: "pointer" }}
               />
+              <fontFace>  
               CODEMeets
+              </fontFace>
             </div>
             <div style={{display:"flex", alignContent:"center"}}>
               <AlarmButton />
@@ -116,7 +116,7 @@ function App() {
               <Route path="/group/notice/:notice_pk" element={<GroupNoticeDetail />}></Route>
               <Route path="/group/qna/:qna_pk" element={<GroupQnADetail />}></Route>
               <Route path="/my-meeting-record/:conference_Pk" element={<MeetingListDetail />}></Route>
-              <Route path="/my-question-record/:conference_Pk" element={<QuestionListDetail />}></Route>
+              <Route path="/my-question-record/:conferenceQuestionPk" element={<QuestionListDetail />}></Route>
 
               {/* 수정 페이지*/}
               <Route path="/group/notice/modify" element={<GroupNoticeModify />}></Route>
@@ -144,7 +144,6 @@ function App() {
         </MainArea>
       </Center>
     </RecoilRoot>
-    </div>
   );
 }
 
@@ -160,9 +159,14 @@ const SideArea = styled.div`
   padding-top: 2rem;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
-  background: rgb(22,28,68);
-  
-
+  /* background: rgb(245,235,224);
+background: linear-gradient(149deg, rgba(245,235,224,1) 100%, rgba(238,227,203,1) 100%, rgba(9,182,134,1) 100%); */
+background: rgb(142,195,176);
+background: linear-gradient(149deg, rgba(142,195,176,0.5887605042016807) 100%, rgba(240,219,219,0.8828781512605042) 100%);
+/* background: rgb(150,126,118);
+background: linear-gradient(149deg, rgba(150,126,118,0.5439425770308124) 100%, rgba(222,245,229,0.28904061624649857) 100%); */
+/* background: rgb(190,229,255);
+background: linear-gradient(149deg, rgba(190,229,255,1) 100%, rgba(37,109,133,1) 100%); */
 `;
 
 const MainArea = styled.div`
@@ -173,9 +177,15 @@ const MainArea = styled.div`
   padding: 1rem;
   padding-top: 0px;
   padding-left: 0px;
-  background: rgb(22,28,68);
-background: linear-gradient(149deg, rgba(22,28,68,1) 39%, rgba(52,60,117,1) 67%, rgba(188,194,236,1) 100%);
-
+  /* background: rgb(254,252,243);
+background: linear-gradient(149deg, rgba(254,252,243,1) 100%, rgba(238,227,203,1) 100%, rgba(9,182,134,1) 100%); */
+/* background: rgb(158,213,197);
+background: linear-gradient(149deg, rgba(158,213,197,0.4823179271708683) 100%, rgba(240,219,219,0.8828781512605042) 100%); */
+/* background: rgb(215,192,174);
+background: linear-gradient(149deg, rgba(215,192,174,0.41789215686274506) 100%, rgba(222,245,229,0.28904061624649857) 100%); */
+/* background: rgb(190,229,255);
+background: linear-gradient(149deg, rgba(190,229,255,1) 100%, rgba(37,109,133,1) 100%); */
+background: rgb(247,247,247);
 `;
 
 const LogoImgae = styled.img`
@@ -193,8 +203,8 @@ const MainHeader = styled.div`
   justify-content: space-between;
 `;
 
-const IndexBack = styled.div`
-
+const fontFace = styled.div`
+  font-family: "yanoljaBold";
+  src: url("./Font/yanoljaBold.ttf")
 `;
-
 //   overflow: scroll; 넘어가는 부분은 스크롤로 표현!
