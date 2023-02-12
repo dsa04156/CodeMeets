@@ -153,4 +153,16 @@
 		]]>
 		
 	</select>
+	
+	<select id="getGroupPk" resultType="int">
+		<![CDATA[
+			select
+			group_pk
+			from
+			conference
+			where 
+			conference_pk=#{conferencePk}
+		]]>
+		
+	</select>
 </mapper>

@@ -34,4 +34,6 @@ public interface ConferenceDao {
 	public List<String> participantsConference(int conferencePk) throws SQLException;
 
 	public List<ConferenceDto> listConference(int userPk, int i, int items, String order) throws SQLException;
+
+	public int getGroupPk(int conferencePk) throws SQLException;
 }

@@ -87,5 +87,10 @@ public class ConferenceServiceImpl implements ConferenceService {
 		return sqlSession.getMapper(ConferenceDao.class).listConference(userPk,i,items,order);
 	}
 
+	@Override
+	public int getGroupPk(int conferencePk) throws SQLException{
+		return sqlSession.getMapper(ConferenceDao.class).getGroupPk(conferencePk);
+	}
+
 
 }
