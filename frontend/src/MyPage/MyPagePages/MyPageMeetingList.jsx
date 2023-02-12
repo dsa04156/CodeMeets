@@ -26,7 +26,7 @@ const MyPageMeetingList = () => {
       { Header: '번호', accessor: 'conferencePk', width: 90 },
       { Header: '미팅명', accessor: 'conferenceTitle', width: 400 },
       { Header: '그룹명', accessor: 'groupName', width: 200 },
-      { Header: '최근 활동', accessor: 'callStartTime', width: 200 },
+      { Header: '최근 기록', accessor: 'callStartTime', width: 200 },
     ],
     []
   );

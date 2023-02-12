@@ -477,7 +477,7 @@ const FormStyle = styled.div`
   height: 33rem;
   width: 25rem;
   padding-bottom: 30px;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 const LastCheckBox = styled.div`

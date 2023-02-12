@@ -14,6 +14,7 @@ import Logo from "../../Images/Logo.png"
 import LogoSwing from "../../Images/LogoSwing.gif"
 import Ssafy from "../../Images/ssafy.png"
 import csszzal from "../../Images/csszzal.gif"
+import JJal1 from "../../Images/JJal1.gif"
 
 const SideSwiper = () => {
   return (
@@ -25,24 +26,25 @@ const SideSwiper = () => {
           delay: 2500,
           disableOnInteraction: false,
         }}
-        pagination={{
-          clickable: true,
-        }}
-        navigation={true}
+        // pagination={{
+        //   clickable: true,
+        // }}
+        // navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
 
         style={{width:"100%", height:"100%"}}
       >
-        <SwiperSlide><ImageStyle src={Logo} /></SwiperSlide>
+        {/* <SwiperSlide><ImageStyle src={Logo} /></SwiperSlide> */}
         <SwiperSlide><ImageStyle src={LogoSwing} /></SwiperSlide>
-        <SwiperSlide><ImageStyle src={Ssafy} /></SwiperSlide>
-        <SwiperSlide><ImageStyle src={csszzal} /></SwiperSlide>
-        <SwiperSlide><ImageStyle src={Logo} /></SwiperSlide>
-        <SwiperSlide><ImageStyle src={LogoSwing} /></SwiperSlide>
-        <SwiperSlide><ImageStyle src={Ssafy} /></SwiperSlide>
-        <SwiperSlide><ImageStyle src={LogoSwing} /></SwiperSlide>
-        <SwiperSlide><ImageStyle src={csszzal} /></SwiperSlide>
+        {/* <SwiperSlide><ImageStyle src={JJal1} /></SwiperSlide> */}
+        {/* <SwiperSlide><ImageStyle src={Ssafy} /></SwiperSlide> */}
+        {/* <SwiperSlide><ImageStyle src={csszzal} /></SwiperSlide> */}
+        {/* <SwiperSlide><ImageStyle src={Logo} /></SwiperSlide> */}
+        {/* <SwiperSlide><ImageStyle src={LogoSwing} /></SwiperSlide> */}
+        {/* <SwiperSlide><ImageStyle src={Ssafy} /></SwiperSlide> */}
+        {/* <SwiperSlide><ImageStyle src={LogoSwing} /></SwiperSlide> */}
+        {/* <SwiperSlide><ImageStyle src={csszzal} /></SwiperSlide> */}
 
       </Swiper>
     </>

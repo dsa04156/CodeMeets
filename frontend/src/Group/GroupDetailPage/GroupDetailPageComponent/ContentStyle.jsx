@@ -11,9 +11,11 @@ const ContentStyle = ({ Content}) => {
 export default ContentStyle;
 
 const ContentBox = styled.div`
-  border: 1px solid black;
+  border-top: 1px solid black;
+  padding-top: 3vh;
   margin: 2vh;
   height: 60vh;
+  overflow-y: auto;
 `;
 const HitBox = styled.div`
   display: flex;

@@ -117,15 +117,15 @@ const GroupList = () => {
   return (
     <div>
       <TitleStyle>
-        <div className="name">"{loginUser.userName}"</div>
-        <div className="wellcome">님의 Group List</div>
-        {/* modal 부분 */}
-        {/* <div className="button">
-          <button onClick={groupInHandler}>Create</button>
-        </div> */}
-        <div className="button">
-          <CreateButton onClick={createGroupHandler}>Create</CreateButton>
+        <div className="sum">
+          <div className="name">"{loginUser.userName}"</div>
+          <div className="wellcome">님의 Group List</div>
         </div>
+        {/* modal 부분 */}
+        <div className="position">
+        <SubButtonStyle>
+          <button className="custom-btn btn-4" onClick={createGroupHandler}>Create</button>
+        </SubButtonStyle>
         {createModalIsOpen && (
           // 연결된 모달 component
           <CreateGroupModal
@@ -136,9 +136,11 @@ const GroupList = () => {
             CreateURL = {createGroupUrl}
           />
           )}
-        <div className="button">
-          <button onClick={groupInHandler}>Join</button>
         </div>
+        <div>
+        <SubButtonStyle>
+          <button className="custom-btn btn-4" onClick={groupInHandler}>Join</button>
+        </SubButtonStyle>
         {joinModalIsOpen && (
           // 연결된 모달 component
           <GroupInModal
@@ -148,6 +150,7 @@ const GroupList = () => {
             }}
           />
         )}
+        </div>
       </TitleStyle>
       <ContentBox>
         <Styles>
@@ -169,12 +172,13 @@ export default GroupList;
 const TitleStyle = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   padding: 1vh;
   margin-bottom: 2vh;
   height: 7vh;
-  box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2);
+  /* box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2); */
   border-radius: 20px;
-  background-color: white;
+  /* background-color: white; */
   .name {
     display: flex;
     align-items: center;
@@ -186,26 +190,35 @@ const TitleStyle = styled.div`
     align-items: end;
     font-size: 1em;
   }
+  .sum {
+    display: flex;
+  }
   .button {
     margin: 15px 0px 0px 20px;
   }
-  border: 1px solid black;
+  .position {
+    float: right;
+    margin-left: auto;
+  }
+  /* border: 1px solid black; */
 `;
 
 const ContentBox = styled.div`
-  border: 1px solid black;
-  box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2);
-  border-radius: 20px;
+  border-top: 1px solid black;
+  /* box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2); */
+  border-radius: 5px;
   height: 68vh;
   padding-left: 5vh;
-  background-color: white;
+  /* background-color: #FAECD6; */
+  background: rgb(239,245,245);
+background: linear-gradient(149deg, rgba(239,245,245,1) 100%, rgba(239,245,245,0.41228991596638653) 100%);
 `;
 
 const Styles = styled.div`
   padding: 1rem;
   table {
     border-spacing: 0;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     tr {
       :last-child {
         td {
@@ -217,8 +230,8 @@ const Styles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
+      /* border-bottom: 1px solid black; */
+      /* border-right: 1px solid black; */
       :last-child {
         border-right: 0;
       }
@@ -232,4 +245,94 @@ const CreateButton = styled.button`
 
 const JoinButton = styled.button`
   margin-left: 50px;
+`;
+
+const SubButtonStyle = styled.div`
+  .custom-btn {
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    float: right;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+  .btn-4 {
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-4:hover {
+    background-color: #89d8d3;
+    background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+  }
+  .btn-4 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .btn-4:before,
+  .btn-4:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4:before {
+    height: 0%;
+    width: 0.1px;
+  }
+  .btn-4:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4:hover:before {
+    height: 100%;
+  }
+  .btn-4:hover:after {
+    width: 100%;
+  }
+  .btn-4 span:before,
+  .btn-4 span:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4 span:before {
+    width: 0.1px;
+    height: 0%;
+  }
+  .btn-4 span:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4 span:hover:before {
+    height: 100%;
+  }
+  .btn-4 span:hover:after {
+    width: 100%;
+  }
 `;
