@@ -89,7 +89,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 			logger.info("saveRefreshToken error - " + e);
 		}
 
-        targetUrl = UriComponentsBuilder.fromUriString(frontUrl + "codemeets/login")
+        targetUrl = UriComponentsBuilder.fromUriString(frontUrl)
 //        targetUrl = UriComponentsBuilder.fromUriString("/api/login/oauth2/success")
                 .queryParam("accessToken", newAccessToken)
                 .queryParam("refreshToken", newRefreshToken)
