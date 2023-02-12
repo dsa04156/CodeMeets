@@ -122,7 +122,7 @@ public class ConferenceController {
 		}
 	}
 
-    
+    	
     @Operation(summary = "회의 생성",description = "회의 생성하기 " + "groupUrl만 작성하면됨")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")

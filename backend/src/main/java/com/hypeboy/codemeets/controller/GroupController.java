@@ -353,7 +353,10 @@ public class GroupController {
     	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")
     })
     @PostMapping("/conferencelist")
-    public ResponseEntity<?> conferenceList(HttpServletRequest request) throws Exception{
+    public ResponseEntity<?> conferenceList(HttpServletRequest request,
+    		@RequestParam("nowPage") int nowPage,
+			@RequestParam("items") int items,
+			@RequestParam("order") String order) throws Exception{
     	logger.info("회의 참가 API 호출");
     	int userPk=0;
     	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
@@ -366,7 +369,7 @@ public class GroupController {
     		logger.info("토큰 실패");
     	}
 		try {
-			List<ConferenceDto> list = conferenceService.listConference(userPk);
+			List<ConferenceDto> list = conferenceService.listConference(userPk,(nowPage - 1) * items, items, order);
 			
 			
 			return new ResponseEntity<List>(list,HttpStatus.OK);

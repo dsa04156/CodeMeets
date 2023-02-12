@@ -30,6 +30,6 @@ public interface ConferenceService {
 
 	List<String> participantsConference(int conferencePk) throws SQLException;
 
-	List<ConferenceDto> listConference(int userPk) throws SQLException;
+	List<ConferenceDto> listConference(int userPk, int i, int items, String order) throws SQLException;
 
 }
