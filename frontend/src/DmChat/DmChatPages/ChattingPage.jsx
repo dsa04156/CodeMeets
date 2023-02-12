@@ -1,11 +1,15 @@
 import styled from "styled-components";
+import DefaultImage from "../../Images/Logo.png"
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
+// import io from "socket.io-client";
 
 import { useRecoilValue } from "recoil";
 import { APIroot } from "../../Store";
 import { user } from "../../Store";
+
+// const socket = io.connect("http://localhost:18081/api/message/chatt");
 
 const ChattingPage = (props) => {
     const API = useRecoilValue(APIroot);
@@ -14,13 +18,38 @@ const ChattingPage = (props) => {
 
     const [room, setRoom] = useState([]);
     const [message, setMessage] = useState('');
+    const [myProfileImage, setMyProfileImage] = useState("");
+    const [other, setOther] = useState("");
+    // const ws = new WebSocket(`ws://localhost:18081/api/chating/${props.room}`);
+    const ws = new WebSocket(`ws://localhost:18081/api/ws/chat`);
+    // const [ws, setWs] = useState("");
 
     useEffect(() => {
-        // console.log(USER);
+        setOther(props.other);
         getMessage();
-        console.log("scroll down");
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;   
+        
+        if(USER.profilePhoto === ""){
+            setMyProfileImage(DefaultImage)
+        }else{
+            setMyProfileImage(`${API}/file/images/${USER.profilePhoto}`)
+        }
+
+        // setWs(new WebSocket("ws://localhost:18081/api/message/chatt"));
+
+        
     }, [API]);
+    
+    useEffect(() => {
+        ws.onmessage = (readMsg) => {
+            const dataSet = JSON.parse(readMsg.data);
+            console.log("dataSet - " + dataSet);
+            // setRoom(dataSet);
+            setRoom([...room, dataSet]);
+        }
+        
+        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;   
+    }, [room])
+
 
     const getMessage = async () => {
         await axios({
@@ -37,10 +66,19 @@ const ChattingPage = (props) => {
     }
 
     const chatUlList = room.map((roomItem, index) => {
+        // console.log(roomItem)
         return (
                 roomItem.recvPk !== USER.userPk
-                ? <RightChat> {roomItem.content} </RightChat>
-                : <LeftChat> {roomItem.content} </LeftChat>
+                ?
+                <RightChat>
+                        <ProfileStyle src={`${myProfileImage}`} /> <br/>
+                        <MessageStyle> {roomItem.content} </MessageStyle>
+                </RightChat>
+                :
+                <LeftChat>
+                    <ProfileStyle src={`${API}/file/images/${roomItem.profilePhoto}`} /> <br/>
+                    <MessageStyle> {roomItem.content} </MessageStyle>
+                </LeftChat>
         );
     });
     
@@ -51,17 +89,37 @@ const ChattingPage = (props) => {
     const handleClick = () => {
         const otherPk = room[0].recvPk !== USER.userPk ? room[0].recvPk : room[0].sendPk;
 
-        axios({
-            method: "POST",
-            url: `http://localhost:18081/api/message/send?room=${props.room}&otherPk=${otherPk}&content=${message}`,
-            headers: {
-                "Content-Type": "application/json",
-                AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
-            },
-            }).then((response) => {
-                getMessage();
-            });
+        // axios({
+        //     method: "POST",
+        //     url: `http://localhost:18081/api/message/send?room=${props.room}&otherPk=${otherPk}&content=` + encodeURI(message),
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+        //     },
+        //     }).then((response) => {
+        //         // getMessage();
+        //         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;   
+        //     });
+        
+        send();
         setMessage('');
+    }
+
+    const send = () => {
+        let data = {};
+
+        if (message != "") {
+            data.id = USER.userPk;
+            data.content = message;
+            data.profilePhoto = USER.profilePhoto;
+            // data.date = new Date().toLocaleString();
+            data.sendPk = USER.userPk;
+            data.recvPk = other;
+            var temp = JSON.stringify(data);
+            console.log("send " + temp);
+            ws.send(temp);
+        }
+        console.log(ws);
     }
     
     return (
@@ -70,17 +128,38 @@ const ChattingPage = (props) => {
                 {chatUlList}     
             </ChattingList>
             <SendMessage>
-                <InputMessage>
-                    <input
+                {/* <Inlabel htmlFor="msg">
+                    </Inlabel> */}
+                {/* <InputMessage
+                    id="msg"
+                    style={{ border: 'solid 2px grey', width: '85%', height: '100%', alignItems: 'top'}}
                     type="text"
                     name="message"
                     placeholder="보낼 메시지 입력"                    
                     value={message}
                     onChange={handleChange}
-                    />
-                </InputMessage>
-                <SendButton>
-                    <button onClick={handleClick}>확인</button>
+                    onKeyPress={event => {
+                    if (event.code === "Enter") {
+                        event.preventDefault();
+                        handleClick();
+                        }
+                    }}
+                    /> */}
+                <textarea
+                    className="form-control"
+                    maxLength={400}
+                    autoFocus               
+                    value={message}
+                    onChange={handleChange}
+                    onKeyPress={event => {
+                        if (event.code === "Enter") {
+                            event.preventDefault();
+                            handleClick();
+                            }
+                        }}
+                />
+                <SendButton onClick={handleClick}>
+                    확인
                 </SendButton>
             </SendMessage>
         </ChatRoom>
@@ -99,7 +178,12 @@ const ChattingList = styled.div`
   width: 100%;
   height: 85%;
   overflow: scroll;
-  font-size: 24px;
+`;
+
+const ProfileStyle = styled.img`
+    height: 40px;
+    border-radius: 70%;
+    overflow: hidden;
 `;
 
 const LeftChat = styled.div`
@@ -114,6 +198,11 @@ const RightChat = styled.div`
     text-align: right;
 `;
 
+const MessageStyle = styled.div`
+    font-size: 20px;
+    padding: 0 15px 0 15px;
+`;
+
 const SendMessage = styled.div`
     width: 100%;
     height: 15%;
@@ -121,13 +210,27 @@ const SendMessage = styled.div`
     display: flex;
 `;
 
-const InputMessage = styled.div`
+const Inlabel = styled.label`
+    border-radius:4px;
+    display: inline-block;
+    // padding: 10px 10px;
+    color: #fff;
+    vertical-align: middle;
+    // background-color: #999999;
     width: 85%;
     height: 100%;
-    border: 1px solid black;
+    margin: 0 0 3px;
+    margin-left: 5px;
+`
+
+const InputMessage = styled.input`
+    border: none;
+    background: white;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
 `;
 
-const SendButton = styled.div`
+const SendButton = styled.button`
     width: 15%;
     height: 100%;
     border: 1px solid black;

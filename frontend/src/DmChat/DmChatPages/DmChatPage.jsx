@@ -12,10 +12,12 @@ import { user } from "../../Store";
 
 const DmChatPage = () => {
   const API = useRecoilValue(APIroot);
+  const USER = useRecoilValue(user);
   // const loginUser = useRecoilValue(user);
 
   const [userList, setUserList] = useState([]);
   const [selectRoom, setSelectRoom] = useState([]);
+  const [other, setOther] = useState([]);
 
   useEffect(() => {
     axios({
@@ -34,7 +36,8 @@ const DmChatPage = () => {
 
   const userUlList = userList.map((userItem, index) => {
     const getRoomDetail = () => {
-      setSelectRoom(userItem.room)
+      setSelectRoom(userItem.room);
+      setOther(userItem.otherPk);
     };
     
     return (
@@ -64,7 +67,9 @@ const DmChatPage = () => {
           selectRoom.length !== 0
             ? <ChattingPage
               key={selectRoom}
-              room={selectRoom} />
+              room={selectRoom}
+              other={other}
+            />
           : <h1>ChattingFrame</h1>
         }
       </ChattingFrame>
