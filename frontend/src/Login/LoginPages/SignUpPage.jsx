@@ -263,7 +263,7 @@ const SignUpPage = () => {
       })
         .then((response) => {
           console.log(response);
-          navigate("/codemeets/login");
+          navigate("/");
         })
         .catch((error) => {
           alert(error);
@@ -326,7 +326,7 @@ const SignUpPage = () => {
   };
 
   const JoinCancelHandler = () => {
-    navigate("/codemeets/login");
+    navigate("/");
   };
 
   return (
@@ -477,7 +477,7 @@ const FormStyle = styled.div`
   height: 33rem;
   width: 25rem;
   padding-bottom: 30px;
-  overflow: scroll;
+  overflow-y: scroll;
 `;
 
 const LastCheckBox = styled.div`

@@ -18,7 +18,7 @@ const FindIdPage = () => {
   const API = useRecoilValue(APIroot);
 
   const CancelHandler = () => {
-    navigate('/codemeets/login');
+    navigate('/');
   }
 
   const FindIdFromEmail = (event) => {
@@ -46,7 +46,7 @@ const FindIdPage = () => {
 
   const FindPasswordHandler = () => {
     if (AuthorizationSubmitCount === 1){  // 인증 해야만 비밀번호 찾기로 넘어가게 함.
-      navigate("/codemeets/findpassword");
+      navigate("/findpassword");
     } else {
       alert('인증 필수입니다.')
     }

@@ -30,6 +30,12 @@ const LoginPage = () => {
     setInputPw(event.target.value);
   };
 
+  const enterClickHandler = (event) => {
+    if (event.key === 'Enter'){
+      ToHomePageHandler();
+    }
+  };
+
   const ToHomePageHandler = async () => {
     await axios({
       method: "POST",
@@ -63,7 +69,7 @@ const LoginPage = () => {
       console.log(response.data.userInfo);
       const data = response.data.userInfo;
       setLogin(data);
-      navigate("/")
+      navigate("/home")
       console.log("리코일 데이터")
       console.log(recoilUser)
     });
@@ -104,7 +110,6 @@ const LoginPage = () => {
     // window.location.replace("/");
   }
 
-
   return (
     <div style={{ paddingBottom: "100px" }}>
       <h1>Login</h1>
@@ -124,17 +129,18 @@ const LoginPage = () => {
           type="text"
           name="input_pw"
           placeholder="PW"
+          onKeyPress={enterClickHandler}
           onChange={inputPwHandler}
         />
       </InputStyle>
-      <ButtonStyle>
-        <button onClick={ToHomePageHandler} style={{ width: "100%" }}>
+      <SubButtonStyle>
+        <button className='custom-btn btn-4' onClick={ToHomePageHandler} style={{ width: "100%" }}>
           Sign In
         </button>
-      </ButtonStyle>
-      <Link to="/codemeets/signup">회원가입</Link> |
-      <Link to="/codemeets/findid"> 아이디 찾기</Link> |
-      <Link to="/codemeets/findpassword"> 비밀번호 찾기</Link> |
+      </SubButtonStyle>
+      <Link to="/signup">회원가입</Link> |
+      <Link to="/findid"> 아이디 찾기</Link> |
+      <Link to="/findpassword"> 비밀번호 찾기</Link> |
       
       <SocialButton>
         <a href={googleLogInUrl}><img src={googleLogo} width="100"/></a>
@@ -155,18 +161,109 @@ const InputStyle = styled.div`
     margin: 8px;
   }
 `;
-const ButtonStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 8px;
-  margin-left: 0px;
-  margin-bottom: 60px;
-`;
+// const ButtonStyle = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   margin: 8px;
+//   margin-left: 0px;
+//   margin-bottom: 60px;
+// `;
 const SocialButton = styled.div`
   display: flex;
   justify-content: center;
   margin: 8px;
   margin-left: 0px;
-  margin-bottom: 60px;
+  margin-bottom: 0px;
   align-items: center;
+`;
+
+const SubButtonStyle = styled.div`
+  .custom-btn {
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    margin: 8px 0px 50px 0px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    float: right;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+  .btn-4 {
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-4:hover {
+    background-color: #89d8d3;
+    background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+  }
+  .btn-4 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .btn-4:before,
+  .btn-4:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4:before {
+    height: 0%;
+    width: 0.1px;
+  }
+  .btn-4:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4:hover:before {
+    height: 100%;
+  }
+  .btn-4:hover:after {
+    width: 100%;
+  }
+  .btn-4 span:before,
+  .btn-4 span:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4 span:before {
+    width: 0.1px;
+    height: 0%;
+  }
+  .btn-4 span:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4 span:hover:before {
+    height: 100%;
+  }
+  .btn-4 span:hover:after {
+    width: 100%;
+  }
 `;

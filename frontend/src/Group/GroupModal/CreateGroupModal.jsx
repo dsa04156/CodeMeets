@@ -57,7 +57,7 @@ const CreateGroupModal = ({onClose, CreateURL}) => {
           console.log(response.data);
           alert("그룹이 생성되었습니다.");
           onClose?.();
-          useLocation.reload();
+          window.location.reload();
         })
     }
 
@@ -86,7 +86,6 @@ const CreateGroupModal = ({onClose, CreateURL}) => {
             <button onClick={CancelHandler}>Cancel</button>
           </CreateCancelButtonStyle>
         </TitleStyle>
-
         </Modal>
     )
 }

@@ -5,13 +5,17 @@ import App from "./App";
 
 import { BrowserRouter } from "react-router-dom";
 
-import SidePadding from "./CommonComponents/SidePadding";
+// openvidu
+import registerServiceWorker from './registerServiceWorker';
+
+import reportWebVitals from "./reportWebVitals";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <SidePadding>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </SidePadding>
 );
+registerServiceWorker();
+reportWebVitals();
+

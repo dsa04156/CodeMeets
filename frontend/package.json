@@ -13,10 +13,14 @@
     "cors": "^2.8.5",
     "downshift": "^7.2.0",
     "form-data": "^4.0.0",
+    "html2canvas": "^1.4.1",
     "namor": "^2.0.4",
+    "openvidu-browser": "^2.25.0",
     "react": "^18.2.0",
+    "react-cropper": "^2.1.8",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
+    "react-native-really-awesome-button": "^2.0.4",
     "react-router-dom": "^6.6.2",
     "react-scripts": "5.0.1",
     "react-table": "^7.8.0",
@@ -51,5 +55,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy" : "https://282c769uda.apigw.ntruss.com/custom/v1/"
 }

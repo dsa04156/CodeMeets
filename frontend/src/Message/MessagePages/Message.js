@@ -1,6 +1,8 @@
+import styled from 'styled-components';
+
 const Message = () => {
   return (
-    <div>
+    <Test>
       <h1>Message</h1>
       aaa<br />
       aaa<br />
@@ -45,8 +47,13 @@ const Message = () => {
       aaa<br />
       aaa<br />
       aaa<br />
-    </div>
+    </Test>
   );
 };
 
 export default Message;
+
+const Test = styled.div`
+  overflow-y: auto;
+  height: 50vh;
+`;

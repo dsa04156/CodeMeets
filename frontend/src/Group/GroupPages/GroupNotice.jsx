@@ -13,26 +13,27 @@ import { useState } from "react";
 import axios from "axios";
 
 const GroupNotice = () => {
+  const params = useParams();
+  const navigate = useNavigate();
+
   const API = useRecoilValue(APIroot);
   const [recoilNavTitle, setRecoilNavTitle] = useRecoilState(groupNavTitle)
-  const params = useParams();
-
   const [noticeList, setNoticeList] = useState([]);
-
   // API의 order 부분 바꾸기위한 useState -> 일단 사용안함
   const [order, setOrder] = useState("group_notice_date");
-
   // 게시글의 총 개수를 알기 위한 useState
   const [totalPosts, setTotalPosts] = useState(0);
-
   // url의 page, pagination에 넘겨줌!
   const [page, setPage] = useRecoilState(pageNumber);
-
-  const navigate = useNavigate();
+  const [position, setPosition] = useState();
 
   const TableNavHandelr = (row) => {
     navigate(`/group/notice/${row.original.groupNoticePk}`);
   };
+
+  const CreateWriteHandler = () => {
+    navigate(`/group/${params.group_pk}/notice/create`)
+  }
 
   // API, params, order, page가 바뀌면 재 렌더링하는 useEffect
   useEffect(() => {
@@ -48,6 +49,22 @@ const GroupNotice = () => {
       setNoticeList(response.data);
     });
   }, [API, params, order, page]);
+
+  //멤버리스트 API 가져와 Position 값 알기
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `${API}/group/${params.group_pk}/member`,
+      headers: {
+        "Content-Type": "application/json",
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+      },
+    })
+    .then((response) => {
+      console.log(response.data);
+      setPosition(response.data.position);
+    })
+  }, [API, position]);
 
   //테이블
   const data = React.useMemo(() => noticeList, [noticeList]);
@@ -94,6 +111,9 @@ const GroupNotice = () => {
         page={page}
         setPage={setPage}
       ></Pagination>
+      <div>
+      {position === 1 ? <button onClick={CreateWriteHandler}>Create</button> : null}
+      </div>
     </div>
   );
 };
