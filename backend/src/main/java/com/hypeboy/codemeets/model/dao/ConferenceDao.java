@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.hypeboy.codemeets.model.dto.ConferenceDto;
+import com.hypeboy.codemeets.model.dto.ConferenceThreeDto;
 
 @Mapper
 public interface ConferenceDao {
@@ -16,7 +17,7 @@ public interface ConferenceDao {
 
 	public int joinConference(int conferencePk, int userPk) throws SQLException;
 
-	public List<String> clickCreate(int userPk) throws SQLException;
+	public List<ConferenceThreeDto> clickCreate(int userPk) throws SQLException;
 
 	public int checkUrl(String conferenceUrl) throws SQLException;
 

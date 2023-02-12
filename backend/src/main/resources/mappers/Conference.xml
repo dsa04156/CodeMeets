@@ -16,6 +16,13 @@
 		<result column="join_user" property="joinUser" />
 		<result column="join_user_cnt" property="joinUserCnt" />
 	</resultMap>
+	
+		<resultMap type="ConferenceThreeDto" id="conferenceThreeDto">
+		<result column="group_name" property="groupName"/>
+		<result column="conference_url" property="conferenceUrl" />
+		<result column="group_pk" property="groupPk" />
+	</resultMap>
+	
 
 	<!-- ==================== 회의 상세 페이지 조회 ======================================== -->
 
@@ -71,16 +78,14 @@
 	]]>
 	</insert>
 	
-	<select id="clickCreate" resultType="String">
+	<select id="clickCreate" resultMap="conferenceThreeDto" parameterType="int">
 		<![CDATA[
 		select 
-		`group`.group_name 
+		a.group_name, a.group_pk,b.conference_url 
 		from 
-		`group` inner join `group-user` 
-		on 
-		`group`.group_pk=`group-user`.group_pk
-		 where
-		  `group-user`.user_pk = #{userPk};
+		`group` as a, `conference` as b, `group-user` as c
+        where
+         c.group_pk=b.group_pk and a.group_pk=b.group_pk and c.user_pk=#{userPk};
 	 ]]>
 	</select>
 	

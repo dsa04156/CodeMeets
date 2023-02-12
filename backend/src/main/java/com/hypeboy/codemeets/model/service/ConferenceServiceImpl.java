@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.ConferenceDao;
 import com.hypeboy.codemeets.model.dto.ConferenceDto;
+import com.hypeboy.codemeets.model.dto.ConferenceThreeDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +43,7 @@ public class ConferenceServiceImpl implements ConferenceService {
 	}
 	
 	@Override
-	public List<String> clickCreate(int userPk) throws Exception {
+	public List<ConferenceThreeDto> clickCreate(int userPk) throws Exception {
 		return sqlSession.getMapper(ConferenceDao.class).clickCreate(userPk);
 	}
 
