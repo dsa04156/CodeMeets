@@ -121,7 +121,7 @@ public class ConferenceController {
 	}
 
     
-    @Operation(summary = "회의 생성",description = "회의 생성하기 ")
+    @Operation(summary = "회의 생성",description = "회의 생성하기 " + "groupUrl만 작성하면됨")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")
     })
@@ -144,8 +144,9 @@ public class ConferenceController {
     			int conferencePk = conferenceDto.getConferencePk();
     			conferenceService.joinConference(conferencePk, userPk);
     			conferenceService.joinManager(conferencePk,userPk);
+    			System.out.println(conferencePk);
     			logger.info("회의 생성 성공");
-    			return new ResponseEntity<String>(SUCCESS,HttpStatus.OK);
+    			return new ResponseEntity<ConferenceDto>(conferenceDto,HttpStatus.OK);
     		}catch (Exception e) {
     			logger.info("회의 실패");
     			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
