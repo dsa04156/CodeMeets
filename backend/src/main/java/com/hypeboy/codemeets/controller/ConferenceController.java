@@ -112,8 +112,9 @@ public class ConferenceController {
 			myGroup = conferenceService.clickCreate(userPk);
 			
 			logger.info( myGroup.toString() );
+				resultMap.put("list",myGroup);
 			
-    		return new ResponseEntity<List>(myGroup, HttpStatus.OK);
+    		return new ResponseEntity<Map<String,Object>>(resultMap, HttpStatus.OK);
     	}catch (Exception e) {
     		logger.info("clickCreate error - " + e);
     		
