@@ -81,12 +81,10 @@ const LoginPage = () => {
         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..
       },
     }).then((response) => {
-      console.log(response.data.userInfo);
+      // console.log(response.data.userInfo);
       const data = response.data.userInfo;
       setLogin(data);
-      navigate("/")
-      console.log("리코일 데이터")
-      console.log(recoilUser)
+      navigate("/home")
     });
   };
 
@@ -100,8 +98,6 @@ const LoginPage = () => {
 
   if (accessToken) {
     SocialToHomePageHandler();
-    // navigate("/");
-    // window.location.replace("/");
   }
 
 
