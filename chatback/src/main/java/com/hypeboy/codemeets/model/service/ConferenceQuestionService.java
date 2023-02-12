@@ -20,4 +20,5 @@ public interface ConferenceQuestionService {
 	int likeConferenceQuestion(ConferenceQuestionDto conferenceQuestionDto) throws Exception;
 
 	List<ConferenceQuestionDto> pageList(int conferencePk, int userPk, int nowPage, int items) throws Exception;
+	
 }

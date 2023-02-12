@@ -33,6 +33,16 @@
 		]]>
 		
 	</select>
+	
+	<insert id="createRoom" parameterType="messageDto">
+		<![CDATA[
+			INSERT INTO 
+			message(room,send_pk,recv_pk,send_time,read_chk,user_pk) 
+			VALUES 
+			(#{room},#{sendPk},#{recvPk},now(),0,#{userPk});
+		]]>
+		
+	</insert>
 	<select id="messageList" resultMap="messageDto" parameterType="messageDto">
 		<![CDATA[
 		select 

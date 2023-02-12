@@ -75,6 +75,10 @@ private final Logger logger = LoggerFactory.getLogger(UserController.class);
 		return dao.sendMessage(messageDto);
 	}
 
+	public int createRoom(MessageDto messageDto) throws Exception {
+		return dao.createRoom(messageDto);
+	}
+
 
 
 

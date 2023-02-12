@@ -14,11 +14,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hypeboy.codemeets.model.dto.ChatRoom;
 import com.hypeboy.codemeets.model.dto.MessageDto;
 import com.hypeboy.codemeets.model.service.GroupServiceImpl;
 import com.hypeboy.codemeets.model.service.MessageService;
@@ -32,8 +34,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-@Controller
-@RequestMapping("/api/message")
+@RestController
+@RequestMapping("/chat")
 @Api(tags = "채팅")
 public class MessageController {
 	private final Logger logger = LoggerFactory.getLogger(GroupController.class);
@@ -51,11 +53,11 @@ public class MessageController {
 	@Autowired
 	private MessageServiceImpl messageService;
 	
-	@Operation(summary = "메세지 목록", description = "메세지 목록 API ")
+	@Operation(summary = "채팅방 목록", description = "메세지 목록 API ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
-	@GetMapping(value = "/list")
+	@GetMapping(value = "/room")
 	public ResponseEntity<?> listMessage(HttpServletRequest request) throws Exception {
 		int userPk=0;
 		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
@@ -97,12 +99,12 @@ public class MessageController {
 		
 	}
 	
-	@Operation(summary = "방별 메세지 목록", description = "방별 메세지 목록 API ")
+	@Operation(summary = "채팅방 입장", description = "채팅방 입장 API ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
-	@GetMapping("/messagecontentlist")
-	public ResponseEntity<?> messageContentList(HttpServletRequest request,@RequestParam int room) {
+	@GetMapping("/room/{room}")
+	public ResponseEntity<?> messageContentList(HttpServletRequest request,@PathVariable int room) {
 		int userPk=0;
 		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
@@ -136,13 +138,12 @@ public class MessageController {
 		}
 	}
 	
-	
-	@Operation(summary = "메세지리스트에서 메세지 보내기", description = "메세지보내기 API ")
+	@Operation(summary = "채팅방생성", description = "채팅방 생성 API ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
-	@PostMapping("/send")
-	public ResponseEntity<?> sendMessage(HttpServletRequest request,@RequestParam(defaultValue = "0", required = false) int room,@RequestParam int otherPk, @RequestParam String content) {
+	@PostMapping("/room")
+	public ResponseEntity<?> createRoom(HttpServletRequest request,@RequestParam int recvPk) {
 		int userPk=0;
 		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
@@ -152,40 +153,78 @@ public class MessageController {
     	else {
     		logger.info("토큰 실패");
     	}
-		
+		String nick;
 		try {
-			String nick = messageService.getNickName(userPk);
-		
+			nick = messageService.getNickName(userPk);
 			MessageDto messageDto = new MessageDto();
-			messageDto.setRoom(room);
 			messageDto.setNick(nick);
 			messageDto.setSendNick(nick);
 			messageDto.setSendPk(userPk);
-			messageDto.setOtherPk(otherPk);
-			messageDto.setContent(content);
-			messageDto.setRecvPk(otherPk);
-			messageDto.setRecvNick(messageService.getNickName(otherPk));
-			messageDto.setOther_nick(messageService.getNickName(otherPk));
-			
-			if(messageDto.getRoom()==0) {
-				int exist_chat = messageService.existChat(messageDto);
-				System.out.println(exist_chat);
-				if(exist_chat==0) {
-					int max_room = messageService.maxRoom(messageDto);
-					messageDto.setRoom(max_room+1);
-				}else {
-					room = Integer.parseInt(messageService.selectRoom(messageDto));
-					messageDto.setRoom(room);
-				}
-			}
-			int flag = messageService.sendMessage(messageDto);
-			System.out.println(flag);
-			System.out.println();
-			return new ResponseEntity<Integer>(flag, HttpStatus.OK);
-			} catch (Exception e) {
-				System.out.println(e);
-				return new ResponseEntity<String>(FAIL,HttpStatus.BAD_REQUEST);
-			}
+			messageDto.setOtherPk(recvPk);
+			messageDto.setRecvPk(recvPk);
+			String recvNick = messageService.getNickName(recvPk);
+			messageDto.setRecvNick(recvNick);
+			ChatRoom chatROOM = ChatRoom.create(recvNick);
+			messageDto.setRoom(chatROOM.getRoom());
+			messageService.createRoom(messageDto);
+			return new ResponseEntity<MessageDto>(messageDto, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e);
+			return new ResponseEntity<String>(FAIL,HttpStatus.BAD_REQUEST);
+		}
+		
 	}
+	
+	
+//	@Operation(summary = "메세지리스트에서 메세지 보내기", description = "메세지보내기 API ")
+//    @ApiImplicitParams({
+//        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
+//    })
+//	@MessageMapping("send")
+//	public ResponseEntity<?> sendMessage(HttpServletRequest request,@RequestParam(defaultValue = "0", required = false) int room,@RequestParam int otherPk, @RequestParam String content) {
+//		int userPk=0;
+//		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
+//			logger.info("사용가능한 토큰입니다");
+//			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
+//			logger.info("userPk - " + userPk);
+//    	}
+//    	else {
+//    		logger.info("토큰 실패");
+//    	}
+//		
+//		try {
+//			String nick = messageService.getNickName(userPk);
+//		
+//			MessageDto messageDto = new MessageDto();
+//			messageDto.setRoom(room);
+//			messageDto.setNick(nick);
+//			messageDto.setSendNick(nick);
+//			messageDto.setSendPk(userPk);
+//			messageDto.setOtherPk(otherPk);
+//			messageDto.setContent(content);
+//			messageDto.setRecvPk(otherPk);
+//			messageDto.setRecvNick(messageService.getNickName(otherPk));
+//			messageDto.setOther_nick(messageService.getNickName(otherPk));
+//			
+//			if(messageDto.getRoom()==0) {
+//				int exist_chat = messageService.existChat(messageDto);
+//				System.out.println(exist_chat);
+//				if(exist_chat==0) {
+//					int max_room = messageService.maxRoom(messageDto);
+//					messageDto.setRoom(max_room+1);
+//				}else {
+//					room = Integer.parseInt(messageService.selectRoom(messageDto));
+//					messageDto.setRoom(room);
+//				}
+//			}
+//			int flag = messageService.sendMessage(messageDto);
+//			System.out.println(flag);
+//			System.out.println();
+//			return new ResponseEntity<Integer>(flag, HttpStatus.OK);
+//			} catch (Exception e) {
+//				System.out.println(e);
+//				return new ResponseEntity<String>(FAIL,HttpStatus.BAD_REQUEST);
+//			}
+//	}
 	
 }

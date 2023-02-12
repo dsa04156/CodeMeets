@@ -30,4 +30,6 @@ public interface MessageDao {
 
 	int sendMessage(MessageDto messageDto) throws SQLException;
 
+	int createRoom(MessageDto messageDto) throws SQLException;
+
 }

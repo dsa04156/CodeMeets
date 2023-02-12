@@ -57,7 +57,7 @@ public class ConferenceQuestionController {
 	@Operation(summary = "회의 내 질문", description = "질문 만들기 API "
     		+ " conferencePk, groupPk, content, userPk 입력해주시면 됩니다")
 	@PostMapping
-	public ResponseEntity<String> writeConferenceQna(@ApiParam(value = "conferenceQna 작성.", required = true)@RequestBody ConferenceQuestionDto conferenceQuestionDto) throws Exception {
+	public ResponseEntity<String> writeConferenceQna(@ApiParam(value = "conferenceQna 작성.", required = true)@RequestBody ConferenceQuestionDto conferenceQuestionDto,@RequestParam int groupPk) throws Exception {
 		
 		Logger.info("writeConferenceQna - 호출");
 		try {

@@ -12,6 +12,10 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class MessageDto {
+    public enum MessageType {
+        ENTER, TALK
+    }
+    private MessageType type;
 	private int messagePk;
 	private int room;
 	private int sendPk;
