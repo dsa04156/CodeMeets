@@ -1,11 +1,9 @@
 package com.hypeboy.codemeets.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dto.MessageDto;
-import com.hypeboy.codemeets.model.service.GroupServiceImpl;
-import com.hypeboy.codemeets.model.service.MessageService;
+import com.hypeboy.codemeets.model.dto.UserDto;
 import com.hypeboy.codemeets.model.service.MessageServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
 
@@ -29,8 +25,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @Controller
 @RequestMapping("/api/message")
@@ -189,6 +183,80 @@ public class MessageController {
 				System.out.println(e);
 				return new ResponseEntity<String>(FAIL,HttpStatus.BAD_REQUEST);
 			}
+	}
+	
+	@Operation(summary = "유저 리스트 조회", description = "채팅 추가할 유저 목록 조회 "
+			+ " \n 닉네임으로 찾고 이메일, 프로필사진으로 비교")
+    @ApiImplicitParams({
+        @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
+    })
+	@GetMapping("/search-user")
+	public ResponseEntity<?> searchUser(HttpServletRequest request, @RequestParam String nickname) {
+		logger.info("searchUser 실행");
+		
+		int userPk = 0;
+		
+		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
+			
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("사용불가능한 토큰입니다");
+			
+			return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+    	}
+		
+		try {
+			List<UserDto> userDto = messageService.searchUser(nickname, userPk);
+			
+			if (userDto != null) {
+				for (UserDto user : userDto) {
+					if (user.getEmailPublic() == 0) {
+						user.setEmail("비공개");
+					}
+				}
+			}
+			
+			logger.info("유저 조회 성공");
+
+			return new ResponseEntity<List<UserDto>>(userDto, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.info("searchUser fail - " + e);
+				
+			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@Operation(summary = "채팅방 번호 획득", description = "생성할 채팅방의 유니크한 번호 얻기")
+	@GetMapping("/room-no")
+	public ResponseEntity<?> getRoomNo() {
+		logger.info("getRoomNo 실행");
+		
+		int roomNo = 0;
+		
+		try {
+			boolean uniqueOk = false;
+			
+			while(!uniqueOk) {
+				// 1에서 10000사이의 값 생성
+				roomNo =  (int) (Math.random() * 10000 + 1);
+				logger.info(String.valueOf(roomNo));
+				
+				if (messageService.checkRoomNo(roomNo) == 0) {
+					uniqueOk = true;
+				}
+			}
+			logger.info("getRoomNo success");
+
+			return new ResponseEntity<Integer>(roomNo, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.info("getRoomNo fail - " + e);
+				
+			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 	
 }

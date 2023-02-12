@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.hypeboy.codemeets.model.dto.MessageDto;
+import com.hypeboy.codemeets.model.dto.UserDto;
 
 @Mapper
 public interface MessageDao {
@@ -29,5 +30,10 @@ public interface MessageDao {
 	String selectRoom(MessageDto messageDto) throws SQLException;
 
 	int sendMessage(MessageDto messageDto) throws SQLException;
-
+	
+	// 채팅방에 추가할 유저 리스트 조회
+	List<UserDto> searchUser(String nickname, int userPk) throws SQLException;
+	
+	// 생성한 방 번호가 사용중인지 확인
+	int checkRoomNo(int roomNo) throws SQLException;
 }

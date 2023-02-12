@@ -12,8 +12,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.hypeboy.codemeets.config.SecurityConfig;
-
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 	private final Logger logger = LoggerFactory.getLogger(SocketHandler.class);
@@ -28,14 +26,28 @@ public class SocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String payload = message.getPayload();
         JSONObject jsonObject = new JSONObject(payload);
-        for (WebSocketSession s : sessions) {
-        	logger.info("session - " + s + " msg - " + jsonObject.toString());
-            s.sendMessage(new TextMessage(jsonObject.toString()));
+    	
+        for (WebSocketSession s : sessions) {        	
+        	// uri에서 찾은 room 번호
+        	String uriRoomNo = s.getUri().toString().split("chating/")[1];
+        	
+        	// 메시지에서 찾은 room 번호
+        	String msgRoomNo = String.valueOf(jsonObject.get("room"));
+        	String sendPk = String.valueOf(jsonObject.get("sendPk"));
+        	String recvPk = String.valueOf(jsonObject.get("recvPk"));
+        	String userPk = String.valueOf(jsonObject.get("id"));
+        	
+        	if ( uriRoomNo.equals(msgRoomNo) ) {
+            	logger.info("session - " + s + " msg - " + jsonObject.toString());
+                s.sendMessage(new TextMessage(jsonObject.toString()));
+        	}
         }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+    	logger.info("remove session - " + session + " status - " + status);
+    	
         sessions.remove(session);
     }
 }

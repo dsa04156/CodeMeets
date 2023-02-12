@@ -12,19 +12,20 @@ import com.hypeboy.codemeets.controller.UserController;
 import com.hypeboy.codemeets.model.dao.GroupDao;
 import com.hypeboy.codemeets.model.dao.MessageDao;
 import com.hypeboy.codemeets.model.dto.MessageDto;
+import com.hypeboy.codemeets.model.dto.UserDto;
 
 @Service
 public class MessageServiceImpl implements MessageService {
-private final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
+	private final Logger logger = LoggerFactory.getLogger(MessageServiceImpl.class);
+
 	private MessageDao dao;
-	
+
 	@Autowired
 	public MessageServiceImpl(MessageDao dao) {
 		super();
 		this.dao = dao;
 	}
-	
+
 	@Override
 	public List<MessageDto> messageList(MessageDto messageDto) throws SQLException {
 		return dao.messageList(messageDto);
@@ -63,7 +64,7 @@ private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	@Override
 	public int maxRoom(MessageDto messageDto) throws Exception {
 		return dao.maxRoom(messageDto);
-		}
+	}
 
 	@Override
 	public String selectRoom(MessageDto messageDto) throws Exception {
@@ -71,13 +72,20 @@ private final Logger logger = LoggerFactory.getLogger(UserController.class);
 	}
 
 	@Override
-	public int sendMessage(MessageDto messageDto) throws Exception{
+	public int sendMessage(MessageDto messageDto) throws Exception {
 		return dao.sendMessage(messageDto);
 	}
-
-
-
-
-
 	
+	// 채팅방에 추가할 유저 리스트 조회
+	@Override
+	public List<UserDto> searchUser(String nickname, int userPk) throws Exception {
+		return dao.searchUser(nickname, userPk);
+	}
+	
+	// 생성한 방 번호가 사용중인지 확인
+	@Override
+	public int checkRoomNo(int roomNo) throws Exception {
+		return dao.checkRoomNo(roomNo);
+	}
+
 }
