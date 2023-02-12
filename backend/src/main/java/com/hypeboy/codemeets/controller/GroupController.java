@@ -27,10 +27,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hypeboy.codemeets.model.dao.GroupDao;
+import com.hypeboy.codemeets.model.dto.ConferenceDto;
 import com.hypeboy.codemeets.model.dto.GroupDto;
 import com.hypeboy.codemeets.model.dto.GroupListDto;
 import com.hypeboy.codemeets.model.dto.GroupUserDto;
 import com.hypeboy.codemeets.model.dto.UserDto;
+import com.hypeboy.codemeets.model.service.ConferenceServiceImpl;
 import com.hypeboy.codemeets.model.service.GroupService;
 import com.hypeboy.codemeets.model.service.GroupServiceImpl;
 import com.hypeboy.codemeets.utils.JwtTokenProvider;
@@ -52,6 +54,8 @@ public class GroupController {
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
+	@Autowired
+	private ConferenceServiceImpl conferenceService;
 	@Autowired
 	GroupServiceImpl groupService;
 	
@@ -343,5 +347,34 @@ public class GroupController {
     	return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		
 	}
+    
+    @Operation(summary = "회의목록",description = "회의목록 리스트 ")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken",required = true, dataType = "String", paramType = "header")
+    })
+    @PostMapping("/conferencelist")
+    public ResponseEntity<?> conferenceList(HttpServletRequest request) throws Exception{
+    	logger.info("회의 참가 API 호출");
+    	int userPk=0;
+    	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
+			logger.info("사용가능한 토큰입니다");
+			
+			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
+			logger.info("userPk - " + userPk);
+    	}
+    	else {
+    		logger.info("토큰 실패");
+    	}
+		try {
+			List<ConferenceDto> list = conferenceService.listConference(userPk);
+			
+			
+			return new ResponseEntity<List>(list,HttpStatus.OK);
+		}catch (Exception e) {
+			logger.info("회의 참여자 목록 불러오기 실패"+e);
+			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+    	}
     
 }
