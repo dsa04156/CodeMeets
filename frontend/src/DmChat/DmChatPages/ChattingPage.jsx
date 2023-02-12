@@ -20,8 +20,8 @@ const ChattingPage = (props) => {
     const ws = useRef({});
 
     useEffect(() => {
-        ws.current = new WebSocket(`ws://i8d109.p.ssafy.io/api/chating/${props.room}`);
-        // ws.current = new WebSocket(`ws://localhost:18081/api/chating/${props.room}`);
+        ws.current = new WebSocket(`wss://i8d109.p.ssafy.io/api/chating/${props.room}`);
+        // ws.current = new WebSocket(`wss://localhost:18081/api/chating/${props.room}`);
         getMessage();
         
         if(USER.profilePhoto === ""){
@@ -112,7 +112,8 @@ const ChattingPage = (props) => {
             data.room = props.room;
             data.recvPk = props.other;
             var temp = JSON.stringify(data);
-            console.log("send " + temp);
+            // console.log("send " + temp);
+            // console.log(ws.current);
             ws.current.send(temp);
         }
     }
