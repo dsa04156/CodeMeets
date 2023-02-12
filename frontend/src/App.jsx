@@ -33,6 +33,8 @@ import SignUpPage from "./Login/LoginPages/SignUpPage";
 import MyPageMeetingList from "./MyPage/MyPagePages/MyPageMeetingList";
 import MyPageQuestionList from "./MyPage/MyPagePages/MyPageQuestionList";
 
+import DmChatPage from "./DmChat/DmChatPages/DmChatPage";
+
 import AlarmButton from "./CommonComponents/MainHeader/AlarmButton";
 import HeaderProfile from "./CommonComponents/MainHeader/HeaderProfile";
 
@@ -148,6 +150,26 @@ function App() {
                     element={<GroupQnAModify />}
                   ></Route>
 
+              <Route path="/group/:group_pk" element={<GroupDetail />}>
+                <Route path="notice" element={<GroupNotice />}></Route>
+                <Route path="schedule" element={<GroupSchedule />}></Route>
+                <Route
+                  path="meeting-list"
+                  element={<GroupMeetingList />}
+                ></Route>
+                <Route path="qna" element={<GroupQnA />}></Route>
+                <Route path="member" element={<GroupMember />}></Route>
+              </Route>
+              <Route path="/grouplist/" element={<GroupList />}></Route>
+              <Route path="/message" element={<Message />}></Route>
+              <Route path="/setting" element={<Setting />}></Route>
+
+              {/* DmChat Page */}
+              <Route path="/dmChat" element={<DmChatPage />}></Route>
+            </Routes>
+          </div>
+        </MainArea>
+      </Center>
                   {/* 글쓰기 페이지 */}
                   <Route
                     path="/group/:group_pk/notice/create"
