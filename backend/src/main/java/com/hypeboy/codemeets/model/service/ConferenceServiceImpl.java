@@ -83,8 +83,8 @@ public class ConferenceServiceImpl implements ConferenceService {
 	}
 
 	@Override
-	public List<ConferenceDto> listConference(int userPk) throws SQLException {
-		return sqlSession.getMapper(ConferenceDao.class).listConference(userPk);
+	public List<ConferenceDto> listConference(int userPk, int i, int items, String order) throws SQLException {
+		return sqlSession.getMapper(ConferenceDao.class).listConference(userPk,i,items,order);
 	}
 
 
