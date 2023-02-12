@@ -27,7 +27,6 @@
     "recoil": "^0.7.6",
     "recoil-persist": "^4.2.0",
     "redux": "^4.2.0",
-    "socket.io-client": "^4.6.0",
     "styled-components": "^5.3.6",
     "swiper": "^8.4.6",
     "web-vitals": "^2.1.4"
@@ -56,5 +55,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy" : "https://282c769uda.apigw.ntruss.com/custom/v1/"
+  "proxy": "https://282c769uda.apigw.ntruss.com/custom/v1/"
 }
