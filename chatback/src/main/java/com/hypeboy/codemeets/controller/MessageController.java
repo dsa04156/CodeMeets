@@ -36,7 +36,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("/api/message")
 @Api(tags = "채팅")
 public class MessageController {
-	private final Logger logger = LoggerFactory.getLogger(GroupController.class);
+	private final Logger logger = LoggerFactory.getLogger(MessageController.class);
 
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -87,11 +87,13 @@ public class MessageController {
 				}else {
 					mto.setOther_nick(mto.getSendNick());
 				}
+				mto.setOtherPk(mto.getRecvPk() == userPk ? mto.getSendPk() : mto.getRecvPk());
 			}
-			System.out.println(list.toString());
+//			System.out.println(list.toString());
 			return new ResponseEntity<List>(list, HttpStatus.OK);
 		}catch (Exception e) {
-			System.out.println(e);
+			logger.info(e.toString());
+//			System.out.println(e);
 			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 		
@@ -119,15 +121,15 @@ public class MessageController {
 		MessageDto messageDto = new MessageDto();
 		messageDto.setRoom(room);
 		messageDto.setNick(nick);
-		System.out.println(room);
+//		System.out.println(room);
 		List<MessageDto> list = messageService.roomContentList(messageDto);
 		messageService.messageReadChk(messageDto);
 		for(MessageDto mdt : list) {
-			System.out.println(mdt.getSendPk());
+//			System.out.println(mdt.getSendPk());
 			mdt.setSendNick(messageService.getNickName(mdt.getSendPk()));
 			mdt.setRecvNick(messageService.getNickName(mdt.getRecvPk()));
 		}
-		System.out.println(messageDto.getRoom());
+//		System.out.println(messageDto.getRoom());
 		
 		return new ResponseEntity<List>(list, HttpStatus.OK);
 		} catch (Exception e) {
@@ -144,6 +146,7 @@ public class MessageController {
 	@PostMapping("/send")
 	public ResponseEntity<?> sendMessage(HttpServletRequest request,@RequestParam(defaultValue = "0", required = false) int room,@RequestParam int otherPk, @RequestParam String content) {
 		int userPk=0;
+		logger.info(content);
 		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
