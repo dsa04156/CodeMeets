@@ -218,8 +218,11 @@ public class ConferenceController {
 			conferenceService.enterConference(userPk,conferencePk);
 			conferenceService.enterMember(conferencePk,userPk);
 			int groupPk = conferenceService.getGroupPk(conferencePk);
+			Map<String, Integer> resultMap = new HashMap<String, Integer>();
+			resultMap.put("conferencePk", conferencePk);
+			resultMap.put("groupPk", groupPk);
 			logger.info("회의 참가 성공");
-			return new ResponseEntity<Integer>(groupPk,HttpStatus.OK);
+			return new ResponseEntity<Map<String,Integer>>(resultMap,HttpStatus.OK);
 		}catch (Exception e) {
 			logger.info("회의 참가 실패"+e);
 			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
