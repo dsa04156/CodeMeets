@@ -16,13 +16,22 @@ import html2canvas from "html2canvas";
 import Crop from "./Crop";
 import QuestionPage from "./QestionComponent/QuestionPage";
 
+
+import { TbCapture } from "react-icons/tb";
+import { FiShare } from "react-icons/fi";
+import { IoExitOutline } from "react-icons/io5";
+
+import { FaRegCopy } from "react-icons/fa";
+
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+
 const APPLICATION_SERVER_URL = "https://i8d109.p.ssafy.io/";
 
 class OpenViduMain extends Component {
   constructor(props) {
     super(props);
     // These properties are in the state's component in order to re-render the HTML whenever their values change
-    console.log("----------------이게 props",this.props)
+    console.log("----------------이게 props", this.props);
     this.state = {
       mySessionId: this.props.meetingUrl.conferenceUrl,
       myUserName: this.props.user.userName,
@@ -77,7 +86,7 @@ class OpenViduMain extends Component {
 
   printDocument(domElement) {
     html2canvas(domElement).then((canvas) => {
-      this.saveAs(canvas.toDataURL(), "new.png");
+      // this.saveAs(canvas.toDataURL(), "new.png");
       console.log(canvas.toDataURL());
       this.viewImage(canvas.toDataURL());
     });
@@ -270,7 +279,6 @@ class OpenViduMain extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
-
   }
 
   async switchCamera() {
@@ -283,7 +291,7 @@ class OpenViduMain extends Component {
         resolution: "640x480", // The resolution of your video
         frameRate: 30, // The frame rate of your video
         insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-        mirror: true, // Whether to mirror your local video or not
+        mirror: false, // Whether to mirror your local video or not
       });
 
       newPublisher.once("accessAllowed", (event) => {
@@ -327,10 +335,22 @@ class OpenViduMain extends Component {
     }
   }
 
+// 클립보드 복사
+  readClipboard = async() => {
+
+  }
+
+
+
+
   render() {
     const mySessionId = this.state.mySessionId;
     const myUserName = this.state.myUserName;
 
+    //   <button onClick={() => this.closeCropHandler()}>
+    //   {" "}
+    //   newImage:null{" "}
+    // </button>
     return (
       <Container>
         {this.state.session === undefined ? (
@@ -391,93 +411,120 @@ class OpenViduMain extends Component {
         ) : null}
         {/* ------------------------- 여기서 부터 화상 화면 ------------------------------ */}
         {this.state.session !== undefined ? (
-          <div id="session">
-            {/* 상단 멤버들 */}
-            <div id="video-container" className="col-md-6">
-              <SubscriberBox>
-                {this.state.publisher !== undefined ? (
-                  <EachSubscriber
-                    className="stream-container col-md-6 col-xs-6"
-                    onClick={() =>
-                      this.handleMainVideoStream(this.state.publisher)
-                    }
-                  >
-                    <UserVideoComponent
-                      streamManager={this.state.publisher}
-                      type="sub"
-                    />
-                  </EachSubscriber>
-                ) : null}
-                {this.state.subscribers.map((sub, i) => (
-                  <EachSubscriber
-                    key={i}
-                    className="stream-container col-md-6 col-xs-6"
-                    onClick={() => this.handleMainVideoStream(sub)}
-                  >
-                    <UserVideoComponent streamManager={sub} type="sub" />
-                  </EachSubscriber>
-                ))}
-              </SubscriberBox>
-            </div>
-            {this.state.mainStreamManager !== undefined ? (
-              <MainBox>
-                <div id="main-video" className="col-md-6">
-                  <MainContainer>
-                    {this.state.cropSwitch ? (
-                      <VideoBox ref={this.cropImage.canvasRef}>
-                        <UserVideoComponent
-                          streamManager={this.state.mainStreamManager}
-                          type="main"
-                        />
-                      </VideoBox>
-                    ) : (
-                      <div style={{ width: "155vh", height: "78vh" }}>
-                        <button onClick={() => this.closeCropHandler()}>
-                          {" "}
-                          newImage:null{" "}
-                        </button>
-                        <Crop
-                          image={this.state.newImage}
-                          OCRhandler={(data) => {
-                            this.setState({ OCRdata: data });
-                          }}
-                        />
-                      </div>
-                    )}
-                    <SideContainer>
-                      <OcrContainer>
-                        <OCRPage ocrResult={this.state.OCRdata}/>
-                      </OcrContainer>
-                        <QuestionPage />
-                    </SideContainer>
-                  </MainContainer>
-                  <button
-                    onClick={() =>
-                      this.printDocument(this.cropImage.canvasRef.current)
-                    }
-                  >
-                    캡쳐하기
-                  </button>
+          <div style={{ display: "flex" }}>
+            <div id="session">
+              {/* 상단 멤버들 */}
+              <SubscriberLine>
+                <SubscriberBox>
+                  {this.state.publisher !== undefined ? (
+                    <EachSubscriber
+                      className="stream-container col-md-6 col-xs-6"
+                      onClick={() =>
+                        this.handleMainVideoStream(this.state.publisher)
+                      }
+                    >
+                      <UserVideoComponent
+                        streamManager={this.state.publisher}
+                        type="sub"
+                      />
+                    </EachSubscriber>
+                  ) : null}
+                  {this.state.subscribers.map((sub, i) => (
+                    <EachSubscriber
+                      key={i}
+                      className="stream-container col-md-6 col-xs-6"
+                      onClick={() => this.handleMainVideoStream(sub)}
+                    >
+                      <UserVideoComponent streamManager={sub} type="sub" />
+                    </EachSubscriber>
+                  ))}
+                </SubscriberBox>
+              </SubscriberLine>
+              {this.state.mainStreamManager !== undefined ? (
+                <MainBox>
+                  <div id="main-video" className="col-md-6">
+                    <MainContainer>
+                      <MainLine>
+                        {this.state.cropSwitch ? (
+                          <VideoBox ref={this.cropImage.canvasRef}>
+                            <UserVideoComponent
+                              streamManager={this.state.mainStreamManager}
+                              type="main"
+                            />
+                          </VideoBox>
+                        ) : (
+                          <VideoBox>
+                            <Crop
+                              image={this.state.newImage}
+                              closeHandler={() => {
+                                this.setState({
+                                  cropSwitch: true,
+                                });
+                              }}
+                              OCRhandler={(data) => {
+                                this.setState({ OCRdata: data });
+                              }}
+                            />
+                          </VideoBox>
+                        )}
+                        <div>
+                          {this.state.cropSwitch ? (
+                            <ToolBar>
+                              <TbCapture
+                                onClick={() => {
+                                  this.setState({
+                                    mirror: false,
+                                  });
+                                  console.log(this.state.mirror);
+                                  this.printDocument(
+                                    this.cropImage.canvasRef.current
+                                  );
+                                }}
+                                size="35"
+                                style={{
+                                  marginRight: "10vh",
+                                  cursor: "pointer",
+                                }}
+                              ></TbCapture>
+                              <FiShare
+                                className="btn btn-large btn-success"
+                                type="button"
+                                id="buttonSwitchCamera"
+                                onClick={this.switchCamera}
+                                value="Switch Camera"
+                                size="35"
+                                style={{ cursor: "pointer" }}
+                              />
+                              <IoExitOutline
+                                className="btn btn-large btn-danger"
+                                type="button"
+                                id="buttonLeaveSession"
+                                onClick={this.leaveSession}
+                                value="Leave session"
+                                size="35"
+                                color="rgb(255, 0, 0)"
+                                style={{
+                                  marginLeft: "30vh",
+                                  cursor: "pointer",
+                                }}
+                              />
+                            </ToolBar>
+                          ) : null}
+                        </div>
+                      </MainLine>
+                      <div>
+                        <SideContainer>
 
-                  <input
-                    className="btn btn-large btn-success"
-                    type="button"
-                    id="buttonSwitchCamera"
-                    onClick={this.switchCamera}
-                    value="Switch Camera"
-                  />
-                  <AiOutlineCloseCircle
-                    className="btn btn-large btn-danger"
-                    type="button"
-                    id="buttonLeaveSession"
-                    onClick={this.leaveSession}
-                    value="Leave session"
-                    size="24"
-                  />
-                  <div></div>
-                </div>
-              </MainBox>
-            ) : null}
+    
+                              <OCRPage ocrResult={this.state.OCRdata} />
+                          <QuestionPage />
+                        </SideContainer>
+                      </div>
+                    </MainContainer>
+                  </div>
+                </MainBox>
+              ) : null}
+            </div>
           </div>
         ) : null}
       </Container>
@@ -511,7 +558,7 @@ class OpenViduMain extends Component {
       {
         headers: { "Content-Type": "application/json" },
       }
-    )
+    );
     return response.data; // The sessionId
   }
 
@@ -534,8 +581,21 @@ const Container = styled.div`
   height: 96vh;
   padding: 3vh;
   padding-top: 1vh;
-  background-color: silver;
-  overflow:hidden;
+  background: rgb(188, 234, 213);
+  background: linear-gradient(
+    149deg,
+    rgba(188, 234, 213, 1) 0%,
+    rgba(222, 245, 229, 0.28904061624649857) 100%
+  );
+  overflow: hidden;
+`;
+
+const SubscriberLine = styled.div`
+  border: 2px solid grey;
+  border-radius: 20px;
+  width: 150vh;
+  margin-bottom: 1vh;
+  background-color: rgb(142, 195, 176);
 `;
 
 const SubscriberBox = styled.div`
@@ -544,7 +604,7 @@ const SubscriberBox = styled.div`
 
 const EachSubscriber = styled.div`
   margin: 10px;
-  border: 1px solid black;
+  border: 2px solid grey;
   border-radius: 10px;
   overflow: hidden;
 `;
@@ -564,15 +624,26 @@ const MainContainer = styled.div`
 const SideContainer = styled.div`
   border: 1px solid red;
   height: 86vh;
+  width: 47vh;
   display: flex;
   margin-left: 1vh;
   flex-direction: column;
 `;
 
-const OcrContainer = styled.div`
-  border: 1px solid black;
-  height: 15vh;
-  margin-bottom: 1vh;
-  overflow: scroll;
+
+const MainLine = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ToolBar = styled.div`
+  border: 2px solid grey;
+  padding-left: 24vh;
+  border-radius: 10px;
+  margin-top: 1vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(142, 195, 176);
 `;
 

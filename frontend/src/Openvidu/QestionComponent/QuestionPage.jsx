@@ -18,5 +18,9 @@ export default QuestionPage;
 const QuestionBox = styled.div`
   border: 1px solid yellow;
   height: 60vh;
-  overflow: scroll;
+  overflow-y: scroll;
+  background-color: #ffffff;
+  &::-webkit-scrollbar {
+  display: none;
+}
 `;
