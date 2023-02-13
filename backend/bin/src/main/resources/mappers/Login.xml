@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.hypeboy.codemeets.model.dao.LoginDao">
+
+	<resultMap type="LoginDto" id="login_dto">
+		<result column="user_pk" property="userPk" />
+		<result column="user_id" property="userId" />
+		<result column="password" property="password" />
+		<result column="token" property="token" />
+		<result column="user_active" property="userActive" />
+	</resultMap>
+	
+	<resultMap type="UserDto" id="user">
+		<result column="user_pk" property="userPk" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_active" property="userActive" />
+		<result column="user_info_pk" property="userInfoPk" />
+		<result column="profile_photo" property="profilePhoto" />
+		<result column="email_public" property="emailPublic" />
+		<result column="tel_public" property="telPublic"/>
+	</resultMap>
+	
+	<!-- ==================== login ======================================== -->
+	
+    <select id="findByUserId" resultMap="login_dto">
+   		SELECT user_pk, user_id, password, token, user_active
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+    
+	<select id="getUserInfo" resultMap="user">
+   		SELECT user_pk, user_id, user_name,
+   		user_active, nickname, tel, email, 
+   		profile_photo, email_public, tel_public
+        FROM user NATURAL JOIN user_info
+        WHERE user_pk = #{userPk}
+    </select>
+    
+    <!-- ==================== token ======================================== -->
+    
+    <update id="saveRefreshToken">
+		UPDATE user
+		SET token = #{refreshToken}
+		WHERE user_pk = #{userPk}
+	</update>
+    
+    <select id="getRefreshToken" parameterType="int" resultType="string">
+		SELECT token
+		FROM user
+		WHERE user_pk = #{userPk}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="int">
+		UPDATE user
+		SET token = "-" 
+		WHERE user_pk = #{userPk}
+	</update>
+
+</mapper>
+

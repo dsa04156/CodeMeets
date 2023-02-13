@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.hypeboy.codemeets.model.dao.GroupNoticeDao">
+
+	<resultMap type="GroupNoticeDto" id="groupNotice">
+		<result column="group_notice_pk" property="groupNoticePk" />
+		<result column="group_notice_title" property="groupNoticeTitle" />
+		<result column="group_notice_contents" property="groupNoticeContents" />
+		<result column="origin_filename" property="originFilename" />
+		<result column="db_filename" property="dbFilename" />
+		<result column="group_notice_date" property="groupNoticeDate" />
+		<result column="user_name" property="userName" />
+		<result column="group_pk" property="groupPk" />
+		<result column="user_pk" property="userPk" />
+		<result column="group_notice_hit" property="groupNoticeHit" />
+		<result column="total" property="total" />
+	</resultMap>
+	
+	<!-- ==================== 공지 작성 ======================================== -->
+	
+	<insert id="writeGroupNotice" parameterType="GroupNoticeDto" >
+		INSERT INTO `group_notice` (group_notice_title, group_notice_contents, origin_filename, db_filename, group_notice_date, group_pk, user_pk, group_notice_hit)
+		VALUES (#{groupNoticeTitle}, #{groupNoticeContents}, #{originFilename}, #{dbFilename}, now(), #{groupPk}, #{userPk}, 0)
+	</insert>
+	
+	<!-- ==================== 공지 목록 조회, 상세 조회 ======================================== -->
+	
+	<select id="getGroupNoticeList" resultMap="groupNotice" >
+		SELECT group_notice_pk, group_notice_title, 
+		group_notice_date, group_pk, user_pk, group_notice_hit, user_name,
+		count(*) OVER() AS total
+		FROM `group_notice` NATURAL JOIN `user_info`
+		WHERE group_pk = #{groupPk}
+		ORDER BY ${order} DESC
+		LIMIT #{nowPage}, #{items};
+	</select>
+	
+    <select id="getGroupNotice" resultMap="groupNotice" >
+		SELECT group_notice_pk, group_notice_title, group_notice_contents, origin_filename, 
+		db_filename, group_notice_date, group_pk, user_pk, group_notice_hit, user_name
+		FROM `group_notice` NATURAL JOIN `user_info`
+		WHERE group_notice_pk = #{groupNoticePk}
+	</select>
+	
+	<update id="addGroupNoticeHit" parameterType="int">
+		UPDATE `group_notice`
+		SET group_notice_hit = group_notice_hit + 1
+		WHERE group_notice_pk = #{groupNoticePk};
+	</update>
+	
+	<!-- ==================== 공지 수정 ======================================== -->
+	
+	<update id="editGroupNotice" parameterType="GroupNoticeDto" >
+		UPDATE `group_notice`
+		SET group_notice_title = #{groupNoticeTitle},
+		group_notice_contents = #{groupNoticeContents},
+		origin_filename = #{originFilename},
+		db_filename = #{dbFilename}
+		WHERE group_notice_pk = #{groupNoticePk};
+	</update>
+	
+	<!-- ==================== 공지 삭제 ======================================== -->
+	
+	<delete id="deleteGroupNotice">
+		DELETE FROM `group_notice` 
+		WHERE group_notice_pk = #{groupNoticePk};
+	</delete>
+	
+</mapper>
