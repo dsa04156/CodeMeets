@@ -1,23 +1,36 @@
 import styled from "styled-components";
 import Modal from "../../CommonComponents/Modal/Modal";
 
+import { useNavigate } from "react-router-dom";
+import {useState} from "react"
+
 const MeetingInModal = ({ onClose }) => {
   const title = "Meeting Enter";
+  const navigate = useNavigate()
+  const [conferenceUrl, setConferenceUrl] = useState()
 
-  const enterClickHandler = (event) => {
-    if (event.key === 'Enter'){
-      // 입장 Handler
-    }
+  const urlHandler = (e) => {
+    const newUrl = e.target.value;
+    setConferenceUrl(newUrl)
   }
+
+  const JoinOpenviduHandler = () => {
+    navigate("/openvidu", {
+      state: {
+        meetingUrl: { conferenceUrl },
+      },
+    });
+  };
+
 
   return (
     <Modal onClose={onClose} ModalTitle={title}>
       <TitleStyle>
-        <div className="name">URL 입력 </div>
-        <div className="input">
-          <input type="text" style={{border: 'solid 2px grey'}}/>
+        <div className="name" >URL 입력 </div>
+        <div className="input" >
+          <input type="text" style={{border: 'solid 2px grey'}} onChange={urlHandler}/>
         </div>
-        <SubButtonStyle><button className="custom-btn btn-8">Enter</button></SubButtonStyle>
+        <SubButtonStyle><button className="custom-btn btn-8" onClick={JoinOpenviduHandler}>Enter</button></SubButtonStyle>
       </TitleStyle>
     </Modal>
   );
