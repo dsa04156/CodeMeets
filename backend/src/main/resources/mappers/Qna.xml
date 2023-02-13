@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.hypeboy.codemeets.model.dao.QnaDao">
+	
+	<resultMap type="QnaDto" id="qna">
+		<result column="group_question_pk" property="groupQuestionPk" />
+		<result column="group_question_title" property="groupQuestionTitle" />
+		<result column="group_question_contents" property="groupQuestionContents" />
+		<result column="group_question_date" property="groupQuestionDate" />
+		<result column="group_question_update" property="groupQuestionUpdate" />
+		<result column="group_pk" property="groupPk" />
+		<result column="user_pk" property="userPk"/>
+		
+		<result column="group_question_answer_cnt" property="groupQuestionAnswerCnt"/>
+		<result column="group_question_like_cnt" property="groupQuestionLikeCnt"/>
+		<result column="group_question_liked" property="groupQuestionLiked"/>
+		<result column="total" property="total"/>
+		
+		<result column="user_name" property="username"/>
+	</resultMap>	
+	
+	<insert id="writeQna" parameterType="QnaDto">
+		INSERT INTO group_question (group_question_title, group_question_contents, group_question_date, group_pk, user_pk)
+		VALUES (#{groupQuestionTitle}, #{groupQuestionContents}, now(), #{groupPk}, #{userPk})
+	</insert>
+	<select id="getList" parameterType="int" resultMap="qna">
+		select *,
+		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk) group_question_like_cnt,
+		(select count(*) from group_answer A where Q.group_question_pk = A.group_question_pk) group_question_answer_cnt,
+		count(*) over() As total
+		from `group_question` Q
+		NATURAL JOIN `user_info`
+		where group_pk = #{groupPk}
+		ORDER BY group_question_pk DESC
+		LIMIT #{nowPage}, #{items};
+	</select>
+	<select id="getQna" parameterType="int" resultMap="qna">
+		select Q.group_question_pk, Q.group_question_title, Q.group_question_contents, Q.group_question_date, Q.group_question_update, Q.group_pk, Q.user_pk, user_name,
+		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk and L.user_pk = #{userPk}) group_question_liked,
+		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk) group_question_like_cnt
+		from `group_question` Q NATURAL JOIN `user_info`
+		where group_question_pk = #{groupQuestionPk}
+	</select>
+
+	<update id="modifyQna" parameterType="QnaDto">
+		update group_question
+		set group_question_title = #{groupQuestionTitle}, group_question_contents = #{groupQuestionContents}, group_question_date = now(), group_question_update = 1
+		where group_question_pk = #{groupQuestionPk}
+	</update>
+
+	<delete id="deleteQna" parameterType="int">
+		delete from group_question
+		where group_question_pk = #{groupQuestionPk}
+	</delete>
+
+	<select id="searchLike" parameterType="QnaDto" resultType="int">
+		SELECT count(*)
+		FROM group_question_user
+		WHERE group_question_pk = #{groupQuestionPk} AND user_pk = #{userPk}
+	</select>
+
+	<insert id="likeQna" parameterType="QnaDto">
+		INSERT INTO group_question_user (group_question_pk, user_pk)
+		VALUES (#{groupQuestionPk}, #{userPk})
+	</insert>
+
+	<delete id="deleteLike" parameterType="QnaDto">
+		delete from group_question_user
+		where group_question_pk = #{groupQuestionPk} AND user_pk = #{userPk}
+	</delete>
+	
+	
+	
+	
+</mapper>
