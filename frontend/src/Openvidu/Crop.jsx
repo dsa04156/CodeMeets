@@ -86,21 +86,27 @@ const sendAxios = () => {
     // https://282c769uda.apigw.ntruss.com/custom/v1/20467/b8b67c0b1215d9b02d9013f67bec45f7ef32d0b00a3945d5058169d08e3b7e07/general
     .then((res) => {
       console.log(res)
+      let prevText = ""
       for (let i in res.data.images[0].fields) {
-        console.log(res.data.images[0].fields[i].inferText)
+        console.log("이게 뜨는거 ------ ",res.data.images[0].fields[i].inferText)
         if (res.data.images[0].fields[i].lineBreak === true) {
-          setImgText(prev => {
-            console.log(imageText)
-            return prev + " " + res.data.images[0].fields[i].inferText + "\n"
-          })} else {
-          setImgText(prev => {
-            console.log(imageText)
-            return prev + " " + res.data.images[0].fields[i].inferText
-        })}
+          console.log(prevText + " " + res.data.images[0].fields[i].inferText + "\n")
+          prevText = prevText + " " + res.data.images[0].fields[i].inferText + "\n"
+          // setImgText(prev => {
+          //   console.log(imageText)
+          //   return prev + " " + res.data.images[0].fields[i].inferText + "\n"
+          // })
+        } else {
+          console.log(prevText + " " + res.data.images[0].fields[i].inferText)
+          prevText = (prevText + " " + res.data.images[0].fields[i].inferText)
+        //   setImgText(prev => {
+        //     console.log(imageText)
+        //     return prev + " " + res.data.images[0].fields[i].inferText
+        // })
       }
-      console.log(imageText)
+      }
+      OCRhandler(prevText)
     }).then(
-      OCRhandler(imageText),
       setImgText("")
     )
     .catch((err) => console.log(err));
@@ -132,7 +138,6 @@ const sendAxios = () => {
       <button onClick={sendAxios}>text</button>
       <Cropper src={image} crop={onCrop} ref={cropperRef} />
       <img src={croppedImage} />
-      {imageText}
     </div>
   );
 }

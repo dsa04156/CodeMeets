@@ -283,7 +283,7 @@ class OpenViduMain extends Component {
         resolution: "640x480", // The resolution of your video
         frameRate: 30, // The frame rate of your video
         insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-        mirror: false, // Whether to mirror your local video or not
+        mirror: true, // Whether to mirror your local video or not
       });
 
       newPublisher.once("accessAllowed", (event) => {
@@ -300,7 +300,7 @@ class OpenViduMain extends Component {
               resolution: "640x480", // The resolution of your video
               frameRate: 30, // The frame rate of your video
               insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-              mirror: false, // Whether to mirror your local video or not
+              mirror: true, // Whether to mirror your local video or not
             });
 
             await this.state.session.unpublish(this.state.mainStreamManager);
@@ -417,7 +417,6 @@ class OpenViduMain extends Component {
                     <UserVideoComponent streamManager={sub} type="sub" />
                   </EachSubscriber>
                 ))}
-                <div>{this.state.OCRdata}</div>
               </SubscriberBox>
             </div>
             {this.state.mainStreamManager !== undefined ? (
@@ -447,11 +446,9 @@ class OpenViduMain extends Component {
                     )}
                     <SideContainer>
                       <OcrContainer>
-                        <OCRPage />
+                        <OCRPage ocrResult={this.state.OCRdata}/>
                       </OcrContainer>
-                      <QuestionBox>
                         <QuestionPage />
-                      </QuestionBox>
                     </SideContainer>
                   </MainContainer>
                   <button
@@ -538,6 +535,7 @@ const Container = styled.div`
   padding: 3vh;
   padding-top: 1vh;
   background-color: silver;
+  overflow:hidden;
 `;
 
 const SubscriberBox = styled.div`
@@ -575,10 +573,6 @@ const OcrContainer = styled.div`
   border: 1px solid black;
   height: 15vh;
   margin-bottom: 1vh;
+  overflow: scroll;
 `;
 
-const QuestionBox = styled.div`
-border: 1px solid yellow;
-  height:60vh;
-  overflow: scroll;
-`

@@ -15,7 +15,8 @@ const MeetingPlusModal = ({ onClose }) => {
   const [groupList, setGroupList] = useState([]);
   const [conferenceUrl, setConferenceUrl] = useState();
   const [groupPk, setGroupPk] = useState("");
-  const [meetingTitle, setMeetingTitle] = useState("")
+  const [meetingTitle, setMeetingTitle] = useState("");
+  const [meetingContent, setMeetingContent] = useState("");
 
   // 유저가 가입한 그룹 리스트 가져오기
   useEffect(() => {
@@ -29,7 +30,7 @@ const MeetingPlusModal = ({ onClose }) => {
     }).then((response) => {
       console.log(response.data);
       setGroupList(response.data.list);
-      setGroupPk(response.data.list[0].groupPk)
+      setGroupPk(response.data.list[0].groupPk);
       setConferenceUrl(response.data.url);
       console.log(groupList);
     });
@@ -49,25 +50,45 @@ const MeetingPlusModal = ({ onClose }) => {
   };
 
   const JoinOpenviduHandler = () => {
-    navigate("/openvidu", {
-      state: {
-        meetingUrl: { conferenceUrl },
-        groupPk: { groupPk },
-        sessionTitle: {meetingTitle},
+    axios({
+      method: "POST",
+      url: `${API}/conference/create`,
+      headers: {
+        "Content-Type": "application/json",
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
+      data: {
+        conferenceUrl: `${conferenceUrl}`,
+        conferenceTitle: `${meetingTitle}`,
+        conferenceContents: `${meetingContent}`,
+        groupPk: `${groupPk}`,
+      },
+    }).then((response) => {
+      console.log("이게 방 생성했을때 response", response.data);
+      navigate("/openvidu", {
+        state: {
+          meetingUrl: { conferenceUrl },
+          groupPk: { groupPk },
+          sessionTitle: { meetingTitle },
+        },
+      });
     });
   };
 
   const selectHandler = (e) => {
-    setGroupPk(e.target.value)
-    console.log("----select",e.target.value)
-  }
+    setGroupPk(e.target.value);
+    console.log("----select", e.target.value);
+  };
 
   const titleHandler = (e) => {
     const newTitle = e.target.value;
-    setMeetingTitle(newTitle)
-  }
+    setMeetingTitle(newTitle);
+  };
 
+  const contentHandler = (e) => {
+    const newContent = e.target.value;
+    setMeetingContent(newContent);
+  };
 
   console.log(conferenceUrl);
   return (
@@ -75,25 +96,38 @@ const MeetingPlusModal = ({ onClose }) => {
       <TitleStyle>
         <div className="name">회의명 </div>
         <div className="nickname">
-          <input type="text" style={{ border: "solid 2px grey" }} onChange={titleHandler}/>
+          <input
+            type="text"
+            style={{ border: "solid 2px grey" }}
+            onChange={titleHandler}
+          />
         </div>
       </TitleStyle>
       <TitleStyle>
         <div className="name">회의 개요 </div>
         <div className="nickname">
-          <input type="text" style={{ border: "solid 2px grey" }} />
+          <input
+            type="text"
+            style={{ border: "solid 2px grey" }}
+            onChange={contentHandler}
+          />
         </div>
       </TitleStyle>
       {/* 여기 그룹다운으로 그룹 선택 만들어야됨*/}
       <TitleStyle>
         <div className="name">그룹 선택</div>
-        <select name="nickname" style={{ border: "solid 2px grey" }} onChange={selectHandler} value={groupPk}>
+        <select
+          name="nickname"
+          style={{ border: "solid 2px grey" }}
+          onChange={selectHandler}
+          value={groupPk}
+        >
           {groupList.map((item, i) => {
-            return(
+            return (
               <option key={i} value={`${item.groupPk}`}>
                 {item.groupName}
               </option>
-            )
+            );
           })}
         </select>
       </TitleStyle>
