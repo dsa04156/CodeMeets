@@ -1,31 +1,37 @@
-import Modal from '../../CommonComponents/Modal/Modal';
-import styled from 'styled-components';
-import React from 'react';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { APIroot } from '../../Store';
-import { useRecoilValue } from 'recoil';
+import Modal from "../../CommonComponents/Modal/Modal";
+import styled from "styled-components";
+import React from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { APIroot } from "../../Store";
+import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
 
 const MeetingPlusModal = ({ onClose }) => {
-  const title = 'Meeting Create';
+  const title = "Meeting Create";
   const API = useRecoilValue(APIroot);
+  const navigate = useNavigate();
 
   const [groupList, setGroupList] = useState([]);
   const [conferenceUrl, setConferenceUrl] = useState();
+  const [groupPk, setGroupPk] = useState("");
+  const [meetingTitle, setMeetingTitle] = useState("");
+  const [meetingContent, setMeetingContent] = useState("");
 
   // 유저가 가입한 그룹 리스트 가져오기
   useEffect(() => {
     axios({
-      method: 'POST',
+      method: "POST",
       url: `${API}/conference/click`,
       headers: {
-        'Content-Type': 'application/json',
-        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
+        "Content-Type": "application/json",
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
-      console.log(response);
+      console.log(response.data);
       setGroupList(response.data.list);
-      setConferenceUrl(response.data.url)
+      setGroupPk(response.data.list[0].groupPk);
+      setConferenceUrl(response.data.url);
       console.log(groupList);
     });
   }, []);
@@ -33,15 +39,56 @@ const MeetingPlusModal = ({ onClose }) => {
   const CopyHandler = (text) => {
     try {
       navigator.clipboard.writeText(text);
-      alert('클립보드 복사완료');
+      alert("클립보드 복사완료");
     } catch (error) {
-      alert('복사 실패');
+      alert("복사 실패");
     }
   };
 
-  const CancelHandler =() => {
-    onClose?.()
-  }
+  const CancelHandler = () => {
+    onClose?.();
+  };
+
+  const JoinOpenviduHandler = () => {
+    axios({
+      method: "POST",
+      url: `${API}/conference/create`,
+      headers: {
+        "Content-Type": "application/json",
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+      },
+      data: {
+        conferenceUrl: `${conferenceUrl}`,
+        conferenceTitle: `${meetingTitle}`,
+        conferenceContents: `${meetingContent}`,
+        groupPk: `${groupPk}`,
+      },
+    }).then((response) => {
+      console.log("이게 방 생성했을때 response", response.data);
+      navigate("/openvidu", {
+        state: {
+          meetingUrl: { conferenceUrl },
+          groupPk: { groupPk },
+          sessionTitle: { meetingTitle },
+        },
+      });
+    });
+  };
+
+  const selectHandler = (e) => {
+    setGroupPk(e.target.value);
+    console.log("----select", e.target.value);
+  };
+
+  const titleHandler = (e) => {
+    const newTitle = e.target.value;
+    setMeetingTitle(newTitle);
+  };
+
+  const contentHandler = (e) => {
+    const newContent = e.target.value;
+    setMeetingContent(newContent);
+  };
 
   console.log(conferenceUrl);
   return (
@@ -49,24 +96,36 @@ const MeetingPlusModal = ({ onClose }) => {
       <TitleStyle>
         <div className="name">회의명 </div>
         <div className="nickname">
-          <input type="text" style={{ border: 'solid 2px grey' }} />
+          <input
+            type="text"
+            style={{ border: "solid 2px grey" }}
+            onChange={titleHandler}
+          />
         </div>
       </TitleStyle>
       <TitleStyle>
         <div className="name">회의 개요 </div>
         <div className="nickname">
-          <input type="text" style={{ border: 'solid 2px grey' }} />
+          <input
+            type="text"
+            style={{ border: "solid 2px grey" }}
+            onChange={contentHandler}
+          />
         </div>
       </TitleStyle>
       {/* 여기 그룹다운으로 그룹 선택 만들어야됨*/}
       <TitleStyle>
         <div className="name">그룹 선택</div>
-        <select name="nickname" style={{ border: 'solid 2px grey' }}>
-          {groupList.map((title, i) => {
-            console.log(title);
+        <select
+          name="nickname"
+          style={{ border: "solid 2px grey" }}
+          onChange={selectHandler}
+          value={groupPk}
+        >
+          {groupList.map((item, i) => {
             return (
-              <option key={i} value={`${title}`}>
-                {title}
+              <option key={i} value={`${item.groupPk}`}>
+                {item.groupName}
               </option>
             );
           })}
@@ -75,7 +134,11 @@ const MeetingPlusModal = ({ onClose }) => {
       <TitleStyle>
         <div className="name">URL</div>
         <div className="nickname">
-          <input type="text" defaultValue={conferenceUrl} style={{ border: 'solid 2px grey' }} />
+          <input
+            type="text"
+            defaultValue={conferenceUrl}
+            style={{ border: "solid 2px grey" }}
+          />
         </div>
         <ButtonStyle>
           <button onClick={() => CopyHandler(conferenceUrl)}>Copy</button>
@@ -97,12 +160,16 @@ const MeetingPlusModal = ({ onClose }) => {
       </TitleStyle>
       <TitleStyle>
         <SubButtonStyle>
-          <div className='position'>
-          <button className="custom-btn btn-8">Create</button>
+          <div className="position">
+            <button className="custom-btn btn-8" onClick={JoinOpenviduHandler}>
+              Create
+            </button>
           </div>
         </SubButtonStyle>
         <SubButtonStyle>
-          <button className="custom-btn btn-8" onClick={CancelHandler}>Cancel</button>
+          <button className="custom-btn btn-8" onClick={CancelHandler}>
+            Cancel
+          </button>
         </SubButtonStyle>
       </TitleStyle>
     </Modal>
@@ -153,63 +220,62 @@ const CreateCancelButtonStyle = styled.div`
 `;
 
 const SubButtonStyle = styled.div`
-.custom-btn {
-  width: 50px;
-  height: 25px;
-  color: #fff;
-  border-radius: 5px;
-  margin-left: 50px;
-  padding: 10px 25px;
-  font-family: 'Lato', sans-serif;
-  font-weight: 500;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  display: flex;
-   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
-   7px 7px 20px 0px rgba(0,0,0,.1),
-   4px 4px 5px 0px rgba(0,0,0,.1);
-  outline: none;
-  align-items: center;
-  justify-content: center;
-}
+  .custom-btn {
+    width: 50px;
+    height: 25px;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: 50px;
+    padding: 10px 25px;
+    font-family: "Lato", sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+    align-items: center;
+    justify-content: center;
+  }
   .btn-8 {
-  background-color: #4dccc6;
-  background-image: linear-gradient(315deg, #f0ecfc 0%, #4dccc6 74%);
-  line-height: 42px;
-  padding: 0;
-  border: none;
-}
-.btn-8:before,
-.btn-8:after {
-  position: absolute;
-  content: "";
-  right: 0;
-  bottom: 0;
-  background: #4dccc6;
-  box-shadow:  4px 4px 6px 0 rgba(255,255,255,.5),
-              -4px -4px 6px 0 rgba(116, 125, 136, .2), 
-    inset -4px -4px 6px 0 rgba(255,255,255,.5),
-    inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
-  transition: all 0.3s ease;
-}
-.btn-8:before{
-   height: 0%;
-   width: 2px;
-}
-.btn-8:after {
-  width: 0%;
-  height: 2px;
-}
-.btn-8:hover:before {
-  height: 100%;
-}
-.btn-8:hover:after {
-  width: 100%;
-}
-.btn-8:hover{
-  background: transparent;
-  color: #4dccc6;
-}
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #f0ecfc 0%, #4dccc6 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-8:before,
+  .btn-8:after {
+    position: absolute;
+    content: "";
+    right: 0;
+    bottom: 0;
+    background: #4dccc6;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.5),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.5),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-8:before {
+    height: 0%;
+    width: 2px;
+  }
+  .btn-8:after {
+    width: 0%;
+    height: 2px;
+  }
+  .btn-8:hover:before {
+    height: 100%;
+  }
+  .btn-8:hover:after {
+    width: 100%;
+  }
+  .btn-8:hover {
+    background: transparent;
+    color: #4dccc6;
+  }
 `;
