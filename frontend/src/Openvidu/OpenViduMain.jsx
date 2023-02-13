@@ -9,7 +9,6 @@ import { BsCameraVideo } from "react-icons/bs";
 import { BsCameraVideoOff } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 
-import Modal from "../CommonComponents/Modal/Modal";
 import OCRPage from "./OCRPage";
 
 import html2canvas from "html2canvas";
@@ -23,9 +22,10 @@ class OpenViduMain extends Component {
   constructor(props) {
     super(props);
     // These properties are in the state's component in order to re-render the HTML whenever their values change
+    console.log("----------------이게 props",this.props)
     this.state = {
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      mySessionId: this.props.meetingUrl.conferenceUrl,
+      myUserName: this.props.user.userName,
       session: undefined,
       mainStreamManager: undefined, // Main video of the page. Will be the 'publisher' or one of the 'subscribers'
       publisher: undefined,
@@ -52,13 +52,6 @@ class OpenViduMain extends Component {
     this.handleMainVideoStream = this.handleMainVideoStream.bind(this);
     this.onbeforeunload = this.onbeforeunload.bind(this);
     // this.screenshot = this.screenshot.bind(this);
-  }
-
-  // modal
-  onClose() {
-    this.setmodal({
-      open: false,
-    });
   }
 
   // cropImage
@@ -113,98 +106,9 @@ class OpenViduMain extends Component {
     );
   }
 
-  // screenshot(e) {
-  //   let startX, startY;
-  //   let height = window.innerHeight;
-  //   let width = window.innerWidth;
-
-  //   // 배경을 어둡게 깔아주기 위한 div 객체 생성
-  //   let screenBg = document.createElement("div");
-  //   screenBg.id = "screenShot_background";
-  //   screenBg.style.borderWidth = "0 0" + height + "px 0";
-
-  //   // 마우스 이동하면서 선택한 영역의 크기를 보여주기 위한 div 객체 생성
-  //   let screenShot = document.createElement("div");
-  //   screenShot.id = "screenshot";
-
-  //   document.querySelector("body").appendChild(screenBg);
-  //   document.querySelector("body").appendChild(screenShot);
-
-  //   let selectArea = false;
-  //   let body = document.querySelector("body");
-
-  //   const mouseDown = function (e) {
-  //     e.preventDefualt();
-  //     selectArea = true;
-  //     startX = e.clientX;
-  //     startY = e.clientY;
-  //     console.log("mousedown", startX, startY);
-  //     body.removeEventListener("mousedown", mouseDown);
-  //   };
-
-  //   function mouseMove(e) {
-  //     let x = e.clientX;
-  //     let y = e.clientY;
-  //     screenShot.style.left = x;
-  //     screenShot.style.top = y;
-  //     if (selectArea) {
-  //       let top = Math.min(y, startY);
-  //       let right = width - Math.max(x, startX);
-  //       let bottom = height - Math.max(y, startY);
-  //       var left = Math.min(x, startX);
-  //       screenBg.style.borderWidth = `${top}px ${right}px ${bottom}px ${left}px`;
-  //       console.log("screenBg", screenBg.style.borderWidth);
-  //     }
-  //   }
-
-  //   function save(canvas) {
-  //     if (navigator.msSaveBlob) {
-  //       let blob = canvas.msSaveBlob();
-  //       return navigator.msSaveBlob(blob, "파일명.jpg");
-  //     } else {
-  //       let el = document.getElementById("target");
-  //       el.href = canvas.toDataURL("image/jpeg");
-  //       el.download = "bunny.jpg";
-  //       el.click();
-  //     }
-  //   }
-
-  //   function mouseUp(e) {
-  //     selectArea = false;
-  //     //(초기화) 마우스 떼면서 마우스 무브 이벤트 삭제
-  //     body.removeEventListener("mousemove", mouseMove);
-  //     //(초기화) 스크린샷을 위해 생성한 객체 삭제
-  //     screenShot.parentNode.removeChild(screenShot);
-  //     screenBg.parentNode.removeChild(screenBg);
-  //     let x = e.clientX;
-  //     let y = e.clientY;
-  //     let top = Math.min(y, startY);
-  //     let left = Math.min(x, startX);
-  //     let width = Math.max(x, startX) - left;
-  //     let height = Math.max(y, startY) - top;
-  //     console.log("mouseup", left, top, width, height);
-
-  //     html2canvas(document.body).then(function (canvas) {
-  //       let img = canvas
-  //         .getContext("2d")
-  //         .getImageData(left, top, width, height);
-  //       console.log(img);
-  //       let c = document.createElement("canvas");
-  //       c.width = width;
-  //       c.height = height;
-  //       c.getContext("2d").putImageData(img, 0, 0);
-  //       save(c); // crop한 이미지 저장
-  //     });
-  //     body.removeEventListener("mouseup", mouseUp);
-  //     document.querySelector("body").classList.remove("edit_cursor");
-  //   }
-  //   body.addEventListener("mousedown", mouseDown);
-  //   body.addEventListener("mousemove", mouseMove);
-  //   body.addEventListener("mouseup", mouseUp);
-  // }
-
   componentDidMount() {
     window.addEventListener("beforeunload", this.onbeforeunload);
+    this.joinSession();
   }
 
   componentWillUnmount() {
@@ -366,6 +270,7 @@ class OpenViduMain extends Component {
       mainStreamManager: undefined,
       publisher: undefined,
     });
+
   }
 
   async switchCamera() {

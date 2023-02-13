@@ -43,7 +43,8 @@ import Logo from "./Images/LogoSwing.gif";
 import SidePadding from "./CommonComponents/SidePadding";
 
 //open vidu
-import OpenViduMain from "./Openvidu/OpenViduMain";
+// import OpenViduMain from "./Openvidu/OpenViduMain";
+import NoPadding from "./Openvidu/NoPadding";
 
 import {
   RecoilRoot,
@@ -179,7 +180,7 @@ function App() {
       ) : (
         <Routes>
           {/* openvidu 링크 */}
-          <Route path="/openvidu" element={<OpenViduMain />}></Route>
+          <Route path="/openvidu" element={<NoPadding />}></Route>
         </Routes>
       )}
     </RecoilRoot>
