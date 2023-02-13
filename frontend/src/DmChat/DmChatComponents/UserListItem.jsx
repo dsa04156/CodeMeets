@@ -1,9 +1,13 @@
 import styled from "styled-components";
 
 const UserListItem = (props) => {
+  let msg = String(props.contents)
+  if (msg.length > 10) {
+    msg = msg.substr(0, 8) + " ...";
+  }
   return (
     <Item>
-      <p>대화 상대 : {props.nickname} | 메시지 : {props.contents}</p>
+      <p>{props.nickname} | {msg}</p>
     </Item>
   );
 };

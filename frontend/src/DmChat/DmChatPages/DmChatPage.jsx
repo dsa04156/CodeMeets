@@ -7,14 +7,18 @@ import styled from "styled-components";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
+import { AiOutlineSearch } from "react-icons/ai";
+
 import { useRecoilValue } from "recoil";
 import { APIroot } from "../../Store";
+import { user } from "../../Store";
 
 const DmChatPage = () => {
   const API = useRecoilValue(APIroot);
+  const USER = useRecoilValue(user);
 
   const [userList, setUserList] = useState([]);
-  const [userPkList, setUserPkList] = useState([]);
+  const [userPkList, setUserPkList] = useState([USER.userPk]);
   const [selectRoom, setSelectRoom] = useState([]);
   const [other, setOther] = useState([]);
   const [search, setSearch] = useState("");
@@ -32,6 +36,9 @@ const DmChatPage = () => {
     }).then((response) => {
       // console.log(response.data);
       setUserList(response.data);
+      response.data.map((user) => {
+        setUserPkList([...userPkList, user.otherPk]);
+      })
     });
     
   }, [API]);
@@ -40,6 +47,15 @@ const DmChatPage = () => {
     setSearch(e.target.value);
     setSearchUserList([]);
   }
+
+  useEffect(() => {
+		const debounce = setTimeout(() => {
+      		if(search) searchUser();
+    	},200)
+        return () => {
+          clearTimeout(debounce)
+        }
+    },[search])
 
   const searchUser = () => {
     axios({
@@ -51,7 +67,15 @@ const DmChatPage = () => {
         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
-      setSearchUserList(response.data);
+      // setSearchUserList(response.data);
+      response.data.map((user) => {
+        if (userPkList.includes(user.userPk)) {
+          return true;
+        }
+        else {
+          setSearchUserList([ ...searchUserList, user]);
+        }
+      })
     });
   }
 
@@ -79,7 +103,9 @@ const DmChatPage = () => {
       data.room = await getNewRoomNo();
       data.content = "첫 대화를 시작하세요";
 
-      setUserList([ ...userList, data])
+      setUserList([...userList, data])
+      setSearch("");
+      setSearchUserList([]);
     };
 
     return (
@@ -117,18 +143,20 @@ const DmChatPage = () => {
     <MainFrame>
       <UserFrame>
         <UserSearchFrame>
-          <input type="text"
-            style={{ border: 'solid 2px grey', width: '100%', height: '25px', alignItems: 'top'}}
+          <Search
             value={search}
             onChange={onChange}
-            onKeyPress={event => {
-              if (event.code === "Enter") {
-                  event.preventDefault();
-                  searchUser();
-                  }
-              }}/>
-          {searchUsers}
+          > 
+          </Search>
+          <AiOutlineSearch size="24" />
         </UserSearchFrame>
+        
+        {searchUserList.length > 0 && search && (
+          <UserSearchListFrame>
+            {searchUsers}
+          </UserSearchListFrame>
+        )}
+
         <UserListFrame>
           <ul>{userUlList}</ul>          
         </UserListFrame>
@@ -176,8 +204,31 @@ const UserSearchFrame = styled.div`
   width: 100%;
   border: 1px solid black;
   height: auto;
+  display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+`;
+
+const Search = styled.input`
+  border: 0;
+  padding-left: 10px;
+  background-color: #eaeaea;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  
+`;
+
+const UserSearchListFrame = styled.div`
+  z-index: 3;
+  height: 50vh;
+  width: 20%;
+  background-color: #fff;
+  position: absolute;
+  // top: 45px;
+  border: 2px solid;
+  padding: 15px;
 `;
 
 const UserListFrame = styled.div`
@@ -186,8 +237,10 @@ const UserListFrame = styled.div`
   border: 1px solid black;
   height: 70%;
   ul {
-    width: 100%;
-    margin: 0px;
+    width: 90%;
+    margin-top: 3%;
+    margin-left: 5%;
+    margin-right: auto;
     list-style: none;
     padding: 0px;
   }
