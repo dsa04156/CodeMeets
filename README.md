@@ -22,8 +22,6 @@
 2. 그리고 공유되고 있는 강의 화면의 코드를 바로 내 클립보드로 가져와 가공할 수 있습니다.
 
 
-(기획 배경)
-
 # CODE Meet 개요
 ---
 'CODE Meets'는 'Code', 'OCR', 'Develope', 'Education'의 첫 글자인 'C', 'O', 'D', 'E'와 강의자와 수강자가 만난다는 'Meets'를 합친 의미입니다.
@@ -40,24 +38,19 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 
 # 메뉴 구조
 ---
-- 공유된 사진 넣으면 될듯
+![CODE_Meets_1_메뉴_구조](/uploads/c92d5012670b3b895884253f68756bff/CODE_Meets_1_메뉴_구조.jpg)
 
 # User Flowchart 
 ---
-- 공유된 사진 넣으면 될듯
+![CODE_Meets_2_User_Flowchart](/uploads/a75c8752fee8bf8fa15940dabcde962a/CODE_Meets_2_User_Flowchart.jpg)
 
 # Wireframe
 ---
-- 공유된 사진 넣으면 될듯
+![CODE_Meets_4_Wireframe](/uploads/fc8900d881475a17d9041bcca2214d55/CODE_Meets_4_Wireframe.jpg)
 
 # 주요 기술
 ---
-
-(서비스 아키텍처 사진 넣으면 될듯)
-
-# 프로젝트 파일 구조도
----
-( 내용 없음)
+![CODE_Meets_5_Service_Architecture](/uploads/f39409b58b2c013eb28e716387ab38f2/CODE_Meets_5_Service_Architecture.jpg)
 
 # 협업 툴 및 환경
 ---
@@ -109,7 +102,7 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 ---
 - 메뉴 구조
 - Userflow
-- Git 전략략
+- Git 전략
 - Service Architecture 
 - Convention
 - 기능명세서
@@ -117,9 +110,7 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 - API 
 - ERD
 - 회의록
-- 1차 발표자료(기획_설계계)
----
-- 1차 기획 발표 자료-
+- 1차 발표자료(기획_설계)
 
 # 서비스 화면
 ---
