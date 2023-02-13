@@ -81,11 +81,11 @@
 	<select id="clickCreate" resultMap="conferenceThreeDto" parameterType="int">
 		<![CDATA[
 		select 
-		a.group_name, a.group_pk,b.conference_url 
+		a.group_name, a.group_pk
 		from 
-		`group` as a, `conference` as b, `group-user` as c
+		`group` as a, `group-user` as c
         where
-         c.group_pk=b.group_pk and a.group_pk=b.group_pk and c.user_pk=#{userPk};
+         c.group_pk=a.group_pk and c.user_pk=#{userPk};
 	 ]]>
 	</select>
 	
