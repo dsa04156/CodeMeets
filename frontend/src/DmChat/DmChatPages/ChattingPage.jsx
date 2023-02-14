@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import DefaultImage from "../../Images/Logo.png"
+import logoBlack from '../../assets/logo-black.png';
 
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -9,6 +9,7 @@ import { APIroot } from "../../Store";
 import { user } from "../../Store";
 
 
+    
 const ChattingPage = (props) => {
     const API = useRecoilValue(APIroot);
     const USER = useRecoilValue(user);
@@ -20,12 +21,14 @@ const ChattingPage = (props) => {
     const ws = useRef({});
 
     useEffect(() => {
+        // prod 환경
         ws.current = new WebSocket(`wss://i8d109.p.ssafy.io/api/chating/${props.room}`);
+        // dev 환경
         // ws.current = new WebSocket(`wss://localhost:18081/api/chating/${props.room}`);
         getMessage();
         
         if(USER.profilePhoto === ""){
-            setMyProfileImage(DefaultImage)
+            setMyProfileImage(logoBlack)
         }else{
             setMyProfileImage(`${API}/file/images/${USER.profilePhoto}`)
         }
@@ -40,11 +43,11 @@ const ChattingPage = (props) => {
         ws.current.onmessage = (readMsg) => {
             const dataSet = JSON.parse(readMsg.data);
             setRoom([...room, dataSet]);
+            props.changeContents(dataSet.content);
         }
-        
+
         scrollRef.current.scrollTop = scrollRef.current.scrollHeight;   
     }, [room])
-
 
     const getMessage = async () => {
         await axios({
@@ -65,14 +68,30 @@ const ChattingPage = (props) => {
         // console.log(roomItem)
         return (
                 roomItem.recvPk !== USER.userPk
-                ?
+                ? // 자신의 메시지
                 <RightChat>
-                        <ProfileStyle src={`${myProfileImage}`} /> <br/>
+                        <ProfileArea>
+                        {USER.nickname} &nbsp;
+                        <ProfileStyle src={`${myProfileImage}`} />
+                        </ProfileArea>
                         <MessageStyle> {roomItem.content} </MessageStyle>
                 </RightChat>
-                :
+                : // 상대의 메시지
                 <LeftChat>
-                    <ProfileStyle src={`${API}/file/images/${roomItem.profilePhoto}`} /> <br/>
+                    <ProfileArea>
+                        {/* 프로필 사진이 없는 경우 */}
+                        {roomItem.profilePhoto === "" 
+                            ? <ProfileStyle src={logoBlack} />
+                            // 프로필 사진은 있는데 ...
+                            : (roomItem.profilePhoto.includes('http')
+                            // 소셜로그인하고 프로필 사진 변경한적 없는 경우
+                            ? <ProfileStyle src={`${roomItem.profilePhoto}`} />
+                            // 사진 이미지를 업로드 하여 사용중인 경우
+                            : <ProfileStyle src={`${API}/file/images/${roomItem.profilePhoto}`} />
+                            )
+                        }                        
+                        &nbsp; {props.otherNick}
+                    </ProfileArea>
                     <MessageStyle> {roomItem.content} </MessageStyle>
                 </LeftChat>
         );
@@ -83,39 +102,37 @@ const ChattingPage = (props) => {
     }
 
     const handleClick = () => {
-        axios({
-            method: "POST",
-            url: `${API}/message/send?room=${props.room}&otherPk=${props.other}&content=` + encodeURI(message),
-            // url: `http://localhost:18081/api/message/send?room=${props.room}&otherPk=${props.other}&content=` + encodeURI(message),
-            headers: {
-                "Content-Type": "application/json",
-                AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
-            },
-            }).then((response) => {
-                // getMessage();
-                scrollRef.current.scrollTop = scrollRef.current.scrollHeight;   
-            });
+        if (message != "") {
+            axios({
+                method: "POST",
+                url: `${API}/message/send?room=${props.room}&otherPk=${props.other}&content=` + encodeURI(message),
+                // url: `http://localhost:18081/api/message/send?room=${props.room}&otherPk=${props.other}&content=` + encodeURI(message),
+                headers: {
+                    "Content-Type": "application/json",
+                    AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+                },
+                }).then((response) => {
+                    props.changeContents(message);
+                    scrollRef.current.scrollTop = scrollRef.current.scrollHeight;   
+                });
+            
+            send();
+            setMessage('');
+        }
         
-        send();
-        setMessage('');
     }
 
     const send = () => {
         let data = {};
 
-        if (message != "") {
-            data.id = USER.userPk;
-            data.content = message;
-            data.profilePhoto = USER.profilePhoto;
-            // data.date = new Date().toLocaleString();
-            data.sendPk = USER.userPk;
-            data.room = props.room;
-            data.recvPk = props.other;
-            var temp = JSON.stringify(data);
-            // console.log("send " + temp);
-            // console.log(ws.current);
-            ws.current.send(temp);
-        }
+        data.id = USER.userPk;
+        data.content = message;
+        data.profilePhoto = USER.profilePhoto;
+        data.sendPk = USER.userPk;
+        data.room = props.room;
+        data.recvPk = props.other;
+        var temp = JSON.stringify(data);
+        ws.current.send(temp);
     }
     
     return (
@@ -124,36 +141,20 @@ const ChattingPage = (props) => {
                 {chatUlList}     
             </ChattingList>
             <SendMessage>
-                {/* <Inlabel htmlFor="msg">
-                    </Inlabel> */}
-                {/* <InputMessage
-                    id="msg"
-                    style={{ border: 'solid 2px grey', width: '85%', height: '100%', alignItems: 'top'}}
-                    type="text"
-                    name="message"
-                    placeholder="보낼 메시지 입력"                    
-                    value={message}
+                <TextArea
+                
+                className="form-control"
+                maxLength={400}
+                autoFocus               
+                value={message}
                     onChange={handleChange}
-                    onKeyPress={event => {
+                    placeholder="Enter로 전송"
+                onKeyPress={event => {
                     if (event.code === "Enter") {
                         event.preventDefault();
                         handleClick();
                         }
-                    }}
-                    /> */}
-                <textarea
-                    className="form-control"
-                    maxLength={400}
-                    autoFocus               
-                    value={message}
-                    onChange={handleChange}
-                    onKeyPress={event => {
-                        if (event.code === "Enter") {
-                            event.preventDefault();
-                            handleClick();
-                            }
-                        }}
-                />
+                    }} />
                 <SendButton onClick={handleClick}>
                     확인
                 </SendButton>
@@ -173,61 +174,61 @@ const ChatRoom = styled.div`
 const ChattingList = styled.div`
   width: 100%;
   height: 85%;
-  overflow: scroll;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const ProfileStyle = styled.img`
-    height: 40px;
+    height: 30px;
     border-radius: 70%;
     overflow: hidden;
 `;
 
 const LeftChat = styled.div`
     width: 100%;
-    height: 3pem;
+    height: 2pem;
     text-align: left;
+    margin: 5px 0 5px 0;
 `;
 
 const RightChat = styled.div`
     width: 100%;
-    height: 3pem;
+    height: 2pem;
     text-align: right;
+    margin: 5px 0 5px 0;
+`;
+
+const ProfileArea = styled.div`
+    font-size: 15px;
 `;
 
 const MessageStyle = styled.div`
-    font-size: 20px;
+    font-size: 25px;
     padding: 0 15px 0 15px;
 `;
 
 const SendMessage = styled.div`
     width: 100%;
     height: 15%;
-    border: 1px solid black;
     display: flex;
 `;
 
-const Inlabel = styled.label`
+const TextArea = styled.textarea`
+    resize: none;
     border-radius:4px;
     display: inline-block;
-    // padding: 10px 10px;
-    color: #fff;
     vertical-align: middle;
-    // background-color: #999999;
     width: 85%;
-    height: 100%;
+    height: 90%;
     margin: 0 0 3px;
     margin-left: 5px;
 `
 
-const InputMessage = styled.input`
-    border: none;
-    background: white;
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-`;
-
 const SendButton = styled.button`
     width: 15%;
-    height: 100%;
+    height: 95%;
     border: 1px solid black;
+    border-radius: 10%;
 `;
