@@ -28,7 +28,10 @@ const HeaderProfile = () => {
 
     return (
         <div>
-            <ProfileStyle src={`${profileImage}`} onClick={ToMyPage}/>
+            { (loginUser?.userPk !== undefined)? 
+            (<ProfileStyle  src={`${profileImage}`} onClick={ToMyPage}/>) 
+            : <ProfileHidden src={`${profileImage}`}/>}
+            {/* <ProfileStyle  src={`${profileImage}`} onClick={ToMyPage}/> */}
         </div>
     );
 };
@@ -37,5 +40,9 @@ export default HeaderProfile;
 
 const ProfileStyle = styled.img`
     height: 40px;
-    cursor: pointer;;
+    cursor: pointer;
+`;
+
+const ProfileHidden = styled.img`
+    display: none;
 `;

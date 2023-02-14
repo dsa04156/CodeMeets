@@ -23,7 +23,7 @@ const QuestionBoard = () => {
         console.log(response.data[0].conferenceQuestionContents);
         setQuestion(response.data);
       })
-    }, 100000);
+    }, 1000);
     return () => clearInterval(qList);
   }, []);
 

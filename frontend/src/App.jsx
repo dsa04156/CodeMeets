@@ -44,6 +44,8 @@ import Logo from "./Images/LogoSwing.gif";
 
 import SidePadding from "./CommonComponents/SidePadding";
 
+import { user } from "./Store";
+
 //open vidu
 // import OpenViduMain from "./Openvidu/OpenViduMain";
 import NoPadding from "./Openvidu/NoPadding";
@@ -58,14 +60,20 @@ import {
 
 function App() {
   const router = useLocation();
-  const Navigate = useNavigate();
-
+  const navigate = useNavigate();
+  const loginUser = useRecoilValue(user);
+  
   const LogoHandler = () => {
-    Navigate("/home");
+    if (loginUser?.userPk !== undefined) {
+      navigate("/home");
+    } else {
+      alert('로그인 해주시기 바랍니다.')
+      navigate('/');
+    }
   };
 
   return (
-    <RecoilRoot>
+    <>
       {router.pathname !== "/openvidu" ? (
         <SidePadding>
           <Center>
@@ -188,7 +196,7 @@ function App() {
           <Route path="/openvidu" element={<NoPadding />}></Route>
         </Routes>
       )}
-    </RecoilRoot>
+    </>
   );
 }
 

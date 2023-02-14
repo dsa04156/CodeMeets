@@ -10,11 +10,21 @@ import registerServiceWorker from './registerServiceWorker';
 
 import reportWebVitals from "./reportWebVitals";
 
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  <RecoilRoot>
     <BrowserRouter>
       <App />
     </BrowserRouter>
+  </RecoilRoot>
 );
 registerServiceWorker();
 reportWebVitals();
