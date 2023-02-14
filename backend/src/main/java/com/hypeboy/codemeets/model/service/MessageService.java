@@ -12,7 +12,7 @@ public interface MessageService {
 
 	int countUnread(MessageDto mto) throws Exception;
 
-	String getOtherProfile(MessageDto mto) throws Exception;
+	String getOtherProfile(int otherPk) throws Exception;
 
 	List<MessageDto> messageList(MessageDto messageDto) throws SQLException;
 
