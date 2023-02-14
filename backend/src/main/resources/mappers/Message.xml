@@ -56,15 +56,12 @@
 		]]>
 	</select>
 	
-	<select id = "getOtherProfile" parameterType="messageDto" resultType="String">
+	<select id = "getOtherProfile" resultType="String">
 		<![CDATA[
-		select 
-		profile_photo
-		from 
-		user_info 
-		where if(#{sendPk}=#{userPk},user_pk=#{recvPk},user_pk=#{sendPk});
+		SELECT profile_photo
+		FROM `user_info` 
+		WHERE user_pk = #{otherPk};
 		]]>
-	
 	</select>
 	
 	<select id="countUnread" parameterType="messageDto" resultType="int">
