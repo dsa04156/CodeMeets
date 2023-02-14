@@ -7,7 +7,7 @@ import {useState} from "react"
 const MeetingInModal = ({ onClose }) => {
   const title = "Meeting Enter";
   const navigate = useNavigate()
-  const [conferenceUrl, setConferenceUrl] = useState()
+  const [conferenceUrl, setConferenceUrl] = useState("")
 
   const urlHandler = (e) => {
     const newUrl = e.target.value;
@@ -15,11 +15,15 @@ const MeetingInModal = ({ onClose }) => {
   }
 
   const JoinOpenviduHandler = () => {
-    navigate("/openvidu", {
-      state: {
-        meetingUrl: { conferenceUrl },
-      },
-    });
+    if(conferenceUrl === ""){
+      alert('회의 URL을 입력해주시기 바랍니다.')
+    }else{
+      navigate("/openvidu", {
+        state: {
+          meetingUrl: { conferenceUrl },
+        },
+      });
+    }
   };
 
 

@@ -50,29 +50,35 @@ const MeetingPlusModal = ({ onClose }) => {
   };
 
   const JoinOpenviduHandler = () => {
-    axios({
-      method: "POST",
-      url: `${API}/conference/create`,
-      headers: {
-        "Content-Type": "application/json",
-        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
-      },
-      data: {
-        conferenceUrl: `${conferenceUrl}`,
-        conferenceTitle: `${meetingTitle}`,
-        conferenceContents: `${meetingContent}`,
-        groupPk: `${groupPk}`,
-      },
-    }).then((response) => {
-      console.log("이게 방 생성했을때 response", response.data);
-      navigate("/openvidu", {
-        state: {
-          meetingUrl: { conferenceUrl },
-          groupPk: { groupPk },
-          sessionTitle: { meetingTitle },
+    if(meetingTitle === ""){
+      alert('회의명을 입력해주세요')
+    }else if(meetingContent === ""){
+      alert('미팅 개요를 입력해주세요')
+    }else{
+      axios({
+        method: "POST",
+        url: `${API}/conference/create`,
+        headers: {
+          "Content-Type": "application/json",
+          AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
         },
+        data: {
+          conferenceUrl: `${conferenceUrl}`,
+          conferenceTitle: `${meetingTitle}`,
+          conferenceContents: `${meetingContent}`,
+          groupPk: `${groupPk}`,
+        },
+      }).then((response) => {
+        console.log("이게 방 생성했을때 response", response.data);
+        navigate("/openvidu", {
+          state: {
+            meetingUrl: { conferenceUrl },
+            groupPk: { groupPk },
+            sessionTitle: { meetingTitle },
+          },
+        });
       });
-    });
+    }
   };
 
   const titleHandler = (e) => {
