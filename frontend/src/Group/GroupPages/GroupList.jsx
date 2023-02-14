@@ -239,14 +239,6 @@ const Styles = styled.div`
   }
 `;
 
-const CreateButton = styled.button`
-  margin-left: 450px;
-`;
-
-const JoinButton = styled.button`
-  margin-left: 50px;
-`;
-
 const SubButtonStyle = styled.div`
   .custom-btn {
     width: 100px;
@@ -254,6 +246,7 @@ const SubButtonStyle = styled.div`
     color: #fff;
     border-radius: 5px;
     padding: 10px 25px;
+    margin-left: 15px;
     font-family: 'Lato', sans-serif;
     font-weight: 500;
     background: transparent;

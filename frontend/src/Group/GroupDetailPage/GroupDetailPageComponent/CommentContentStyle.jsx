@@ -17,6 +17,6 @@ const ContentBox = styled.div`
   /* border: 1px solid black; */
   margin: 2vh;
   margin-Bottom: 1vh;
-  height: 50vh;
+  height: 40vh;
   overflow-y: auto;
 `;

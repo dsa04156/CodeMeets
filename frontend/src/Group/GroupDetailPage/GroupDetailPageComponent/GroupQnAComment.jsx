@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { AiFillHeart } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
 
+import styled from 'styled-components';
+
 const GroupQnAComment = ({
   groupQnaAnswerContents,
   groupQnaAnswerDate,
@@ -37,6 +39,12 @@ const GroupQnAComment = ({
     const currentContent = event.target.value;
     setFormContent(currentContent)
   }
+
+  const enterClickHandler = (event) => {
+    if (event.key === 'Enter') {
+      modifyCommentHandler();
+    }
+  };
 
   // 댓글 좋아요
   const likeClickHandler = () => {
@@ -112,28 +120,59 @@ const GroupQnAComment = ({
   // console.log(groupQnaAnswerLike);
   // console.log(groupQnaAnswerPk);
   return (
-    <div>
-      {username}
-      {groupQnaAnswerContents}
-      <div onClick={likeClickHandler}>
+    <ContentStyle style={{ margin: '0px 0px 5px 0px' }}>
+      <span className='commentHeight'>
+      <span className='userName'>{username}</span>
+      <div className='content'>{groupQnaAnswerContents}</div>
+      <span onClick={likeClickHandler}>
+      <span className='date'>{groupQnaAnswerDate}</span>
         {likeUnLike === true? (<AiFillHeart style={{ margin: '0px 5px 0px 0px' }}/>) : (<AiOutlineHeart style={{ margin: '0px 5px 0px 0px' }}/>)}
-        좋아요 : {groupQnaAnswerLikeCnt}
-      </div>
-      <div>
+        <span>좋아요 : {groupQnaAnswerLikeCnt}</span>
+      </span>
+      <ContentStyle>
         {/* onclick 시 input 창 띄우고 수정 확인 onClick 시 input 창 hidden 그리고 저장된 값 저장 */}
-      {userPk === loginUser.userPk ? (
-        <button onClick={modifyButtonStateHandler}>Modify</button>
-        ) : null}
-        {modifyButton ? <input type="text" defaultValue={groupQnaAnswerContents} onChange={contentHandler}/> : null }
-        {modifyButton ? <button onClick={modifyCommentHandler}>수정완료</button> : null}
-        {modifyButton ? <button onClick={modifyButtonStateHandler}>수정취소</button> : null}
-      </div>
-      {userPk === loginUser.userPk ? (
-        <button onClick={deleteComment}>Delete</button>
-      ) : null}
-      {groupQnaAnswerDate}
-    </div>
+      {userPk === loginUser.userPk ? ( <span className='button' onClick={modifyButtonStateHandler}>Modify</span> ) : null}
+      {userPk === loginUser.userPk ? ( <span className='button' onClick={deleteComment}>Delete</span> ) : null}
+        {modifyButton ? 
+        <div><input className='input' type="text" defaultValue={groupQnaAnswerContents} onKeyPress={enterClickHandler} onChange={contentHandler}/></div> : null }
+        {modifyButton ? <span className='button' onClick={modifyCommentHandler}>수정완료</span> : null}
+        {modifyButton ? <span className='button' onClick={modifyButtonStateHandler}>수정취소</span> : null}
+      </ContentStyle>
+      <hr />
+        </span>
+    </ContentStyle>
   );
 };
 
 export default GroupQnAComment;
+
+const ContentStyle = styled.div`
+    /* margin: 0px 0px 20px 0px; */
+    .userName {
+        font-weight: bold;
+        font-size: 17px;
+    }
+    .content {
+        margin: 5px 15px 5px 15px;
+    }
+    .date {
+        float: left;
+        margin: 0px 10px 0px 0px;
+    }
+    .input {
+        width: 925px;
+        height: 3vh;
+        margin: 5px 0px 5px 0px;
+    }
+    .commentHeight {
+      height: 0.1vh;
+    }
+    .button {
+        margin: 5px;
+        color: #8f8f8f;
+        cursor: pointer;
+        &:hover {
+            color: #3d58f3;
+        }
+    }
+`;

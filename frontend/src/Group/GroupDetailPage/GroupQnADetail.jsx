@@ -31,8 +31,6 @@ const GroupQnADetail = () => {
   const [newComment, setNewComment] = useState('');
   const [commentLikeState, setCommentLikeState] = useState(false);  // 각 댓글에 본인이 좋아요 했는지 여부
   const [commnetLikeUnLike, setCommnetLikeUnLike] = useState(false);
-  const [modifyButton, setModifyButton] = useState(false);
-  const [formContent, setFormContent] = useState(comments.groupQnaAnswerContents)
 
   const ModifyHandler = () => {
     navigate('/group/qna/modify', {
@@ -62,16 +60,11 @@ const GroupQnADetail = () => {
     setNewComment(event.target.value);
   };
 
-  //댓글 수정 버튼 핸들러
-  const modifyButtonStateHandler = () => {
-    setModifyButton(!modifyButton)
-  }
-
-  // 댓글 수정 입력 핸들러
-  const contentHandler = (event) => {
-    const currentContent = event.target.value;
-    setFormContent(currentContent)
-  }
+  const enterClickHandler = (event) => {
+    if (event.key === 'Enter') {
+      submitComment();
+    }
+  };
 
   // 게시글 디테일 정보 가져오기
   useEffect(() => {
@@ -183,74 +176,6 @@ const GroupQnADetail = () => {
     });
   };
 
-  // 댓글 좋아요
-  const commentlikeClickHandler = () => {
-    axios({
-      method: 'PUT',
-      url: `${API}/answer/like`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: JSON.stringify({
-        groupQnaAnswerPk: comments.groupQnaAnswerPk,
-        userPk: loginUser.userPk,
-      }),
-    })
-      .then((response) => {
-        console.log(response.data)
-        if (response.data === 'success') {
-          // console.log(likeUnLike)
-          setCommnetLikeUnLike((prev) => !prev);
-          // console.log(likeUnLike)
-          if (commnetLikeUnLike){
-            setData((prev) => {
-              const cnt = prev.groupQnaAnswerLikeCnt - 1;
-              // console.log(cnt)
-              return {...prev, groupQnaAnswerLikeCnt:cnt};
-              // console.log(cnt)
-            });
-          } else {
-            setData((prev) => {
-              const cnt = prev.groupQnaAnswerLikeCnt + 1;
-              return {...prev, groupQnaAnswerLikeCnt:cnt};
-            });
-          }
-        }
-      });
-  };
-
-  // 댓글 수정
-  const modifyCommentHandler = () => {
-    axios({
-        method: "PUT",
-        url: `${API}/answer`,
-        headers: {
-            "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-          groupQnaAnswerContents: formContent,
-          groupQnaAnswerPk: comments.groupQnaAnswerPk,
-          userPk: loginUser.userPk,
-        })
-    })
-    .then((response) => {
-      console.log(response.data)
-      modifyButtonStateHandler()
-      window.location.reload()
-    })
-}
-
-  // 댓글 삭제
-  const deleteComment = () => {
-    axios({
-      method: 'DELETE',
-      url: `${API}/answer/${comments.groupQnaAnswerPk}`,
-    }).then((response) => {
-      // console.log(response.data);
-      window.location.reload();
-    });
-  };
-
   const commentList = comments.map((commentitem, index) => {
     // console.log(commentitem)
     return (
@@ -271,6 +196,7 @@ const GroupQnADetail = () => {
 
   return (
     <div>
+      <OverStyle>
       <TitleStyle TitleContent={data.groupQuestionTitle} />
       <LikeBox>
         <div onClick={likeClickHandler}>
@@ -286,53 +212,37 @@ const GroupQnADetail = () => {
             />
           )}
           좋아요 : {data.groupQuestionLikeCnt}    {/* 게시글 좋아요 */}
-        </div>
+          </div>
       </LikeBox>
       {/* <LikeStyle Like={data.groupQuestionLikeCnt}  groupQuestionPk={data.groupQuestionPk} userPk={data.userPk}/> */}
-      <div>{data.groupQuestionContents}</div>
+      <HrStyle><hr style={{ width: '954px' }}/></HrStyle>
+      <ContentBox>{data.groupQuestionContents}</ContentBox>
+      </OverStyle>
+      <div style={{ margin: '15px 0px 15px 10px', borderTop: '1px solid' }}>
+        댓글
       <input
         type="text"
+        onKeyPress={enterClickHandler}
         onChange={createComment}
-        style={{ width: '900px', height: '30px' }}
+        style={{ width: '850px', height: '3vh', margin: '10px 0px 0px 5px' }}
       />
-      <button onClick={submitComment}>Submit</button>
-      {/* <CommentContentStyle Content={commentList}/> */}
-      {/* <button onClick={deleteComment}>Delete</button> */}
-      
-      
-      {/* 댓글 관련 띄우기 */}
-      <div>
-      {comments.username}
-      {comments.groupQnaAnswerContents}
-      <div onClick={commentlikeClickHandler}>
-        {commentLikeState === true? (<AiFillHeart style={{ margin: '0px 5px 0px 0px' }}/>) : (<AiOutlineHeart style={{ margin: '0px 5px 0px 0px' }}/>)}
-        좋아요 : {comments.groupQnaAnswerLikeCnt}
+      <SubmitStyle onClick={submitComment}>Submit</SubmitStyle>
       </div>
       <div>
-        {/* onclick 시 input 창 띄우고 수정 확인 onClick 시 input 창 hidden 그리고 저장된 값 저장 */}
-      {comments.userPk === loginUser.userPk ? (
-        <button onClick={modifyButtonStateHandler}>Modify</button>
-        ) : null}
-        {modifyButton ? <input type="text" defaultValue={comments.groupQnaAnswerContents} onChange={contentHandler}/> : null }
-        {modifyButton ? <button onClick={modifyCommentHandler}>수정완료</button> : null}
-        {modifyButton ? <button onClick={modifyButtonStateHandler}>수정취소</button> : null}
+      {comments.length > 0 ? (
+        <CommentContentStyle Content={commentList}/>
+        ) : (
+          <div style={{ margin: '50px 50px 50px 50px' }}>댓글이 없습니다.</div>
+        )}
       </div>
-      {comments.userPk === loginUser.userPk ? (
-        <button onClick={deleteComment}>Delete</button>
-      ) : null}
+      
       
       
       {/* 게시글의 수정 뒤로 삭제 기능*/}
-      {data.userPk === loginUser.userPk ? (
-        <button onClick={ModifyHandler}>Modify</button>
-      ) : null}
+      <ButtonStyle><button className='custom-btn btn-4' onClick={ToListHandler}>Cancel</button></ButtonStyle>
+      {data.userPk === loginUser.userPk ? ( <ButtonStyle><button className='custom-btn btn-4' onClick={ModifyHandler}>Modify</button></ButtonStyle> ) : null}
       {/* 로그인 userPk와 글쓴 사람의 userPk가 같을 경우 수정 버튼 보이게 */}
-      <button onClick={ToListHandler}>Cancel</button>
-      {data.userPk === loginUser.userPk ? (
-        <button onClick={deleteHandler}>Delete</button>
-      ) : null}
-      {comments.groupQnaAnswerDate}
-      </div>
+      {data.userPk === loginUser.userPk ? ( <ButtonStyle><button className='custom-btn btn-4' style={{float: 'left'}} onClick={deleteHandler}>Delete</button></ButtonStyle> ) : null}
     </div>
   );
 };
@@ -346,4 +256,129 @@ const LikeBox = styled.div`
   align-items: center;
   font-size: 2vh;
   margin-right: 3vh;
+  height: 0.1vh;
+`;
+
+const ContentBox = styled.div`
+border: 1px;
+display: flex;
+flex-direction: column;
+font-size: 2.5vh;
+margin: 2vh;
+height: 5vh;
+.LikeBox {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* margin-left: 80vh; */
+  font-size: 2vh;
+}
+`;
+const HrStyle = styled.div`
+  margin: 20px 0px 5px 0px;
+`;
+
+const SubmitStyle = styled.span`
+  margin: 0px 0px 0px 20px;
+  width: 10vh;
+  height: 3.5vh;
+  color: #8f8f8f;
+  cursor: pointer;
+  &:hover {
+    color: #3d58f3;
+  }
+`;
+const OverStyle = styled.div`
+  overflow-y: auto;
+`;
+
+const ButtonStyle = styled.div`
+  .custom-btn {
+    width: 100px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    margin: 20px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    float: right;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+  .btn-4 {
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-4:hover {
+    background-color: #89d8d3;
+    background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+  }
+  .btn-4 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .btn-4:before,
+  .btn-4:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4:before {
+    height: 0%;
+    width: 0.1px;
+  }
+  .btn-4:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4:hover:before {
+    height: 100%;
+  }
+  .btn-4:hover:after {
+    width: 100%;
+  }
+  .btn-4 span:before,
+  .btn-4 span:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4 span:before {
+    width: 0.1px;
+    height: 0%;
+  }
+  .btn-4 span:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4 span:hover:before {
+    height: 100%;
+  }
+  .btn-4 span:hover:after {
+    width: 100%;
+  }
 `;
