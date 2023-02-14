@@ -30,7 +30,9 @@ const NoPadding = () => {
 
 
     return(
-        <OpenViduMain user={loginUser} meetingUrl={location.state.meetingUrl} />
+        <div style={{width:"100%", height:"100%"}}>
+            <OpenViduMain user={loginUser} meetingUrl={location.state.meetingUrl} />
+        </div>
     )
 }
 

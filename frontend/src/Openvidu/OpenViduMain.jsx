@@ -20,10 +20,6 @@ import { TbCapture } from "react-icons/tb";
 import { FiShare } from "react-icons/fi";
 import { IoExitOutline } from "react-icons/io5";
 
-import { FaRegCopy } from "react-icons/fa";
-
-import { CopyToClipboard } from "react-copy-to-clipboard";
-
 const APPLICATION_SERVER_URL = "https://i8d109.p.ssafy.io/";
 
 class OpenViduMain extends Component {
@@ -619,7 +615,9 @@ const MainContainer = styled.div`
 `;
 
 const SideContainer = styled.div`
-  border: 1px solid red;
+  /* border: 2px solid grey;
+  border-radius: 10px; */
+  /* background-color: rgb(142, 195, 176); */
   height: 86vh;
   width: 47vh;
   display: flex;

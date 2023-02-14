@@ -20,16 +20,13 @@ const QuestionBoard = () => {
           AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
         },
       }).then((response) => {
-        console.log(response.data);
-        console.log(response.data[0].conferenceQuestionContents);
         setQuestion(response.data);
       })
-    }, 1000);
+    }, 500);
     return () => clearInterval(qList);
   }, []);
 
   const questionList = question.map((item, index) => {
-    console.log(item)
     return(
       <QuestionCard 
       key={index}
