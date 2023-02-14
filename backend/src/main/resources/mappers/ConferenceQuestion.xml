@@ -24,14 +24,14 @@
 		
 	</resultMap>
 	
-	<!-- ==================== 공지 작성 ======================================== -->
+	<!-- ==================== 회의 내 질문 작성 ======================================== -->
 	
 	<insert id="writeConferenceQuestion" parameterType="ConferenceQuestionDto" >
 		INSERT INTO `conference_question` (conference_question_contents, conference_question_date, conference_question_update, conference_pk, group_pk, user_pk)
 		VALUES (#{conferenceQuestionContents}, now(), 0, #{conferencePk}, #{groupPk}, #{userPk})
 	</insert>
 	
-	<!-- ==================== 공지 목록 조회, 상세 조회 ======================================== -->
+	<!-- ==================== 회의 내 질문 조회 및 페이지네이션 적용 ======================================== -->
 	
 	<select id="getList" resultMap="conferenceQuestion" >
 		select *,
@@ -42,7 +42,7 @@
 		from `conference_question` Q
 		NATURAL JOIN `user_info`
 		where conference_pk = #{conferencePk}
-		ORDER BY conference_question_like_cnt DESC
+		ORDER BY conference_question_like_cnt DESC, conference_question_pk DESC
 	</select>
 	
 	<select id="pageList" resultMap="conferenceQuestion">
