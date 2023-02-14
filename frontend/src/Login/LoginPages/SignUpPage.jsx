@@ -359,7 +359,7 @@ const SignUpPage = () => {
         <label htmlFor="">Password</label>
         <div>
           <InputStyle
-            type="text"
+            type="password"
             placeholder="Password"
             onChange={inputPwHandler}
           />
@@ -368,7 +368,7 @@ const SignUpPage = () => {
         <label htmlFor="">Password Check</label>
         <div>
           <InputStyle
-            type="text"
+            type="password"
             placeholder="Password"
             onChange={inputSecondPwHandler}
           />

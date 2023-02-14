@@ -14,7 +14,7 @@ const ContentBox = styled.div`
   border-top: 1px solid black;
   padding-top: 3vh;
   margin: 2vh;
-  height: 60vh;
+  height: 55vh;
   overflow-y: auto;
 `;
 const HitBox = styled.div`

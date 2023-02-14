@@ -23,7 +23,7 @@ const MyPageQuestionList = () => {
 
     const columns = React.useMemo(
         () => [
-            { Header: '번호', accessor: 'conferencePk', width: 90},
+            { Header: '번호', accessor: 'newIndex', width: 90},
             { Header: '질문 내용', accessor: 'conferenceQuestionContents', width: 260},
             { Header: '미팅명', accessor: 'conferenceTitle', width: 190},
             { Header: '그룹명', accessor: 'groupName', width: 180},
@@ -43,16 +43,23 @@ const MyPageQuestionList = () => {
         .then((response) => {
             console.log(response.data)
             setTotalPosts(response.data.question_record[0].total);
+            response.data.question_record.map((list, index) => {
+              //index + (page - 1) * items + 1
+              // 변수가 아닌 것들은 상수(고정값)
+              list.newIndex = index + (page - 1) * 7 + 1;
+            })
             setQuestionRecord(response.data.question_record);
         })
     }, [API, page]);
 
     return(
         // <Scrollsize>
+        <ContentBox>
             <Styles>
                 <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler} />
                 <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
             </Styles>
+            </ContentBox>
         // </Scrollsize>
     );
 };
@@ -88,3 +95,12 @@ const Styles = styled.div`
 //   height: 46vh;
 //   overflow-y: scroll;
 // `;
+
+const ContentBox = styled.div`
+  background: rgb(239, 245, 245);
+  background: linear-gradient(
+    149deg,
+    rgba(239, 245, 245, 1) 100%,
+    rgba(239, 245, 245, 0.41228991596638653) 100%
+  );
+`;

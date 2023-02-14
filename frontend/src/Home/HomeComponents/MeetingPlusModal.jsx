@@ -11,6 +11,7 @@ const MeetingPlusModal = ({ onClose }) => {
   const API = useRecoilValue(APIroot);
 
   const [groupList, setGroupList] = useState([]);
+  const [groupPk, setGroupPk] = useState("");
   const [conferenceUrl, setConferenceUrl] = useState();
 
   // 유저가 가입한 그룹 리스트 가져오기
@@ -25,6 +26,7 @@ const MeetingPlusModal = ({ onClose }) => {
     }).then((response) => {
       console.log(response);
       setGroupList(response.data.list);
+      setGroupPk(response.data.list[0].groupPk)
       setConferenceUrl(response.data.url)
       console.log(groupList);
     });
@@ -42,6 +44,36 @@ const MeetingPlusModal = ({ onClose }) => {
   const CancelHandler =() => {
     onClose?.()
   }
+
+  const selectHandler = (e) => {
+    setGroupPk(e.target.value);
+  };
+  
+  // const groupNameList = groupList.map((grouplistitem, index) => {
+  //   return (
+  //     <div>
+  //       key={index}
+  //       groupNameList = {grouplistitem.groupName}
+  //     </div>
+  //   );
+  // });
+  // const commentList = comments.map((commentitem, index) => {
+  //   // console.log(commentitem)
+  //   return (
+  //     <GroupQnAComment
+  //       key={index}
+  //       groupQnaAnswerContents={commentitem.groupQnaAnswerContents}
+  //       groupQnaAnswerDate={commentitem.groupQnaAnswerDate}
+  //       groupQnaAnswerLikeCnt={commentitem.groupQnaAnswerLikeCnt}
+  //       groupQnaAnswerLiked={commentitem.groupQnaAnswerLiked}
+  //       username={commentitem.username}
+  //       groupQnaAnswerPk={commentitem.groupQnaAnswerPk}
+  //       userPk = {commentitem.userPk}
+  //       detailData = {data}
+  //       commnetLikeUnLike = {commnetLikeUnLike}
+  //     />
+  //   );
+  // });
 
   console.log(conferenceUrl);
   return (
@@ -61,12 +93,13 @@ const MeetingPlusModal = ({ onClose }) => {
       {/* 여기 그룹다운으로 그룹 선택 만들어야됨*/}
       <TitleStyle>
         <div className="name">그룹 선택</div>
-        <select name="nickname" style={{ border: 'solid 2px grey' }}>
-          {groupList.map((title, i) => {
-            console.log(title);
+        <select name="nickname" style={{ border: 'solid 2px grey' }}
+        onChange={selectHandler} value={groupPk}>
+          {groupList.map((item, i) => {
+            // console.log(title);
             return (
-              <option key={i} value={`${title}`}>
-                {title}
+              <option key={i} value={`${item.groupPk}`}>
+                {item.groupName}
               </option>
             );
           })}

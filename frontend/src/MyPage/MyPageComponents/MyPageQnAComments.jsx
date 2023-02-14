@@ -148,7 +148,7 @@ const ContentStyle = styled.div`
         margin: 0px 10px 0px 0px;
     }
     .input {
-        width: 825px;
+        width: 925px;
         height: 3vh;
         margin: 5px 0px 5px 0px;
     }

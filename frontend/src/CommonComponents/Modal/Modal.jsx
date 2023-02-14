@@ -76,8 +76,8 @@ const Header = styled.div`
   height: 30px;
   padding-top: 10px;
   padding-right: 14px;
-  background: rgb(150,126,118);
-background: linear-gradient(149deg, rgba(150,126,118,0.5439425770308124) 100%, rgba(222,245,229,0.28904061624649857) 100%);
+  background: rgb(158,213,197);
+  background: linear-gradient(149deg, rgba(158,213,197,0.4823179271708683) 100%, rgba(240,219,219,0.8828781512605042) 100%);
 `;
 
 const Contents = styled.div`

@@ -126,7 +126,7 @@ const LoginPage = () => {
       <InputStyle>
         <label htmlFor="input_pw">PW</label>
         <input
-          type="text"
+          type="password"
           name="input_pw"
           placeholder="PW"
           onKeyPress={enterClickHandler}

@@ -24,7 +24,7 @@ const MyPageQuestionListDetail = () => {
   const [likeUnLike, setLikeUnLike] = useState(false);
   const [myLikeState, setMyLikeState] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [commentLikeState, setCommentLikeState] = useState();
+  const [commentLikeState, setCommentLikeState] = useState(false);
   const [commentLikeUnLike, setCommentLikeUnLike] = useState(false);
 
   const params = useParams();
@@ -53,9 +53,9 @@ const MyPageQuestionListDetail = () => {
       console.log(response.data)
       setData(response.data);
       setMyLikeState(!!response.data.conferenceQuestionLiked);
-      // if (response.data.conferenceQuestionLiked) {
-      //   setLikeUnLike((prev) => !prev);
-      // }
+      if (response.data.conferenceQuestionLiked) {
+        setLikeUnLike((prev) => !prev);
+      }
     });
   }, [API, likeUnLike]);
   console.log(data.conferenceQuestionPk);
@@ -72,12 +72,12 @@ const MyPageQuestionListDetail = () => {
     }).then((response) => {
       console.log(response.data);
       setComments(response.data);
-      setCommentLikeState(response.data.conferenceAnswerLike);
-      if (response.data.conferenceAnswerLike) {
+      setCommentLikeState(!!response.data.conferenceAnswerLiked);
+      if (response.data.conferenceAnswerLiked) {
         setCommentLikeUnLike((prev) => !prev);
       }
     });
-  }, [API, data]);
+  }, [API, commentLikeUnLike]);
 
   // 댓글 작성
   const submitComment = () => {
@@ -139,7 +139,7 @@ const MyPageQuestionListDetail = () => {
         conferenceAnswerContents={commentitem.conferenceAnswerContents}
         conferenceAnswerDate={commentitem.conferenceAnswerDate}
         conferenceAnswerLikeCnt={commentitem.conferenceAnswerLikeCnt}
-        conferenceAnswerLike={commentitem.conferenceAnswerLike}
+        conferenceAnswerLiked={commentitem.conferenceAnswerLiked}
         username={commentitem.username}
         conferenceAnswerPk={commentitem.conferenceAnswerPk}
         userPk={commentitem.userPk}
@@ -179,7 +179,7 @@ const MyPageQuestionListDetail = () => {
         <SubmitStyle onClick={submitComment}>Submit</SubmitStyle>
       </div>
       <div>
-        {comments.length !== 0 ? (
+        {comments.length > 0 ? (
           <CommentContentStyle Content={commentList} />
         ) : (
           <div style={{ margin: '50px 50px 50px 50px' }}>댓글이 없습니다.</div>
@@ -237,6 +237,7 @@ const ButtonStyle = styled.div`
     color: #fff;
     border-radius: 5px;
     padding: 10px 25px;
+    margin: 20px;
     font-family: 'Lato', sans-serif;
     font-weight: 500;
     background: transparent;
