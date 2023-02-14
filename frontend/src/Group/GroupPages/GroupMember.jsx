@@ -49,7 +49,7 @@ const GroupMember = () => {
           userId={useritem.userId}
           nickName={useritem.nickname}
           profilePhoto={
-            useritem.profilePhoto != null ? useritem.profilePhoto : DefaultImage
+            useritem.profilePhoto !== "" ? useritem.profilePhoto : DefaultImage
           } // 일단 null -> ""
           tel={useritem.telPublic === "1" ? useritem.telPublic : null}
           email={useritem.emailPublic === "1" ? useritem.emailPublic : null}
