@@ -16,14 +16,13 @@ import html2canvas from "html2canvas";
 import Crop from "./Crop";
 import QuestionPage from "./QestionComponent/QuestionPage";
 
-
 import { TbCapture } from "react-icons/tb";
 import { FiShare } from "react-icons/fi";
 import { IoExitOutline } from "react-icons/io5";
 
 import { FaRegCopy } from "react-icons/fa";
 
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const APPLICATION_SERVER_URL = "https://i8d109.p.ssafy.io/";
 
@@ -335,13 +334,8 @@ class OpenViduMain extends Component {
     }
   }
 
-// 클립보드 복사
-  readClipboard = async() => {
-
-  }
-
-
-
+  // 클립보드 복사
+  readClipboard = async () => {};
 
   render() {
     const mySessionId = this.state.mySessionId;
@@ -413,33 +407,38 @@ class OpenViduMain extends Component {
         {this.state.session !== undefined ? (
           <div style={{ display: "flex" }}>
             <div id="session">
-              {/* 상단 멤버들 */}
-              <SubscriberLine>
-                <SubscriberBox>
-                  {this.state.publisher !== undefined ? (
-                    <EachSubscriber
-                      className="stream-container col-md-6 col-xs-6"
-                      onClick={() =>
-                        this.handleMainVideoStream(this.state.publisher)
-                      }
-                    >
-                      <UserVideoComponent
-                        streamManager={this.state.publisher}
-                        type="sub"
-                      />
-                    </EachSubscriber>
-                  ) : null}
-                  {this.state.subscribers.map((sub, i) => (
-                    <EachSubscriber
-                      key={i}
-                      className="stream-container col-md-6 col-xs-6"
-                      onClick={() => this.handleMainVideoStream(sub)}
-                    >
-                      <UserVideoComponent streamManager={sub} type="sub" />
-                    </EachSubscriber>
-                  ))}
-                </SubscriberBox>
-              </SubscriberLine>
+              <div style={{ display: "flex" }}>
+                {/* 상단 멤버들 */}
+                <SubscriberLine>
+                  <SubscriberBox>
+                    {this.state.publisher !== undefined ? (
+                      <EachSubscriber
+                        className="stream-container col-md-6 col-xs-6"
+                        onClick={() =>
+                          this.handleMainVideoStream(this.state.publisher)
+                        }
+                      >
+                        <UserVideoComponent
+                          streamManager={this.state.publisher}
+                          type="sub"
+                        />
+                      </EachSubscriber>
+                    ) : null}
+                    {this.state.subscribers.map((sub, i) => (
+                      <EachSubscriber
+                        key={i}
+                        className="stream-container col-md-6 col-xs-6"
+                        onClick={() => this.handleMainVideoStream(sub)}
+                      >
+                        <UserVideoComponent streamManager={sub} type="sub" />
+                      </EachSubscriber>
+                    ))}
+                  </SubscriberBox>
+                </SubscriberLine>
+                <UrlBar>
+  {this.state.mySessionId}
+                </UrlBar>
+              </div>
               {this.state.mainStreamManager !== undefined ? (
                 <MainBox>
                   <div id="main-video" className="col-md-6">
@@ -514,9 +513,7 @@ class OpenViduMain extends Component {
                       </MainLine>
                       <div>
                         <SideContainer>
-
-    
-                              <OCRPage ocrResult={this.state.OCRdata} />
+                          <OCRPage ocrResult={this.state.OCRdata} />
                           <QuestionPage />
                         </SideContainer>
                       </div>
@@ -630,7 +627,6 @@ const SideContainer = styled.div`
   flex-direction: column;
 `;
 
-
 const MainLine = styled.div`
   display: flex;
   flex-direction: column;
@@ -647,3 +643,14 @@ const ToolBar = styled.div`
   background-color: rgb(142, 195, 176);
 `;
 
+const UrlBar = styled.div`
+display:flex;
+margin-right:1vh;
+  width: 46.8vh;
+  border: 2px solid grey;
+  margin-left: 1vh;
+  background-color: white;
+  border-radius: 5px;
+  height: 3vh;
+  justify-content:center;
+`;

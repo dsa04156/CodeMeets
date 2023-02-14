@@ -16,7 +16,9 @@ const QuestionPage = () => {
 export default QuestionPage;
 
 const QuestionBox = styled.div`
-  border: 1px solid yellow;
+  border: 2px solid grey;
+  border-radius: 10px;
+  padding:"4px";
   height: 60vh;
   overflow-y: scroll;
   background-color: #ffffff;
