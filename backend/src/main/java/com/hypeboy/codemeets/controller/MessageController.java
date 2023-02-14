@@ -52,45 +52,50 @@ public class MessageController {
 	@GetMapping(value = "/list")
 	public ResponseEntity<?> listMessage(HttpServletRequest request) throws Exception {
 		int userPk=0;
+		
 		if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
+			
 			userPk = jwtTokenProvider.getUserPk(request.getHeader(accessToken));
+			
 			logger.info("userPk - " + userPk);
     	}
     	else {
     		logger.info("토큰 실패");
     	}
+		
 		try {
 			String nick = messageService.getNickName(userPk);
 			logger.info(nick);
+			
 			MessageDto messageDto = new MessageDto();
 			messageDto.setNick(nick);
 			messageDto.setUserPk(userPk);
 			List<MessageDto> list = messageService.messageList(messageDto);
+			
 			for(MessageDto mto : list) {
 				mto.setNick(nick);
 				int unread = messageService.countUnread(mto);
-				String profilePhoto = messageService.getOtherProfile(mto);
-				System.out.println(profilePhoto);
+				mto.setUnread(unread);
 				mto.setSendNick(messageService.getNickName(mto.getSendPk()));
 				mto.setRecvNick(messageService.getNickName(mto.getRecvPk()));
-				mto.setUnread(unread);
+				mto.setOtherPk(mto.getRecvPk() == userPk ? mto.getSendPk() : mto.getRecvPk());
+				String profilePhoto = messageService.getOtherProfile(mto.getOtherPk());
 				mto.setProfilePhoto(profilePhoto);
+				
 				if(nick.contentEquals(mto.getSendNick())) {
 					mto.setOther_nick(mto.getRecvNick());
 				}else {
 					mto.setOther_nick(mto.getSendNick());
 				}
-				mto.setOtherPk(mto.getRecvPk() == userPk ? mto.getSendPk() : mto.getRecvPk());
 			}
-//			System.out.println(list.toString());
+
 			return new ResponseEntity<List>(list, HttpStatus.OK);
 		}catch (Exception e) {
 			logger.info(e.toString());
-//			System.out.println(e);
+
 			return new ResponseEntity<String>(FAIL,HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-		
+		}
 	}
 	
 	@Operation(summary = "방별 메세지 목록", description = "방별 메세지 목록 API ")
