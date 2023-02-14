@@ -47,9 +47,9 @@ const GroupNotice = () => {
     }).then((response) => {
       setTotalPosts(response.data[0].total);
       response.data.map((list, index) => {
-        //index + (page - 1) * items + 1
+        // index + (page - 1) * items + 1
         // 변수가 아닌 것들은 상수(고정값)
-        list.newIndex = index + (page - 1) * 9 + 1;
+        list.newIndex = index + (page - 1) * 9 + 1; 
       })
       setNoticeList(response.data);
     });
@@ -76,8 +76,8 @@ const GroupNotice = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: '번호',
-        accessor: 'newIndex', // accessor is the "key" in the data
+        Header: "번호",
+        accessor: "newIndex", // accessor is the "key" in the data
         width: 100,
       },
       {
