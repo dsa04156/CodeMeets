@@ -12,9 +12,10 @@
 	</resultMap>
 	
 	<resultMap type="GroupUserDto" id="guDto">
+		<result column="user_pk" property="userPk" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_id" property="userId"/>
-		<result column="user_name" property="username"/>	
+		<result column="user_name" property="username"/>
 	</resultMap>
 	
 	<resultMap type="GroupListDto" id="glDto">
@@ -23,19 +24,43 @@
 		<result column="nickname" property="nickname"/>
 		<result column="count" property="count"/>
 		<result column="callStartTime" property="callStartTime"/>
+		<result column="manager_id" property="managerId"/>
 		<result column="user_pk" property="userPk"/>
 		<result column="group_pk" property="groupPk"/>
+		<result column="group_url" property="groupUrl"/>
 	</resultMap>
-
+<resultMap type="UserDto" id="user">
+		<result column="user_pk" property="userPk" />
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_active" property="userActive" />
+		<result column="user_info_pk" property="userInfoPk" />
+		<result column="profile_photo" property="profilePhoto" />
+		<result column="email_public" property="emailPublic" />
+		<result column="tel_public" property="telPublic"/>
+		<result column="group_user_position" property="groupUserPosition"/>
+		
+	</resultMap>
 	
 	<insert id="createGroup" useGeneratedKeys="true" keyProperty="groupPk" >
 	<![CDATA[
 		INSERT INTO
-		 `s08p11d109`.`group`(group_name,group_desc,manager_id,group_url)
+		 `group`(group_name,group_desc,group_url,manager_id)
 		VALUES
-		  (#{groupName}, #{groupDesc}, #{managerId},#{groupUrl});
+		  (#{groupName}, #{groupDesc},#{groupUrl},#{managerId});
 		  ]]>
 	</insert>
+	
+	<select id="detailGroup" resultMap="group">
+	<![CDATA[
+		SELECT
+		*
+		FROM
+		`group`
+		where
+		`group_pk`=#{groupPk}
+	]]>
+	</select>
 	
 	<insert id="createGroupUser" >
 	<![CDATA[
@@ -45,10 +70,10 @@
 		 values (1,#{groupPk},#{userPk});
 		  ]]>
 	</insert>
-	<select id="groupMemberList" resultMap="guDto" parameterType="int">
+	<select id="groupMemberList" resultMap="user">
 		<![CDATA[
 			select 
-			user.user_id,user_info.user_name,`group-user`.group_pk 
+			user.user_id,user.user_pk,user_info.user_name,`group-user`.group_pk,`group-user`.group_user_position 
 			from
 			 user user, user_info user_info,`group-user` `group-user`
  			where 
@@ -61,20 +86,37 @@
 	<insert id="groupJoin" >
 	<![CDATA[
 		insert into
-		`group-user`(group_pk,user_pk)
+		`group-user`(group_pk,user_pk,group_user_position)
 		values
-		(#{groupPk},#{userPk});
+		(#{groupPk},#{userPk},3);
 		  ]]>
 	</insert>
 	
-	<select id="getList" resultMap="glDto">
-	<![CDATA[
-	        select 
+	
+	    <!-- getList 수정 전 
+	     select 
 		`group`.group_name, `user_info`.nickname
 		from 
 		`group` `group`, user_info user_info,`group-user` `group-user`
 		where 
-		`group`.group_pk=`group-user`.group_pk and `user_info`.user_pk=`group-user`.user_pk and `user_info`.user_pk=#{userPk};
+		`group`.group_pk=`group-user`.group_pk and `user_info`.user_pk=`group-user`.user_pk and `user_info`.user_pk=#{userPk}
+		 -->
+	<select id="getList" resultMap="glDto">
+	<![CDATA[
+			select 
+		a.group_name,b.nickname, a.manager_id,a.group_url
+		from 
+		`group` 
+		as a inner join user_info as b 
+		inner join `group-user` as c 
+		on 
+		a.group_pk=c.group_pk 
+		and 
+		b.user_pk=c.user_pk 
+		where
+		 c.user_pk=#{userPk}
+			 	ORDER BY #{order} DESC
+			LIMIT #{nowPage}, #{items};
 		]]>
 	</select>
 	
@@ -118,26 +160,70 @@
 	]]>
 	</select>
 	
-	<select id="groupDetail" resultMap="group">
+	<select id="groupDetail" parameterType="int" resultMap="group">
 		<![CDATA[
 			select
-			*
+			group_pk,group_name,group_desc,manager_id,group_url
 			from
 			`group`
 			where
 			group_pk=#{groupPk};
 		]]>
 	</select>
-	<!-- <update id="groupModify">
+	
+	 <update id="groupModify">
 		<![CDATA[
 			UPDATE
 			 `group`
 			  set 
-			  group_name=#{gname}, group_desc=#{gdesc},group_url=#{gurl} 
+			  `group`.group_name= #{groupName}, `group`.group_desc= #{groupDesc}
 			  where 
-			  `group_pk` = #{gpk};
+			  `group`.`group_pk` = #{groupPk};
 		]]>
 	</update>
-	 -->
+	
+	<delete id="groupDelete">
+		DELETE FROM
+		`group`
+		where
+		`group_pk`=#{groupPk};
+	</delete>
+	 
+	 <select id="checkUrl" resultMap="group">
+		select 
+		* 
+		from 
+		`group` 
+		where 
+		group_url = #{groupUrl};	 	
+	 </select>
+	 
+	 <select id="duplicated" resultType="Integer">
+	 	select 
+	 	* 
+	 	from 
+	 	`group-user` 
+	 	where
+	 	user_pk=#{userPk} and group_pk=#{groupPk};
+	 </select>
+	 
+	 <delete id="groupLeft">
+	 	delete from 
+	 	`group-user` 
+	 	where 
+	 	user_pk=#{userPk} and group_pk=#{groupPk};
+	 </delete>
+	 
+	 <select id="checkManager" resultType="int">
+	 <![CDATA[
+	 select 
+	 group_user_position
+	  from 
+	  `group-user` 
+	  where 
+	  user_pk = #{userPk} and group_pk=#{groupPk};
+	 ]]>
+	 
+	 </select>
 	</mapper>
 	
