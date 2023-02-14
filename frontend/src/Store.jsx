@@ -32,3 +32,9 @@ export const pageNumber = atom({
     default: "1",
     effects_UNSTABLE: [persistAtom],
 })
+
+export const conference = atom({
+    key: "conference",
+    default: {},
+    effects_UNSTABLE: [persistAtom],
+})
