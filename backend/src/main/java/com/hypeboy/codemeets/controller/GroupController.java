@@ -356,7 +356,8 @@ public class GroupController {
     public ResponseEntity<?> conferenceList(HttpServletRequest request,
     		@RequestParam("nowPage") int nowPage,
 			@RequestParam("items") int items,
-			@RequestParam("order") String order) throws Exception{
+			@RequestParam("order") String order,
+			@RequestParam("groupPk") int groupPk) throws Exception{
     	logger.info("회의 참가 API 호출");
     	int userPk=0;
     	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
@@ -369,7 +370,7 @@ public class GroupController {
     		logger.info("토큰 실패");
     	}
 		try {
-			List<ConferenceDto> list = conferenceService.listConference(userPk,(nowPage - 1) * items, items, order);
+			List<ConferenceDto> list = conferenceService.listConference(userPk,(nowPage - 1) * items, items, order, groupPk);
 			
 			
 			return new ResponseEntity<List>(list,HttpStatus.OK);
