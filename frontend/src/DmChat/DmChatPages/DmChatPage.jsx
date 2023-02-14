@@ -18,9 +18,9 @@ const DmChatPage = () => {
   const USER = useRecoilValue(user);
 
   const [userList, setUserList] = useState([]);
-  const [userPkList, setUserPkList] = useState([USER.userPk]);
   const [selectRoom, setSelectRoom] = useState([]);
   const [other, setOther] = useState([]);
+  const [otherNick, setOtherNick] = useState("");
   const [search, setSearch] = useState("");
   const [searchUserList, setSearchUserList] = useState([]);
 
@@ -36,9 +36,6 @@ const DmChatPage = () => {
     }).then((response) => {
       // console.log(response.data);
       setUserList(response.data);
-      response.data.map((user) => {
-        setUserPkList([...userPkList, user.otherPk]);
-      })
     });
     
   }, [API]);
@@ -67,15 +64,7 @@ const DmChatPage = () => {
         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
-      // setSearchUserList(response.data);
-      response.data.map((user) => {
-        if (userPkList.includes(user.userPk)) {
-          return true;
-        }
-        else {
-          setSearchUserList([ ...searchUserList, user]);
-        }
-      })
+      setSearchUserList(response.data);
     });
   }
 
@@ -125,15 +114,22 @@ const DmChatPage = () => {
     const getRoomDetail = () => {
       setSelectRoom(userItem.room);
       setOther(userItem.otherPk);
+      setOtherNick(userItem.other_nick);
     };
+
+    const changeContents = (msg) => {
+      userItem.content = msg;
+    }
     
     return (
       <div onClick={getRoomDetail}>
         <UserListItem
-        key={index}
-        nickname={userItem.other_nick}
-        contents={userItem.content}
-        room={userItem.room}
+          key={index}
+          profilePhoto={userItem.profilePhoto}
+          nickname={userItem.other_nick}
+          contents={userItem.content}
+          room={userItem.room}
+          changeContents={changeContents}
       />
       </div>
     );
@@ -146,6 +142,7 @@ const DmChatPage = () => {
           <Search
             value={search}
             onChange={onChange}
+            placeholder="닉네임으로 검색"
           > 
           </Search>
           <AiOutlineSearch size="24" />
@@ -168,6 +165,7 @@ const DmChatPage = () => {
               key={selectRoom}
               room={selectRoom}
               other={other}
+              otherNick={otherNick}
             />
           : <h1> 대화 시작을 기다리는 중... </h1>
         }
@@ -183,7 +181,6 @@ const MainFrame = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
   h1 {
     text-align: center;
     align-items: top;
@@ -195,15 +192,15 @@ const MainFrame = styled.div`
 `;
 
 const UserFrame = styled.div`
-  width: 40%;
-  border: 1px solid black;
+  width: 35%;
   height: 38rem;
+  border-right: 1px solid black;
+  margin: 0 8px 0 0;
 `;
 
 const UserSearchFrame = styled.div`
   width: 100%;
-  border: 1px solid black;
-  height: auto;
+  height: auto%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,10 +214,13 @@ const Search = styled.input`
   width: 100%;
   height: 100%;
   outline: none;
-  
 `;
 
 const UserSearchListFrame = styled.div`
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   z-index: 3;
   height: 50vh;
   width: 20%;
@@ -232,22 +232,23 @@ const UserSearchListFrame = styled.div`
 `;
 
 const UserListFrame = styled.div`
-  overflow: scroll;
-  width: 100%;
-  border: 1px solid black;
-  height: 70%;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  width: 99%;
+  height: 95%;
   ul {
-    width: 90%;
-    margin-top: 3%;
+    width: 95%;
+    margin-top: 5%;
     margin-left: 5%;
     margin-right: auto;
     list-style: none;
-    padding: 0px;
+    padding: 3px;
   }
 `;
 
 const ChattingFrame = styled.div`
   width: 60%;
-  border: 1px solid black;
   height: 38rem;
 `;
