@@ -25,6 +25,12 @@ const CreateGroupModal = ({onClose, CreateURL}) => {
         onClose?.();
     };
 
+    const enterClickHandler = (event) => {
+      if (event.key === 'Enter') {
+        submitHandler();
+      }
+    };
+
     const CopyHandler = (text) => {
       setUrlCopy(CreateURL)
       try {
@@ -66,7 +72,7 @@ const CreateGroupModal = ({onClose, CreateURL}) => {
         <TitleStyle>
             <div className='name'>Group Name</div>
             <div className='input'>
-                <input type="text" onChange={CreateGroupName} style={{ border: 'solid 2px grey' }}/>
+                <input type="text" onKeyPress={enterClickHandler} onChange={CreateGroupName} style={{ border: 'solid 2px grey' }}/>
             </div>
         </TitleStyle>
         {/* <InlineStyle> */}
@@ -75,16 +81,18 @@ const CreateGroupModal = ({onClose, CreateURL}) => {
             <div className='input'>
               <input type="text" defaultValue={CreateURL} style={{ border: 'solid 2px grey' }}/>
             </div>
-            <ButtonStyle><button onClick={() => CopyHandler(CreateURL)}>Copy</button></ButtonStyle>
+            <SubButtonStyle><button className='custom-btn btn-8' style={{margin: '0px 0px 0px 5px'}} onClick={() => CopyHandler(CreateURL)}>Copy</button></SubButtonStyle>
         </TitleStyle>
             
         <TitleStyle>
-          <CreateCancelButtonStyle>
-            <button onClick={submitHandler}>Create</button>
-          </CreateCancelButtonStyle>
-          <CreateCancelButtonStyle>
-            <button onClick={CancelHandler}>Cancel</button>
-          </CreateCancelButtonStyle>
+          <SubButtonStyle>
+            <div className='position'>
+              <button className='custom-btn btn-8' onClick={submitHandler}>Create</button>
+            </div>
+          </SubButtonStyle>
+          <SubButtonStyle>
+            <button className='custom-btn btn-8' onClick={CancelHandler}>Cancel</button>
+          </SubButtonStyle>
         </TitleStyle>
         </Modal>
     )
@@ -105,6 +113,9 @@ const TitleStyle = styled.div`
   .input {
     display: flex;
     width: 50%;
+  }
+  .position {
+    margin-left: 60px;
   }
   .button {
     /* width: 50px; */
@@ -130,4 +141,65 @@ const CreateCancelButtonStyle = styled.div`
   padding-left: 50px;
   width: 5%;
   height: 25px;
+`;
+
+const SubButtonStyle = styled.div`
+  .custom-btn {
+    width: 50px;
+    height: 25px;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: 50px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-8 {
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #f0ecfc 0%, #4dccc6 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-8:before,
+  .btn-8:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    bottom: 0;
+    background: #4dccc6;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.5),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.5),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-8:before {
+    height: 0%;
+    width: 2px;
+  }
+  .btn-8:after {
+    width: 0%;
+    height: 2px;
+  }
+  .btn-8:hover:before {
+    height: 100%;
+  }
+  .btn-8:hover:after {
+    width: 100%;
+  }
+  .btn-8:hover {
+    background: transparent;
+    color: #4dccc6;
+  }
 `;

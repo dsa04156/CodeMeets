@@ -13,7 +13,6 @@ function CreateTable({ columns, data, TableNavHandler, isButton }) {
   // Use the state and functions returned from useTable to build your UI
   // const API = useRecoilValue(APIroot);
   const userPk = useRecoilValue(user);
-  // const [leaveTheGroup, setLeaveTheGroup] = useState(false); //true면 탈퇴하는거로 구성
 
   const defaultColumn = React.useMemo(
     () => ({
@@ -74,9 +73,6 @@ function CreateTable({ columns, data, TableNavHandler, isButton }) {
                     </NavBarStyle>
                   );
                 })}
-                {/* <div>
-                  {isButton === '1' ? <ButtonStyle onClick={leaveGroup}>Leave</ButtonStyle> : null}
-                </div> */}
               </div>
             );
           })}
@@ -100,6 +96,7 @@ const Styles = styled.div`
       :last-child {
         td {
           border-bottom: 0;
+          
         }
       }
     }

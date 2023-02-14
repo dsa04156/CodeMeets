@@ -38,66 +38,60 @@ const MyPageEditModal = ({ onClose }) => {
   const [overlapPhone, setOverlapPhone] = useState(true);
 
   // 오류메세지 상태 저장
-  const [nickNameMessage, setNickNameMessage] = useState("현재 닉네임입니다.");
-  const [emailMessage, setEmailMessage] = useState("현재 이메일입니다.");
-  const [phoneMessage, setPhoneMessage] = useState("현재 번호입니다.");
+  const [nickNameMessage, setNickNameMessage] = useState('현재 닉네임입니다.');
+  const [emailMessage, setEmailMessage] = useState('현재 이메일입니다.');
+  const [phoneMessage, setPhoneMessage] = useState('현재 번호입니다.');
 
   useEffect(() => {
     if (previewImage !== newUserInfo.profilePhoto) setIsImgChange(true);
   }, [previewImage]);
 
-//   useEffect(() => {
+  //   useEffect(() => {
 
-//     ToChangeNewNicknameHandler()
-//   },[isNickName]);
+  //     ToChangeNewNicknameHandler()
+  //   },[isNickName]);
 
   const ToChangeNewNicknameHandler = (event) => {
-      const currentName = event.target.value;
-      console.log("길이------------------",currentName.length)
+    const currentName = event.target.value;
+    console.log('길이------------------', currentName.length);
     setNewNickName(currentName);
-    console.log(currentName)
-    if (currentName === newUserInfo.nickname){
-        console.log("1")
-        setIsNickName(true);
-        setNickNameMessage("현재 닉네임입니다.")
-    } 
-    else if (currentName.length < 3 || currentName.length > 9) {
-        console.log("2")
+    console.log(currentName);
+    if (currentName === newUserInfo.nickname) {
+      console.log('1');
+      setIsNickName(true);
+      setNickNameMessage('현재 닉네임입니다.');
+    } else if (currentName.length < 3 || currentName.length > 9) {
+      console.log('2');
       setNickNameMessage('닉네임은 3글자 이상 9글자 이하로 입력해주세요!');
       setIsNickName(false);
-    }
-    else {
-        console.log("3")
+    } else {
+      console.log('3');
 
       setNickNameMessage('사용가능한 닉네임 입니다.');
       setIsNickName(true);
     }
-    console.log("----------------------------",isNickName)
+    console.log('----------------------------', isNickName);
   };
 
   const ToChangeEmailHandler = (event) => {
     const currentEmail = event.target.value;
-    console.log(currentEmail)
+    console.log(currentEmail);
     setNewEmail(currentEmail);
-    fetch(
-        `${API}/user/emailOverlap?email=${currentEmail}`
-    )
-    .then((response) => response.json())
-    .then((response) => {
+    fetch(`${API}/user/emailOverlap?email=${currentEmail}`)
+      .then((response) => response.json())
+      .then((response) => {
         if (currentEmail === newUserInfo.email) {
-            setIsEmail(true);
-            setOverlapEmail(true);
-            setEmailMessage("현재 이메일입니다.")
+          setIsEmail(true);
+          setOverlapEmail(true);
+          setEmailMessage('현재 이메일입니다.');
+        } else if (JSON.stringify(response) === '1') {
+          setOverlapEmail(false);
+          setEmailMessage('누군가 사용중인 이메일입니다.');
+        } else {
+          setOverlapEmail(true);
         }
-        else if(JSON.stringify(response) === "1"){
-            setOverlapEmail(false);
-            setEmailMessage('누군가 사용중인 이메일입니다.')
-        } 
-        else {
-            setOverlapEmail(true);
-        }
-    })
-    .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
 
     const emailRegExp =
       /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
@@ -115,25 +109,21 @@ const MyPageEditModal = ({ onClose }) => {
     const currentPhone = event.target.value;
     setNewTel(currentPhone);
 
-    fetch(
-        `${API}/user/telOverlap?tel=${currentPhone}`
-    )
-    .then((response) => response.json())
-    .then((response) => {
+    fetch(`${API}/user/telOverlap?tel=${currentPhone}`)
+      .then((response) => response.json())
+      .then((response) => {
         if (currentPhone === newUserInfo.tel) {
-            setIsPhone(true);
-            setOverlapPhone(true);
-            setPhoneMessage("현재 번호입니다.")
+          setIsPhone(true);
+          setOverlapPhone(true);
+          setPhoneMessage('현재 번호입니다.');
+        } else if (JSON.stringify(response) === '1') {
+          setPhoneMessage('누군가 사용중인 번호입니다.');
+          setOverlapPhone(false);
+        } else {
+          setOverlapPhone(true);
         }
-        else if(JSON.stringify(response) === "1"){
-            setPhoneMessage('누군가 사용중인 번호입니다.')
-            setOverlapPhone(false);
-        } 
-        else {
-            setOverlapPhone(true);
-        }
-    })
-    .catch((error) => console.log(error));
+      })
+      .catch((error) => console.log(error));
 
     const phoneRegExp = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
@@ -201,18 +191,19 @@ const MyPageEditModal = ({ onClose }) => {
 
   console.log(newUserInfo);
 
-
   const ToChangeUserInfoHandler = (event) => {
-    console.log('클릭 함수로 들어옴')
+    console.log('클릭 함수로 들어옴');
     console.log(
-    (isNickName === "Unregistered" || isNickName === "" || isNickName !== ""),
-         isEmail,
-         isPhone,
-         overlapEmail,
-         overlapPhone
-    )
+      isNickName === 'Unregistered' || isNickName === '' || isNickName !== '',
+      isEmail,
+      isPhone,
+      overlapEmail,
+      overlapPhone
+    );
     event.preventDefault();
-    console.log(isNickName && isEmail && isPhone && overlapEmail && overlapPhone)
+    console.log(
+      isNickName && isEmail && isPhone && overlapEmail && overlapPhone
+    );
     if (isNickName && isEmail && isPhone && overlapEmail && overlapPhone) {
       axios({
         method: 'PUT',
@@ -231,31 +222,34 @@ const MyPageEditModal = ({ onClose }) => {
         }),
       })
         .then((response) => {
-            setNewUserInfo((prev)=>{return{...prev,
-                email: newEmail,
-                emailPublic: +privateEmail,
-                nickname: newNickName,
-                profilePhoto: `${newProfilePhoto}`,
-                tel: newTel,
-                telPublic: +privatePhoneNum,
-            }})
+          setNewUserInfo((prev) => {
+            return {
+              ...prev,
+              email: newEmail,
+              emailPublic: +privateEmail,
+              nickname: newNickName,
+              profilePhoto: `${newProfilePhoto}`,
+              tel: newTel,
+              telPublic: +privatePhoneNum,
+            };
+          });
           console.log(response.data);
-          alert("수정 완료")
+          alert('수정 완료');
           onClose?.();
-        //   Navigate(`/my-page/${newUserInfo.userPk}/meeting-list`)
+          //   Navigate(`/my-page/${newUserInfo.userPk}/meeting-list`)
         })
         .catch((error) => {
           console.log(error);
 
-          alert("유효성 확인 바랍니다.")
+          alert('유효성 확인 바랍니다.');
         });
     }
   };
-  console.log()
+  console.log();
   const CancelHandler = () => {
     onClose?.();
     // Navigate(`${API}/my-page/${LoginUser.userPk}/meeting-list`)
-  }
+  };
 
   return (
     <Modal onClose={onClose} ModalTitle={title}>
@@ -313,12 +307,21 @@ const MyPageEditModal = ({ onClose }) => {
           </ImageStyle>
         </TitleStyle>
         <TitleStyle>
-        <ButtonStyle>
-        <button onClick={ToChangeUserInfoHandler}>수정</button>
-        </ButtonStyle>
-        <ButtonStyle>
-        <button onClick={CancelHandler}>취소</button>
-        </ButtonStyle>
+          <SubButtonStyle>
+            <div className="position">
+              <button
+                className="custom-btn btn-8"
+                onClick={ToChangeUserInfoHandler}
+              >
+                수정
+              </button>
+            </div>
+          </SubButtonStyle>
+          <SubButtonStyle>
+            <button className="custom-btn btn-8" onClick={CancelHandler}>
+              취소
+            </button>
+          </SubButtonStyle>
         </TitleStyle>
       </EditContainer>
     </Modal>
@@ -341,7 +344,9 @@ const TitleStyle = styled.div`
     display: flex;
     width: 60%;
   }
-
+  .position {
+    margin-left: 60px;
+  }
   &:nth-child(6) {
     align-items: center !important;
   }
@@ -358,9 +363,9 @@ const CheckBoxStyle = styled.div`
 `;
 
 const ButtonStyle = styled.div`
-    margin-left: 100px;
-    width: 15%;
-    height: 25px;
+  margin-left: 100px;
+  width: 15%;
+  height: 25px;
 `;
 
 const InputStyle = styled.input`
@@ -395,4 +400,65 @@ const MessageStyle = styled.p`
 // 모달창 안 높이 조정. 이미지 변경하기 위해 파일 업로드를 한다면 380px로 높이 조정. 그렇지 않으면 모달 내 높이로 조정
 const EditContainer = styled.div`
   height: ${(props) => (props.isImgChange ? '380px' : 'fit-content')};
+`;
+
+const SubButtonStyle = styled.div`
+  .custom-btn {
+    width: 50px;
+    height: 25px;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: 50px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-8 {
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #f0ecfc 0%, #4dccc6 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-8:before,
+  .btn-8:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    bottom: 0;
+    background: #4dccc6;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.5),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.5),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-8:before {
+    height: 0%;
+    width: 2px;
+  }
+  .btn-8:after {
+    width: 0%;
+    height: 2px;
+  }
+  .btn-8:hover:before {
+    height: 100%;
+  }
+  .btn-8:hover:after {
+    width: 100%;
+  }
+  .btn-8:hover {
+    background: transparent;
+    color: #4dccc6;
+  }
 `;

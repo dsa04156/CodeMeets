@@ -23,7 +23,7 @@ const MyPageMeetingList = () => {
 
   const columns = React.useMemo(
     () => [
-      { Header: '번호', accessor: 'conferencePk', width: 90 },
+      { Header: '번호', accessor: 'newIndex', width: 90 },
       { Header: '미팅명', accessor: 'conferenceTitle', width: 400 },
       { Header: '그룹명', accessor: 'groupName', width: 200 },
       { Header: '최근 기록', accessor: 'callStartTime', width: 200 },
@@ -43,6 +43,11 @@ const MyPageMeetingList = () => {
     }).then((response) => {
       console.log(response.data);
       setTotalPosts(response.data.conference_record[0].total);
+      response.data.conference_record.map((list, index) => {
+        //index + (page - 1) * items + 1
+        // 변수가 아닌 것들은 상수(고정값)
+        list.newIndex = index + (page - 1) * 7 + 1;
+      })
       setMeetingRecord(response.data.conference_record);
     });
     //   .catch((err) => console.log(err));
@@ -51,14 +56,16 @@ const MyPageMeetingList = () => {
   return (
     <div>
       {/* <Scrollsize> */}
+      <ContentBox>
         <Styles>
           <CreateTable
             columns={columns}
             data={data}
             TableNavHandler={TableNavHandler}
           />
-          <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
+          <Pagination totalPosts={`${totalPosts}`} limit="7" page={page} setPage={setPage}></Pagination>
         </Styles>
+        </ContentBox>
       {/* </Scrollsize> */}
     </div>
   );
@@ -109,4 +116,13 @@ const NavBarStyle = styled(NavLink)`
   &.active {
     color: #29a846;
   }
+`;
+
+const ContentBox = styled.div`
+  background: rgb(239, 245, 245);
+  background: linear-gradient(
+    149deg,
+    rgba(239, 245, 245, 1) 100%,
+    rgba(239, 245, 245, 0.41228991596638653) 100%
+  );
 `;

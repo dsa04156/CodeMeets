@@ -1,26 +1,26 @@
-import React, { useEffect } from "react";
-import CreateTable from "../../CommonComponents/CreateTable";
-import Pagination from "../../CommonComponents/Pagination";
-import styled from "styled-components";
+import React, { useEffect } from 'react';
+import CreateTable from '../../CommonComponents/CreateTable';
+import Pagination from '../../CommonComponents/Pagination';
+import styled from 'styled-components';
 
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { APIroot, groupNavTitle, pageNumber } from "../../Store";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { APIroot, groupNavTitle, pageNumber } from '../../Store';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import axios from 'axios';
 
 const GroupNotice = () => {
   const params = useParams();
   const navigate = useNavigate();
 
   const API = useRecoilValue(APIroot);
-  const [recoilNavTitle, setRecoilNavTitle] = useRecoilState(groupNavTitle)
+  const [recoilNavTitle, setRecoilNavTitle] = useRecoilState(groupNavTitle);
   const [noticeList, setNoticeList] = useState([]);
   // API의 order 부분 바꾸기위한 useState -> 일단 사용안함
-  const [order, setOrder] = useState("group_notice_date");
+  const [order, setOrder] = useState('group_notice_date');
   // 게시글의 총 개수를 알기 위한 useState
   const [totalPosts, setTotalPosts] = useState(0);
   // url의 page, pagination에 넘겨줌!
@@ -32,17 +32,17 @@ const GroupNotice = () => {
   };
 
   const CreateWriteHandler = () => {
-    navigate(`/group/${params.group_pk}/notice/create`)
-  }
+    navigate(`/group/${params.group_pk}/notice/create`);
+  };
 
   // API, params, order, page가 바뀌면 재 렌더링하는 useEffect
   useEffect(() => {
-    setRecoilNavTitle("Notice")
+    setRecoilNavTitle('Notice');
     axios({
-      method: "GET",
+      method: 'GET',
       url: `${API}/group-notice?groupPk=${params.group_pk}&nowPage=${page}&items=9&order=${order}`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     }).then((response) => {
       setTotalPosts(response.data[0].total);
@@ -58,17 +58,16 @@ const GroupNotice = () => {
   //멤버리스트 API 가져와 Position 값 알기
   useEffect(() => {
     axios({
-      method: "GET",
+      method: 'GET',
       url: `${API}/group/${params.group_pk}/member`,
       headers: {
-        "Content-Type": "application/json",
-        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+        'Content-Type': 'application/json',
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
-    })
-    .then((response) => {
+    }).then((response) => {
       console.log(response.data);
       setPosition(response.data.position);
-    })
+    });
   }, [API, position]);
 
   //테이블
@@ -82,18 +81,18 @@ const GroupNotice = () => {
         width: 100,
       },
       {
-        Header: "제목",
-        accessor: "groupNoticeTitle",
+        Header: '제목',
+        accessor: 'groupNoticeTitle',
         width: 400,
       },
       {
-        Header: "작성자",
-        accessor: "userName",
+        Header: '작성자',
+        accessor: 'userName',
         width: 100,
       },
       {
-        Header: "등록일자",
-        accessor: "groupNoticeDate",
+        Header: '등록일자',
+        accessor: 'groupNoticeDate',
         width: 200,
       },
     ],
@@ -102,13 +101,15 @@ const GroupNotice = () => {
 
   return (
     <div>
-      <Styles>
-        <CreateTable
-          columns={columns}
-          data={data}
-          TableNavHandler={TableNavHandelr}
-        />
-      </Styles>
+      <ContentBox>
+        <Styles>
+          <CreateTable
+            columns={columns}
+            data={data}
+            TableNavHandler={TableNavHandelr}
+          />
+        </Styles>
+      </ContentBox>
       {/* 각 부분 맞춰서 넘겨주면 pagination 됨 */}
       <Pagination
         totalPosts={`${totalPosts}`}
@@ -117,7 +118,10 @@ const GroupNotice = () => {
         setPage={setPage}
       ></Pagination>
       <div>
-      {position === 1 ? <button onClick={CreateWriteHandler}>Create</button> : null}
+        {position === 1 ? (
+          <ButtonStyle>
+          <button className='custom-btn btn-4' onClick={CreateWriteHandler}>Create</button></ButtonStyle>
+        ) : null}
       </div>
     </div>
   );
@@ -151,5 +155,106 @@ const Styles = styled.div`
         border-right: 0;
       }
     }
+  }
+`;
+
+const ContentBox = styled.div`
+  background: rgb(239, 245, 245);
+  background: linear-gradient(
+    149deg,
+    rgba(239, 245, 245, 1) 100%,
+    rgba(239, 245, 245, 0.41228991596638653) 100%
+  );
+`;
+
+const ButtonStyle = styled.div`
+  .custom-btn {
+    width: 80px;
+    height: 35px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    float: right;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
+      7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+  .btn-4 {
+    background-color: #4dccc6;
+    background-image: linear-gradient(315deg, #4dccc6 0%, #96e4df 74%);
+    line-height: 42px;
+    padding: 0;
+    border: none;
+  }
+  .btn-4:hover {
+    background-color: #89d8d3;
+    background-image: linear-gradient(315deg, #89d8d3 0%, #03c8a8 74%);
+  }
+  .btn-4 span {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .btn-4:before,
+  .btn-4:after {
+    position: absolute;
+    content: '';
+    right: 0;
+    top: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4:before {
+    height: 0%;
+    width: 0.1px;
+  }
+  .btn-4:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4:hover:before {
+    height: 100%;
+  }
+  .btn-4:hover:after {
+    width: 100%;
+  }
+  .btn-4 span:before,
+  .btn-4 span:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
+      -4px -4px 6px 0 rgba(116, 125, 136, 0.2),
+      inset -4px -4px 6px 0 rgba(255, 255, 255, 0.9),
+      inset 4px 4px 6px 0 rgba(116, 125, 136, 0.3);
+    transition: all 0.3s ease;
+  }
+  .btn-4 span:before {
+    width: 0.1px;
+    height: 0%;
+  }
+  .btn-4 span:after {
+    width: 0%;
+    height: 0.1px;
+  }
+  .btn-4 span:hover:before {
+    height: 100%;
+  }
+  .btn-4 span:hover:after {
+    width: 100%;
   }
 `;

@@ -70,7 +70,7 @@ function App() {
         <SidePadding>
           <Center>
             <SideArea>
-              {router.pathname === "/login" ||
+              {router.pathname === "/" ||
               router.pathname === "/signup" ||
               router.pathname === "/findid" ||
               router.pathname === "/findpassword" ||

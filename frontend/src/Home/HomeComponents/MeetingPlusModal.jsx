@@ -13,8 +13,8 @@ const MeetingPlusModal = ({ onClose }) => {
   const navigate = useNavigate();
 
   const [groupList, setGroupList] = useState([]);
-  const [conferenceUrl, setConferenceUrl] = useState();
   const [groupPk, setGroupPk] = useState("");
+  const [conferenceUrl, setConferenceUrl] = useState();
   const [meetingTitle, setMeetingTitle] = useState("");
   const [meetingContent, setMeetingContent] = useState("");
 
@@ -75,11 +75,6 @@ const MeetingPlusModal = ({ onClose }) => {
     });
   };
 
-  const selectHandler = (e) => {
-    setGroupPk(e.target.value);
-    console.log("----select", e.target.value);
-  };
-
   const titleHandler = (e) => {
     const newTitle = e.target.value;
     setMeetingTitle(newTitle);
@@ -89,6 +84,36 @@ const MeetingPlusModal = ({ onClose }) => {
     const newContent = e.target.value;
     setMeetingContent(newContent);
   };
+
+  const selectHandler = (e) => {
+    setGroupPk(e.target.value);
+  };
+  
+  // const groupNameList = groupList.map((grouplistitem, index) => {
+  //   return (
+  //     <div>
+  //       key={index}
+  //       groupNameList = {grouplistitem.groupName}
+  //     </div>
+  //   );
+  // });
+  // const commentList = comments.map((commentitem, index) => {
+  //   // console.log(commentitem)
+  //   return (
+  //     <GroupQnAComment
+  //       key={index}
+  //       groupQnaAnswerContents={commentitem.groupQnaAnswerContents}
+  //       groupQnaAnswerDate={commentitem.groupQnaAnswerDate}
+  //       groupQnaAnswerLikeCnt={commentitem.groupQnaAnswerLikeCnt}
+  //       groupQnaAnswerLiked={commentitem.groupQnaAnswerLiked}
+  //       username={commentitem.username}
+  //       groupQnaAnswerPk={commentitem.groupQnaAnswerPk}
+  //       userPk = {commentitem.userPk}
+  //       detailData = {data}
+  //       commnetLikeUnLike = {commnetLikeUnLike}
+  //     />
+  //   );
+  // });
 
   console.log(conferenceUrl);
   return (

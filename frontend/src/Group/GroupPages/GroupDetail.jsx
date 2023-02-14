@@ -256,6 +256,7 @@ const ButtonStyle = styled.div`
     color: #fff;
     border-radius: 5px;
     padding: 10px 25px;
+    margin-left: 15px;
     font-family: 'Lato', sans-serif;
     font-weight: 500;
     background: transparent;
