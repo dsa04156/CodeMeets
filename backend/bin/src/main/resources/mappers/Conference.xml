@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hypeboy.codemeets.model.dao.ConferenceDao">
+
+	<resultMap type="ConferenceDto" id="conference">
+		<result column="conference_pk" property="conferencePk" />
+		<result column="call_start_time" property="callStartTime" />
+		<result column="call_end_time" property="callEndTime" />
+		<result column="conference_title" property="conferenceTitle" />
+		<result column="conference_contents" property="conferenceContents" />
+		<result column="conference_active" property="conferenceActive" />
+		<result column="conference_url" property="conferenceUrl" />
+		<result column="group_pk" property="groupPk" />
+		<result column="user_pk" property="userPk" />
+		<result column="join_user" property="joinUser" />
+		<result column="join_user_cnt" property="joinUserCnt" />
+	</resultMap>
+	
+		<resultMap type="ConferenceThreeDto" id="conferenceThreeDto">
+		<result column="group_name" property="groupName"/>
+		<result column="conference_url" property="conferenceUrl" />
+		<result column="group_pk" property="groupPk" />
+	</resultMap>
+	
+
+	<!-- ==================== 회의 상세 페이지 조회 ======================================== -->
+
+	<select id="getConferenceDetail" resultMap="conference">
+		<![CDATA[
+			SELECT conference_pk, call_start_time, call_end_time, conference_title, 
+			conference_contents, conference_active, conference_url, group_pk, user_pk,
+			(SELECT GROUP_CONCAT(user_name SEPARATOR ', ')
+			FROM `conference-user` NATURAL JOIN `user_info`
+			WHERE conference_pk = #{conferencePk}
+			GROUP BY conference_pk) join_user
+			FROM `conference`
+			WHERE conference_pk =  #{conferencePk};
+		]]>
+	</select>
+	
+	<insert id="createConference" parameterType="ConferenceDto" useGeneratedKeys="true"
+    keyProperty="conferencePk">
+	<![CDATA[
+	 insert into 
+	 `conference`
+	 (call_start_time,conference_title,conference_contents,
+	 conference_active,conference_url,group_pk,user_pk)
+	  values 
+	  (now(),#{conferenceTitle},#{conferenceContents},1,#{conferenceUrl},#{groupPk},#{userPk});
+	  ]]>
+	</insert>
+	
+	 <insert id="joinConference">
+	 	<![CDATA[
+		insert into 
+		`conference-user`(conference_pk,user_pk)
+		values 
+		(#{conferencePk},#{userPk});
+		]]>
+	</insert>
+	
+	<insert id="joinManager">
+	<![CDATA[
+	insert into
+	 `conference_history`(action,inserted_time,conference_pk,user_pk)
+	  values
+	   (1,now(),#{conferencePk},#{userPk});
+	]]>
+	</insert>
+	
+	<insert id="enterMember">
+	<![CDATA[
+		insert into
+	 `conference_history`(action,inserted_time,conference_pk,user_pk)
+	  values
+	   (2,now(),#{conferencePk},#{userPk});
+	]]>
+	</insert>
+	
+	<select id="clickCreate" resultMap="conferenceThreeDto" parameterType="int">
+		<![CDATA[
+		select 
+		a.group_name, a.group_pk,b.conference_url 
+		from 
+		`group` as a, `conference` as b, `group-user` as c
+        where
+         c.group_pk=b.group_pk and a.group_pk=b.group_pk and c.user_pk=#{userPk};
+	 ]]>
+	</select>
+	
+	<select id="checkUrl" parameterType="String" resultType="int">
+	<![CDATA[
+		select
+		 `conference_pk`
+		  from
+		   `conference`
+		    where
+		     `conference_url`=#{conferenceUrl};
+	]]>
+	</select>
+	
+	<insert id="enterConference">
+	<![CDATA[
+		insert into 
+		`conference-user`(conference_pk,user_pk) 
+		values 
+		(#{conferencePk},#{userPk});
+	]]>
+	</insert>
+	
+	<update id="closeConference">
+	<![CDATA[
+	update 
+	`conference`
+	 set
+	  `conference_active`=0, call_end_time=now()
+	   where
+	    conference_pk=#{conferencePk} and user_pk=#{userPk};
+	    ]]>
+	</update>
+	
+	<insert id="exitConference">
+	<![CDATA[
+		UPDATE
+		 `conference_history`
+		  set
+		   action=3 where user_pk=#{userPk}
+		    and
+		     conference_pk=#{conferencePk};
+	]]>
+	</insert>
+	
+	<select id="participantsConference" resultType="String">
+	<![CDATA[
+	select
+	 a.user_name
+	  from
+	   user_info as a inner join conference_history as b
+	    on
+	     a.user_pk=b.user_pk
+	      where
+	       b.conference_pk=#{conferencePk};
+	]]>
+	</select>
+	
+	<select id="listConference" resultMap="conference">
+		<![CDATA[
+			select * from conference 
+			where user_pk=#{userPk};
+		]]>
+		
+	</select>
+</mapper>

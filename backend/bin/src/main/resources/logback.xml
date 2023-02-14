@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}/}spring.miningLogs}"/>
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+	<include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+	
+	<!-- log 파일 날짜별 분류용 -->
+	<timestamp key="BY_DATE" datePattern="yyyy-MM-dd" />
+  	
+  	<!-- log 기록 절대 위치 설정 -->
+    <property name="LOGS_ABSOLUTE_PATH" value="./logs" />
+    
+    <property name="LOG_PARENT_PATH" value="../log"/>
+    <property name="LOG_CHILD_INFO" value="info"/>
+    <property name="LOG_CHILD_WARN" value="warn"/>
+    <property name="LOG_CHILD_ERROR" value="error"/>
+    <property name="LOG_BACKUP" value="../log/backup"/>
+    <property name="MAX_HISTORY" value="30"/>
+    <property name="LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %green([%thread]) %highlight(%-5level) %C.%M :%msg%n"/>
+    
+	<!-- Slack -->
+  <appender name="SLACK_WARN" class="com.github.maricn.logback.SlackAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} %-4relative [%thread] %-5level %class - %msg%n</pattern>
+    </layout>
+    <webhookUri>https://hooks.slack.com/services/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</webhookUri>
+    <username>CODE_Meets-warn-logger</username>
+    <iconEmoji>:rocket:</iconEmoji>
+    <colorCoding>true</colorCoding>
+  </appender>
+  
+   <appender name="SLACK_INFO" class="com.github.maricn.logback.SlackAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>%d{yyyy-MM-dd HH:mm:ss} %-4relative [%thread] %-5level %class - %msg%n</pattern>
+    </layout>
+    <webhookUri>https://hooks.slack.com/services/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</webhookUri>
+    <username>CODE_Meets-info-logger</username>
+    <iconEmoji>:rocket:</iconEmoji>
+    <colorCoding>true</colorCoding>
+  </appender>
+  
+  <!-- File -->
+  <appender name="FILE-INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_PARENT_PATH}/${LOG_CHILD_INFO}/info-${BY_DATE}.log</file>
+      <filter class="ch.qos.logback.classic.filter.LevelFilter">
+          <level>INFO</level>
+          <onMatch>ACCEPT</onMatch>
+          <onMismatch>DENY</onMismatch>
+      </filter>
+      <encoder>
+          <pattern>${LOG_PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${LOG_BACKUP}/${LOG_CHILD_INFO}/info-%d{yyyy-MM-dd}.zip</fileNamePattern>
+          <maxHistory>${MAX_HISTORY}</maxHistory>
+      </rollingPolicy>
+  </appender>
+
+  <appender name="FILE-WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_PARENT_PATH}/${LOG_CHILD_WARN}/warn-${BY_DATE}.log</file>
+      <filter class="ch.qos.logback.classic.filter.LevelFilter">
+          <level>WARN</level>
+          <onMatch>ACCEPT</onMatch>
+          <onMismatch>DENY</onMismatch>
+      </filter>
+      <encoder>
+          <pattern>${LOG_PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${LOG_BACKUP}/${LOG_CHILD_WARN}/warn-%d{yyyy-MM-dd}.zip</fileNamePattern>
+          <maxHistory>${MAX_HISTORY}</maxHistory>
+      </rollingPolicy>
+  </appender>
+
+  <appender name="FILE-ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_PARENT_PATH}/${LOG_CHILD_ERROR}/error-${BY_DATE}.log</file>
+      <filter class="ch.qos.logback.classic.filter.LevelFilter">
+          <level>ERROR</level>
+          <onMatch>ACCEPT</onMatch>
+          <onMismatch>DENY</onMismatch>
+      </filter>
+      <encoder>
+          <pattern>${LOG_PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+          <fileNamePattern>${LOG_BACKUP}/${LOG_CHILD_ERROR}/error-%d{yyyy-MM-dd}.zip</fileNamePattern>
+          <maxHistory>${MAX_HISTORY}</maxHistory>
+      </rollingPolicy>
+  </appender>
+  
+	<!-- MatterMost -->
+	<appender name="MATTERMOST_INFO" class="io.github.pendula95.logback.MattermostAppender">
+        <!-- Mattermost incoming webhook uri - MANDATORY -->
+        <webhook>https://meeting.ssafy.com/hooks/ewgoyit8xibetysunxgppwq5ne</webhook>
+        <username>logger-info</username>
+    	<iconEmoji>:rocket:</iconEmoji>
+        <colorCoding>true</colorCoding>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>**${HOSTNAME} %date{"yyyy-MM-dd'T'HH:mm:ssXXX"} %logger{128}** %n%msg%n</pattern>
+        </layout>
+	</appender>
+	
+	<appender name="MATTERMOST_WARN_ERROR" class="io.github.pendula95.logback.MattermostAppender">
+        <!-- Mattermost incoming webhook uri - MANDATORY -->
+        <webhook>https://meeting.ssafy.com/hooks/fby5bke8wfdbbyfeb1h6w9ubma</webhook>
+        <username>logger-warn-error</username>
+    	<iconEmoji>:rocket:</iconEmoji>
+        <colorCoding>true</colorCoding>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>**${HOSTNAME} %date{"yyyy-MM-dd'T'HH:mm:ssXXX"} %logger{128}** %n%msg%n</pattern>
+        </layout>
+	</appender>
+
+  <!-- Currently recommended way of using Slack appender -->
+  <appender name="ASYNC_SLACK_WARN" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="SLACK_WARN"/>
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+  </appender>
+  
+	<!-- Currently recommended way of using Slack appender -->
+	<appender name="ASYNC_SLACK_INFO" class="ch.qos.logback.classic.AsyncAppender">
+		<appender-ref ref="SLACK_INFO"/>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+  
+	<appender name="ASYNC_MATTERMOST_INFO" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="MATTERMOST_INFO"/>
+	    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+	      <level>INFO</level>
+	      <onMatch>ACCEPT</onMatch>
+	      <onMismatch>DENY</onMismatch>
+	    </filter>
+	</appender>
+   
+	<appender name="ASYNC_MATTERMOST_WARN_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="MATTERMOST_WARN_ERROR"/>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>
+	</appender>
+  
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+    <!-- <appender-ref ref="FILE"/> -->
+    <appender-ref ref="ASYNC_SLACK_WARN"/>
+    <appender-ref ref="ASYNC_SLACK_INFO"/>
+    <appender-ref ref="FILE-INFO"/>
+    <appender-ref ref="FILE-WARN"/>
+    <appender-ref ref="FILE-ERROR"/>
+    <appender-ref ref="ASYNC_MATTERMOST_INFO"/>
+    <appender-ref ref="ASYNC_MATTERMOST_WARN_ERROR"/>
+  </root>
+   
+</configuration>
