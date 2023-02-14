@@ -55,5 +55,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "https://282c769uda.apigw.ntruss.com/custom/v1/"
 }
