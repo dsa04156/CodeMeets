@@ -344,7 +344,7 @@ class OpenViduMain extends Component {
     // </button>
     return (
       <Container>
-        {this.state.session === undefined ? (
+        {/* {this.state.session === undefined ? (
           <div id="join">
             <div id="img-div">
               <img
@@ -387,19 +387,8 @@ class OpenViduMain extends Component {
                 </p>
               </form>
             </div>
-            {/* <Modal onClose={this.onClose} ModalTitle={this.modal.title}>
-              <TitleStyle>
-                <div className="name">URL 입력 </div>
-                <div className="input">
-                  <input type="text" style={{ border: "solid 2px grey" }} />
-                </div>
-                <ButtonStyle>
-                  <button>입장</button>
-                </ButtonStyle>
-              </TitleStyle>
-            </Modal> */}
           </div>
-        ) : null}
+        ) : null} */}
         {/* ------------------------- 여기서 부터 화상 화면 ------------------------------ */}
         {this.state.session !== undefined ? (
           <div style={{ display: "flex" }}>
@@ -653,3 +642,5 @@ const UrlBar = styled.div`
   height: 3vh;
   justify-content: center;
 `;
+
+

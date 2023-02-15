@@ -62,7 +62,7 @@ const GroupQnAModify = () => {
     return (
         <div>
             <TitleStyle><input type="text" defaultValue={`${formTitle}`} onChange={titleHandler} style={{width:'953px', height:'30px'}}/></TitleStyle> 
-            <ContentStyle><textarea type="text" defaultValue={`${formContent}`} onChange={contentHandler} style={{width:'953px', height:'450px'}}/></ContentStyle>
+            <ContentStyle><textarea type="text" defaultValue={`${formContent}`} onChange={contentHandler} style={{width:'953px', height:'450px', resize:"none"}}/></ContentStyle>
             <ButtonStyle><button className="custom-btn btn-4" onClick={backHandler}>Cancel</button></ButtonStyle>
             <ButtonStyle><button className="custom-btn btn-4" onClick={submitHandler}>Registration</button></ButtonStyle>
         </div>

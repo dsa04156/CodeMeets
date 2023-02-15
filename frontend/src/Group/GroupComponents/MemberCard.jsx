@@ -15,7 +15,6 @@ const MemberCard = ({ userId, nickName, profilePhoto, tel, email, userName, posi
         <div>tel: {tel}</div>
         <div>email: {email}</div>
       </PublickBox>
-      <button>매니저 승급!</button>
       {position === 1 ? <button>삭제</button> : null}
     </Card>
   );
@@ -25,8 +24,12 @@ export default MemberCard;
 
 const Card = styled.div`
   display: flex;
-  border-bottom: 1px solid black;
+  border: 1px solid black;
   height: 11vh;
+  margin-bottom:5px;
+  border-radius: 10px;
+  background-color: rgb(188,234,213);
+
 `;
 
 const ImageBox = styled.div`

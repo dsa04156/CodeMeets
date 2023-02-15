@@ -49,10 +49,10 @@ const GroupMember = () => {
           userId={useritem.userId}
           nickName={useritem.nickname}
           profilePhoto={
-            useritem.profilePhoto !== "" ? useritem.profilePhoto : DefaultImage
+            useritem.profilePhoto !== null ? useritem.profilePhoto : DefaultImage
           } // 일단 null -> ""
-          tel={useritem.telPublic === "1" ? useritem.telPublic : null}
-          email={useritem.emailPublic === "1" ? useritem.emailPublic : null}
+          tel={useritem.telPublic === "1" ? useritem.telPublic : "비공개"}
+          email={useritem.emailPublic === "1" ? useritem.emailPublic : "비공개"}
           manager
           position = {position}
         />
@@ -71,7 +71,7 @@ const GroupMember = () => {
 export default GroupMember;
 
 const MainBox = styled.div`
-  border: 1px solid red;
+padding-top: 1vh;
   height: 63vh;
-  overflow: scroll;
+  overflow-y: scroll;
 `;

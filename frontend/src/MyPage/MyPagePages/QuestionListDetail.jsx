@@ -28,7 +28,6 @@ const MyPageQuestionListDetail = () => {
   const [commentLikeUnLike, setCommentLikeUnLike] = useState(false);
 
   const params = useParams();
-  console.log('이거 질문 상세페이지 params임', params);
 
   const createComment = (event) => {
     setNewComment(event.target.value);
@@ -50,7 +49,7 @@ const MyPageQuestionListDetail = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log(response.data)
+      console.log("--------질문 상세정보",response.data)
       setData(response.data);
       setMyLikeState(!!response.data.conferenceQuestionLiked);
       // if (response.data.conferenceQuestionLiked) {
@@ -58,7 +57,6 @@ const MyPageQuestionListDetail = () => {
       // }
     });
   }, [API, likeUnLike]);
-  console.log(data.conferenceQuestionPk);
 
   // 답변 리스트 땡겨오기
   useEffect(() => {
@@ -70,12 +68,13 @@ const MyPageQuestionListDetail = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log(response.data);
+      console.log("---------답변리스트",response.data);
+      console.log("comment state라고 저장해둔거", !!response.data.conferenceAnswerLiked)
       setComments(response.data);
-      setCommentLikeState(!!response.data.conferenceAnswerLiked);
-      if (response.data.conferenceAnswerLiked) {
-        setCommentLikeUnLike((prev) => !prev);
-      }
+      // setCommentLikeState(!!response.data.conferenceAnswerLiked);
+      // if (response.data.conferenceAnswerLiked) {
+      //   setCommentLikeUnLike((prev) => !prev);
+      // }
     });
   }, [API, data]);
 
@@ -93,7 +92,6 @@ const MyPageQuestionListDetail = () => {
         userPk: loginUser.userPk,
       }),
     }).then((response) => {
-      console.log(response.data);
       window.location.reload();
     });
   };
@@ -111,7 +109,7 @@ const MyPageQuestionListDetail = () => {
         userPk: loginUser.userPk,
       }),
     }).then((response) => {
-      console.log(response.data);
+      console.log("------좋아요 안좋아요", response.data);
       if (response.data === 'success') {
         console.log(data);
         setLikeUnLike((prev) => !prev);
@@ -143,8 +141,9 @@ const MyPageQuestionListDetail = () => {
         username={commentitem.username}
         conferenceAnswerPk={commentitem.conferenceAnswerPk}
         userPk={commentitem.userPk}
+        //질문에 관한 정보
         detailData={data}
-        commentLikeUnLike={commentLikeUnLike}
+        // commentLikeUnLike={commentLikeUnLike}
       />
     );
   });
