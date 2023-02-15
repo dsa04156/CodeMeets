@@ -55,7 +55,6 @@ function CreateTable({ columns, data, TableNavHandler, isButton }) {
 
         <div {...getTableBodyProps()}>
           {rows.map((row, i) => {
-            console.log(i);
             prepareRow(row);
             return (
               <div
@@ -63,6 +62,7 @@ function CreateTable({ columns, data, TableNavHandler, isButton }) {
                 className="tr"
                 onClick={() => {
                   TableNavHandler(row);
+                  console.log('-----------------------row 값: ',row)
                   console.log(row.original);
                 }}
               >

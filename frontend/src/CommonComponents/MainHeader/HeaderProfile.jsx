@@ -31,16 +31,24 @@ const HeaderProfile = () => {
     }
   }, [loginUser]);
 
-  return (
-    <div>
-      <ProfileStyle src={`${profileImage}`} onClick={ToMyPage} />
-    </div>
-  );
+    return (
+        <div>
+            { (loginUser?.userPk !== undefined)? 
+            (<ProfileStyle  src={`${profileImage}`} onClick={ToMyPage}/>) 
+            : <ProfileHidden src={`${profileImage}`}/>}
+            {/* <ProfileStyle  src={`${profileImage}`} onClick={ToMyPage}/> */}
+        </div>
+    );
+
 };
 
 export default HeaderProfile;
 
 const ProfileStyle = styled.img`
-  height: 40px;
-  cursor: pointer; ;
+    height: 40px;
+    cursor: pointer;
+`;
+
+const ProfileHidden = styled.img`
+    display: none;
 `;

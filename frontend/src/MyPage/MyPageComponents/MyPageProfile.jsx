@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { user, APIroot } from '../../Store';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import MyPageEditModal from './MyPageEditModal';
+import '../../App.css';
 
 const MyPageProfile = () => {
   const userInfo = useRecoilValue(user);

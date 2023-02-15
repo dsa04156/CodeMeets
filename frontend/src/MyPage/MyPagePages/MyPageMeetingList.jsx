@@ -16,7 +16,12 @@ const MyPageMeetingList = () => {
   const navigate = useNavigate();
 
   const TableNavHandler = (row) => {
-    navigate(`/my-meeting-record/${row.original.conferencePk}`);
+    console.log("row데이터-------------------------------------",row)
+    navigate(`/group/${row.original.groupPk}/record/${row.original.conferencePk}`,
+    {state:{
+      title: row.original.conferenceTitle,
+      content: row.original.conferenceContents
+    }});
   };
 
   const data = React.useMemo(() => meetingRecord, [meetingRecord]);
