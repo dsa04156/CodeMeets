@@ -4,7 +4,7 @@ import Pagination from '../../CommonComponents/Pagination';
 import styled from 'styled-components';
 import { useParams, useNavigate } from "react-router-dom";
 
-import { APIroot, groupNavTitle, pageNumber } from '../../Store';
+import { APIroot, pageNumber } from '../../Store';
 import { useRecoilValue, useRecoilState} from 'recoil';
 
 import axios from 'axios';
@@ -15,6 +15,7 @@ const GroupMeetingList = () => {
 
     const navigate = useNavigate();
     const API = useRecoilValue(APIroot);
+    const params = useParams();
 
     const [totalPosts, setTotalPosts] = useState(0);
     const [page, setPage] = useRecoilState(pageNumber);
@@ -22,12 +23,19 @@ const GroupMeetingList = () => {
     const [order, setOder] = useState()
 
     const TableNavHandler = (row) => {
-        navigate(`/my-meeting-record/${row.original.conferencePk}`);     // conferencePk로 마이페이지 미팅리스트 상세피이지로 연결
+        navigate(`/group/${params.group_pk}/record/${row.original.conferencePk}`,{
+          state : {
+            title: row.original.conferenceTitle,
+            content: row.original.conferenceContents,
+          },
+        });     // conferencePk로 마이페이지 미팅리스트 상세피이지로 연결
     }
+
+    // 회의 목록 리스트 가져오기
     useEffect(() => {
         axios({
             method: "POST",
-            url: `${API}/group/conferencelist?nowPage=${page}&items=9&order=${order}`,
+            url: `${API}/group/conferencelist?nowPage=${page}&items=9&order=${order}&groupPk=${params.group_pk}`,
             headers: {
                 AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
             }
@@ -43,6 +51,7 @@ const GroupMeetingList = () => {
             setGroupRecord(response.data);
         });
     }, [API, page, order])
+    console.log("-------------grouprecord",groupRecord)
 
     const data = React.useMemo(() => groupRecord, [groupRecord]);
 
@@ -78,7 +87,7 @@ const GroupMeetingList = () => {
             <Styles>
                 <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler} isButton="0"/>
             </Styles>
-            <Pagination totalPosts='1006' limit="9" page={page} setPage={setPage}></Pagination>
+            <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
             </ContentBox>
         </div>
     );

@@ -28,7 +28,7 @@ const Card = styled.div`
   height: 11vh;
   margin-bottom:5px;
   border-radius: 10px;
-  background-color: rgb(188,234,213)
+  background-color: rgb(188,234,213);
 
 `;
 

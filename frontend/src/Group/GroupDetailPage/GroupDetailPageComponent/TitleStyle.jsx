@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import '../../../App.css';
 
 const TitleStyle = ({TitleContent}) => {
     return (
@@ -26,5 +27,6 @@ margin: 2vh;
     align-items: flex-end;
     /* margin-left: 80vh; */
   font-size: 2vh;
+  font-family: "Cafe24Ohsquareair";
 }
 `;
