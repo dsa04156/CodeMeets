@@ -146,16 +146,16 @@ const GroupQnADetail = () => {
         'Content-Type': 'application/json',
       },
     }).then((response) => {
-      console.log(response.data);
+      console.log("그룹의 댓귿 데이터--------------",response.data);
       setComments(response.data);
-      setCommentLikeState(!!response.data.groupQnaAnswerLiked);
+      // setCommentLikeState(!!response.data.groupQnaAnswerLiked);
       console.log(commnetLikeUnLike)
       // if (response.data.groupQnaAnswerLiked) {
       //   setCommnetLikeUnLike((prev) => !prev);
       //   console.log(commnetLikeUnLike)
       // }
     });
-  }, [API, commnetLikeUnLike]); //data 지우고 commnetLikeUnLike 넣음
+  }, [API]); //data 지우고 commnetLikeUnLike 넣음
 
   // 댓글 작성
   const submitComment = () => {
@@ -189,7 +189,7 @@ const GroupQnADetail = () => {
         groupQnaAnswerPk={commentitem.groupQnaAnswerPk}
         userPk = {commentitem.userPk}
         detailData = {data}
-        commnetLikeUnLike = {commnetLikeUnLike}
+        // commnetLikeUnLike = {commnetLikeUnLike}
       />
     );
   });

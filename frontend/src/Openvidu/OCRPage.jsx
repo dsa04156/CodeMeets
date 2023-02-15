@@ -28,7 +28,7 @@ const OCRPage = ({ ocrResult }) => {
           <div style={{ fontSize: "5px", marginRight: "10px" }}>
             OCR Result - Copy
           </div>
-          <FaRegCopy style={{cursor:"pointer"}} onClick={()=>{CopyHandler(ocrResult)}}></FaRegCopy>
+          <FaRegCopy style={{cursor:"pointer"}} onClick={(ocrResult)=>{CopyHandler(ocrResult)}}></FaRegCopy>
         </div>
         <OcrContainer>
           <OcrBox style={{fontSize:"9px", paddingLeft:"10px", paddingRight:"10px", paddingBottom:"10px"}}>{ocrResult}</OcrBox>
