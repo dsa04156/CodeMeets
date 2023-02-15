@@ -1,19 +1,9 @@
 import React from 'react';
 import { useTable, useBlockLayout } from 'react-table';
-import { useState } from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
 
-import { APIroot } from '../Store';
-import { user } from "../Store";
-import { useRecoilValue } from "recoil";
-
-function CreateTable({ columns, data, TableNavHandler, isButton }) {
-  // Use the state and functions returned from useTable to build your UI
-  // const API = useRecoilValue(APIroot);
-  const userPk = useRecoilValue(user);
-
+function CreateTable({ columns, data, TableNavHandler }) {
   const defaultColumn = React.useMemo(
     () => ({
       width: 150,
@@ -43,12 +33,6 @@ function CreateTable({ columns, data, TableNavHandler, isButton }) {
                   {column.render('Header')}
                 </HeadSize>
               ))}
-              {/* <div>
-                {isButton === '1' ? (
-                  <div style={{ width: '70px' }}></div>
-                ) : null}
-                그룹 삭제
-              </div> */}
             </div>
           ))}
         </div>
@@ -62,8 +46,6 @@ function CreateTable({ columns, data, TableNavHandler, isButton }) {
                 className="tr"
                 onClick={() => {
                   TableNavHandler(row);
-                  console.log('-----------------------row 값: ',row)
-                  console.log(row.original);
                 }}
               >
                 {row.cells.map((cell) => {
@@ -90,13 +72,11 @@ const Styles = styled.div`
   padding-top: 0px;
   table {
     border-spacing: 0;
-    /* border: 1px solid black; */
     font-size: 5em;
     tr {
       :last-child {
         td {
           border-bottom: 0;
-          
         }
       }
     }
@@ -105,7 +85,6 @@ const Styles = styled.div`
       margin: 0;
       padding: 0.5rem;
       border-bottom: 1px solid black;
-      /* border-right: 1px solid black; */
       :last-child {
         border-right: 0;
       }
@@ -130,8 +109,4 @@ const NavBarStyle = styled(NavLink)`
 
 const HeadSize = styled.div`
   font-size: large;
-`;
-
-const ButtonStyle = styled.button`
-  margin-left: 15px;
 `;

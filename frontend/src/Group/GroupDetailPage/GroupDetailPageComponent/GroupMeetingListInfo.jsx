@@ -1,9 +1,7 @@
-import TitleStyle from './TitleStyle';
-import ContentStyle from './ContentStyle';
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue} from 'recoil';
 import { APIroot, user } from '../../../Store';
 
 import { AiFillHeart } from 'react-icons/ai';
@@ -29,7 +27,6 @@ const GroupMeetingListInfo = ({
   const navigate = useNavigate();
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
-  const params = useParams();
 
   const [likeUnLike, setLikeUnLike] = useState(!!conferenceQuestionLiked);
   const [questionLikeCnt, setQuestionLikeCnt] = useState(
@@ -40,14 +37,8 @@ const GroupMeetingListInfo = ({
     navigate(`/my-question-record/${conferenceQuestionPk}`);
   };
 
-  const backHandler = () => {
-    navigate(-1);
-  };
-  console.log(likeUnLike);
-
   //질문 좋아요
   const likeClickHandler = () => {
-    console.log(likeUnLike);
     axios({
       method: 'PUT',
       url: `${API}/conferenceQna/like`,
@@ -59,7 +50,6 @@ const GroupMeetingListInfo = ({
         userPk: loginUser.userPk,
       }),
     }).then((response) => {
-      console.log(response.data);
       if (response.data === 'success') {
         setLikeUnLike((prev) => !prev);
         if (likeUnLike) {
@@ -121,25 +111,6 @@ const OverStyle = styled.div`
 
 const HrStyle = styled.div`
   margin: 20px 0px 5px 0px;
-`;
-
-const ContentsStyle = styled.div`
-  border: 1px;
-  display: flex;
-  flex-direction: column;
-  font-size: 3vh;
-  margin: 2vh;
-`;
-
-const SubmitStyle = styled.span`
-  margin: 0px 0px 0px 20px;
-  width: 10vh;
-  height: 3.5vh;
-  color: #8f8f8f;
-  cursor: pointer;
-  &:hover {
-    color: #3d58f3;
-  }
 `;
 
 const QuestionInfoStyle = styled.div`

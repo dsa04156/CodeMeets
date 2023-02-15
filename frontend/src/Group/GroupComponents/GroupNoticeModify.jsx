@@ -1,66 +1,88 @@
-import { useRecoilValue } from "recoil";
-import { APIroot } from "../../Store"
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useRecoilValue } from 'recoil';
+import { APIroot } from '../../Store';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 
 const GroupNoticeModify = () => {
-    const API = useRecoilValue(APIroot)
-    const location = useLocation()
-    const navigate = useNavigate()
-    const firstData = location.state
-    const [formTitle, setFormTitle] = useState(firstData.title)
-    const [formContent, setFormContent] = useState(firstData.content)
+  const API = useRecoilValue(APIroot);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const firstData = location.state;
+  const [formTitle, setFormTitle] = useState(firstData.title);
+  const [formContent, setFormContent] = useState(firstData.content);
 
-    const titleHandler = (event) => {
-        const currentTitle = event.target.value;
-        setFormTitle(currentTitle)
-    };
-    
-    const contentHandler = (event) => {
-        const currentContent = event.target.value;
-        setFormContent(currentContent)
-    };
+  const titleHandler = (event) => {
+    const currentTitle = event.target.value;
+    setFormTitle(currentTitle);
+  };
 
-    const backHandler = () => {
-        navigate(-1)
-    }
+  const contentHandler = (event) => {
+    const currentContent = event.target.value;
+    setFormContent(currentContent);
+  };
 
-    // 수정
-    const submitHandler = (event) => {
-        event.preventDefault()
-        console.log(formTitle)
-        console.log(firstData.noticePk)
-        console.log(formContent)
-        axios({
-            method:"PUT",
-            url:`${API}/group-notice`,
-            headers:{
-                "Content-Type": "application/json"
-            },
-            data:JSON.stringify({
-                groupNoticeTitle: `${formTitle}`,
-                groupNoticePk: `${firstData.noticePk}`,
-                groupNoticeContents:`${formContent}`,
-                originFilename:"",
-                dbFilename:""
-            })
-        }).then(() => {
-            navigate(-1);
-        })
-        .catch((err) => {console.log(err)})
-    };
+  const backHandler = () => {
+    navigate(-1);
+  };
 
-    return (
-        <div>
-            <TitleStyle><input type="text" defaultValue={`${formTitle}`} onChange={titleHandler} style={{width:'953px', height:'30px'}}/></TitleStyle> 
-            <hr style={{width: '953px' }}/>
-            <ContentStyle><textarea type="text" defaultValue={`${formContent}`} onChange={contentHandler} style={{width:'953px', height:'450px', resize:"none"}}/></ContentStyle>
-            <ButtonStyle><button className="custom-btn btn-4" onClick={backHandler}>Cancel</button></ButtonStyle>     
-            <ButtonStyle><button className="custom-btn btn-4" onClick={submitHandler}>Registration</button></ButtonStyle>
-        </div>
-    );
+  // 수정
+  const submitHandler = (event) => {
+    event.preventDefault();
+    axios({
+      method: 'PUT',
+      url: `${API}/group-notice`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        groupNoticeTitle: `${formTitle}`,
+        groupNoticePk: `${firstData.noticePk}`,
+        groupNoticeContents: `${formContent}`,
+        originFilename: '',
+        dbFilename: '',
+      }),
+    })
+      .then(() => {
+        navigate(-1);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  return (
+    <div>
+      <TitleStyle>
+        <input
+          type="text"
+          defaultValue={`${formTitle}`}
+          onChange={titleHandler}
+          style={{ width: '953px', height: '30px' }}
+        />
+      </TitleStyle>
+      <hr style={{ width: '953px' }} />
+      <ContentStyle>
+        <textarea
+          type="text"
+          defaultValue={`${formContent}`}
+          onChange={contentHandler}
+          style={{ width: '953px', height: '450px', resize: 'none' }}
+        />
+      </ContentStyle>
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={backHandler}>
+          Cancel
+        </button>
+      </ButtonStyle>
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={submitHandler}>
+          Registration
+        </button>
+      </ButtonStyle>
+    </div>
+  );
 };
 
 export default GroupNoticeModify;
@@ -71,7 +93,6 @@ const TitleStyle = styled.div`
 const ContentStyle = styled.div`
   margin: 12px 20px 0px 20px;
 `;
-
 
 const ButtonStyle = styled.div`
   .custom-btn {

@@ -2,60 +2,65 @@ import styled from 'styled-components';
 import Modal from '../../CommonComponents/Modal/Modal';
 import axios from 'axios';
 import { APIroot } from '../../Store';
-import { user } from '../../Store';
+
 import { useRecoilValue } from 'recoil';
-import { useState } from 'react';
+
 import { useNavigate } from 'react-router-dom';
 
-const GroupLeaveModal = ({onClose, groupPk}) => {
-    const Title = "Group Leave";
-    const navigate = useNavigate()
-    
-    const API = useRecoilValue(APIroot);
+const GroupLeaveModal = ({ onClose, groupPk }) => {
+  const Title = 'Group Leave';
+  const navigate = useNavigate();
 
-    const OkHandler = () => {
-        axios({
-            method: "PUT",
-            url: `${API}/group/${groupPk}/left`,
-            headers: {
-              AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
-            }
-          })
-          .then((response) => {if(response.data === "success"){
-            CancelHandler()
-            navigate('/grouplist');
-          }})
-    }
-    
-    const CancelHandler = () => {
-        onClose?.();
-    }
+  const API = useRecoilValue(APIroot);
 
-    return (
-        <Modal onClose={onClose} ModalTitle={Title}>
-            <TitleStyle>
-                <div>정말 탈퇴하시겠습니까?</div>
-            </TitleStyle>
-            <TitleStyle>
-          <SubButtonStyle>
-            <div className='position'>  
-            <button className='custom-btn btn-8' onClick={OkHandler}>Ok</button>
-            </div>
-          </SubButtonStyle>
-          <SubButtonStyle>
-            <button className='custom-btn btn-8' onClick={CancelHandler}>Cancel</button>
-          </SubButtonStyle>
-        </TitleStyle>
-        </Modal>
-    )
-}
+  const OkHandler = () => {
+    axios({
+      method: 'PUT',
+      url: `${API}/group/${groupPk}/left`,
+      headers: {
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
+      },
+    }).then((response) => {
+      if (response.data === 'success') {
+        CancelHandler();
+        navigate('/grouplist');
+      }
+    });
+  };
+
+  const CancelHandler = () => {
+    onClose?.();
+  };
+
+  return (
+    <Modal onClose={onClose} ModalTitle={Title}>
+      <TitleStyle>
+        <div>정말 탈퇴하시겠습니까?</div>
+      </TitleStyle>
+      <TitleStyle>
+        <SubButtonStyle>
+          <div className="position">
+            <button className="custom-btn btn-8" onClick={OkHandler}>
+              Ok
+            </button>
+          </div>
+        </SubButtonStyle>
+        <SubButtonStyle>
+          <button className="custom-btn btn-8" onClick={CancelHandler}>
+            Cancel
+          </button>
+        </SubButtonStyle>
+      </TitleStyle>
+    </Modal>
+  );
+};
 
 export default GroupLeaveModal;
 
 const TitleStyle = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: end; // 세로 기준 맨 아래
+  align-items: end;
   height: 6vh;
   .name {
     display: flex;
@@ -69,20 +74,6 @@ const TitleStyle = styled.div`
   .position {
     margin-left: 60px;
   }
-`;
-
-const ButtonStyle = styled.div`
-  display: flex;
-  width: 50px;
-  height: 25px;
-  margin-left: 5px;
-`;
-
-const CreateCancelButtonStyle = styled.div`
-  margin-left: 50px;
-  padding-left: 50px;
-  width: 5%;
-  height: 25px;
 `;
 
 const SubButtonStyle = styled.div`

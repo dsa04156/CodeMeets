@@ -19,11 +19,9 @@ const GroupNotice = () => {
   const API = useRecoilValue(APIroot);
   const [recoilNavTitle, setRecoilNavTitle] = useRecoilState(groupNavTitle);
   const [noticeList, setNoticeList] = useState([]);
-  // API의 order 부분 바꾸기위한 useState -> 일단 사용안함
+
   const [order, setOrder] = useState('group_notice_date');
-  // 게시글의 총 개수를 알기 위한 useState
   const [totalPosts, setTotalPosts] = useState(0);
-  // url의 page, pagination에 넘겨줌!
   const [page, setPage] = useRecoilState(pageNumber);
   const [position, setPosition] = useState();
 
@@ -35,7 +33,6 @@ const GroupNotice = () => {
     navigate(`/group/${params.group_pk}/notice/create`);
   };
 
-  // API, params, order, page가 바뀌면 재 렌더링하는 useEffect
   useEffect(() => {
     setRecoilNavTitle('Notice');
     axios({
@@ -47,10 +44,8 @@ const GroupNotice = () => {
     }).then((response) => {
       setTotalPosts(response.data[0].total);
       response.data.map((list, index) => {
-        // index + (page - 1) * items + 1
-        // 변수가 아닌 것들은 상수(고정값)
-        list.newIndex = index + (page - 1) * 9 + 1; 
-      })
+        list.newIndex = index + (page - 1) * 9 + 1;
+      });
       setNoticeList(response.data);
     });
   }, [API, params, order, page]);
@@ -65,7 +60,6 @@ const GroupNotice = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log(response.data);
       setPosition(response.data.position);
     });
   }, [API, position]);
@@ -76,8 +70,8 @@ const GroupNotice = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: "번호",
-        accessor: "newIndex", // accessor is the "key" in the data
+        Header: '번호',
+        accessor: 'newIndex', // accessor is the "key" in the data
         width: 100,
       },
       {
@@ -110,7 +104,6 @@ const GroupNotice = () => {
           />
         </Styles>
       </ContentBox>
-      {/* 각 부분 맞춰서 넘겨주면 pagination 됨 */}
       <Pagination
         totalPosts={`${totalPosts}`}
         limit="9"
@@ -120,7 +113,10 @@ const GroupNotice = () => {
       <div>
         {position === 1 ? (
           <ButtonStyle>
-          <button className='custom-btn btn-4' onClick={CreateWriteHandler}>Create</button></ButtonStyle>
+            <button className="custom-btn btn-4" onClick={CreateWriteHandler}>
+              Create
+            </button>
+          </ButtonStyle>
         ) : null}
       </div>
     </div>
@@ -128,10 +124,6 @@ const GroupNotice = () => {
 };
 
 export default GroupNotice;
-
-// style={{overflow: "hidden",
-// textOverflow: "ellipsis",
-// whiteSpace: "nowrap"}}
 
 const Styles = styled.div`
   padding: 1rem;

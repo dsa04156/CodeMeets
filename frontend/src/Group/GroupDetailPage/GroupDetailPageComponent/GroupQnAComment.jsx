@@ -1,12 +1,12 @@
-import axios from "axios";
-import { APIroot, user } from "../../../Store";
-import { useRecoilValue } from "recoil";
-import { useState } from "react";
+import axios from 'axios';
+import { APIroot, user } from '../../../Store';
+import { useRecoilValue } from 'recoil';
+import { useState } from 'react';
 
-import { AiFillHeart } from "react-icons/ai";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart } from 'react-icons/ai';
+import { AiOutlineHeart } from 'react-icons/ai';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const GroupQnAComment = ({
   groupQnaAnswerContents,
@@ -16,16 +16,14 @@ const GroupQnAComment = ({
   username,
   groupQnaAnswerPk,
   userPk,
-  detailData, // groupQuestion 정보
-  // commnetLikeUnLike
+  detailData,
 }) => {
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
-  const [likeUnLike, setLikeUnLike] = useState(!!groupQnaAnswerLiked); //groupQnaAnswerLiked
+  const [likeUnLike, setLikeUnLike] = useState(!!groupQnaAnswerLiked);
   const [commentLikeCnt, setCommentLikeCnt] = useState(groupQnaAnswerLikeCnt);
   const [modifyButton, setModifyButton] = useState(false);
   const [formContent, setFormContent] = useState(groupQnaAnswerContents);
-  console.log(groupQnaAnswerPk)  
 
   const modifyButtonStateHandler = () => {
     setModifyButton(!modifyButton);
@@ -37,53 +35,56 @@ const GroupQnAComment = ({
   };
 
   const enterClickHandler = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       modifyCommentHandler();
     }
   };
   // 댓글 좋아요
   const likeClickHandler = () => {
     axios({
-      method: "PUT",
+      method: 'PUT',
       url: `${API}/answer/like`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: JSON.stringify({
         groupQnaAnswerPk: groupQnaAnswerPk,
         userPk: loginUser.userPk,
       }),
-    }).then((response) => {
-      console.log("좋아요 결과:" ,response.data);
-      if (response.data === "success") {
-        setLikeUnLike((prev) => !prev);
-        if (likeUnLike) {
-          setCommentLikeCnt((prev) => {
-            return prev - 1;
-          });
-        } else {
-          setCommentLikeCnt((prev) => {
-            return prev + 1;
-          });
+    })
+      .then((response) => {
+        if (response.data === 'success') {
+          setLikeUnLike((prev) => !prev);
+          if (likeUnLike) {
+            setCommentLikeCnt((prev) => {
+              return prev - 1;
+            });
+          } else {
+            setCommentLikeCnt((prev) => {
+              return prev + 1;
+            });
+          }
         }
-      }
-    }).catch((err)=>{console.log(err)})
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   // 댓글 수정
   const modifyCommentHandler = () => {
     axios({
-      method: "PUT",
+      method: 'PUT',
       url: `${API}/answer`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: JSON.stringify({
         groupQnaAnswerContents: formContent,
         groupQnaAnswerPk: groupQnaAnswerPk,
         userPk: userPk,
       }),
-    }).then((response) => {
+    }).then(() => {
       modifyButtonStateHandler();
       window.location.reload();
     });
@@ -92,42 +93,41 @@ const GroupQnAComment = ({
   // 댓글 삭제
   const deleteComment = () => {
     axios({
-      method: "DELETE",
+      method: 'DELETE',
       url: `${API}/answer/${groupQnaAnswerPk}`,
-    }).then((response) => {
+    }).then(() => {
       window.location.reload();
     });
   };
 
   return (
-    <ContentStyle style={{ margin: "0px 0px 5px 0px" }}>
+    <ContentStyle style={{ margin: '0px 0px 5px 0px' }}>
       <span className="commentHeight">
         <span className="userName">{username}</span>
         <div className="content">{groupQnaAnswerContents}</div>
         <span>
-        <span className="date">{groupQnaAnswerDate}</span>
-        {likeUnLike === true ? (
-          <div>
-            <AiFillHeart
-              style={{ margin: "0px 5px 0px 0px" }}
-              onClick={likeClickHandler}
-              cursor="pointer"
-            />
-            좋아요 : {commentLikeCnt}
-          </div>
-        ) : (
-          <div>
-            <AiOutlineHeart
-              style={{ margin: "0px 5px 0px 0px" }}
-              onClick={likeClickHandler}
-              cursor="pointer"
-            />
-            좋아요 : {commentLikeCnt}
-          </div>
-        )}
-      </span>
+          <span className="date">{groupQnaAnswerDate}</span>
+          {likeUnLike === true ? (
+            <div>
+              <AiFillHeart
+                style={{ margin: '0px 5px 0px 0px' }}
+                onClick={likeClickHandler}
+                cursor="pointer"
+              />
+              좋아요 : {commentLikeCnt}
+            </div>
+          ) : (
+            <div>
+              <AiOutlineHeart
+                style={{ margin: '0px 5px 0px 0px' }}
+                onClick={likeClickHandler}
+                cursor="pointer"
+              />
+              좋아요 : {commentLikeCnt}
+            </div>
+          )}
+        </span>
         <ContentStyle>
-          {/* onclick 시 input 창 띄우고 수정 확인 onClick 시 input 창 hidden 그리고 저장된 값 저장 */}
           {userPk === loginUser.userPk ? (
             <span className="button" onClick={modifyButtonStateHandler}>
               Modify
@@ -169,7 +169,6 @@ const GroupQnAComment = ({
 export default GroupQnAComment;
 
 const ContentStyle = styled.div`
-  /* margin: 0px 0px 20px 0px; */
   .userName {
     font-weight: bold;
     font-size: 17px;

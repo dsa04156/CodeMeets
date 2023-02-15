@@ -1,15 +1,14 @@
-import { useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
-import { APIroot } from "../../Store";
-import { useRecoilValue } from "recoil";
-import axios from "axios";
-import { useNavigate } from "react-router-dom"
+import { APIroot } from '../../Store';
+import { useRecoilValue } from 'recoil';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-import GroupQnAItem from "../GroupComponents/GroupQnAItem";
-import CreateTable from "../../CommonComponents/CreateTable";
-import Pagination from "../../CommonComponents/Pagination";
+import CreateTable from '../../CommonComponents/CreateTable';
+import Pagination from '../../CommonComponents/Pagination';
 
 const GroupQnA = () => {
   const API = useRecoilValue(APIroot);
@@ -19,29 +18,26 @@ const GroupQnA = () => {
   const [totalPosts, setTotalPosts] = useState(0);
 
   const params = useParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const TableNavHandler = (row) =>{
-    navigate(`/group/qna/${row.original.groupQuestionPk}`)
-  }
+  const TableNavHandler = (row) => {
+    navigate(`/group/qna/${row.original.groupQuestionPk}`);
+  };
 
   const CreateWriteHandler = () => {
-    navigate(`/group/${params.group_pk}/qna/create`)
-  }
+    navigate(`/group/${params.group_pk}/qna/create`);
+  };
 
   // Q&A 리스트 불러오기
   useEffect(() => {
     axios({
-      method: "GET",
+      method: 'GET',
       url: `${API}/qna/list/${params.group_pk}?nowPage=${page}&items=9`,
     }).then((response) => {
-      console.log(response.data);
       setTotalPosts(response.data[0].total);
       response.data.map((list, index) => {
-        //index + (page - 1) * items + 1
-        // 변수가 아닌 것들은 상수(고정값)
         list.newIndex = index + (page - 1) * 9 + 1;
-      })
+      });
       setQnaList(response.data);
     });
   }, [API, params, page]);
@@ -51,33 +47,33 @@ const GroupQnA = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: "번호",
-        accessor: "newIndex", // accessor is the "key" in the data
+        Header: '번호',
+        accessor: 'newIndex',
         width: 100,
       },
       {
-        Header: "제목",
-        accessor: "groupQuestionTitle",
+        Header: '제목',
+        accessor: 'groupQuestionTitle',
         width: 400,
       },
       {
-        Header: "작성자",
-        accessor: "username",
+        Header: '작성자',
+        accessor: 'username',
         width: 100,
       },
       {
-        Header: "좋아요",
-        accessor: "groupQuestionLikeCnt",
+        Header: '좋아요',
+        accessor: 'groupQuestionLikeCnt',
         width: 100,
       },
       {
-        Header: "userPk??",
-        accessor: "userPk",
+        Header: 'userPk??',
+        accessor: 'userPk',
         width: 100,
       },
       {
-        Header: "등록일자",
-        accessor: "groupQuestionDate",
+        Header: '등록일자',
+        accessor: 'groupQuestionDate',
         width: 100,
       },
     ],
@@ -87,12 +83,26 @@ const GroupQnA = () => {
   return (
     <div>
       <ContentBox>
-      <Styles>
-        <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler} isButton="0"/>
-        <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
-      </Styles>
+        <Styles>
+          <CreateTable
+            columns={columns}
+            data={data}
+            TableNavHandler={TableNavHandler}
+            isButton="0"
+          />
+          <Pagination
+            totalPosts={`${totalPosts}`}
+            limit="9"
+            page={page}
+            setPage={setPage}
+          ></Pagination>
+        </Styles>
       </ContentBox>
-        <ButtonStyle><button className="custom-btn btn-4" onClick={CreateWriteHandler}>Create</button></ButtonStyle>
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={CreateWriteHandler}>
+          Create
+        </button>
+      </ButtonStyle>
     </div>
   );
 };

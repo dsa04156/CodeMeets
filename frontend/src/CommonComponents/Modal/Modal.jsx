@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import ModalContainer from "./ModalContainer";
-import { AiOutlineClose } from "react-icons/ai";
+import React, { useEffect } from 'react';
+import styled from 'styled-components';
+import ModalContainer from './ModalContainer';
+import { AiOutlineClose } from 'react-icons/ai';
 
 const Modal = ({ onClose, children, ModalTitle }) => {
-
   // 모달의 button 부분이름 바꾸기 위한 useState 부모의 buttonName을 받아옴
-
   const handleClose = () => {
-    console.log("실행은 됩니다.");
     onClose?.();
   };
 
   useEffect(() => {
-    const $body = document.querySelector("body");
-    $body.style.overflow = "hidden";
-    return () => ($body.style.overflow = "auto");
+    const $body = document.querySelector('body');
+    $body.style.overflow = 'hidden';
+    return () => ($body.style.overflow = 'auto');
   }, []);
 
   return (
@@ -27,15 +24,13 @@ const Modal = ({ onClose, children, ModalTitle }) => {
               <ModalTitleStyle>{ModalTitle}</ModalTitleStyle>
               <AiOutlineClose
                 onClick={handleClose}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: 'pointer' }}
               />
             </CloseButton>
           </Header>
           <Contents>
-            <div>
-            {children}
-            </div>
-            </Contents>
+            <div>{children}</div>
+          </Contents>
         </ModalWrap>
       </Overlay>
     </ModalContainer>
@@ -76,8 +71,12 @@ const Header = styled.div`
   height: 30px;
   padding-top: 10px;
   padding-right: 14px;
-  background: rgb(158,213,197);
-  background: linear-gradient(149deg, rgba(158,213,197,0.4823179271708683) 100%, rgba(240,219,219,0.8828781512605042) 100%);
+  background: rgb(158, 213, 197);
+  background: linear-gradient(
+    149deg,
+    rgba(158, 213, 197, 0.4823179271708683) 100%,
+    rgba(240, 219, 219, 0.8828781512605042) 100%
+  );
 `;
 
 const Contents = styled.div`
@@ -86,7 +85,7 @@ const Contents = styled.div`
   margin: 10px;
   margin-left: 50px;
   margin-right: 50px;
-  input { 
+  input {
     width: 300px;
     z-index: 1;
     height: 20px;

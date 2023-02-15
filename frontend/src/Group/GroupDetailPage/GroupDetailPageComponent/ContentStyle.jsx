@@ -18,8 +18,3 @@ const ContentBox = styled.div`
   overflow-y: auto;
   white-space: pre-line;
 `;
-const HitBox = styled.div`
-  display: flex;
-  justify-content: right;
-  margin-right: 3vh;
-`;

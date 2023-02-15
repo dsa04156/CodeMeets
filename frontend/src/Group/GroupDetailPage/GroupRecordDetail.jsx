@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { APIroot, pageNumber, user } from '../../Store';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { APIroot, user } from '../../Store';
+import { useRecoilValue } from 'recoil';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 
 import TitleStyle from './GroupDetailPageComponent/TitleStyle';
-import ContentStyle from './GroupDetailPageComponent/ContentStyle';
 import GroupMeetingListInfo from './GroupDetailPageComponent/GroupMeetingListInfo';
 import CommentContentStyle from './GroupDetailPageComponent/CommentContentStyle';
 
@@ -25,7 +24,6 @@ const GroupRecordDetail = () => {
   const [CommentsInConference, setCommentsInConference] = useState([]);
 
   // 회의 내 질문 목록들 가져오기
-  console.log('params: ', params);
   useEffect(() => {
     axios({
       method: 'GET',
@@ -34,47 +32,15 @@ const GroupRecordDetail = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log(response.data);
       setCommentsInConference(response.data);
     });
-    // console.log(conferenceInfo)
   }, [API]);
-
-  const enterClickHandler = (event) => {
-    if (event.key === 'Enter') {
-      submitComment();
-    }
-  };
-
-  const createComment = (event) => {
-    setNewComment(event.target.value);
-  };
 
   const backHandler = () => {
     navigate(-1);
   };
 
-  // 댓글 작성
-  const submitComment = () => {
-    axios({
-      method: 'POST',
-      url: `${API}/conferenceAnswer`,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: JSON.stringify({
-        conferenceAnswerContents: newComment,
-        conferenceQuestionPk: params.conferenceQuestionPk,
-        userPk: loginUser.userPk,
-      }),
-    }).then((response) => {
-      console.log(response.data);
-      window.location.reload();
-    });
-  };
-
   const conferenceInfoList = CommentsInConference.map((infoItem, index) => {
-    console.log(infoItem);
     return (
       <GroupMeetingListInfo
         key={index}
@@ -99,18 +65,20 @@ const GroupRecordDetail = () => {
     <div>
       <OverStyle>
         <TitleStyle TitleContent={RecordTitle} />
-        <div style={{margin: '3vh' }}>{RecordContent}</div>
-        <HrStyle><hr style={{ width: '954px' }}/></HrStyle>
-        {/* <ContentStyle Content={RecordContent}/> */}
+        <div style={{ margin: '3vh' }}>{RecordContent}</div>
+        <HrStyle>
+          <hr style={{ width: '954px' }} />
+        </HrStyle>
         <ContentsStyle>질문리스트</ContentsStyle>
-        {/* <div>
-                    { conferenceInfoList.length > 0? (
-                        {conferenceInfoList} ) : ( <div style={{ margin: '50px 50px 50px 50px' }}>댓글이 없습니다.</div> )}
-                </div> */}
         <div>
-          {conferenceInfoList.length > 0? (<CommentContentStyle Content={conferenceInfoList} />) : ( <div style={{ margin: '50px 50px 50px 50px' }}>질문이 없습니다.</div> ) }
+          {conferenceInfoList.length > 0 ? (
+            <CommentContentStyle Content={conferenceInfoList} />
+          ) : (
+            <div style={{ margin: '50px 50px 50px 50px' }}>
+              질문이 없습니다.
+            </div>
+          )}
         </div>
-        {/* <CommentContentStyle Content={conferenceInfoList} /> */}
         <ButtonStyle>
           <button className="custom-btn btn-4" onClick={backHandler}>
             Back
@@ -137,28 +105,7 @@ const ContentsStyle = styled.div`
   flex-direction: column;
   font-size: 5vh;
   margin: 3vh;
-  font-family: "yanoljaBold";
-`;
-
-const SubmitStyle = styled.span`
-  margin: 0px 0px 0px 20px;
-  width: 10vh;
-  height: 3.5vh;
-  color: #8f8f8f;
-  cursor: pointer;
-  &:hover {
-    color: #3d58f3;
-  }
-`;
-
-const LikeBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: right;
-  align-items: center;
-  font-size: 2vh;
-  margin-right: 3vh;
-  height: 0.1vh;
+  font-family: 'yanoljaBold';
 `;
 
 const ButtonStyle = styled.div`

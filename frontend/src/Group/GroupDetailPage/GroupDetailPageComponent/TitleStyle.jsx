@@ -1,32 +1,29 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import '../../../App.css';
 
-const TitleStyle = ({TitleContent}) => {
-    return (
-        <div>
-        <TitleBox>
-            <div>
-                {TitleContent}
-            </div>
-        </TitleBox>
-        </div>
-    );
+const TitleStyle = ({ TitleContent }) => {
+  return (
+    <div>
+      <TitleBox>
+        <div>{TitleContent}</div>
+      </TitleBox>
+    </div>
+  );
 };
 
 export default TitleStyle;
 
 const TitleBox = styled.div`
-border: 1px;
-display: flex;
-flex-direction: column;
-font-size: 3vh;
-margin: 2vh;
-.LikeBox {
+  border: 1px;
+  display: flex;
+  flex-direction: column;
+  font-size: 3vh;
+  margin: 2vh;
+  .LikeBox {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    /* margin-left: 80vh; */
-  font-size: 2vh;
-  font-family: "Cafe24Ohsquareair";
-}
+    font-size: 2vh;
+    font-family: 'Cafe24Ohsquareair';
+  }
 `;
