@@ -9,7 +9,7 @@ const MyPageProfile = () => {
   const userInfo = useRecoilValue(user);
   const API = useRecoilValue(APIroot);
 
-  const [imageNotExist, setImageNotExist] = useState(defaultImage);
+  const [imageNotExist, setImageNotExist] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
 
   const editModalOpenHandler = () => {
