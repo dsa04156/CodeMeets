@@ -23,7 +23,6 @@ function Crop({ image, OCRhandler, closeHandler }) {
     setCroppedImage(cropper.getCroppedCanvas().toDataURL());
   };
 
-  ///////////////////////////////////////////////////////////////////////
 
   const imageInput = useRef(null);
   const [imageText, setImgText] = useState("");
