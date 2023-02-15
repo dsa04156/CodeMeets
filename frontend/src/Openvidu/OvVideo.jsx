@@ -24,9 +24,18 @@ export default class OpenViduVideoComponent extends Component {
       <div>
         {console.log(this.props)}
         {this.props.type === "main" ? (
-          <MainVideo autoPlay={true} ref={this.videoRef} />
+          <div
+            style={{
+              width: "150vh",
+              height: "78vh",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <MainVideo autoPlay={true} ref={this.videoRef}  />
+          </div>
         ) : (
-            <SmallVideo autoPlay={true} ref={this.videoRef} />
+          <SmallVideo autoPlay={true} ref={this.videoRef} />
         )}
       </div>
     );
@@ -34,12 +43,11 @@ export default class OpenViduVideoComponent extends Component {
 }
 
 const MainVideo = styled.video`
-  width: 150vh;
+  /* width: 150vh; */
   height: 78vh;
-  border: 2px solid grey;
   border-radius: 20px;
-
-  background-color: rgb(142, 195, 176);
+  object-fit: fill;
+  max-width:150vh;
 `;
 
 const SmallVideo = styled.video`

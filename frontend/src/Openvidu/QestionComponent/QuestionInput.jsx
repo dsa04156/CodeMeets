@@ -16,6 +16,13 @@ const QuestionInput = () => {
     setQuestionInput(newInput);
   };
 
+  const enterClickHandler = (event) => {
+    if (event.key === 'Enter') {
+      inputHandler();
+    }
+  };
+
+
   const inputHandler = (e) => {
     axios({
       method: "POST",
@@ -43,6 +50,8 @@ const QuestionInput = () => {
     <div>
       <input
         type="text"
+        onKeyPress={enterClickHandler}
+
         onChange={questionHandler}
         ref={inputTag}
         style={{
@@ -53,7 +62,7 @@ const QuestionInput = () => {
           border: "2px solid grey",
         }}
       />
-      <button onClick={inputHandler} style={{ marginLeft: "41.4vh" }}>
+      <button  onClick={inputHandler} style={{ marginLeft: "41.4vh" }}>
         입력
       </button>
     </div>

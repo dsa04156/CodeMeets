@@ -2,7 +2,6 @@ import SideBar from "./CommonComponents/SideBar/SideBar";
 
 import GroupList from "./Group/GroupPages/GroupList";
 import Home from "./Home/HomePages/Home";
-import Message from "./Message/MessagePages/Message";
 import MyPage from "./MyPage/MyPagePages/MyPage";
 import Setting from "./Setting/SettingPages/Setting";
 
@@ -15,6 +14,7 @@ import GroupMember from "./Group/GroupPages/GroupMember";
 
 //Detail
 import GroupNoticeDetail from "./Group/GroupDetailPage/GroupNoticeDetail";
+import GroupRecordDetail from "./Group/GroupDetailPage/GroupRecordDetail";
 import GroupQnADetail from "./Group/GroupDetailPage/GroupQnADetail";
 import GroupNoticeCreate from "./Group/GroupComponents/GroupNoticeCreate";
 import GroupNoticeModify from "./Group/GroupComponents/GroupNoticeModify";
@@ -148,6 +148,10 @@ function App() {
                     path="/my-question-record/:conferenceQuestionPk"
                     element={<QuestionListDetail />}
                   ></Route>
+                  <Route
+                    path="/group/:groupPk/record/:conferencePk"
+                    element={<GroupRecordDetail />}
+                    ></Route>
 
                   {/* 수정 페이지*/}
                   <Route
@@ -180,7 +184,6 @@ function App() {
                     <Route path="member" element={<GroupMember />}></Route>
                   </Route>
                   <Route path="/grouplist/" element={<GroupList />}></Route>
-                  <Route path="/message" element={<Message />}></Route>
                   <Route path="/setting" element={<Setting />}></Route>
 
                   {/* DmChat Page */}

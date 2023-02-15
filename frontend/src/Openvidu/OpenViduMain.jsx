@@ -3,11 +3,12 @@ import { OpenVidu } from "openvidu-browser";
 import axios from "axios";
 import React, { Component } from "react";
 import UserVideoComponent from "./UserVideoComponent";
+import { Link } from "react-router-dom";
 
 import styled from "styled-components";
-import { BsCameraVideo } from "react-icons/bs";
-import { BsCameraVideoOff } from "react-icons/bs";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+// import { BsCameraVideo } from "react-icons/bs";
+// import { BsCameraVideoOff } from "react-icons/bs";
+// import { AiOutlineCloseCircle } from "react-icons/ai";
 
 import OCRPage from "./OCRPage";
 
@@ -19,10 +20,6 @@ import QuestionPage from "./QestionComponent/QuestionPage";
 import { TbCapture } from "react-icons/tb";
 import { FiShare } from "react-icons/fi";
 import { IoExitOutline } from "react-icons/io5";
-
-import { FaRegCopy } from "react-icons/fa";
-
-import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const APPLICATION_SERVER_URL = "https://i8d109.p.ssafy.io/";
 
@@ -435,9 +432,7 @@ class OpenViduMain extends Component {
                     ))}
                   </SubscriberBox>
                 </SubscriberLine>
-                <UrlBar>
-  {this.state.mySessionId}
-                </UrlBar>
+                <UrlBar>{this.state.mySessionId}</UrlBar>
               </div>
               {this.state.mainStreamManager !== undefined ? (
                 <MainBox>
@@ -494,19 +489,21 @@ class OpenViduMain extends Component {
                                 size="35"
                                 style={{ cursor: "pointer" }}
                               />
-                              <IoExitOutline
-                                className="btn btn-large btn-danger"
-                                type="button"
-                                id="buttonLeaveSession"
-                                onClick={this.leaveSession}
-                                value="Leave session"
-                                size="35"
-                                color="rgb(255, 0, 0)"
-                                style={{
-                                  marginLeft: "30vh",
-                                  cursor: "pointer",
-                                }}
-                              />
+                              <Link to="/home">
+                                <IoExitOutline
+                                  className="btn btn-large btn-danger"
+                                  type="button"
+                                  id="buttonLeaveSession"
+                                  onClick={this.leaveSession}
+                                  value="Leave session"
+                                  size="35"
+                                  color="rgb(255, 0, 0)"
+                                  style={{
+                                    marginLeft: "30vh",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              </Link>
                             </ToolBar>
                           ) : null}
                         </div>
@@ -619,7 +616,9 @@ const MainContainer = styled.div`
 `;
 
 const SideContainer = styled.div`
-  border: 1px solid red;
+  /* border: 2px solid grey;
+  border-radius: 10px; */
+  /* background-color: rgb(142, 195, 176); */
   height: 86vh;
   width: 47vh;
   display: flex;
@@ -644,13 +643,13 @@ const ToolBar = styled.div`
 `;
 
 const UrlBar = styled.div`
-display:flex;
-margin-right:1vh;
+  display: flex;
+  margin-right: 1vh;
   width: 46.8vh;
   border: 2px solid grey;
   margin-left: 1vh;
   background-color: white;
   border-radius: 5px;
   height: 3vh;
-  justify-content:center;
+  justify-content: center;
 `;

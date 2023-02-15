@@ -18,8 +18,8 @@ const MyPageProfile = () => {
   };
 
   useEffect(() => {
-    console.log(userInfo.profilePhoto);
-    if (userInfo.profileImage === '') {
+    console.log("------------", userInfo);
+    if (userInfo.profilePhoto === "") {
       setImageNotExist(defaultImage);
     } else {
       setImageNotExist(`${API}/file/images/${userInfo.profilePhoto}`);

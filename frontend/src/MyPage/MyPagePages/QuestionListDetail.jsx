@@ -53,9 +53,9 @@ const MyPageQuestionListDetail = () => {
       console.log(response.data)
       setData(response.data);
       setMyLikeState(!!response.data.conferenceQuestionLiked);
-      if (response.data.conferenceQuestionLiked) {
-        setLikeUnLike((prev) => !prev);
-      }
+      // if (response.data.conferenceQuestionLiked) {
+      //   setLikeUnLike((prev) => !prev);
+      // }
     });
   }, [API, likeUnLike]);
   console.log(data.conferenceQuestionPk);
@@ -64,7 +64,7 @@ const MyPageQuestionListDetail = () => {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `${API}/conferenceAnswer?conferenceQuestionPk=${data.conferenceQuestionPk}`,
+      url: `${API}/conferenceAnswer?conferenceQuestionPk=${params.conferenceQuestionPk}`,
       headers: {
         'Content-Type': 'application/json',
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -77,7 +77,7 @@ const MyPageQuestionListDetail = () => {
         setCommentLikeUnLike((prev) => !prev);
       }
     });
-  }, [API, commentLikeUnLike]);
+  }, [API, data]);
 
   // 댓글 작성
   const submitComment = () => {
@@ -89,7 +89,7 @@ const MyPageQuestionListDetail = () => {
       },
       data: JSON.stringify({
         conferenceAnswerContents: newComment,
-        conferenceQuestionPk: data.conferenceQuestionPk,
+        conferenceQuestionPk: params.conferenceQuestionPk,
         userPk: loginUser.userPk,
       }),
     }).then((response) => {
