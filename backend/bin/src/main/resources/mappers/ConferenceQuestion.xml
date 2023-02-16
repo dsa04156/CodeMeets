@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hypeboy.codemeets.model.dao.ConferenceQuestionDao">
+
+	<resultMap type="ConferenceQuestionDto" id="conferenceQuestion">
+		<result column="conference_question_pk" property="conferenceQuestionPk" />
+		<result column="conference_question_contents" property="conferenceQuestionContents" />
+		<result column="conference_question_date" property ="conferenceQuestionDate" />
+		<result column="conference_question_update" property ="conferenceQuestionUpdate" />
+		<result column="conference_pk" property = "conferencePk" />
+		<result column="group_pk" property = "groupPk" />
+		<result column="user_pk" property = "userPk" />
+		
+		<result column="conference_question_answer_cnt" property="answerCnt"/>
+		<result column="conference_question_like_cnt" property="conferenceQuestionLikeCnt"/>
+		<result column="conference_question_liked" property="conferenceQuestionLiked"/>
+		<result column="total" property="total"/>
+		
+		<result column="user_name" property="username"/>
+		
+		
+		
+	</resultMap>
+	
+	<!-- ==================== 공지 작성 ======================================== -->
+	
+	<insert id="writeConferenceQuestion" parameterType="ConferenceQuestionDto" >
+		INSERT INTO `conference_question` (conference_question_contents, conference_question_date, conference_question_update, conference_pk, group_pk, user_pk)
+		VALUES (#{conferenceQuestionContents}, now(), 0, #{conferencePk}, #{groupPk}, #{userPk})
+	</insert>
+	
+	<!-- ==================== 공지 목록 조회, 상세 조회 ======================================== -->
+	
+	<select id="getList" resultMap="conferenceQuestion" >
+		select *,
+		(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
+		(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk and L.user_pk = #{userPk}) conference_question_liked,
+		(select count(*) from conference_answer A where Q.conference_question_pk = A.conference_question_pk) conference_question_answer_cnt,
+		count(*) over() As total
+		from `conference_question` Q
+		NATURAL JOIN `user_info`
+		where conference_pk = #{conferencePk}
+		ORDER BY conference_question_like_cnt DESC
+	</select>
+	
+	<select id="pageList" resultMap="conferenceQuestion">
+		select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
+		(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk and L.user_pk = #{userPk}) conference_question_liked,
+		(select count(*) from conference_answer A where Q.conference_question_pk = A.conference_question_pk) conference_question_answer_cnt,
+		count(*) over() As total
+		from `conference_question` Q
+		NATURAL JOIN `user_info`
+		where conference_pk = #{conferencePk}
+		ORDER BY conference_question_like_cnt DESC
+		LIMIT #{nowPage}, #{items};
+	</select>
+	
+	
+    <select id="getConferenceQuestion" resultMap="conferenceQuestion" >
+select Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date, Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, user_name,
+(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk and L.user_pk = #{userPk}) conference_question_liked,
+(select count(*) from conference_question_user L where Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt
+from conference_question Q NATURAL JOIN `user_info`
+where conference_question_pk = #{conferenceQuestionPk};
+	</select>
+	
+	<!-- ==================== 공지 수정 ======================================== -->
+	
+	<update id="modifyConferenceQuestion" parameterType="GroupNoticeDto" >
+		UPDATE `conference_question`
+		SET conference_question_contents = #{conferenceQuestionContents},
+		conference_question_update = 1,
+		conference_question_date = now()
+		WHERE conference_question_pk = #{conferenceQuestionPk};
+	</update>
+	
+	<!-- ==================== 공지 삭제 ======================================== -->
+	
+	<delete id="deleteConferenceQuestion">
+		DELETE FROM `conference_question` 
+		WHERE conference_question_pk = #{conferenceQuestionPk};
+	</delete>
+	
+	<!-- ==================== 공지 삭제 ======================================== -->
+	<select id="searchLike" parameterType="conferenceQuestionDto" resultType="int">
+		SELECt count(*)
+		FROM conference_question_user
+		WHERE conference_question_pk = #{conferenceQuestionPk} AND user_pk = #{userPk}
+	</select>
+	
+	<insert id="likeConferenceQuestion" parameterType="conferenceQuestionDto">
+		INSERT INTO conference_question_user (conference_question_pk, user_pk)
+		VALUES (#{conferenceQuestionPk},#{userPk})
+	</insert>
+	
+	
+	<delete id="deleteLike" parameterType="conferenceQuestionDto">
+		DELETE FROM conference_question_user
+		WHERE conference_question_pk = #{conferenceQuestionPk} and user_pk = #{userPk}
+	</delete>
+	
+	
+</mapper>

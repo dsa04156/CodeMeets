@@ -1,22 +1,19 @@
-import GroupListItem from "../GroupComponents/GroupListItem";
-import Pagination from "../../CommonComponents/Pagination";
-import GroupInModal from "../GroupModal/GroupInModal";
-import CreateGroupModal from "../GroupModal/CreateGroupModal";
-/////////////
-import CreateTable from "../../CommonComponents/CreateTable";
-///////////
+import Pagination from '../../CommonComponents/Pagination';
+import GroupInModal from '../GroupModal/GroupInModal';
+import CreateGroupModal from '../GroupModal/CreateGroupModal';
+import CreateTable from '../../CommonComponents/CreateTable';
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-import { APIroot } from "../../Store";
+import { APIroot } from '../../Store';
 
-import { user, pageNumber } from "../../Store";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { user, pageNumber } from '../../Store';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const GroupList = () => {
   const API = useRecoilValue(APIroot);
@@ -33,87 +30,82 @@ const GroupList = () => {
     navigate(`/group/${row.original.groupPk}/notice`);
   };
 
-  //그룹 가입하기 Modal 부분
   const [joinModalIsOpen, setJoinModalIsOpen] = useState(false);
   const groupInHandler = () => {
     setJoinModalIsOpen(true);
-  }
+  };
 
   const [createModalIsOpen, setCreateIsOpen] = useState(false);
 
   const createGroupHandler = (event) => {
     event.preventDefault();
     axios({
-      method: "POST",
+      method: 'POST',
       url: `${API}/group/click`,
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     })
-    .then((response) => {
-      console.log(response.data[1])
-      setCreateGroupUrl(response.data[1])
-    })
-    .then(
-      res => {
+      .then((response) => {
+        console.log(response.data)
+        setCreateGroupUrl(response.data[1]);
+      })
+      .then(() => {
         setCreateIsOpen(true);
-      }
+      });
+      console.log(createModalIsOpen)
+  };
 
-    )
-  }
-  console.log(createGroupUrl)
-  
   const [groupList, setGroupList] = useState([]);
-  console.log(loginUser.userPk);
-  console.log(groupList);
-  /////////////////////////////////////
+
   const data = React.useMemo(() => groupList, [groupList]);
 
   const columns = React.useMemo(
     () => [
       {
-        Header: "번호",
-        accessor: "cnt", // accessor is the "key" in the data
+        Header: '번호',
+        accessor: 'newIndex', // accessor is the "key" in the data
         width: 60,
       },
       {
-        Header: "그룹명",
-        accessor: "groupName",
+        Header: '그룹명',
+        accessor: 'groupName',
         width: 400,
       },
       {
-        Header: "생성자",
-        accessor: "nickname",
+        Header: '생성자',
+        accessor: 'managerName',
         width: 100,
       },
       {
-        Header: "생성일자?",
-        accessor: "callStartTime",
+        Header: '최근 활동',
+        accessor: 'callStartTime',
         width: 230,
       },
     ],
     []
   );
-  ////////////////////////////////////////
 
   useEffect(() => {
-    console.log("실행");
     axios({
-      method: "GET",
-      url: `${API}/group/list?nowPage=${page}&items=10&order=444`,
+      method: 'GET',
+      url: `${API}/group/list?nowPage=${page}&items=10&order=group_pk`,
       headers: {
-        "Content-Type": "application/json",
-        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+        'Content-Type': 'application/json',
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log(response.data);
+      console.log(response.data)
       setTotalPosts(response.data.groupList[0].total);
+      response.data.groupList.map((list, index) => {
+        list.newIndex = index + (page - 1) * 10 + 1;
+      });
+      console.log(response.data)
       setGroupList(response.data.groupList);
       setRecoilPageNum(1);
     });
-  }, [API, page]);
+  }, [API, page, createModalIsOpen, joinModalIsOpen]);
 
-  // console.log(createGroupUrl);
   return (
     <div>
       <TitleStyle>
@@ -121,46 +113,51 @@ const GroupList = () => {
           <div className="name">"{loginUser.userName}"</div>
           <div className="wellcome">님의 Group List</div>
         </div>
-        {/* modal 부분 */}
         <div className="position">
-        <SubButtonStyle>
-          <button className="custom-btn btn-4" onClick={createGroupHandler}>Create</button>
-        </SubButtonStyle>
-        {createModalIsOpen && (
-          // 연결된 모달 component
-          <CreateGroupModal
-            open={createModalIsOpen}
-            onClose={() => {
-              setCreateIsOpen(false);
-            }}
-            CreateURL = {createGroupUrl}
-          />
+          <SubButtonStyle>
+            <button className="custom-btn btn-4" onClick={createGroupHandler}>
+              Create
+            </button>
+          </SubButtonStyle>
+          {createModalIsOpen && (
+            <CreateGroupModal
+              open={createModalIsOpen}
+              onClose={() => {
+                setCreateIsOpen(false);
+              }}
+              CreateURL={createGroupUrl}
+            />
           )}
         </div>
         <div>
-        <SubButtonStyle>
-          <button className="custom-btn btn-4" onClick={groupInHandler}>Join</button>
-        </SubButtonStyle>
-        {joinModalIsOpen && (
-          // 연결된 모달 component
-          <GroupInModal
-            open={joinModalIsOpen}
-            onClose={() => {
-              setJoinModalIsOpen(false);
-            }}
-          />
-        )}
+          <SubButtonStyle>
+            <button className="custom-btn btn-4" onClick={groupInHandler}>
+              Join
+            </button>
+          </SubButtonStyle>
+          {joinModalIsOpen && (
+            <GroupInModal
+              open={joinModalIsOpen}
+              onClose={() => {
+                setJoinModalIsOpen(false);
+              }}
+            />
+          )}
         </div>
       </TitleStyle>
       <ContentBox>
         <Styles>
           <CreateTable
-          // isButton = "1"
             columns={columns}
             data={data}
             TableNavHandler={TableNavHandler}
           />
-          <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
+          <Pagination
+            totalPosts={`${totalPosts}`}
+            limit="10"
+            page={page}
+            setPage={setPage}
+          ></Pagination>
         </Styles>
       </ContentBox>
     </div>
@@ -176,9 +173,7 @@ const TitleStyle = styled.div`
   padding: 1vh;
   margin-bottom: 2vh;
   height: 7vh;
-  /* box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2); */
   border-radius: 20px;
-  /* background-color: white; */
   .name {
     display: flex;
     align-items: center;
@@ -200,25 +195,25 @@ const TitleStyle = styled.div`
     float: right;
     margin-left: auto;
   }
-  /* border: 1px solid black; */
 `;
 
 const ContentBox = styled.div`
   border-top: 1px solid black;
-  /* box-shadow: 0 2px 12px rgba(7, 222, 230, 0.2); */
   border-radius: 5px;
   height: 68vh;
   padding-left: 5vh;
-  /* background-color: #FAECD6; */
-  background: rgb(239,245,245);
-background: linear-gradient(149deg, rgba(239,245,245,1) 100%, rgba(239,245,245,0.41228991596638653) 100%);
+  background: rgb(239, 245, 245);
+  background: linear-gradient(
+    149deg,
+    rgba(239, 245, 245, 1) 100%,
+    rgba(239, 245, 245, 0.41228991596638653) 100%
+  );
 `;
 
 const Styles = styled.div`
   padding: 1rem;
   table {
     border-spacing: 0;
-    /* border: 1px solid black; */
     tr {
       :last-child {
         td {
@@ -230,21 +225,11 @@ const Styles = styled.div`
     td {
       margin: 0;
       padding: 0.5rem;
-      /* border-bottom: 1px solid black; */
-      /* border-right: 1px solid black; */
       :last-child {
         border-right: 0;
       }
     }
   }
-`;
-
-const CreateButton = styled.button`
-  margin-left: 450px;
-`;
-
-const JoinButton = styled.button`
-  margin-left: 50px;
 `;
 
 const SubButtonStyle = styled.div`
@@ -254,6 +239,7 @@ const SubButtonStyle = styled.div`
     color: #fff;
     border-radius: 5px;
     padding: 10px 25px;
+    margin-left: 15px;
     font-family: 'Lato', sans-serif;
     font-weight: 500;
     background: transparent;

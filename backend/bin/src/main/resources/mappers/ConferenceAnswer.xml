@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.hypeboy.codemeets.model.dao.ConferenceAnswerDao">
+
+	<resultMap type="ConferenceAnswerDto" id="conferenceAnswer">
+		<result column="conference_answer_pk" property="conferenceAnswerPk"/>
+		<result column="conference_answer_contents" property="conferenceAnswerContents"/>
+		<result column="conference_answer_date" property="conferenceAnswerDate"/>
+		<result column="conference_answer_update" property="conferenceAnswerUpdate"/>		
+		<result column="conference_question_pk" property="conferenceQuestionPk"/>
+		<result column="user_pk" property="userPk"/>
+	
+		<result column="conference_answer_like_cnt" property="conferenceAnswerLikeCnt"/>
+		<result column="conference_answer_liked" property="conferenceAnswerLiked"/>
+		<result column="total" property="total"/>
+	
+		<result column="user_name" property="username"/>
+	</resultMap>
+	
+	<insert id="writeConferenceAnswer" parameterType="ConferenceAnswerDto">
+		INSERT INTO `conference_answer` (conference_answer_contents, conference_answer_date, conference_question_pk, user_pk)
+		VALUES (#{conferenceAnswerContents}, now(), #{conferenceQuestionPk}, #{userPk})
+	</insert>
+	
+ 	<select id="getList" parameterType="int" resultMap="conferenceAnswer">
+		SELECT *,
+		(SELECT count(*) FROM conference_answer_user L WHERE Q.conference_answer_pk=L.conference_answer_pk) conference_answer_like_cnt,
+		(SELECT count(*) FROM conference_answer_user L WHERE Q.conference_answer_pk=L.conference_answer_pk and L.user_pk = #{userPk}) conference_answer_liked,
+		count(*) over() as total
+		FROM conference_answer Q
+		NATURAL JOIN user_info
+		WHERE conference_question_pk = #{conferenceQuestionPk}
+		ORDER BY conference_answer_pk DESC
+	</select>
+
+	<update id="modifyConferenceAnswer" parameterType="ConferenceAnswerDto">
+		UPDATE conference_answer
+		SET conference_answer_contents = #{conferenceAnswerContents}, 
+		conference_answer_date = now(),
+		conference_answer_update = 1
+		WHERE conference_answer_pk = #{conferenceAnswerPk}
+	</update>
+	
+	<delete id="deleteConferenceAnswer" parameterType="int">
+		DELETE FROM conference_answer
+		WHERE conference_answer_pk = #{conferenceAnswerPk}
+	</delete>
+	
+	<select id="searchLike" parameterType="ConferenceAnswerDto" resultType="int">
+		SELECT count(*)
+		FROM conference_answer_user
+		WHERE conference_answer_pk = #{conferenceAnswerPk} and user_pk = #{userPk}
+	</select>
+	
+	<insert id="likeConferenceAnswer" parameterType="ConferenceAnswerDto">
+		INSERT INTO conference_answer_user (conference_answer_pk, user_pk)
+		VALUES (#{conferenceAnswerPk}, #{userPk})
+	</insert>
+	
+	<delete id="deleteLike" parameterType="ConferenceAnswerDto">
+		DELETE FROM conference_answer_user
+		WHERE conference_answer_pk = #{conferenceAnswerPk} and user_pk = #{userPk}
+	</delete>
+	
+	
+</mapper>

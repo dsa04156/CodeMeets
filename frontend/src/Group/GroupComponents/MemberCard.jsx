@@ -1,6 +1,21 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
-const MemberCard = ({ userId, nickName, profilePhoto, tel, email, userName, position }) => {
+const MemberCard = ({
+  userId,
+  nickName,
+  profilePhoto,
+  tel,
+  email,
+  userName,
+  position,
+}) => {
+  console.log(  userId,
+  nickName,
+  profilePhoto,
+  tel,
+  email,
+  userName,
+  position,)
   return (
     <Card>
       <ImageBox>
@@ -15,8 +30,6 @@ const MemberCard = ({ userId, nickName, profilePhoto, tel, email, userName, posi
         <div>tel: {tel}</div>
         <div>email: {email}</div>
       </PublickBox>
-      <button>매니저 승급!</button>
-      {position === 1 ? <button>삭제</button> : null}
     </Card>
   );
 };
@@ -25,8 +38,11 @@ export default MemberCard;
 
 const Card = styled.div`
   display: flex;
-  border-bottom: 1px solid black;
+  border: 1px solid black;
   height: 11vh;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  background-color: rgb(188, 234, 213);
 `;
 
 const ImageBox = styled.div`
@@ -35,7 +51,6 @@ const ImageBox = styled.div`
   align-items: center;
   height: 11vh;
   width: 15vh;
-  /* border-right: 1px solid black; */
 `;
 
 const NameBox = styled.div`
@@ -55,4 +70,5 @@ const PublickBox = styled.div`
 
 const ProfileImageStyle = styled.img`
   height: 10vh;
+  width: 10vh;
 `;

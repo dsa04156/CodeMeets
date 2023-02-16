@@ -154,16 +154,31 @@ public class GroupController {
 			Map<String,Object> resultMap = new HashMap<String, Object>();
 			logger.info("group member list - 호출");
 			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk);
+			
+			if (groupMemberList != null) {
+				for (UserDto member : groupMemberList) {
+					if (member.getEmailPublic() == 0) {
+						member.setEmail("비공개");
+					}
+
+					if (member.getTelPublic() == 0) {
+						member.setTel("비공개");
+					}
+				}
+			}
+			
 			int total = groupMemberList.size();
-			System.out.println(groupMemberList.toString());
-			int position = groupService.checkManager(userPk,groupPk);
+			int position = groupService.checkManager(userPk, groupPk);
 			resultMap.put("position", position);
 			resultMap.put("List", groupMemberList);
 		
 			logger.info("group member list - 호출 성공");
-			System.out.println(groupMemberList.toString());
-			return new ResponseEntity<Map<String,Object>>(resultMap, HttpStatus.OK);
+			logger.info(groupMemberList.toString());
+
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.info("groupMemberList error - " + e);
+			
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -236,8 +251,12 @@ public class GroupController {
         
         }
     
-    
-    @Operation(summary = "그룹 목록", description = "그룹 리스트")
+//			a.group_pk group_pk, a.group_name group_name, 
+//			a.manager_id manager_id, a.group_url,
+//			b.nickname nickname 
+    @Operation(summary = "그룹 목록 조회", description = "nowPage = 현재 페이지, items = 불러올 공지 목록 수 "
+			+ " \n order = ['group_pk', 'group_name', 'manager_id'] 중 하나를 선택해 보내주세요 "
+			+ " \n (그룹 번호 순, 그룹 이름 순, 그룹 생성자 순)")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "AccessToken", value = "로그인 성공 후 발급 받은 AccessToken", required = true, dataType = "String", paramType = "header")
     })
@@ -247,7 +266,9 @@ public class GroupController {
 			@RequestParam("items") int items,
 			@RequestParam("order") String order) throws Exception{
     	logger.info("group list 호출");
+    	
     	int userPk=0;
+    	
     	if (jwtTokenProvider.validateToken(request.getHeader(accessToken))) {
 			logger.info("사용가능한 토큰입니다");
 			
@@ -257,34 +278,27 @@ public class GroupController {
     	else {
     		logger.info("토큰 실패");
     	}
-    	List<GroupListDto> groupList = groupService.getList(userPk,(nowPage - 1) * items, items, order);
-    	Map<String,List<GroupListDto>> resultMap = new HashMap<String, List<GroupListDto>>();
+    	
+    	List<GroupListDto> groupList = groupService.getList(userPk, (nowPage - 1) * items, items, order);
+    	Map<String, List<GroupListDto>> resultMap = new HashMap<String, List<GroupListDto>>();
     	logger.info("gpList 호출");
+    	
     	List<Integer> groupPkList = groupService.gpList(userPk);
-    	logger.info(groupList.toString());
-//    	groupPkList.remove(0);
-    	logger.info(groupPkList.toString());
+    	
+    	logger.info("groupList - " + groupList.toString());
+    	logger.info("groupPkList - " + groupPkList.toString());
+    	
+    	int cnt = 0;
     	int gc = groupPkList.size();
-    	System.out.println(gc);
-//    	for(int i=(nowPage-1)*items+1;i<=items*nowPage;i++) {
-		for(int i=0;i<items;i++) {
-    		if(i>=groupList.size()) {
-    			break;
-    		}
-    		int k =(nowPage-1)*items+i;
-    		groupList.get(i).setCnt(k+1);
-    		groupList.get(i).setGroupPk(groupPkList.get(k));
-    		groupList.get(i).setCount(groupService.countMember(groupPkList.get(k)));
-    		groupList.get(i).setCallStartTime(groupService.callStartTime(groupPkList.get(k)));
-    		groupList.get(i).setTotal(gc);
+    	
+    	for (GroupListDto list : groupList) {
+    		list.setCnt(cnt + (nowPage - 1) * items + 1);
+    		list.setCount( groupService.countMember(list.getGroupPk()) );
+    		list.setCallStartTime( groupService.callStartTime(list.getGroupPk()) );
+    		list.setTotal(gc);
+    		cnt++;
     	}
-		for(int i=0;i<groupList.size();i++) {
-			if(groupList.get(i).getGroupPk()==0) {
-				groupList.remove(i);
-				System.out.println("지원ㅅ다"+i);
-				break;
-			}
-		}
+		
     	resultMap.put("groupList", groupList);
     	
     	return new ResponseEntity<Map<String,List<GroupListDto>>>(resultMap,HttpStatus.OK);

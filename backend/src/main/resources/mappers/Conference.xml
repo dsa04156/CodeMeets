@@ -15,6 +15,7 @@
 		<result column="user_pk" property="userPk" />
 		<result column="join_user" property="joinUser" />
 		<result column="join_user_cnt" property="joinUserCnt" />
+		<result column="total" property="total" />
 	</resultMap>
 	
 		<resultMap type="ConferenceThreeDto" id="conferenceThreeDto">

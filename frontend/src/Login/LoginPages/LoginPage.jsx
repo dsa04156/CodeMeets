@@ -1,23 +1,22 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import axios from "axios";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import axios from 'axios';
 
-import { user } from "../../Store"
-import { APIroot } from "../../Store"
-import { useRecoilState, useRecoilValue } from "recoil";
+import { user } from '../../Store';
+import { APIroot } from '../../Store';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import googleLogo from '../../assets/google_login.png';
-import kakaoLogo from '../../assets/kakao_login_medium.png';
-
+import googleLogo from '../../assets/btn_google_signin_light_focus_web.png';
+import kakaoLogo from '../../assets/kakao_login_medium_narrow.png';
 
 const LoginPage = () => {
-  const [inputId, setInputId] = useState("");
-  const [inputPw, setInputPw] = useState("");
+  const [inputId, setInputId] = useState('');
+  const [inputPw, setInputPw] = useState('');
 
   const [login, setLogin] = useRecoilState(user);
-  const recoilUser = useRecoilValue(user)
+  const recoilUser = useRecoilValue(user);
   const API = useRecoilValue(APIroot);
 
   const navigate = useNavigate();
@@ -31,17 +30,17 @@ const LoginPage = () => {
   };
 
   const enterClickHandler = (event) => {
-    if (event.key === 'Enter'){
+    if (event.key === 'Enter') {
       ToHomePageHandler();
     }
   };
 
   const ToHomePageHandler = async () => {
     await axios({
-      method: "POST",
+      method: 'POST',
       url: `${API}/login`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: JSON.stringify({
         userId: inputId,
@@ -49,55 +48,49 @@ const LoginPage = () => {
       }),
     })
       .then((response) => {
-        localStorage.setItem("ACCESS_TOKEN", response.data.AccessToken);
-        localStorage.setItem("REFRESH_TOKEN", response.data.RefreshToken);
-
-        console.log(response.data);
-        console.log(response.data.AccessToken);
-        console.log(response.data.RefreshToken);
-        // navigate('/');
+        localStorage.setItem('ACCESS_TOKEN', response.data.AccessToken);
+        localStorage.setItem('REFRESH_TOKEN', response.data.RefreshToken);
       })
-      .catch((err) => alert("ID or password 불일치"));
+      .catch((err) => alert('ID or password 불일치'));
     await axios({
-      method: "GET",
+      method: 'GET',
       url: `${API}/login/info`,
       headers: {
-        "Content-Type": "application/json",
-        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..
+        'Content-Type': 'application/json',
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..
       },
     }).then((response) => {
-      console.log(response.data.userInfo);
       const data = response.data.userInfo;
       setLogin(data);
-      navigate("/home")
-      console.log("리코일 데이터")
-      console.log(recoilUser)
+      navigate('/home');
     });
   };
 
   const SocialToHomePageHandler = async () => {
-    await localStorage.setItem("ACCESS_TOKEN", accessToken);
-    await localStorage.setItem("REFRESH_TOKEN", refreshToken);
-    console.log(accessToken);
+    await localStorage.setItem('ACCESS_TOKEN', accessToken);
+    await localStorage.setItem('REFRESH_TOKEN', refreshToken);
     await axios({
-      method: "GET",
+      method: 'GET',
       url: `${API}/login/info`,
       headers: {
-        "Content-Type": "application/json",
-        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..
+        'Content-Type': 'application/json',
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`, // 웹 통신규약에 따르면 Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')} 으로..
       },
     }).then((response) => {
-      // console.log(response.data.userInfo);
       const data = response.data.userInfo;
       setLogin(data);
-      navigate("/home")
+      navigate('/home');
     });
   };
 
-  const accessToken = new URL(window.location.href).searchParams.get("accessToken");
-  const refreshToken = new URL(window.location.href).searchParams.get("refreshToken");
+  const accessToken = new URL(window.location.href).searchParams.get(
+    'accessToken'
+  );
+  const refreshToken = new URL(window.location.href).searchParams.get(
+    'refreshToken'
+  );
   const myUrl = window.location.host;
-  const loginURL = API.replace("/api", "");
+  const loginURL = API.replace('/api', '');
   // const loginURL = "http://localhost:18081";
   const googleLogInUrl = new URL(`${loginURL}/oauth2/authorization/google`);
   const kakaoLogInUrl = new URL(`${loginURL}/oauth2/authorization/kakao`);
@@ -107,7 +100,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div style={{ paddingBottom: "100px" }}>
+    <div style={{ paddingBottom: '100px' }}>
       <h1>Login</h1>
       <InputStyle>
         <label htmlFor="input_id">ID</label>
@@ -118,31 +111,81 @@ const LoginPage = () => {
           onChange={inputIdHandler}
         />
       </InputStyle>
-      {/* defaultValue : 변하는 값*/}
       <InputStyle>
         <label htmlFor="input_pw">PW</label>
         <input
-          type="text"
+          type="password"
           name="input_pw"
           placeholder="PW"
           onKeyPress={enterClickHandler}
           onChange={inputPwHandler}
         />
       </InputStyle>
-      <SubButtonStyle>
-        <button className='custom-btn btn-4' onClick={ToHomePageHandler} style={{ width: "100%" }}>
-          Sign In
-        </button>
+      <div>
+        <SubButtonStyle>
+          <button
+            className="custom-btn btn-4"
+            onClick={ToHomePageHandler}
+            style={{ width: '100%', marginBottom: '5px' }}
+          >
+            로그인
+          </button>
+        </SubButtonStyle>
+        <div>
+          <a href={googleLogInUrl}>
+            <img src={googleLogo} style={{ width: '17vh', height: '5vh', margin: '5px 5px 5px 10px' }} />
+          </a>
+          <a href={kakaoLogInUrl}>
+            <img src={kakaoLogo} style={{ width: '17vh', height: '5vh', margin: '5px 5px 5px 5px' }} />
+          </a>
+        </div>
+      </div>
+      <SubButtonStyle style={{marginTop:"20px", display:"flex", justifyContent:"space-between", alignItems: "flexEnd"}}>
+        <Link
+          to="/signup"
+          style={{
+            margin: '0px 12px 0px 0px',
+            textDecoration: 'none',
+            fontSize: 'small',
+            color: 'grey',
+
+          }}
+        >
+          회원가입
+        </Link>
+        <div>
+        <Link
+          to="/findid"
+          style={{
+            margin: '0px 12px 0px 0px',
+            textDecoration: 'none',
+            fontSize: 'small',
+            color: 'grey',
+          }}
+        >
+          ID 찾기
+        </Link>
+        <Link
+          to="/findpassword"
+          style={{
+            margin: '0px 0px 0px 0px',
+            textDecoration: 'none',
+            fontSize: 'small',
+            color: 'grey',
+          }}
+        >
+          PW 찾기
+        </Link>
+        </div>
       </SubButtonStyle>
-      <Link to="/signup">회원가입</Link> |
-      <Link to="/findid"> 아이디 찾기</Link> |
-      <Link to="/findpassword"> 비밀번호 찾기</Link> |
-      
       <SocialButton>
-        <a href={googleLogInUrl}><img src={googleLogo} width="100"/></a>
-        <a href={kakaoLogInUrl}><img src={kakaoLogo} /></a>
+        {/* <a href={googleLogInUrl}>
+          <img src={googleLogo} style={{width: "20vh", height: "5vh" }} />
+        </a>
+        <a href={kakaoLogInUrl}>
+          <img src={kakaoLogo} style={{width: "20vh", height: "5vh" }}/>
+        </a> */}
       </SocialButton>
-      
     </div>
   );
 };
@@ -157,13 +200,7 @@ const InputStyle = styled.div`
     margin: 8px;
   }
 `;
-// const ButtonStyle = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   margin: 8px;
-//   margin-left: 0px;
-//   margin-bottom: 60px;
-// `;
+
 const SocialButton = styled.div`
   display: flex;
   justify-content: center;
@@ -188,7 +225,9 @@ const SubButtonStyle = styled.div`
     float: right;
     transition: all 0.3s ease;
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
       7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
     outline: none;
