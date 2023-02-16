@@ -13,5 +13,5 @@ public class GroupDto {
 	private String groupDesc;
 	private int managerId;
 	private String groupUrl;
-	private String managerName;	
+	
 }
