@@ -24,10 +24,12 @@ const HeaderProfile = () => {
     ) {
       setProfileImage(DefaultImage);
     } else if (loginUser.profilePhoto !== '') {
-      setProfileImage(`${API}/file/images/${loginUser.profilePhoto}`);
-    } else {
-      setProfileImage(DefaultImage);
-    }
+      if (loginUser.profilePhoto.includes('http')) {
+        setProfileImage(`${loginUser.profilePhoto}`);
+      } else {
+        setProfileImage(`${API}/file/images/${loginUser.profilePhoto}`);
+      }
+    } 
   }, [loginUser]);
 
   return (
