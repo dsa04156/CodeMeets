@@ -12,8 +12,12 @@
 		<result column="group_question_update" property="groupQuestionUpdate" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_pk" property="userPk"/>
+		
+		<result column="group_question_answer_cnt" property="groupQuestionAnswerCnt"/>
 		<result column="group_question_like_cnt" property="groupQuestionLikeCnt"/>
-		<result column="group_question_like" property="groupQuestionLike"/>
+		<result column="group_question_liked" property="groupQuestionLiked"/>
+		<result column="total" property="total"/>
+		
 		<result column="user_name" property="username"/>
 	</resultMap>	
 	
@@ -22,20 +26,21 @@
 		VALUES (#{groupQuestionTitle}, #{groupQuestionContents}, now(), #{groupPk}, #{userPk})
 	</insert>
 	<select id="getList" parameterType="int" resultMap="qna">
-		select Q.group_question_pk, Q.group_question_title, Q.group_question_contents, Q.group_question_date, Q.group_question_update, Q.group_pk, Q.user_pk,
+		select *,
 		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk) group_question_like_cnt,
-		(select user_name from user A where Q.user_pk = A.user_pk) user_name
-		from group_question Q
+		(select count(*) from group_answer A where Q.group_question_pk = A.group_question_pk) group_question_answer_cnt,
+		count(*) over() As total
+		from `group_question` Q
+		NATURAL JOIN `user_info`
 		where group_pk = #{groupPk}
 		ORDER BY group_question_pk DESC
 		LIMIT #{nowPage}, #{items};
 	</select>
 	<select id="getQna" parameterType="int" resultMap="qna">
-		select Q.group_question_pk, Q.group_question_title, Q.group_question_contents, Q.group_question_date, Q.group_question_update, Q.group_pk, Q.user_pk,
-		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk and L.user_pk = #{userPk}) group_question_like,
+		select Q.group_question_pk, Q.group_question_title, Q.group_question_contents, Q.group_question_date, Q.group_question_update, Q.group_pk, Q.user_pk, user_name,
+		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk and L.user_pk = #{userPk}) group_question_liked,
 		(select count(*) from group_question_user L where Q.group_question_pk = L.group_question_pk) group_question_like_cnt
-		(select user_name from user A where Q.user_pk = A.user_pk) user_name
-		from group_question Q
+		from `group_question` Q NATURAL JOIN `user_info`
 		where group_question_pk = #{groupQuestionPk}
 	</select>
 

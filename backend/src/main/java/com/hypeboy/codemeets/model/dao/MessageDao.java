@@ -17,7 +17,7 @@ public interface MessageDao {
 
 	int countUnread(MessageDto mto) throws SQLException;
 
-	String getOtherProfile(MessageDto mto) throws SQLException;
+	String getOtherProfile(int otherPk) throws SQLException;
 
 	List<MessageDto> roomContentList(MessageDto messageDto) throws SQLException;
 

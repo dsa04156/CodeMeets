@@ -15,6 +15,7 @@
 		<result column="user_pk" property="userPk" />
 		<result column="join_user" property="joinUser" />
 		<result column="join_user_cnt" property="joinUserCnt" />
+		<result column="total" property="total" />
 	</resultMap>
 	
 		<resultMap type="ConferenceThreeDto" id="conferenceThreeDto">
@@ -146,8 +147,10 @@
 	
 	<select id="listConference" resultMap="conference">
 		<![CDATA[
-			select * from conference 
-			where user_pk=#{userPk}
+			select *,
+			count(*) over() As total
+			from conference 
+			where group_pk=#{groupPk}
 			ORDER BY #{order} DESC
 			LIMIT #{i}, #{items};
 		]]>

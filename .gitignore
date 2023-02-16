@@ -1,2 +1,5 @@
 *.log
 *.zip
+backend/src/main/resources/application-dev.properties
+backend/src/main/resources/application-oauth.properties
+backend/src/main/resources/application-prod.properties
