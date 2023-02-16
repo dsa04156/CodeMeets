@@ -67,7 +67,13 @@ const ChattingPage = (props) => {
       <RightChat>
         <ProfileArea>
           {USER.nickname} &nbsp;
-          <ProfileStyle src={`${myProfileImage}`} />
+          {roomItem.profilePhoto.includes('http') ? (
+            // 소셜로그인하고 프로필 사진 변경한적 없는 경우
+            <ProfileStyle src={`${roomItem.profilePhoto}`} />
+          ) : (
+            // 사진 이미지를 업로드 하여 사용중인 경우
+            <ProfileStyle src={`${API}/file/images/${roomItem.profilePhoto}`} />
+          )}
         </ProfileArea>
         <MessageStyle> {roomItem.content} </MessageStyle>
       </RightChat>
