@@ -10,6 +10,13 @@ import registerServiceWorker from "./registerServiceWorker";
 
 import reportWebVitals from "./reportWebVitals";
 
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from "recoil";
 
 
 // import axios from "axios";
@@ -45,11 +52,15 @@ import reportWebVitals from "./reportWebVitals";
 //     event.returnValue = "";
 // });
 
+
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
+  <RecoilRoot>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </RecoilRoot>
 );
 registerServiceWorker();
 reportWebVitals();

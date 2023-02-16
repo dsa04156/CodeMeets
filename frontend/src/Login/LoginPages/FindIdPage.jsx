@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
-import { APIroot } from "../../Store"
-import { useRecoilState, useRecoilValue } from "recoil";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useRef } from 'react';
+import { APIroot } from '../../Store';
+import { useRecoilValue } from 'recoil';
 
 const FindIdPage = () => {
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputPhoneNum, setInputPhoneNum] = useState("");
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPhoneNum, setInputPhoneNum] = useState('');
   const [AuthorizationSubmitCount, setAuthorizationSubmitCount] = useState(0);
   const [inputType, setInputType] = useState(null);
   const [inputData, setInputData] = useState('');
@@ -19,78 +19,66 @@ const FindIdPage = () => {
 
   const CancelHandler = () => {
     navigate('/');
-  }
+  };
 
   const FindIdFromEmail = (event) => {
-    if (inputPhoneNum != "") {
-      alert("하나만 입력해주시기 바랍니다.")
-      setInputEmail("");
-      preventPhoneNumInput.current.value = "";
-    }else{
+    if (inputPhoneNum != '') {
+      alert('하나만 입력해주시기 바랍니다.');
+      setInputEmail('');
+      preventPhoneNumInput.current.value = '';
+    } else {
       setInputEmail(event.target.value);
       setInputData(event.target.value);
-      setInputType("email");
+      setInputType('email');
     }
   };
   const FindIdFromPhoneNum = (event) => {
-    if (inputEmail != "") {
-      alert("하나만 입력해주시기 바랍니다.")
-      setInputPhoneNum("");
-      preventEmailInput.current.value = "";
+    if (inputEmail != '') {
+      alert('하나만 입력해주시기 바랍니다.');
+      setInputPhoneNum('');
+      preventEmailInput.current.value = '';
     } else {
       setInputPhoneNum(event.target.value);
-      setInputData(event.target.value)
-      setInputType("tel")
+      setInputData(event.target.value);
+      setInputType('tel');
     }
   };
 
   const FindPasswordHandler = () => {
-    if (AuthorizationSubmitCount === 1){  // 인증 해야만 비밀번호 찾기로 넘어가게 함.
-      navigate("/findpassword");
+    if (AuthorizationSubmitCount === 1) {
+      // 인증 해야만 비밀번호 찾기로 넘어가게 함.
+      navigate('/findpassword');
     } else {
-      alert('인증 필수입니다.')
+      alert('인증 필수입니다.');
     }
-    console.log(AuthorizationSubmitCount)
   };
 
-  // 현재 데이터에 있는 이메일 : ddddd
   const AuthorizationFromEmail = () => {
-    console.log(inputEmail);
-    fetch(
-      `${API}/user/search-id?type=email&data=${inputEmail}`
-    )
+    fetch(`${API}/user/search-id?type=email&data=${inputEmail}`)
       .then((response) => response.json())
       .then((response) => {
-        console.log(JSON.stringify(response));
-        if (response.message === "success") {
-          alert("이메일 보내기 완료");
+        if (response.message === 'success') {
+          alert('이메일 보내기 완료');
           setAuthorizationSubmitCount(AuthorizationSubmitCount + 1);
         } else {
-          alert("입력된 정보와 일치하지 않습니다.");
+          alert('입력된 정보와 일치하지 않습니다.');
         }
       })
       .catch((err) => console.log(err));
-    // setInputEmail("")
   };
 
-  // 현재 등록되어 있는 번호 : eeeee
   const AuthorizationFromPhoneNum = () => {
-    console.log(inputPhoneNum);
-    fetch(
-      `${API}/user/search-id?type=tel&data=${inputPhoneNum}`
-    )
+    fetch(`${API}/user/search-id?type=tel&data=${inputPhoneNum}`)
       .then((response) => response.json())
       .then((response) => {
-        console.log(JSON.stringify(response));
-        if (response.message === "success") {
-          alert("이메일로 보내기 완료");
+        if (response.message === 'success') {
+          alert('이메일로 보내기 완료');
           setAuthorizationSubmitCount(AuthorizationSubmitCount + 1);
         } else {
-          alert("입력된 정보와 일치하지 않습니다.");
+          alert('입력된 정보와 일치하지 않습니다.');
         }
       })
       .catch((err) => console.log(err));
-    // setInputEmail("") -> useref
   };
 
   return (
@@ -136,7 +124,9 @@ const FindIdPage = () => {
         <button type="button" onClick={FindPasswordHandler}>
           Find Password
         </button>
-        <button type="button" onClick={CancelHandler}>Cancel</button>
+        <button type="button" onClick={CancelHandler}>
+          Cancel
+        </button>
       </div>
     </div>
   );

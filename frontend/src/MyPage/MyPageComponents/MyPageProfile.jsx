@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { user, APIroot } from '../../Store';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import MyPageEditModal from './MyPageEditModal';
+import '../../App.css';
 
 const MyPageProfile = () => {
   const userInfo = useRecoilValue(user);
@@ -21,7 +22,11 @@ const MyPageProfile = () => {
     if (userInfo.profilePhoto === "") {
       setImageNotExist(defaultImage);
     } else {
-      setImageNotExist(`${API}/file/images/${userInfo.profilePhoto}`);
+      if (userInfo.profilePhoto.includes('http')) {
+        setImageNotExist(`${userInfo.profilePhoto}`);
+      } else {
+        setImageNotExist(`${API}/file/images/${userInfo.profilePhoto}`);
+      }
     }
   }, [userInfo]);
   console.log(userInfo);

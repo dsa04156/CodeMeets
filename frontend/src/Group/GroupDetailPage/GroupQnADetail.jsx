@@ -1,6 +1,5 @@
 import TitleStyle from './GroupDetailPageComponent/TitleStyle';
 import CommentContentStyle from './GroupDetailPageComponent/CommentContentStyle';
-import LikeStyle from './GroupDetailPageComponent/LikeStyle';
 import styled from 'styled-components';
 import GroupQnAComment from './GroupDetailPageComponent/GroupQnAComment';
 
@@ -23,16 +22,12 @@ const GroupQnADetail = () => {
   const navigate = useNavigate();
   const commentRef = useRef()
 
-  const [data, setData] = useState([]);    // 그룹 게시글 디테일 정보 저장
+  const [data, setData] = useState([]);
   const [comments, setComments] = useState([]);
-  console.log(params);
   const [likeUnLike, setLikeUnLike] = useState(false);
   const [myLikeState, setMyLikeState] = useState(false);
 
-
   const [newComment, setNewComment] = useState('');
-  const [commentLikeState, setCommentLikeState] = useState(false);  // 각 댓글에 본인이 좋아요 했는지 여부
-  const [commnetLikeUnLike, setCommnetLikeUnLike] = useState(false);
 
   const ModifyHandler = () => {
     navigate('/group/qna/modify', {
@@ -53,7 +48,7 @@ const GroupQnADetail = () => {
     axios({
       method: 'DELETE',
       url: `${API}/qna/${params.qna_pk}`,
-    }).then((response) => {
+    }).then(() => {
       navigate(-1);
     });
   };
@@ -77,30 +72,11 @@ const GroupQnADetail = () => {
         'Content-Type': 'application/json',
       },
     }).then((response) => {
-      console.log(response.data);
       setData(response.data);
       setMyLikeState(!!response.data.groupQuestionLiked);
-      // if (response.data.groupQuestionLiked) {
-      //   setLikeUnLike((prev) => !prev);
-      // }
       getCommentList()
     });
   }, [API, likeUnLike]);
-// 받아오는 정보
-//   groupPk: 118
-// groupQuestionAnswerCnt: 0
-// groupQuestionContents: "dddd"
-// groupQuestionDate: "2023-02-12"
-// groupQuestionLikeCnt: 0
-// groupQuestionLiked: 0
-// groupQuestionPk: 2011
-// groupQuestionTitle: "ddd"
-// groupQuestionUpdate: 0
-// total: 0
-// userPk: 1
-// username: "어드민01"
-
-  // console.log(myLikeState)
 
   // 게시글 좋아요
   const likeClickHandler = () => {
@@ -115,8 +91,6 @@ const GroupQnADetail = () => {
         userPk: loginUser.userPk,
       }),
     }).then((response) => {
-      console.log(response.data);
-      // console.log(loginUser.userPk);
       if (response.data === 'success') {
         setLikeUnLike((prev) => !prev);
         if (likeUnLike) {
@@ -130,15 +104,9 @@ const GroupQnADetail = () => {
             return { ...prev, groupQuestionLikeCnt: cnt };
           });
         }
-        // console.log("----------------------------------------------------",likeUnLike)
-        // console.log("----------------------------------------------------",myLikeState)
-        // setLikeUnLike(!likeUnLike)
-        // setMyLikeState((myLikeState+1)%2)
-        // setData([])
       }
     });
   };
-  
 
   // 상세 페이지에서 댓글리스트 뽑아오기
   const getCommentList = () => {
@@ -149,14 +117,7 @@ const GroupQnADetail = () => {
         'Content-Type': 'application/json',
       },
     }).then((response) => {
-      console.log("그룹의 댓귿 데이터--------------",response.data);
       setComments(response.data);
-      // setCommentLikeState(!!response.data.groupQnaAnswerLiked);
-      console.log(commnetLikeUnLike)
-      // if (response.data.groupQnaAnswerLiked) {
-      //   setCommnetLikeUnLike((prev) => !prev);
-      //   console.log(commnetLikeUnLike)
-      // }
     });
   }; //data 지우고 commnetLikeUnLike 넣음
 
@@ -182,7 +143,6 @@ const GroupQnADetail = () => {
   };
 
   const commentList = comments.map((commentitem, index) => {
-    // console.log(commentitem)
     return (
       <GroupQnAComment
         key={index}
@@ -203,26 +163,21 @@ const GroupQnADetail = () => {
   return (
     <div>
       <OverStyle>
-      <TitleStyle TitleContent={data.groupQuestionTitle} />
-      <LikeBox>
-        <div onClick={likeClickHandler}>
-          {/* 모르겠음. 안됨. 도저히 모르겠음. */}
-          {/* {(likeUnLike === true) || (myLikeState === 1) ? <AiFillHeart style={{margin: '0px 5px 0px 0px'}}/> : <AiOutlineHeart style={{margin: '0px 5px 0px 0px'}}/>}
-                    좋아요 : {data.groupQuestionLikeCnt} */}
-          {myLikeState === true ? (
-            <AiFillHeart style={{ margin: '0px 5px 0px 0px' }} />
-          ) : (
-            <AiOutlineHeart
-              style={{ margin: '0px 5px 0px 0px' }}
-            //   onClick={likeClickHandler}
-            />
-          )}
-          좋아요 : {data.groupQuestionLikeCnt}    {/* 게시글 좋아요 */}
+        <TitleStyle TitleContent={data.groupQuestionTitle} />
+        <LikeBox>
+          <div onClick={likeClickHandler}>
+            {myLikeState === true ? (
+              <AiFillHeart style={{ margin: '0px 5px 0px 0px' }} />
+            ) : (
+              <AiOutlineHeart style={{ margin: '0px 5px 0px 0px' }} />
+            )}
+            좋아요 : {data.groupQuestionLikeCnt}
           </div>
-      </LikeBox>
-      {/* <LikeStyle Like={data.groupQuestionLikeCnt}  groupQuestionPk={data.groupQuestionPk} userPk={data.userPk}/> */}
-      <HrStyle><hr style={{ width: '954px' }}/></HrStyle>
-      <ContentBox>{data.groupQuestionContents}</ContentBox>
+        </LikeBox>
+        <HrStyle>
+          <hr style={{ width: '954px' }} />
+        </HrStyle>
+        <ContentBox>{data.groupQuestionContents}</ContentBox>
       </OverStyle>
       <div style={{ margin: '15px 0px 15px 10px', borderTop: '1px solid' }}>
         댓글
@@ -236,20 +191,36 @@ const GroupQnADetail = () => {
       <SubmitStyle onClick={submitComment}>Submit</SubmitStyle>
       </div>
       <div>
-      {comments.length > 0 ? (
-        <CommentContentStyle Content={commentList}/>
+        {comments.length > 0 ? (
+          <CommentContentStyle Content={commentList} />
         ) : (
           <div style={{ margin: '50px 50px 50px 50px' }}>댓글이 없습니다.</div>
         )}
       </div>
-      
-      
-      
-      {/* 게시글의 수정 뒤로 삭제 기능*/}
-      <ButtonStyle><button className='custom-btn btn-4' onClick={ToListHandler}>Cancel</button></ButtonStyle>
-      {data.userPk === loginUser.userPk ? ( <ButtonStyle><button className='custom-btn btn-4' onClick={ModifyHandler}>Modify</button></ButtonStyle> ) : null}
-      {/* 로그인 userPk와 글쓴 사람의 userPk가 같을 경우 수정 버튼 보이게 */}
-      {data.userPk === loginUser.userPk ? ( <ButtonStyle><button className='custom-btn btn-4' style={{float: 'left'}} onClick={deleteHandler}>Delete</button></ButtonStyle> ) : null}
+
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={ToListHandler}>
+          Cancel
+        </button>
+      </ButtonStyle>
+      {data.userPk === loginUser.userPk ? (
+        <ButtonStyle>
+          <button className="custom-btn btn-4" onClick={ModifyHandler}>
+            Modify
+          </button>
+        </ButtonStyle>
+      ) : null}
+      {data.userPk === loginUser.userPk ? (
+        <ButtonStyle>
+          <button
+            className="custom-btn btn-4"
+            style={{ float: 'left' }}
+            onClick={deleteHandler}
+          >
+            Delete
+          </button>
+        </ButtonStyle>
+      ) : null}
     </div>
   );
 };
@@ -267,19 +238,18 @@ const LikeBox = styled.div`
 `;
 
 const ContentBox = styled.div`
-border: 1px;
-display: flex;
-flex-direction: column;
-font-size: 2.5vh;
-margin: 2vh;
-height: 5vh;
-.LikeBox {
+  border: 1px;
+  display: flex;
+  flex-direction: column;
+  font-size: 2.5vh;
+  margin: 2vh;
+  height: 5vh;
+  .LikeBox {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    /* margin-left: 80vh; */
-  font-size: 2vh;
-}
+    font-size: 2vh;
+  }
 `;
 const HrStyle = styled.div`
   margin: 20px 0px 5px 0px;

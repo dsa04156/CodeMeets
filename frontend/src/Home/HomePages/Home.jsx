@@ -70,7 +70,6 @@ const PositionIcon = styled.div`
 `;
 
 const HomeMeetDiv = styled.div`
-  /* border: 1px solid black; */
   padding: 10px;
   height: 350px;
 `;

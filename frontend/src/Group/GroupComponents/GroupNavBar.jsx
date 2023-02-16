@@ -2,8 +2,6 @@ import { NavLink } from "react-router-dom";
 
 import styled from "styled-components";
 
-import { useState } from "react";
-
 import { useRecoilState } from "recoil";
 import { pageNumber } from "../../Store";
 
@@ -14,7 +12,6 @@ const GroupNavBar = (props) => {
     <div>
       <NavBarBoard>
         <NavBarStyle to={`/group/${props.grouppk}/notice`} onClick={() => {props.groupTitleFunc('Notice'); setPageNum(1)}}> Notice </NavBarStyle>
-        {/* <NavBarStyle to={`/group/${props.grouppk}/schedule`} onClick={() => {props.groupTitleFunc('Schedule'); setPageNum(1)}}> Schedule </NavBarStyle> */}
         <NavBarStyle to={`/group/${props.grouppk}/meeting-list`} onClick={() => {props.groupTitleFunc('Record'); setPageNum(1)}}>  Record </NavBarStyle>
         <NavBarStyle to={`/group/${props.grouppk}/qna`} onClick={() => {props.groupTitleFunc('Q & A'); setPageNum(1)}}> Q & A </NavBarStyle>
         <NavBarStyle to={`/group/${props.grouppk}/member`} onClick={() => {props.groupTitleFunc('Member'); setPageNum(1)}}> Member </NavBarStyle>

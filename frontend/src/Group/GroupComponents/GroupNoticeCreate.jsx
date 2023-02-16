@@ -16,7 +16,6 @@ const GroupNoticeCreate = () => {
     const params = useParams();
     const groupPk = params.group_pk;
 
-    // console.log(groupPk);
   const writeTitleHandler = (event) => {
     setNoticeTitle(event.target.value);
   }
@@ -25,11 +24,6 @@ const GroupNoticeCreate = () => {
     setNoticeContent(event.target.value);
   }
 
-  console.log(noticeContent);
-  console.log(noticeTitle);
-  console.log(groupPk);
-  console.log(loginUser.userPk);
-  // 글 작성
   const registrationHandler = () => {
     axios({
         method: "POST",
@@ -49,8 +43,7 @@ const GroupNoticeCreate = () => {
             groupNoticeHit: '',
             groupNoticePk: '',
         })
-    }).then((response) => {
-        console.log(response.data)
+    }).then(() => {
         navigate(-1)
     })
   }

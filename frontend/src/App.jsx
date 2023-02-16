@@ -14,6 +14,7 @@ import GroupMember from "./Group/GroupPages/GroupMember";
 
 //Detail
 import GroupNoticeDetail from "./Group/GroupDetailPage/GroupNoticeDetail";
+import GroupRecordDetail from "./Group/GroupDetailPage/GroupRecordDetail";
 import GroupQnADetail from "./Group/GroupDetailPage/GroupQnADetail";
 import GroupNoticeCreate from "./Group/GroupComponents/GroupNoticeCreate";
 import GroupNoticeModify from "./Group/GroupComponents/GroupNoticeModify";
@@ -43,6 +44,8 @@ import Logo from "./Images/LogoSwing.gif";
 
 import SidePadding from "./CommonComponents/SidePadding";
 
+import { user } from "./Store";
+
 //open vidu
 // import OpenViduMain from "./Openvidu/OpenViduMain";
 import NoPadding from "./Openvidu/NoPadding";
@@ -57,15 +60,21 @@ import {
 
 function App() {
   const router = useLocation();
-  const Navigate = useNavigate();
-
+  const navigate = useNavigate();
+  const loginUser = useRecoilValue(user);
+  
   const LogoHandler = () => {
-    Navigate("/home");
+    if (loginUser?.userPk !== undefined) {
+      navigate("/home");
+    } else {
+      alert('로그인 해주시기 바랍니다.')
+      navigate('/');
+    }
   };
 
 
   return (
-    <RecoilRoot>
+    <>
       {router.pathname !== "/openvidu" ? (
         <SidePadding>
           <Center>
@@ -140,6 +149,10 @@ function App() {
                     path="/my-question-record/:conferenceQuestionPk"
                     element={<QuestionListDetail />}
                   ></Route>
+                  <Route
+                    path="/group/:groupPk/record/:conferencePk"
+                    element={<GroupRecordDetail />}
+                    ></Route>
 
                   {/* 수정 페이지*/}
                   <Route
@@ -187,7 +200,7 @@ function App() {
           <Route path="/openvidu" element={<NoPadding />}></Route>
         </Routes>
       )}
-    </RecoilRoot>
+    </>
   );
 }
 

@@ -1,11 +1,11 @@
-import { IoPowerSharp } from "react-icons/io5";
-import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { IoPowerSharp } from 'react-icons/io5';
+import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
-import axios from "axios";
+import axios from 'axios';
 
-import { APIroot, user, groupNavTitle } from "../../Store";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { APIroot, user, groupNavTitle } from '../../Store';
+import { useRecoilValue, useRecoilState } from 'recoil';
 
 const SideBarLogoutButton = () => {
   const API = useRecoilValue(APIroot);
@@ -14,30 +14,28 @@ const SideBarLogoutButton = () => {
 
   const SideBarLogoutHandler = () => {
     axios({
-      method: "PUT",
+      method: 'PUT',
       url: `${API}/login/logout`,
       headers: {
-        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     })
       .then((response) => {
-        console.log(response.data);
-        localStorage.removeItem("ACCESS_TOKEN");
-        localStorage.removeItem("REFRESH_TOKEN");
-        console.log("logout");
+        localStorage.removeItem('ACCESS_TOKEN');
+        localStorage.removeItem('REFRESH_TOKEN');
       })
       .catch((err) => console.log(err));
 
     setRecoilUser({});
-    setRecoilNavTitle("Notice");
+    setRecoilNavTitle('Notice');
   };
 
   return (
-    <LogoutDiv to={"/"}>
+    <LogoutDiv to={'/'}>
       <IoPowerSharp
         onClick={SideBarLogoutHandler}
         size="24"
-        style={{ margin: "10px", marginLeft: "10px", cursor: "pointer" }}
+        style={{ margin: '10px', marginLeft: '10px', cursor: 'pointer' }}
       />
     </LogoutDiv>
   );

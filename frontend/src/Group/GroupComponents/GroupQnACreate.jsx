@@ -1,79 +1,87 @@
-import axios from "axios";
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useRecoilValue } from "recoil";
-import { APIroot, user } from "../../Store";
+import axios from 'axios';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { APIroot, user } from '../../Store';
 import styled from 'styled-components';
 
 const GroupQnACreate = () => {
-    
-    const [qnaTitle, setQnaTitle] = useState();
-    const [qnaContent, setQnaContent] = useState();
+  const [qnaTitle, setQnaTitle] = useState();
+  const [qnaContent, setQnaContent] = useState();
 
-    const loginUser = useRecoilValue(user);
-    const API = useRecoilValue(APIroot);
-    const params = useParams();
-    const groupPk = params.group_pk;
-    
-    const navigate = useNavigate();
-    // console.log(groupPk);
+  const loginUser = useRecoilValue(user);
+  const API = useRecoilValue(APIroot);
+  const params = useParams();
+  const groupPk = params.group_pk;
+
+  const navigate = useNavigate();
   const writeTitleHandler = (event) => {
     setQnaTitle(event.target.value);
-  }
+  };
 
   const writeContentHandler = (event) => {
     setQnaContent(event.target.value);
-  }
-
-  console.log(qnaContent);
-  console.log(qnaTitle);
-  console.log(groupPk);
-  console.log(loginUser.userPk);
+  };
 
   // 글 작성
   const registrationHandler = () => {
     axios({
-        method: "POST",
-        url: `${API}/qna`,
-        headers: {
-            "Content-Type": "application/json",
-        },
-        data: JSON.stringify({
-            groupQuestionContents: qnaContent,
-            groupQuestionTitle: qnaTitle,
-            groupPk: groupPk,
-            userName: loginUser.userName,
-            userPk: loginUser.userPk,
-            groupQuestionAnswerCnt: '',
-            groupQuestionDate: '',
-            groupQuestionLike: '',
-            groupQuestionLikeCnt: '',
-            groupQuestionPk: '',
-            groupQuestionUpdate: '',
-
-        })
-    }).then((response) => {
-        console.log(response.data)
-        navigate(-1)
-    })
-  }
+      method: 'POST',
+      url: `${API}/qna`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        groupQuestionContents: qnaContent,
+        groupQuestionTitle: qnaTitle,
+        groupPk: groupPk,
+        userName: loginUser.userName,
+        userPk: loginUser.userPk,
+        groupQuestionAnswerCnt: '',
+        groupQuestionDate: '',
+        groupQuestionLike: '',
+        groupQuestionLikeCnt: '',
+        groupQuestionPk: '',
+        groupQuestionUpdate: '',
+      }),
+    }).then(() => {
+      navigate(-1);
+    });
+  };
 
   const cancelHandler = () => {
-    navigate(-1)
-  }
-    return (
-        <div>
-            <TitleStyle>
-              <input type="text" placeholder="제목을 입력해주세요." onChange={writeTitleHandler} style={{width:'953px', height:'30px'}} />
-            </TitleStyle>
-            <hr style={{width: '953px' }}/>
-            <ContentStyle>
-              <textarea placeholder="내용을 입력하세요" onChange={writeContentHandler} style={{width:'953px', height:'450px', resize:"none"}}></textarea>
-            </ContentStyle>
-            <ButtonStyle><button className="custom-btn btn-4" onClick={cancelHandler}>Cancel</button></ButtonStyle>
-            <ButtonStyle><button className="custom-btn btn-4" onClick={registrationHandler}>Registration</button></ButtonStyle>
-        </div>
-    );
+    navigate(-1);
+  };
+  return (
+    <div>
+      <TitleStyle>
+        <input
+          type="text"
+          placeholder="제목을 입력해주세요."
+          onChange={writeTitleHandler}
+          style={{ width: '953px', height: '30px' }}
+        />
+      </TitleStyle>
+      <hr style={{ width: '953px' }} />
+      <ContentStyle>
+        <textarea
+          placeholder="내용을 입력하세요"
+          onChange={writeContentHandler}
+          style={{ width: '953px', height: '450px', resize: 'none' }}
+        ></textarea>
+      </ContentStyle>
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={cancelHandler}>
+          Cancel
+        </button>
+      </ButtonStyle>
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={registrationHandler}>
+          Registration
+        </button>
+      </ButtonStyle>
+    </div>
+  );
 };
 
 export default GroupQnACreate;

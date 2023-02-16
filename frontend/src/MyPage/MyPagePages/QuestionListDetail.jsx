@@ -1,7 +1,6 @@
 import TitleStyle from "../../Group/GroupDetailPage/GroupDetailPageComponent/TitleStyle";
 import CommentContentStyle from "../../Group/GroupDetailPage/GroupDetailPageComponent/CommentContentStyle";
 import MyPageQnAComments from "../MyPageComponents/MyPageQnAComments";
-import LikeStyle from "../../Group/GroupDetailPage/GroupDetailPageComponent/LikeStyle";
 import { Fragment, useRef } from "react";
 import { APIroot } from "../../Store";
 import { user } from "../../Store";

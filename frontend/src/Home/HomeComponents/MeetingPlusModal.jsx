@@ -1,47 +1,45 @@
-import Modal from "../../CommonComponents/Modal/Modal";
-import styled from "styled-components";
-import React from "react";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { APIroot } from "../../Store";
-import { useRecoilValue } from "recoil";
-import { useNavigate } from "react-router-dom";
+import Modal from '../../CommonComponents/Modal/Modal';
+import styled from 'styled-components';
+import React from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { APIroot } from '../../Store';
+import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
 
 const MeetingPlusModal = ({ onClose }) => {
-  const title = "Meeting Create";
+  const title = 'Meeting Create';
   const API = useRecoilValue(APIroot);
   const navigate = useNavigate();
 
   const [groupList, setGroupList] = useState([]);
-  const [groupPk, setGroupPk] = useState("");
+  const [groupPk, setGroupPk] = useState('');
   const [conferenceUrl, setConferenceUrl] = useState();
-  const [meetingTitle, setMeetingTitle] = useState("");
-  const [meetingContent, setMeetingContent] = useState("");
+  const [meetingTitle, setMeetingTitle] = useState('');
+  const [meetingContent, setMeetingContent] = useState('');
 
   // 유저가 가입한 그룹 리스트 가져오기
   useEffect(() => {
     axios({
-      method: "POST",
+      method: 'POST',
       url: `${API}/conference/click`,
       headers: {
-        "Content-Type": "application/json",
-        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+        'Content-Type': 'application/json',
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log(response.data);
       setGroupList(response.data.list);
       setGroupPk(response.data.list[0].groupPk);
       setConferenceUrl(response.data.url);
-      console.log(groupList);
     });
   }, []);
 
   const CopyHandler = (text) => {
     try {
       navigator.clipboard.writeText(text);
-      alert("클립보드 복사완료");
+      alert('클립보드 복사완료');
     } catch (error) {
-      alert("복사 실패");
+      alert('복사 실패');
     }
   };
 
@@ -50,17 +48,17 @@ const MeetingPlusModal = ({ onClose }) => {
   };
 
   const JoinOpenviduHandler = () => {
-    if(meetingTitle === ""){
-      alert('회의명을 입력해주세요')
-    }else if(meetingContent === ""){
-      alert('미팅 개요를 입력해주세요')
-    }else{
+    if (meetingTitle === '') {
+      alert('회의명을 입력해주세요');
+    } else if (meetingContent === '') {
+      alert('미팅 개요를 입력해주세요');
+    } else {
       axios({
-        method: "POST",
+        method: 'POST',
         url: `${API}/conference/create`,
         headers: {
-          "Content-Type": "application/json",
-          AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
+          'Content-Type': 'application/json',
+          AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
         },
         data: {
           conferenceUrl: `${conferenceUrl}`,
@@ -68,9 +66,8 @@ const MeetingPlusModal = ({ onClose }) => {
           conferenceContents: `${meetingContent}`,
           groupPk: `${groupPk}`,
         },
-      }).then((response) => {
-        console.log("이게 방 생성했을때 response", response.data);
-        navigate("/openvidu", {
+      }).then(() => {
+        navigate('/openvidu', {
           state: {
             meetingUrl: { conferenceUrl },
             groupPk: { groupPk },
@@ -94,34 +91,7 @@ const MeetingPlusModal = ({ onClose }) => {
   const selectHandler = (e) => {
     setGroupPk(e.target.value);
   };
-  
-  // const groupNameList = groupList.map((grouplistitem, index) => {
-  //   return (
-  //     <div>
-  //       key={index}
-  //       groupNameList = {grouplistitem.groupName}
-  //     </div>
-  //   );
-  // });
-  // const commentList = comments.map((commentitem, index) => {
-  //   // console.log(commentitem)
-  //   return (
-  //     <GroupQnAComment
-  //       key={index}
-  //       groupQnaAnswerContents={commentitem.groupQnaAnswerContents}
-  //       groupQnaAnswerDate={commentitem.groupQnaAnswerDate}
-  //       groupQnaAnswerLikeCnt={commentitem.groupQnaAnswerLikeCnt}
-  //       groupQnaAnswerLiked={commentitem.groupQnaAnswerLiked}
-  //       username={commentitem.username}
-  //       groupQnaAnswerPk={commentitem.groupQnaAnswerPk}
-  //       userPk = {commentitem.userPk}
-  //       detailData = {data}
-  //       commnetLikeUnLike = {commnetLikeUnLike}
-  //     />
-  //   );
-  // });
 
-  console.log(conferenceUrl);
   return (
     <Modal onClose={onClose} ModalTitle={title}>
       <TitleStyle>
@@ -129,7 +99,7 @@ const MeetingPlusModal = ({ onClose }) => {
         <div className="nickname">
           <input
             type="text"
-            style={{ border: "solid 2px grey" }}
+            style={{ border: 'solid 2px grey' }}
             onChange={titleHandler}
           />
         </div>
@@ -139,17 +109,16 @@ const MeetingPlusModal = ({ onClose }) => {
         <div className="nickname">
           <input
             type="text"
-            style={{ border: "solid 2px grey" }}
+            style={{ border: 'solid 2px grey' }}
             onChange={contentHandler}
           />
         </div>
       </TitleStyle>
-      {/* 여기 그룹다운으로 그룹 선택 만들어야됨*/}
       <TitleStyle>
         <div className="name">그룹 선택</div>
         <select
           name="nickname"
-          style={{ border: "solid 2px grey" }}
+          style={{ border: 'solid 2px grey' }}
           onChange={selectHandler}
           value={groupPk}
         >
@@ -168,7 +137,7 @@ const MeetingPlusModal = ({ onClose }) => {
           <input
             type="text"
             defaultValue={conferenceUrl}
-            style={{ border: "solid 2px grey" }}
+            style={{ border: 'solid 2px grey' }}
           />
         </div>
         <ButtonStyle>
@@ -212,7 +181,7 @@ export default MeetingPlusModal;
 const TitleStyle = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: end; // 세로 기준 맨 아래
+  align-items: end;
   height: 6vh;
   .name {
     display: flex;
@@ -242,14 +211,6 @@ const ButtonStyle = styled.div`
   margin-left: 5px;
 `;
 
-const CreateCancelButtonStyle = styled.div`
-  /* align-items: center; */
-  margin-left: 50px;
-  padding-left: 50px;
-  width: 5%;
-  height: 25px;
-`;
-
 const SubButtonStyle = styled.div`
   .custom-btn {
     width: 50px;
@@ -258,7 +219,7 @@ const SubButtonStyle = styled.div`
     border-radius: 5px;
     margin-left: 50px;
     padding: 10px 25px;
-    font-family: "Lato", sans-serif;
+    font-family: 'Lato', sans-serif;
     font-weight: 500;
     background: transparent;
     cursor: pointer;
@@ -281,7 +242,7 @@ const SubButtonStyle = styled.div`
   .btn-8:before,
   .btn-8:after {
     position: absolute;
-    content: "";
+    content: '';
     right: 0;
     bottom: 0;
     background: #4dccc6;

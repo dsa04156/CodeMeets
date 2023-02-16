@@ -1,72 +1,89 @@
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
-import { useRecoilValue } from "recoil";
-import { APIroot } from "../../Store"
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useRecoilValue } from 'recoil';
+import { APIroot } from '../../Store';
 import styled from 'styled-components';
 
 const GroupQnAModify = () => {
-    const API = useRecoilValue(APIroot)
-    const location = useLocation()
-    const navigate = useNavigate()
-    const firstData = location.state
-    const [formTitle, setFormTitle] = useState(firstData.title)
-    const [formContent, setFormContent] = useState(firstData.content)
+  const API = useRecoilValue(APIroot);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const firstData = location.state;
+  const [formTitle, setFormTitle] = useState(firstData.title);
+  const [formContent, setFormContent] = useState(firstData.content);
 
-    console.log(firstData)
-    const titleHandler = (event) => {
-        const currentTitle = event.target.value;
-        setFormTitle(currentTitle)
-    };
+  const titleHandler = (event) => {
+    const currentTitle = event.target.value;
+    setFormTitle(currentTitle);
+  };
 
-    const contentHandler = (event) => {
-        const currentContent = event.target.value;
-        setFormContent(currentContent)
-    };
+  const contentHandler = (event) => {
+    const currentContent = event.target.value;
+    setFormContent(currentContent);
+  };
 
-    const backHandler = () => {
-        navigate(-1)
-    }
+  const backHandler = () => {
+    navigate(-1);
+  };
 
-    const submitHandler = (event) => {
-        event.preventDefault()
-        console.log(formTitle)
-        console.log(firstData.questionPk)
-        console.log(formContent)
-        axios({
-            method: "PUT",
-            url: `${API}/qna`,
-            headers:{
-                "Content-Type": "application/json"
-            },
-            data:JSON.stringify({
-                groupPk: "",
-                groupQuestionAnswerCnt: "",
-                groupQuestionDate: "",
-                groupQuestionLike: "",
-                groupQuestionLikeCnt: "",
-                groupQuestionUpdate: "",
-                username: "",
-                userPk: "",
-                groupQuestionTitle: `${formTitle}`,
-                groupQuestionContents: `${formContent}`,
-                groupQuestionPk: `${firstData.questionPk}`,
-                total: "",
-            })
-        })
-        .then(() => {
-            navigate(-1);
-        })
-    };
+  const submitHandler = (event) => {
+    event.preventDefault();
+    axios({
+      method: 'PUT',
+      url: `${API}/qna`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify({
+        groupPk: '',
+        groupQuestionAnswerCnt: '',
+        groupQuestionDate: '',
+        groupQuestionLike: '',
+        groupQuestionLikeCnt: '',
+        groupQuestionUpdate: '',
+        username: '',
+        userPk: '',
+        groupQuestionTitle: `${formTitle}`,
+        groupQuestionContents: `${formContent}`,
+        groupQuestionPk: `${firstData.questionPk}`,
+        total: '',
+      }),
+    }).then(() => {
+      navigate(-1);
+    });
+  };
 
-    return (
-        <div>
-            <TitleStyle><input type="text" defaultValue={`${formTitle}`} onChange={titleHandler} style={{width:'953px', height:'30px'}}/></TitleStyle> 
-            <ContentStyle><textarea type="text" defaultValue={`${formContent}`} onChange={contentHandler} style={{width:'953px', height:'450px', resize:"none"}}/></ContentStyle>
-            <ButtonStyle><button className="custom-btn btn-4" onClick={backHandler}>Cancel</button></ButtonStyle>
-            <ButtonStyle><button className="custom-btn btn-4" onClick={submitHandler}>Registration</button></ButtonStyle>
-        </div>
-    );
+  return (
+    <div>
+      <TitleStyle>
+        <input
+          type="text"
+          defaultValue={`${formTitle}`}
+          onChange={titleHandler}
+          style={{ width: '953px', height: '30px' }}
+        />
+      </TitleStyle>
+      <ContentStyle>
+        <textarea
+          type="text"
+          defaultValue={`${formContent}`}
+          onChange={contentHandler}
+          style={{ width: '953px', height: '450px', resize: 'none' }}
+        />
+      </ContentStyle>
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={backHandler}>
+          Cancel
+        </button>
+      </ButtonStyle>
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={submitHandler}>
+          Registration
+        </button>
+      </ButtonStyle>
+    </div>
+  );
 };
 
 export default GroupQnAModify;
