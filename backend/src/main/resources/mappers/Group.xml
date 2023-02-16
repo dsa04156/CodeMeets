@@ -24,32 +24,32 @@
 		<result column="nickname" property="nickname"/>
 		<result column="count" property="count"/>
 		<result column="callStartTime" property="callStartTime"/>
+		<result column="manager_name" property="managerName"/>
 		<result column="manager_id" property="managerId"/>
 		<result column="user_pk" property="userPk"/>
 		<result column="group_pk" property="groupPk"/>
 		<result column="group_url" property="groupUrl"/>
 	</resultMap>
-	
-	<resultMap type="UserDto" id="user">
+<resultMap type="UserDto" id="user">
 		<result column="user_pk" property="userPk" />
 		<result column="user_id" property="userId" />
 		<result column="user_name" property="userName" />
-		<result column="nickname" property="nickname" />
 		<result column="user_active" property="userActive" />
 		<result column="user_info_pk" property="userInfoPk" />
 		<result column="profile_photo" property="profilePhoto" />
 		<result column="email_public" property="emailPublic" />
 		<result column="tel_public" property="telPublic"/>
 		<result column="group_user_position" property="groupUserPosition"/>
+		
 	</resultMap>
 	
 	<insert id="createGroup" useGeneratedKeys="true" keyProperty="groupPk" >
-		<![CDATA[
-			INSERT INTO
-			 `group`(group_name,group_desc,group_url,manager_id)
-			VALUES
-			  (#{groupName}, #{groupDesc},#{groupUrl},#{managerId});
-		]]>
+	<![CDATA[
+		INSERT INTO
+		 `group`(group_name,group_desc,group_url,manager_id)
+		VALUES
+		  (#{groupName}, #{groupDesc},#{groupUrl},#{managerId});
+		  ]]>
 	</insert>
 	
 	<select id="detailGroup" resultMap="group">
@@ -71,21 +71,16 @@
 		 values (1,#{groupPk},#{userPk});
 		  ]]>
 	</insert>
-	
 	<select id="groupMemberList" resultMap="user">
 		<![CDATA[
-			SELECT 
-				user.user_pk, user.user_id, 
-				user_info.user_name, user_info.nickname, user_info.profile_photo, 
-				user_info.email, user_info.tel, 
-				user_info.email_public, user_info.tel_public, 
-				`group-user`.group_pk, `group-user`.group_user_position 
-			FROM
-				user user, user_info user_info, `group-user` `group-user`
- 			WHERE 
-	 			user.user_pk = user_info.user_pk
-				and `group-user`.user_pk=user_info.user_pk 
-				and `group-user`.group_pk=#{groupPk};
+			select 
+			user.user_id,user.user_pk,user_info.user_name,`group-user`.group_pk,`group-user`.group_user_position 
+			from
+			 user user, user_info user_info,`group-user` `group-user`
+ 			where 
+ 			user.user_pk=user_info.user_pk
+ 			 and `group-user`.user_pk=user_info.user_pk 
+ 			 and `group-user`.group_pk=#{groupPk};
 		]]>
 	</select>
 	
@@ -109,22 +104,19 @@
 		 -->
 	<select id="getList" resultMap="glDto">
 	<![CDATA[
-		SELECT
-			a.group_pk group_pk, a.group_name group_name, 
-			a.manager_id manager_id, a.group_url,
-			b.nickname nickname 
-		FROM 
-			`group` AS a 
-			INNER JOIN user_info AS b 
-			INNER JOIN `group-user` AS c
-		ON 
-			a.group_pk = c.group_pk 
-		AND 
-			b.user_pk = c.user_pk 
-		WHERE 
-			c.user_pk = #{userPk} AND a.group_pk != 0
-		ORDER BY ${order} DESC 
-		LIMIT #{nowPage}, #{items};
+		select 
+		a.group_name, b.nickname, (select user_name from user_info where user_pk= a.manager_id) as manager_name, a.group_url
+		from 
+		`group` as a inner join user_info as b 
+		inner join `group-user` as c 
+		on 
+		a.group_pk=c.group_pk 
+		and 
+		b.user_pk=c.user_pk 
+		where
+		 c.user_pk=#{userPk}
+			 	ORDER BY #{order} DESC
+			LIMIT #{nowPage}, #{items};
 		]]>
 	</select>
 	
@@ -150,12 +142,11 @@
 	
 	<select id="gpList" resultType="int">
 	<![CDATA[
-		SELECT 
+		select 
 		`group-user`.`group_pk`
-		FROM 
+		from 
 		`group-user`
-        WHERE 
-        `group-user`.user_pk = #{userPk} AND `group-user`.group_pk != 0;
+        where `group-user`.user_pk=#{userPk};
 		]]>
 	</select>
 	<select id="callStartTime" resultType="String">
