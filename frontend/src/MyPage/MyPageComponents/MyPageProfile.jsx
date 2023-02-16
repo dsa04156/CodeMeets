@@ -22,11 +22,7 @@ const MyPageProfile = () => {
     if (userInfo.profilePhoto === "") {
       setImageNotExist(defaultImage);
     } else {
-      if (userInfo.profilePhoto.includes('http')) {
-        setImageNotExist(`${userInfo.profilePhoto}`);
-      } else {
-        setImageNotExist(`${API}/file/images/${userInfo.profilePhoto}`);
-      }
+      setImageNotExist(`${API}/file/images/${userInfo.profilePhoto}`);
     }
   }, [userInfo]);
   console.log(userInfo);
