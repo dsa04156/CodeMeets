@@ -21,12 +21,6 @@ export const groupNavTitle = atom({
     effects_UNSTABLE: [persistAtom],
 })
 
-// export const groupUrl = atom({
-//     key: "groupUrl",
-//     default: "",
-//     effects_UNSTABLE: [persistAtom],
-// })
-
 export const pageNumber = atom({
     key: "pageNumber",
     default: "1",

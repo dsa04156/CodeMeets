@@ -30,9 +30,7 @@ const GroupInModal = ({ onClose }) => {
     }
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-
+  const submitHandler = () => {
     axios({
       method: 'GET',
       url: `${API}/group/join/${url}`,
@@ -44,7 +42,7 @@ const GroupInModal = ({ onClose }) => {
       .then(() => {
         alert('가입완료');
         onClose?.();
-        useLocation.reload();
+        window.location.reload();
       })
       .catch((err) => console.log(err));
   };

@@ -72,11 +72,11 @@ const GroupList = () => {
       },
       {
         Header: '생성자',
-        accessor: 'nickname',
+        accessor: 'managerName',
         width: 100,
       },
       {
-        Header: '생성일자',
+        Header: '최근 활동',
         accessor: 'callStartTime',
         width: 230,
       },
@@ -87,16 +87,18 @@ const GroupList = () => {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: `${API}/group/list?nowPage=${page}&items=10&order=444`,
+      url: `${API}/group/list?nowPage=${page}&items=10&order=group_pk`,
       headers: {
         'Content-Type': 'application/json',
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
+      console.log(response.data)
       setTotalPosts(response.data.groupList[0].total);
       response.data.groupList.map((list, index) => {
         list.newIndex = index + (page - 1) * 10 + 1;
       });
+      console.log(response.data)
       setGroupList(response.data.groupList);
       setRecoilPageNum(1);
     });

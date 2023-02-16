@@ -8,8 +8,8 @@ import { user } from '../../Store';
 import { APIroot } from '../../Store';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import googleLogo from '../../assets/google_login.png';
-import kakaoLogo from '../../assets/kakao_login_medium.png';
+import googleLogo from '../../assets/btn_google_signin_light_focus_web.png';
+import kakaoLogo from '../../assets/kakao_login_medium_narrow.png';
 
 const LoginPage = () => {
   const [inputId, setInputId] = useState('');
@@ -121,24 +121,70 @@ const LoginPage = () => {
           onChange={inputPwHandler}
         />
       </InputStyle>
-      <SubButtonStyle>
-        <button
-          className="custom-btn btn-4"
-          onClick={ToHomePageHandler}
-          style={{ width: '100%' }}
+      <div>
+        <SubButtonStyle>
+          <button
+            className="custom-btn btn-4"
+            onClick={ToHomePageHandler}
+            style={{ width: '100%', marginBottom: '5px' }}
+          >
+            로그인
+          </button>
+        </SubButtonStyle>
+        <div>
+          <a href={googleLogInUrl}>
+            <img src={googleLogo} style={{ width: '17vh', height: '5vh', margin: '5px 5px 5px 10px' }} />
+          </a>
+          <a href={kakaoLogInUrl}>
+            <img src={kakaoLogo} style={{ width: '17vh', height: '5vh', margin: '5px 5px 5px 5px' }} />
+          </a>
+        </div>
+      </div>
+      <SubButtonStyle style={{marginTop:"20px", display:"flex", justifyContent:"space-between", alignItems: "flexEnd"}}>
+        <Link
+          to="/signup"
+          style={{
+            margin: '0px 12px 0px 0px',
+            textDecoration: 'none',
+            fontSize: 'small',
+            color: 'grey',
+
+          }}
         >
-          Sign In
-        </button>
+          회원가입
+        </Link>
+        <div>
+        <Link
+          to="/findid"
+          style={{
+            margin: '0px 12px 0px 0px',
+            textDecoration: 'none',
+            fontSize: 'small',
+            color: 'grey',
+          }}
+        >
+          ID 찾기
+        </Link>
+        <Link
+          to="/findpassword"
+          style={{
+            margin: '0px 0px 0px 0px',
+            textDecoration: 'none',
+            fontSize: 'small',
+            color: 'grey',
+          }}
+        >
+          PW 찾기
+        </Link>
+        </div>
       </SubButtonStyle>
-      <Link to="/signup">회원가입</Link> |<Link to="/findid"> 아이디 찾기</Link>{' '}
-      |<Link to="/findpassword"> 비밀번호 찾기</Link> |
       <SocialButton>
-        <a href={googleLogInUrl}>
-          <img src={googleLogo} width="100" />
+        {/* <a href={googleLogInUrl}>
+          <img src={googleLogo} style={{width: "20vh", height: "5vh" }} />
         </a>
         <a href={kakaoLogInUrl}>
-          <img src={kakaoLogo} />
-        </a>
+          <img src={kakaoLogo} style={{width: "20vh", height: "5vh" }}/>
+        </a> */}
       </SocialButton>
     </div>
   );
@@ -179,7 +225,9 @@ const SubButtonStyle = styled.div`
     float: right;
     transition: all 0.3s ease;
     position: relative;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, 0.5),
       7px 7px 20px 0px rgba(0, 0, 0, 0.1), 4px 4px 5px 0px rgba(0, 0, 0, 0.1);
     outline: none;

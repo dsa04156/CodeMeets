@@ -40,12 +40,12 @@ const GroupMember = () => {
           userId={useritem.userId}
           nickName={useritem.nickname}
           profilePhoto={
-            useritem.profilePhoto !== null
+            useritem.profilePhoto !== ""
               ? useritem.profilePhoto
               : DefaultImage
           } // 일단 null -> ""
-          tel={useritem.telPublic === '1' ? useritem.telPublic : '비공개'}
-          email={useritem.emailPublic === '1' ? useritem.emailPublic : '비공개'}
+          tel={useritem.tel}
+          email={useritem.email}
           manager
           position={position}
         />

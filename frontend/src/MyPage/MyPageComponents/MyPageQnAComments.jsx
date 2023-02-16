@@ -1,15 +1,14 @@
-import axios from "axios";
-import { APIroot, user } from "../../Store";
-import { useRecoilValue } from "recoil";
-import { useState } from "react";
+import axios from 'axios';
+import { APIroot, user } from '../../Store';
+import { useRecoilValue } from 'recoil';
+import { useState } from 'react';
 
-import { AiFillHeart } from "react-icons/ai";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiFillHeart } from 'react-icons/ai';
+import { AiOutlineHeart } from 'react-icons/ai';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const MyPageQnAComments = ({
-  // answer
   conferenceAnswerContents,
   conferenceAnswerDate,
   conferenceAnswerLikeCnt,
@@ -20,14 +19,13 @@ const MyPageQnAComments = ({
   detailData,
   commentLikeUnLike,
 }) => {
-  // console.log(conferenceAnswerLiked)
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
 
   const [modifyButton, setModifyButton] = useState(false);
   const [formContent, setFormContent] = useState(conferenceAnswerContents);
   const [likeUnLike, setLikeUnLike] = useState(!!conferenceAnswerLiked);
-  const [data, setData] = useState(detailData);
+
   const [commentLikeCnt, setCommentLikeCnt] = useState(conferenceAnswerLikeCnt);
 
   const modifyButtonStateHandler = () => {
@@ -40,7 +38,7 @@ const MyPageQnAComments = ({
   };
 
   const enterClickHandler = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       modifyCommentHandler();
     }
   };
@@ -48,27 +46,24 @@ const MyPageQnAComments = ({
   // 댓글 좋아요
   const likeClickHander = () => {
     axios({
-      method: "PUT",
+      method: 'PUT',
       url: `${API}/conferenceAnswer/Like`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: JSON.stringify({
         conferenceAnswerPk: conferenceAnswerPk,
         userPk: loginUser.userPk,
       }),
     }).then((response) => {
-      console.log(response.data);
-      if (response.data === "success") {
+      if (response.data === 'success') {
         setLikeUnLike((prev) => !prev);
         if (likeUnLike) {
           setCommentLikeCnt((prev) => {
-            // const cnt = prev - 1;
             return prev - 1;
           });
         } else {
           setCommentLikeCnt((prev) => {
-            // const cnt = prev.conferenceAnswerLikeCnt + 1;
             return prev + 1;
           });
         }
@@ -79,18 +74,17 @@ const MyPageQnAComments = ({
   // 댓글 수정
   const modifyCommentHandler = () => {
     axios({
-      method: "PUT",
+      method: 'PUT',
       url: `${API}/conferenceAnswer`,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: JSON.stringify({
         conferenceAnswerContents: formContent,
         conferenceAnswerPk: conferenceAnswerPk,
         userPk: userPk,
       }),
-    }).then((response) => {
-      console.log(response.data);
+    }).then(() => {
       modifyButtonStateHandler();
       window.location.reload();
     });
@@ -99,16 +93,15 @@ const MyPageQnAComments = ({
   // 댓글 삭제
   const deleteComment = () => {
     axios({
-      method: "DELETE",
+      method: 'DELETE',
       url: `${API}/conferenceAnswer?conferenceAnswerPk=${conferenceAnswerPk}`,
-    }).then((response) => {
+    }).then(() => {
       window.location.reload();
     });
   };
 
-  //   console.log(username);
   return (
-    <ContentStyle style={{ margin: "0px 0px 5px 0px" }}>
+    <ContentStyle style={{ margin: '0px 0px 5px 0px' }}>
       <span className="userName">{username}</span>
       <div className="content">{conferenceAnswerContents}</div>
       <span>
@@ -116,7 +109,7 @@ const MyPageQnAComments = ({
         {likeUnLike === true ? (
           <div>
             <AiFillHeart
-              style={{ margin: "0px 5px 0px 0px" }}
+              style={{ margin: '0px 5px 0px 0px' }}
               onClick={likeClickHander}
               cursor="pointer"
             />
@@ -125,7 +118,7 @@ const MyPageQnAComments = ({
         ) : (
           <div>
             <AiOutlineHeart
-              style={{ margin: "0px 5px 0px 0px" }}
+              style={{ margin: '0px 5px 0px 0px' }}
               onClick={likeClickHander}
               cursor="pointer"
             />
@@ -174,7 +167,6 @@ const MyPageQnAComments = ({
 export default MyPageQnAComments;
 
 const ContentStyle = styled.div`
-  /* margin: 0px 0px 20px 0px; */
   .userName {
     font-weight: bold;
     font-size: 17px;

@@ -59,22 +59,17 @@ const GroupQnA = () => {
       {
         Header: '작성자',
         accessor: 'username',
-        width: 100,
+        width: 110,
       },
       {
         Header: '좋아요',
         accessor: 'groupQuestionLikeCnt',
-        width: 100,
+        width: 130,
       },
       {
-        Header: 'userPk??',
-        accessor: 'userPk',
-        width: 100,
-      },
-      {
-        Header: '등록일자',
+        Header: '등록 일자',
         accessor: 'groupQuestionDate',
-        width: 100,
+        width: 140,
       },
     ],
     []

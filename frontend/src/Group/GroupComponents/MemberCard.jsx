@@ -9,6 +9,13 @@ const MemberCard = ({
   userName,
   position,
 }) => {
+  console.log(  userId,
+  nickName,
+  profilePhoto,
+  tel,
+  email,
+  userName,
+  position,)
   return (
     <Card>
       <ImageBox>
@@ -23,7 +30,6 @@ const MemberCard = ({
         <div>tel: {tel}</div>
         <div>email: {email}</div>
       </PublickBox>
-      {position === 1 ? <button>삭제</button> : null}
     </Card>
   );
 };

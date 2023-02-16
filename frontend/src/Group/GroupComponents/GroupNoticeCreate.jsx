@@ -58,14 +58,13 @@ const GroupNoticeCreate = () => {
             </TitleStyle>
             <hr style={{ width: '953px' }}/>
             <ContentStyle>
-              <textarea placeholder="내용을 입력하세요" onChange={writeContentHandler} style={{width:'953px', height:'450px', resize:"none"}}></textarea>
+              <textarea placeholder="내용을 입력하세요. 최대 255자까지 가능" onChange={writeContentHandler} style={{width:'953px', height:'450px', resize:"none"}}></textarea>
             </ContentStyle>
             <div>
             <ButtonStyle><button className="custom-btn btn-4" onClick={cancelHandler}>Cancel</button></ButtonStyle>
             <ButtonStyle><button className="custom-btn btn-4" onClick={registrationHandler}>Registration</button></ButtonStyle>
             </div>
         </div>
-
     );
 };
 

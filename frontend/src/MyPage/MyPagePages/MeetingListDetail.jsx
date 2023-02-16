@@ -2,7 +2,7 @@ import TitleStyle from '../../Group/GroupDetailPage/GroupDetailPageComponent/Tit
 import ContentStyle from '../../Group/GroupDetailPage/GroupDetailPageComponent/ContentStyle';
 import { Fragment } from 'react';
 import { APIroot } from '../../Store';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -14,10 +14,8 @@ const MyPageMeetingListDetail = () => {
   const navigate = useNavigate();
 
   const params = useParams();
-  console.log('이거 params임', params);
 
   useEffect(() => {
-    console.log('실행');
     axios({
       method: 'GET',
       url: `${API}/conference/detail/${params.conference_Pk}`,
@@ -26,10 +24,8 @@ const MyPageMeetingListDetail = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log(response.data);
       setData(response.data);
     });
-    //   .catch((err) => console.log(err));
   }, [API]);
 
   const backHandler = () => {
@@ -39,32 +35,18 @@ const MyPageMeetingListDetail = () => {
   return (
     <div>
       <TitleStyle TitleContent={data.conferenceTitle} />
-      {/* <hr style={{ width: '860px', color: 'black' }}/> */}
+
       <ContentStyle Content={data.conferenceContents} />
       <ButtonStyle>
-        <button className='custom-btn btn-4' onClick={backHandler}>Back</button>
-      </ButtonStyle> 
+        <button className="custom-btn btn-4" onClick={backHandler}>
+          Back
+        </button>
+      </ButtonStyle>
     </div>
   );
 };
 
 export default MyPageMeetingListDetail;
-
-// const ButtonStyle = styled.button`
-//   background: rgb(3, 201, 136);
-//   background: linear-gradient(
-//     149deg,
-//     rgba(3, 201, 136, 1) 100%,
-//     rgba(3, 201, 136, 1) 100%
-//   );
-//   border-radius: 100px;
-//   height: 5vh;
-//   width: 100px;
-//   color: white;
-//   border: 0px;
-//   cursor: pointer;
-//   float: right;
-// `;
 
 const ButtonStyle = styled.div`
   .custom-btn {

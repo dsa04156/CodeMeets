@@ -65,7 +65,7 @@ const GroupQnACreate = () => {
       <hr style={{ width: '953px' }} />
       <ContentStyle>
         <textarea
-          placeholder="내용을 입력하세요"
+          placeholder="내용을 입력하세요. 최대 255자까지 가능"
           onChange={writeContentHandler}
           style={{ width: '953px', height: '450px', resize: 'none' }}
         ></textarea>

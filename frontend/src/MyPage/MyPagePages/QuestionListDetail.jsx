@@ -4,7 +4,7 @@ import MyPageQnAComments from '../MyPageComponents/MyPageQnAComments';
 import { Fragment } from 'react';
 import { APIroot } from '../../Store';
 import { user } from '../../Store';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -23,8 +23,6 @@ const MyPageQuestionListDetail = () => {
   const [likeUnLike, setLikeUnLike] = useState(false);
   const [myLikeState, setMyLikeState] = useState(false);
   const [newComment, setNewComment] = useState('');
-  const [commentLikeState, setCommentLikeState] = useState(false);
-  const [commentLikeUnLike, setCommentLikeUnLike] = useState(false);
 
   const params = useParams();
 
@@ -48,12 +46,8 @@ const MyPageQuestionListDetail = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log("--------질문 상세정보",response.data)
       setData(response.data);
       setMyLikeState(!!response.data.conferenceQuestionLiked);
-      // if (response.data.conferenceQuestionLiked) {
-      //   setLikeUnLike((prev) => !prev);
-      // }
     });
   }, [API, likeUnLike]);
 
@@ -67,13 +61,7 @@ const MyPageQuestionListDetail = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log("---------답변리스트",response.data);
-      console.log("comment state라고 저장해둔거", !!response.data.conferenceAnswerLiked)
       setComments(response.data);
-      // setCommentLikeState(!!response.data.conferenceAnswerLiked);
-      // if (response.data.conferenceAnswerLiked) {
-      //   setCommentLikeUnLike((prev) => !prev);
-      // }
     });
   }, [API, data]);
 
@@ -90,7 +78,7 @@ const MyPageQuestionListDetail = () => {
         conferenceQuestionPk: params.conferenceQuestionPk,
         userPk: loginUser.userPk,
       }),
-    }).then((response) => {
+    }).then(() => {
       window.location.reload();
     });
   };
@@ -108,9 +96,7 @@ const MyPageQuestionListDetail = () => {
         userPk: loginUser.userPk,
       }),
     }).then((response) => {
-      console.log("------좋아요 안좋아요", response.data);
       if (response.data === 'success') {
-        console.log(data);
         setLikeUnLike((prev) => !prev);
         if (likeUnLike) {
           setData((prev) => {
@@ -127,9 +113,7 @@ const MyPageQuestionListDetail = () => {
     });
   };
 
-  // 1159 ~ 답변 하나씩 달려있음
   const commentList = comments.map((commentitem, index) => {
-    // console.log(commentitem)
     return (
       <MyPageQnAComments
         key={index}
@@ -140,9 +124,7 @@ const MyPageQuestionListDetail = () => {
         username={commentitem.username}
         conferenceAnswerPk={commentitem.conferenceAnswerPk}
         userPk={commentitem.userPk}
-        //질문에 관한 정보
         detailData={data}
-        // commentLikeUnLike={commentLikeUnLike}
       />
     );
   });
@@ -164,8 +146,7 @@ const MyPageQuestionListDetail = () => {
           좋아요 : {data.conferenceQuestionLikeCnt}
         </div>
       </LikeBox>
-      {/* <hr style={{ width: '860px', color: 'black' }} /> */}
-      {/* <LikeStyle Like={data.conferenceQuestionLikeCnt} /> */}
+
       <div style={{ margin: '15px 0px 15px 10px', borderTop: '1px solid' }}>
         댓글
         <input
@@ -183,9 +164,11 @@ const MyPageQuestionListDetail = () => {
           <div style={{ margin: '50px 50px 50px 50px' }}>댓글이 없습니다.</div>
         )}
       </div>
-        <ButtonStyle>
-            <button className='custom-btn btn-4' onClick={backHandler}>Back</button>
-        </ButtonStyle>
+      <ButtonStyle>
+        <button className="custom-btn btn-4" onClick={backHandler}>
+          Back
+        </button>
+      </ButtonStyle>
     </>
   );
 };
@@ -200,22 +183,6 @@ const LikeBox = styled.div`
   font-size: 2vh;
   margin-right: 3vh;
 `;
-
-// const ButtonStyle = styled.button`
-//   background: rgb(3, 201, 136);
-//   background: linear-gradient(
-//     149deg,
-//     rgba(3, 201, 136, 1) 100%,
-//     rgba(3, 201, 136, 1) 100%
-//   );
-//   border-radius: 100px;
-//   height: 5vh;
-//   width: 100px;
-//   color: white;
-//   border: 0px;
-//   cursor: pointer;
-//   float: right;
-// `;
 
 const SubmitStyle = styled.span`
   margin: 0px 0px 0px 20px;

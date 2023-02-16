@@ -56,17 +56,12 @@ const GroupMeetingList = () => {
       {
         Header: '미팅명',
         accessor: 'conferenceTitle',
-        width: 400,
+        width: 490,
       },
       {
-        Header: '참여자 수',
-        accessor: 'joinUserCnt',
-        width: 100,
-      },
-      {
-        Header: '등록일자',
+        Header: '생성 일자',
         accessor: 'callStartTime',
-        width: 200,
+        width: 330,
       },
     ],
     []

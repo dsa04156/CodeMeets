@@ -85,9 +85,9 @@ const GroupNotice = () => {
         width: 100,
       },
       {
-        Header: '등록일자',
+        Header: '등록 일자',
         accessor: 'groupNoticeDate',
-        width: 200,
+        width: 330,
       },
     ],
     []

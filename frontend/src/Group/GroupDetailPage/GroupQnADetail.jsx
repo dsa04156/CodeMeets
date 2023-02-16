@@ -191,7 +191,7 @@ const GroupQnADetail = () => {
 
       <ButtonStyle>
         <button className="custom-btn btn-4" onClick={ToListHandler}>
-          Cancel
+          Back
         </button>
       </ButtonStyle>
       {data.userPk === loginUser.userPk ? (

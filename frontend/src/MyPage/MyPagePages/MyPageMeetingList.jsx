@@ -1,5 +1,5 @@
 import { APIroot } from '../../Store';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CreateTable from '../../CommonComponents/CreateTable';
@@ -16,12 +16,15 @@ const MyPageMeetingList = () => {
   const navigate = useNavigate();
 
   const TableNavHandler = (row) => {
-    console.log("row데이터-------------------------------------",row)
-    navigate(`/group/${row.original.groupPk}/record/${row.original.conferencePk}`,
-    {state:{
-      title: row.original.conferenceTitle,
-      content: row.original.conferenceContents
-    }});
+    navigate(
+      `/group/${row.original.groupPk}/record/${row.original.conferencePk}`,
+      {
+        state: {
+          title: row.original.conferenceTitle,
+          content: row.original.conferenceContents,
+        },
+      }
+    );
   };
 
   const data = React.useMemo(() => meetingRecord, [meetingRecord]);
@@ -37,30 +40,24 @@ const MyPageMeetingList = () => {
   );
 
   useEffect(() => {
-    console.log('실행');
     axios({
       method: 'GET',
-      url: `${API}/user/my-conference-record?nowPage=${page}&items=7`, // nowPage와 items 변수로 넣어야됨. nowpage는 사용자가 2페이지를 놓으면 바껴야댐
+      url: `${API}/user/my-conference-record?nowPage=${page}&items=7`,
       headers: {
         'Content-Type': 'application/json',
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
-      console.log(response.data);
       setTotalPosts(response.data.conference_record[0].total);
       response.data.conference_record.map((list, index) => {
-        //index + (page - 1) * items + 1
-        // 변수가 아닌 것들은 상수(고정값)
         list.newIndex = index + (page - 1) * 7 + 1;
-      })
+      });
       setMeetingRecord(response.data.conference_record);
     });
-    //   .catch((err) => console.log(err));
   }, [API, page]);
 
   return (
     <div>
-      {/* <Scrollsize> */}
       <ContentBox>
         <Styles>
           <CreateTable
@@ -68,10 +65,14 @@ const MyPageMeetingList = () => {
             data={data}
             TableNavHandler={TableNavHandler}
           />
-          <Pagination totalPosts={`${totalPosts}`} limit="7" page={page} setPage={setPage}></Pagination>
+          <Pagination
+            totalPosts={`${totalPosts}`}
+            limit="7"
+            page={page}
+            setPage={setPage}
+          ></Pagination>
         </Styles>
-        </ContentBox>
-      {/* </Scrollsize> */}
+      </ContentBox>
     </div>
   );
 };
@@ -101,25 +102,6 @@ const Styles = styled.div`
         border-right: 0;
       }
     }
-  }
-`;
-// const Scrollsize = styled.div`
-//   height: 46vh;
-//   overflow-y: scroll;
-// `;
-const NavBarStyle = styled(NavLink)`
-  color: black;
-  font-size: 20px;
-  outline: invert;
-  &:link {
-    transition: 0.5s;
-    text-decoration: none;
-  }
-  &:hover {
-    color: #10f14c;
-  }
-  &.active {
-    color: #29a846;
   }
 `;
 

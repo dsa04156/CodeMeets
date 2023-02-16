@@ -20,7 +20,7 @@ const SideBarLogoutButton = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     })
-      .then((response) => {
+      .then(() => {
         localStorage.removeItem('ACCESS_TOKEN');
         localStorage.removeItem('REFRESH_TOKEN');
       })

@@ -1,20 +1,33 @@
-import { NavLink } from "react-router-dom";
-import styled from "styled-components"
-import { useRecoilState } from "recoil";
-import { pageNumber } from "../../Store";
+import { NavLink } from 'react-router-dom';
+import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { pageNumber } from '../../Store';
 
 const MyPageNavBar = (props) => {
   const [pageNum, setPageNum] = useRecoilState(pageNumber);
-  console.log(props);
 
   return (
-    <div style={{borderBottom:'1px solid Black'}}>
+    <div style={{ borderBottom: '1px solid Black' }}>
       <NavStyle>
         <div>
-        <MyPageNavBarStyle to={`/my-page/${props.userId}/meeting-list`} onClick={()=>{setPageNum(1)}}>Meeting-List</MyPageNavBarStyle>
+          <MyPageNavBarStyle
+            to={`/my-page/${props.userId}/meeting-list`}
+            onClick={() => {
+              setPageNum(1);
+            }}
+          >
+            Meeting-List
+          </MyPageNavBarStyle>
         </div>
         <div>
-        <MyPageNavBarStyle to={`/my-page/${props.userId}/question-list`} onClick={()=>{setPageNum(1)}}>Question-List</MyPageNavBarStyle>
+          <MyPageNavBarStyle
+            to={`/my-page/${props.userId}/question-list`}
+            onClick={() => {
+              setPageNum(1);
+            }}
+          >
+            Question-List
+          </MyPageNavBarStyle>
         </div>
       </NavStyle>
     </div>
@@ -24,12 +37,12 @@ const MyPageNavBar = (props) => {
 export default MyPageNavBar;
 
 const NavStyle = styled.nav`
-display: flex;
-flex-direction: row;
-justify-content: space-around;
-align-items: center;
-padding:4px;
-margin-bottom:6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 4px;
+  margin-bottom: 6px;
 `;
 
 const MyPageNavBarStyle = styled(NavLink)`
@@ -37,7 +50,7 @@ const MyPageNavBarStyle = styled(NavLink)`
   font-size: 20px;
   outline: invert;
   &:link {
-    transition : 0.5s;
+    transition: 0.5s;
     text-decoration: none;
   }
   &:hover {
