@@ -19,6 +19,7 @@ const MyPageQnAComments = ({
   userPk,
   detailData,
   commentLikeUnLike,
+  getAnswer,
 }) => {
   // console.log(conferenceAnswerLiked)
   const API = useRecoilValue(APIroot);
@@ -92,7 +93,7 @@ const MyPageQnAComments = ({
     }).then((response) => {
       console.log(response.data);
       modifyButtonStateHandler();
-      window.location.reload();
+      getAnswer()
     });
   };
 
@@ -102,7 +103,7 @@ const MyPageQnAComments = ({
       method: "DELETE",
       url: `${API}/conferenceAnswer?conferenceAnswerPk=${conferenceAnswerPk}`,
     }).then((response) => {
-      window.location.reload();
+      getAnswer()
     });
   };
 

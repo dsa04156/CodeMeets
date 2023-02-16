@@ -63,7 +63,6 @@ const CreateGroupModal = ({onClose, CreateURL}) => {
           console.log(response.data);
           alert("그룹이 생성되었습니다.");
           onClose?.();
-          window.location.reload();
         })
     }
 

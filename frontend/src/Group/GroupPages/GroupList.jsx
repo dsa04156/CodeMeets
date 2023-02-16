@@ -100,7 +100,7 @@ const GroupList = () => {
     console.log("실행");
     axios({
       method: "GET",
-      url: `${API}/group/list?nowPage=${page}&items=10&order=444`,
+      url: `${API}/group/list?nowPage=${page}&items=10&order=group_pk`,
       headers: {
         "Content-Type": "application/json",
         AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
@@ -111,7 +111,7 @@ const GroupList = () => {
       setGroupList(response.data.groupList);
       setRecoilPageNum(1);
     });
-  }, [API, page]);
+  }, [API, page,createModalIsOpen,joinModalIsOpen]);
 
   // console.log(createGroupUrl);
   return (

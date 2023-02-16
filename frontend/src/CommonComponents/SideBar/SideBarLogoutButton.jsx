@@ -7,11 +7,10 @@ import axios from "axios";
 import { APIroot, user, groupNavTitle } from "../../Store";
 import { useRecoilValue, useRecoilState } from "recoil";
 
-
 const SideBarLogoutButton = () => {
-  const API = useRecoilValue(APIroot)
-  const [recoilUser, setRecoilUser] = useRecoilState(user)
-  const [recoilNavTitle, setRecoilNavTitle] = useRecoilState(groupNavTitle)
+  const API = useRecoilValue(APIroot);
+  const [recoilUser, setRecoilUser] = useRecoilState(user);
+  const [recoilNavTitle, setRecoilNavTitle] = useRecoilState(groupNavTitle);
 
   const SideBarLogoutHandler = () => {
     axios({
@@ -29,9 +28,8 @@ const SideBarLogoutButton = () => {
       })
       .catch((err) => console.log(err));
 
-      setRecoilUser({})
-      setRecoilNavTitle("Notice")
-
+    setRecoilUser({});
+    setRecoilNavTitle("Notice");
   };
 
   return (

@@ -49,7 +49,6 @@ const GroupInModal = ({ onClose }) => {
       console.log(response.data);
       alert("가입완료");
       onClose?.();
-      useLocation.reload();
     })
     .catch((err) => console.log(err));
   };

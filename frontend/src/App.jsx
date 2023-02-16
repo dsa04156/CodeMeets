@@ -63,6 +63,7 @@ function App() {
     Navigate("/home");
   };
 
+
   return (
     <RecoilRoot>
       {router.pathname !== "/openvidu" ? (

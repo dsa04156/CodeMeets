@@ -14,12 +14,14 @@ import axios from 'axios';
 
 import { AiFillHeart } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { useRef } from 'react';
 
 const GroupQnADetail = () => {
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
   const params = useParams();
   const navigate = useNavigate();
+  const commentRef = useRef()
 
   const [data, setData] = useState([]);    // 그룹 게시글 디테일 정보 저장
   const [comments, setComments] = useState([]);
@@ -81,6 +83,7 @@ const GroupQnADetail = () => {
       // if (response.data.groupQuestionLiked) {
       //   setLikeUnLike((prev) => !prev);
       // }
+      getCommentList()
     });
   }, [API, likeUnLike]);
 // 받아오는 정보
@@ -138,7 +141,7 @@ const GroupQnADetail = () => {
   
 
   // 상세 페이지에서 댓글리스트 뽑아오기
-  useEffect(() => {
+  const getCommentList = () => {
     axios({
       method: 'GET',
       url: `${API}/answer/list/${params.qna_pk}?userPk=${loginUser.userPk}&nowPage=1&items=100`,
@@ -155,7 +158,7 @@ const GroupQnADetail = () => {
       //   console.log(commnetLikeUnLike)
       // }
     });
-  }, [API]); //data 지우고 commnetLikeUnLike 넣음
+  }; //data 지우고 commnetLikeUnLike 넣음
 
   // 댓글 작성
   const submitComment = () => {
@@ -172,7 +175,9 @@ const GroupQnADetail = () => {
       }),
     }).then((response) => {
       console.log(response.data);
-      window.location.reload();
+      commentRef.current.value=""
+      setNewComment("")
+      getCommentList()
     });
   };
 
@@ -189,6 +194,7 @@ const GroupQnADetail = () => {
         groupQnaAnswerPk={commentitem.groupQnaAnswerPk}
         userPk = {commentitem.userPk}
         detailData = {data}
+        commentRe = {()=>{getCommentList()}}
         // commnetLikeUnLike = {commnetLikeUnLike}
       />
     );
@@ -222,6 +228,7 @@ const GroupQnADetail = () => {
         댓글
       <input
         type="text"
+        ref={commentRef}
         onKeyPress={enterClickHandler}
         onChange={createComment}
         style={{ width: '850px', height: '3vh', margin: '10px 0px 0px 5px' }}
