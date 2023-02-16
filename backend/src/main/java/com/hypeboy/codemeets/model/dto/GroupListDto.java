@@ -18,5 +18,4 @@ public class GroupListDto {
 	private int managerId;
 	private int total;
 	private String groupUrl;
-	private String managerName;
 }
