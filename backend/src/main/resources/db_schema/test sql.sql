@@ -172,3 +172,50 @@ GROUP BY Q.conference_question_pk, Q.conference_question_contents, Q.conference_
 Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk
 ORDER BY Q.conference_question_date DESC
 LIMIT 0, 10;
+
+-- ========== 좋아요 연관 테이블 외래키 delete on cascade 추가 ==========
+
+-- ALTER TABLE 테이블명 
+-- DROP FOREIGN KEY 포린키이름;
+
+ALTER TABLE `conference_question_user` 
+DROP FOREIGN KEY `conference_question_user_ibfk_1`;
+
+-- ALTER TABLE 테이블명 
+-- ADD CONSTRAINT 포린키이름 
+-- FOREIGN KEY 자식속성 
+-- REFERENCES 부모테이블명(자식속성이 참고할 부모속성) 
+-- ON DELETE CASCADE;
+
+ALTER TABLE `conference_question_user` 
+ADD CONSTRAINT `conference_question_user_ibfk_1` 
+FOREIGN KEY (conference_question_pk) 
+REFERENCES conference_question(conference_question_pk) 
+ON DELETE CASCADE;
+
+ALTER TABLE `conference_answer_user` 
+DROP FOREIGN KEY `conference_answer_user_ibfk_1`;
+
+ALTER TABLE `conference_answer_user` 
+ADD CONSTRAINT `conference_answer_user_ibfk_1` 
+FOREIGN KEY (conference_answer_pk) 
+REFERENCES conference_answer(conference_answer_pk) 
+ON DELETE CASCADE;
+
+ALTER TABLE `group_question_user` 
+DROP FOREIGN KEY `group_question_user_ibfk_1`;
+
+ALTER TABLE `group_question_user` 
+ADD CONSTRAINT `group_question_user_ibfk_1` 
+FOREIGN KEY (group_question_pk) 
+REFERENCES group_question(group_question_pk) 
+ON DELETE CASCADE;
+
+ALTER TABLE `group_answer_user` 
+DROP FOREIGN KEY `group_answer_user_ibfk_1`;
+
+ALTER TABLE `group_answer_user` 
+ADD CONSTRAINT `group_answer_user_ibfk_1` 
+FOREIGN KEY (group_answer_pk) 
+REFERENCES group_answer(group_answer_pk) 
+ON DELETE CASCADE;

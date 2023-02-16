@@ -1,28 +1,27 @@
-import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import imageCompression from "browser-image-compression"; // npm install browser-image-compression --save
-import styled from "styled-components";
+import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import imageCompression from 'browser-image-compression'; // npm install browser-image-compression --save
+import styled from 'styled-components';
 
-import { APIroot } from "../../Store"
-import { useRecoilValue } from "recoil";
+import { APIroot } from '../../Store';
+import { useRecoilValue } from 'recoil';
 
-import axios from "axios";
-import FormData from "form-data";
+import axios from 'axios';
+import FormData from 'form-data';
 
 const SignUpPage = () => {
   const imageinput = useRef();
-  const API = useRecoilValue(APIroot)
+  const API = useRecoilValue(APIroot);
 
   // 초기값 세팅 - 이름, 아이디, 비밀번호 등
-  const [inputName, setInputName] = useState("");
-  const [inputId, setInputId] = useState("");
-  const [inputPw, setInputPw] = useState("");
-  const [inputSecondPw, setInputSecondPw] = useState("");
-  const [inputEmail, setInputEmail] = useState("");
-  const [inputPhoneNum, setInputPhoneNum] = useState("");
-  const [inputImage, setInputImage] = useState("");
-  const [previewImage, setPreviewImage] = useState("");
-  const [inputNickName, setInputNickName] = useState("Unregistered");
+  const [inputName, setInputName] = useState('');
+  const [inputId, setInputId] = useState('');
+  const [inputPw, setInputPw] = useState('');
+  const [inputEmail, setInputEmail] = useState('');
+  const [inputPhoneNum, setInputPhoneNum] = useState('');
+  const [inputImage, setInputImage] = useState('');
+  const [previewImage, setPreviewImage] = useState('');
+  const [inputNickName, setInputNickName] = useState('Unregistered');
 
   // 초기값 세팅 -  비공개
   const [privateEmail, setPrivateEmail] = useState(true);
@@ -30,12 +29,12 @@ const SignUpPage = () => {
   const [checkInformation, setCheckInformation] = useState(false);
 
   // 오류메세지 상태 저장
-  const [idMessage, setIdMessage] = useState("");
-  const [nameMessage, setNameMessage] = useState("");
-  const [passwordMessage, setPasswordMessage] = useState("");
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
-  const [emailMessage, setEmailMessage] = useState("");
-  const [phoneMessage, setPhoneMessage] = useState("");
+  const [idMessage, setIdMessage] = useState('');
+  const [nameMessage, setNameMessage] = useState('');
+  const [passwordMessage, setPasswordMessage] = useState('');
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState('');
+  const [emailMessage, setEmailMessage] = useState('');
+  const [phoneMessage, setPhoneMessage] = useState('');
 
   // 유효성 검사
   const [isId, setIsId] = useState(false);
@@ -62,10 +61,10 @@ const SignUpPage = () => {
     const idRegExp = /^[a-zA-z0-9]{4,12}$/;
 
     if (!idRegExp.test(currentId)) {
-      setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
+      setIdMessage('4-12사이 대소문자 또는 숫자만 입력해 주세요!');
       setIsId(false);
     } else {
-      setIdMessage("사용가능한 아이디 입니다.");
+      setIdMessage('사용가능한 아이디 입니다.');
       setIsId(true);
     }
   };
@@ -77,11 +76,11 @@ const SignUpPage = () => {
       /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
     if (!passwordRegExp.test(currentPassword)) {
       setPasswordMessage(
-        "숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!"
+        '숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요!'
       );
       setIsPassword(false);
     } else {
-      setPasswordMessage("안전한 비밀번호 입니다.");
+      setPasswordMessage('안전한 비밀번호 입니다.');
       setIsPassword(true);
     }
   };
@@ -90,10 +89,10 @@ const SignUpPage = () => {
     const currentPasswordConfirm = e.target.value;
     // setInputSecondPw(currentPasswordConfirm);
     if (inputPw !== currentPasswordConfirm) {
-      setPasswordConfirmMessage("떼잉~ 비밀번호가 똑같지 않아요!");
+      setPasswordConfirmMessage('비밀번호가 일치하지 않습니다.');
       setIsPasswordConfirm(false);
     } else {
-      setPasswordConfirmMessage("똑같은 비밀번호를 입력했습니다.");
+      setPasswordConfirmMessage('똑같은 비밀번호를 입력했습니다.');
       setIsPasswordConfirm(true);
     }
   };
@@ -105,10 +104,10 @@ const SignUpPage = () => {
       /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
 
     if (!emailRegExp.test(currentEmail)) {
-      setEmailMessage("이메일의 형식이 올바르지 않습니다!");
+      setEmailMessage('이메일의 형식이 올바르지 않습니다!');
       setIsEmail(false);
     } else {
-      setEmailMessage("사용 가능한 이메일 입니다.");
+      setEmailMessage('사용 가능한 이메일 입니다.');
       setIsEmail(true);
     }
   };
@@ -119,10 +118,10 @@ const SignUpPage = () => {
     const phoneRegExp = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
 
     if (!phoneRegExp.test(currentPhone)) {
-      setPhoneMessage("올바른 형식이 아닙니다!");
+      setPhoneMessage('올바른 형식이 아닙니다!');
       setIsPhone(false);
     } else {
-      setPhoneMessage("사용 가능한 번호입니다:-)");
+      setPhoneMessage('사용 가능한 번호입니다:-)');
       setIsPhone(true);
     }
   };
@@ -153,30 +152,24 @@ const SignUpPage = () => {
       //이미지 미리보기 관련
       encodeFile(newFile);
       setInputImage(newFile);
-      console.log(newFile);
-      console.log("여기가 넘어온거");
       const formData = new FormData();
-      formData.append("files", newFile);
+      formData.append('files', newFile);
       //이미지 보내고 이미지에 관한 고유 이름 받아오기
-      for (const keyValue of formData) console.log(keyValue);
       axios({
-        method: "POST",
+        method: 'POST',
         url: `${API}/file/images`,
         data: formData,
       })
         .then((response) => {
-          console.log(response.data);
           setInputImage(response.data);
         })
         .catch((err) => console.log(err));
     });
   };
 
-  // console.log("db에[ 수정된 파일명:" + DBfilename);
-
   const deleteFileImage = () => {
     setPreviewImage(null);
-    setInputImage("");
+    setInputImage('');
     imageinput.current.value = null;
   };
 
@@ -185,10 +178,10 @@ const SignUpPage = () => {
     setInputNickName(currentName);
 
     if (currentName.length < 3 || currentName.length > 9) {
-      setNameMessage("닉네임은 3글자 이상 9글자 이하로 입력해주세요!");
+      setNameMessage('닉네임은 3글자 이상 9글자 이하로 입력해주세요!');
       setIsName(false);
     } else {
-      setNameMessage("사용가능한 닉네임 입니다.");
+      setNameMessage('사용가능한 닉네임 입니다.');
       setIsName(true);
     }
   };
@@ -207,33 +200,9 @@ const SignUpPage = () => {
 
   const JoinSuccessHandler = (e) => {
     e.preventDefault();
-    console.log(
-      isId,
-      isname,
-      inputNickName,
-      isPassword,
-      isPasswordConfirm,
-      isEmail,
-      isPhone,
-      overlapId,
-      overlapPhone,
-      overlapEmail,
-      checkInformation
-    );
-    console.log(JSON.stringify({
-      email: inputEmail,
-      emailPublic: +privateEmail, // 최종 privateEmail이 + true 면 1 ,  + false 면 0 결과로 보내줌
-      nickname: inputNickName,
-      password: inputPw,
-      profilePhoto: `${inputImage}`,
-      tel: inputPhoneNum,
-      telPublic: +privatePhoneNum,
-      userId: inputId,
-      userName: inputName,
-    }),)
     if (
       isId &&
-      (inputNickName === "Unregistered" || inputNickName === "" || isname) &&
+      (inputNickName === 'Unregistered' || inputNickName === '' || isname) &&
       isPassword &&
       isPasswordConfirm &&
       isEmail &&
@@ -244,10 +213,10 @@ const SignUpPage = () => {
       checkInformation
     ) {
       axios({
-        method: "POST",
+        method: 'POST',
         url: `${API}/user/regist`,
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         data: JSON.stringify({
           email: inputEmail,
@@ -261,64 +230,56 @@ const SignUpPage = () => {
           userName: inputName,
         }),
       })
-        .then((response) => {
-          console.log(response);
-          navigate("/");
+        .then(() => {
+          navigate('/');
         })
         .catch((error) => {
           alert(error);
         });
     } else {
-      alert("입력을 확인해주시기 바랍니다.");
+      alert('입력을 확인해주시기 바랍니다.');
     }
   };
 
-  // 현재 등록되어 있는 아이디 admin01
   const IdOverlapConfirm = () => {
     fetch(`${API}/user/overlap?userId=${inputId}`)
       .then((response) => response.json())
       .then((response) => {
-        if (JSON.stringify(response) === "1") {
-          alert("이미 존재하는 아이디 입니다.");
+        if (JSON.stringify(response) === '1') {
+          alert('이미 존재하는 아이디 입니다.');
           setOverlapId(false);
         } else {
-          alert("사용 가능한 ID입니다.");
+          alert('사용 가능한 ID입니다.');
           setOverlapId(true);
         }
       })
       .catch((err) => console.log(err));
   };
 
-  // 사용중인 이메일 : ssafy@naver.com
   const EmailOverlapConfirm = () => {
-    fetch(
-      `${API}/user/emailOverlap?email=${inputEmail}`
-    )
+    fetch(`${API}/user/emailOverlap?email=${inputEmail}`)
       .then((response) => response.json())
       .then((response) => {
-        if (JSON.stringify(response) === "1") {
-          alert("이미 사용되고 있는 이메일 입니다.");
+        if (JSON.stringify(response) === '1') {
+          alert('이미 사용되고 있는 이메일 입니다.');
           setOverlapEmail(false);
         } else {
-          alert("사용 가능한 이메일 입니다.");
+          alert('사용 가능한 이메일 입니다.');
           setOverlapEmail(true);
         }
       })
       .catch((err) => console.log(err));
   };
 
-  // 사용중인 번호 : f
   const PhoneNumOverlapConfirm = () => {
-    fetch(
-      `${API}/user/telOverlap?tel=${inputPhoneNum}`
-    )
+    fetch(`${API}/user/telOverlap?tel=${inputPhoneNum}`)
       .then((response) => response.json())
       .then((response) => {
-        if (JSON.stringify(response) === "1") {
-          alert("이미 등록된 번호 입니다.");
+        if (JSON.stringify(response) === '1') {
+          alert('이미 등록된 번호 입니다.');
           setOverlapPhone(false);
         } else {
-          alert("사용가능한 번호 입니다.");
+          alert('사용가능한 번호 입니다.');
           setOverlapPhone(true);
         }
       })
@@ -326,14 +287,14 @@ const SignUpPage = () => {
   };
 
   const JoinCancelHandler = () => {
-    navigate("/");
+    navigate('/');
   };
 
   return (
     <div>
       <h1>Sign Up</h1>
       <FormStyle>
-        <h4 style={{ marginTop: "0px" }}>필수 사항</h4>
+        <h4 style={{ marginTop: '0px' }}>필수 사항</h4>
         <label htmlFor="">Name</label>
         <span>
           <InputStyle
@@ -359,7 +320,7 @@ const SignUpPage = () => {
         <label htmlFor="">Password</label>
         <div>
           <InputStyle
-            type="text"
+            type="password"
             placeholder="Password"
             onChange={inputPwHandler}
           />
@@ -368,7 +329,7 @@ const SignUpPage = () => {
         <label htmlFor="">Password Check</label>
         <div>
           <InputStyle
-            type="text"
+            type="password"
             placeholder="Password"
             onChange={inputSecondPwHandler}
           />
@@ -421,7 +382,7 @@ const SignUpPage = () => {
             accept="image/*"
             onChange={(event) => inputImageHandler(event)}
             ref={imageinput}
-            style={{ height: "25px" }}
+            style={{ height: '25px' }}
           />
           <button type="button" onClick={() => deleteFileImage()}>
             삭제
@@ -443,7 +404,11 @@ const SignUpPage = () => {
           </LastCheckBox>
         </div>
         <div>
-          <button type="button" onClick={JoinSuccessHandler} style={{marginRight:"5px"}}>
+          <button
+            type="button"
+            onClick={JoinSuccessHandler}
+            style={{ marginRight: '5px' }}
+          >
             가입
           </button>
           <button type="button" onClick={JoinCancelHandler}>

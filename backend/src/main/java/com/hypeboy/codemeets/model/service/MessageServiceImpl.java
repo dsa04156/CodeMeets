@@ -42,8 +42,8 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public String getOtherProfile(MessageDto mto) throws Exception {
-		return dao.getOtherProfile(mto);
+	public String getOtherProfile(int otherPk) throws Exception {
+		return dao.getOtherProfile(otherPk);
 	}
 
 	@Override
