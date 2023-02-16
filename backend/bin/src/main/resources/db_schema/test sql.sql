@@ -45,6 +45,30 @@ DROP `conference_answer_like`;
 ALTER TABLE `s08p11d109`.`conference_answer`
 CHANGE `conference_answer_pk` `conference_answer_pk` INT NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `s08p11d109`.`user_info`
+CHANGE `user_name` `user_name` VARCHAR(30);
+
+ALTER TABLE `s08p11d109`.`user_info`
+CHANGE `nickname` `nickname` VARCHAR(30);
+
+ALTER TABLE `s08p11d109`.`user`
+CHANGE `user_id` `user_id` VARCHAR(25);
+
+ALTER TABLE `s08p11d109`.`user` 
+ADD `provider` VARCHAR(20) NOT NULL DEFAULT 'codemeets';
+
+ALTER TABLE `s08p11d109`.`user`
+CHANGE `provider` `provider` VARCHAR(15) NOT NULL DEFAULT 'codemeets';
+
+ALTER TABLE `s08p11d109`.`user`
+CHANGE `user_id` `user_id` VARCHAR(25);
+
+ALTER TABLE `s08p11d109`.`user` 
+ADD `provider_id` VARCHAR(50) NULL;
+
+ALTER TABLE `s08p11d109`.`user`
+ADD `role` VARCHAR(10) NOT NULL DEFAULT 'USER';
+
 START TRANSACTION;
 	INSERT INTO `s08p11d109`.`user`(user_id, `password`, token, user_active) 
 	VALUES('test03', '1234', 'token', 1);
@@ -131,13 +155,20 @@ WHERE con.conference_pk in (
 ORDER BY call_start_time DESC
 LIMIT 0, 100;
 
+
+-- 본인 질문 기록 조회
+-- 답글 수 추가
+
 SELECT Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
-Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, 
+Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk, count(A.conference_answer_pk) answer_cnt,
 	(SELECT count(*) 
     FROM conference_question_user L 
     WHERE Q.conference_question_pk = L.conference_question_pk) conference_question_like_cnt,
 count(*) OVER() AS total
-FROM `conference_question` Q
-WHERE user_pk = 3
-ORDER BY conference_question_date DESC
-LIMIT 0, 100;
+FROM `conference_question` Q LEFT JOIN `conference_answer` A
+on Q.conference_question_pk = A.conference_question_pk
+WHERE Q.user_pk = 3
+GROUP BY Q.conference_question_pk, Q.conference_question_contents, Q.conference_question_date,
+Q.conference_question_update, Q.conference_pk, Q.group_pk, Q.user_pk
+ORDER BY Q.conference_question_date DESC
+LIMIT 0, 10;
