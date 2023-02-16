@@ -109,8 +109,8 @@
 		 -->
 	<select id="getList" resultMap="glDto">
 	<![CDATA[
-		SELECT
-			a.group_pk group_pk, a.group_name group_name, 
+      SELECT
+			a.group_pk group_pk, a.group_name group_name, (select user_name from user_info where user_pk= a.manager_id) as manager_name,
 			a.manager_id manager_id, a.group_url,
 			b.nickname nickname 
 		FROM 
