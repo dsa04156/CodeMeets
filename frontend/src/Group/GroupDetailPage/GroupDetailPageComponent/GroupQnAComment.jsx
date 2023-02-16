@@ -16,7 +16,8 @@ const GroupQnAComment = ({
   username,
   groupQnaAnswerPk,
   userPk,
-  detailData,
+  detailData, // groupQuestion 정보
+  commentRe
 }) => {
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
@@ -86,7 +87,7 @@ const GroupQnAComment = ({
       }),
     }).then(() => {
       modifyButtonStateHandler();
-      window.location.reload();
+      commentRe()
     });
   };
 
@@ -95,8 +96,8 @@ const GroupQnAComment = ({
     axios({
       method: 'DELETE',
       url: `${API}/answer/${groupQnaAnswerPk}`,
-    }).then(() => {
-      window.location.reload();
+    }).then((response) => {
+      commentRe()
     });
   };
 

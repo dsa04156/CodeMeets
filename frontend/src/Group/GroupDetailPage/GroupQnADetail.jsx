@@ -13,12 +13,14 @@ import axios from 'axios';
 
 import { AiFillHeart } from 'react-icons/ai';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { useRef } from 'react';
 
 const GroupQnADetail = () => {
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
   const params = useParams();
   const navigate = useNavigate();
+  const commentRef = useRef()
 
   const [data, setData] = useState([]);
   const [comments, setComments] = useState([]);
@@ -72,6 +74,7 @@ const GroupQnADetail = () => {
     }).then((response) => {
       setData(response.data);
       setMyLikeState(!!response.data.groupQuestionLiked);
+      getCommentList()
     });
   }, [API, likeUnLike]);
 
@@ -106,7 +109,7 @@ const GroupQnADetail = () => {
   };
 
   // 상세 페이지에서 댓글리스트 뽑아오기
-  useEffect(() => {
+  const getCommentList = () => {
     axios({
       method: 'GET',
       url: `${API}/answer/list/${params.qna_pk}?userPk=${loginUser.userPk}&nowPage=1&items=100`,
@@ -116,7 +119,7 @@ const GroupQnADetail = () => {
     }).then((response) => {
       setComments(response.data);
     });
-  }, [API]);
+  }; //data 지우고 commnetLikeUnLike 넣음
 
   // 댓글 작성
   const submitComment = () => {
@@ -131,8 +134,11 @@ const GroupQnADetail = () => {
         groupQuestionPk: params.qna_pk,
         userPk: loginUser.userPk,
       }),
-    }).then(() => {
-      window.location.reload();
+    }).then((response) => {
+      console.log(response.data);
+      commentRef.current.value=""
+      setNewComment("")
+      getCommentList()
     });
   };
 
@@ -146,8 +152,10 @@ const GroupQnADetail = () => {
         groupQnaAnswerLiked={commentitem.groupQnaAnswerLiked}
         username={commentitem.username}
         groupQnaAnswerPk={commentitem.groupQnaAnswerPk}
-        userPk={commentitem.userPk}
-        detailData={data}
+        userPk = {commentitem.userPk}
+        detailData = {data}
+        commentRe = {()=>{getCommentList()}}
+        // commnetLikeUnLike = {commnetLikeUnLike}
       />
     );
   });
@@ -173,13 +181,14 @@ const GroupQnADetail = () => {
       </OverStyle>
       <div style={{ margin: '15px 0px 15px 10px', borderTop: '1px solid' }}>
         댓글
-        <input
-          type="text"
-          onKeyPress={enterClickHandler}
-          onChange={createComment}
-          style={{ width: '850px', height: '3vh', margin: '10px 0px 0px 5px' }}
-        />
-        <SubmitStyle onClick={submitComment}>Submit</SubmitStyle>
+      <input
+        type="text"
+        ref={commentRef}
+        onKeyPress={enterClickHandler}
+        onChange={createComment}
+        style={{ width: '850px', height: '3vh', margin: '10px 0px 0px 5px' }}
+      />
+      <SubmitStyle onClick={submitComment}>Submit</SubmitStyle>
       </div>
       <div>
         {comments.length > 0 ? (
