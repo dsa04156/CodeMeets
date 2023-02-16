@@ -47,11 +47,13 @@ const GroupList = () => {
       },
     })
       .then((response) => {
+        console.log(response.data)
         setCreateGroupUrl(response.data[1]);
       })
       .then(() => {
         setCreateIsOpen(true);
       });
+      console.log(createModalIsOpen)
   };
 
   const [groupList, setGroupList] = useState([]);
@@ -102,7 +104,7 @@ const GroupList = () => {
       setGroupList(response.data.groupList);
       setRecoilPageNum(1);
     });
-  }, [API, page]);
+  }, [API, page, createModalIsOpen, joinModalIsOpen]);
 
   return (
     <div>

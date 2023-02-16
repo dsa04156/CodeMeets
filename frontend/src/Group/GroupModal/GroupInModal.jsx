@@ -39,12 +39,12 @@ const GroupInModal = ({ onClose }) => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     })
-      .then(() => {
-        alert('가입완료');
-        onClose?.();
-        window.location.reload();
-      })
-      .catch((err) => console.log(err));
+    .then((response) => {
+      console.log(response.data);
+      alert("가입완료");
+      onClose?.();
+    })
+    .catch((err) => console.log(err));
   };
 
   return (

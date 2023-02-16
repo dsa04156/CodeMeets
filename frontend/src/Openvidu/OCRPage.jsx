@@ -1,16 +1,13 @@
-import { useState } from "react";
-
-import styled from "styled-components";
-import { FaRegCopy } from "react-icons/fa";
+import styled from 'styled-components';
+import { FaRegCopy } from 'react-icons/fa';
 
 const OCRPage = ({ ocrResult }) => {
-
   const CopyHandler = () => {
     try {
       navigator.clipboard.writeText(ocrResult);
-      alert("클립보드 복사완료");
+      alert('클립보드 복사완료');
     } catch (error) {
-      alert("복사 실패");
+      alert('복사 실패');
     }
   };
 
@@ -19,18 +16,32 @@ const OCRPage = ({ ocrResult }) => {
       <div>
         <div
           style={{
-            display: "flex",
-            justifyContent: "right",
-            padding: "3px",
+            display: 'flex',
+            justifyContent: 'right',
+            padding: '3px',
           }}
         >
-          <div style={{ fontSize: "5px", marginRight: "10px" }}>
+          <div style={{ fontSize: '5px', marginRight: '10px' }}>
             OCR Result - Copy
           </div>
-          <FaRegCopy style={{cursor:"pointer"}} onClick={()=>{CopyHandler()}}></FaRegCopy>
+          <FaRegCopy
+            style={{ cursor: 'pointer' }}
+            onClick={() => {
+              CopyHandler();
+            }}
+          ></FaRegCopy>
         </div>
         <OcrContainer>
-          <OcrBox style={{fontSize:"9px", paddingLeft:"10px", paddingRight:"10px", paddingBottom:"10px"}}>{ocrResult}</OcrBox>
+          <OcrBox
+            style={{
+              fontSize: '9px',
+              paddingLeft: '10px',
+              paddingRight: '10px',
+              paddingBottom: '10px',
+            }}
+          >
+            {ocrResult}
+          </OcrBox>
         </OcrContainer>
       </div>
     </OcrPageStyle>
@@ -57,5 +68,5 @@ const OcrPageStyle = styled.div`
   border: 2px solid grey;
   height: 15vh;
   margin-bottom: 1vh;
-  overflow:hidden;
+  overflow: hidden;
 `;

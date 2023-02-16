@@ -1,17 +1,17 @@
-import TitleStyle from '../../Group/GroupDetailPage/GroupDetailPageComponent/TitleStyle';
-import CommentContentStyle from '../../Group/GroupDetailPage/GroupDetailPageComponent/CommentContentStyle';
-import MyPageQnAComments from '../MyPageComponents/MyPageQnAComments';
-import { Fragment } from 'react';
-import { APIroot } from '../../Store';
-import { user } from '../../Store';
-import { useRecoilValue } from 'recoil';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import TitleStyle from "../../Group/GroupDetailPage/GroupDetailPageComponent/TitleStyle";
+import CommentContentStyle from "../../Group/GroupDetailPage/GroupDetailPageComponent/CommentContentStyle";
+import MyPageQnAComments from "../MyPageComponents/MyPageQnAComments";
+import { Fragment, useRef } from "react";
+import { APIroot } from "../../Store";
+import { user } from "../../Store";
+import { useRecoilState, useRecoilValue } from "recoil";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-import { AiFillHeart } from 'react-icons/ai';
-import { AiOutlineHeart } from 'react-icons/ai';
+import { AiFillHeart } from "react-icons/ai";
+import { AiOutlineHeart } from "react-icons/ai";
 
 const MyPageQuestionListDetail = () => {
   const API = useRecoilValue(APIroot);
@@ -22,16 +22,20 @@ const MyPageQuestionListDetail = () => {
   const [comments, setComments] = useState([]);
   const [likeUnLike, setLikeUnLike] = useState(false);
   const [myLikeState, setMyLikeState] = useState(false);
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
+
+
 
   const params = useParams();
+
+  const answerRef = useRef()
 
   const createComment = (event) => {
     setNewComment(event.target.value);
   };
 
   const enterClickHandler = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       submitComment();
     }
   };
@@ -39,57 +43,64 @@ const MyPageQuestionListDetail = () => {
   //내가 한 질문 상세정보 가져오기
   useEffect(() => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: `${API}/conferenceQna/detail?conferenceQuestionPk=${params.conferenceQuestionPk}`, //conferenceQuestionPk를 받아야됨           params.conference_Pk가 스웨거에서 그룹 pk 넣는 자리인데 이 페이지에서는 conference_Pk 값이 들어가 10@ 번째로 떠서 안나오는 것??
       headers: {
-        'Content-Type': 'application/json',
-        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
+        "Content-Type": "application/json",
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
+      console.log("--------질문 상세정보", response.data);
       setData(response.data);
       setMyLikeState(!!response.data.conferenceQuestionLiked);
+      getAnswer();
+      // if (response.data.conferenceQuestionLiked) {
+      //   setLikeUnLike((prev) => !prev);
+      // }
     });
   }, [API, likeUnLike]);
 
   // 답변 리스트 땡겨오기
-  useEffect(() => {
+  const getAnswer = () => {
     axios({
-      method: 'GET',
+      method: "GET",
       url: `${API}/conferenceAnswer?conferenceQuestionPk=${params.conferenceQuestionPk}`,
       headers: {
-        'Content-Type': 'application/json',
-        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
+        "Content-Type": "application/json",
+        AccessToken: `${localStorage.getItem("ACCESS_TOKEN")}`,
       },
     }).then((response) => {
       setComments(response.data);
     });
-  }, [API, data]);
+  };
 
   // 댓글 작성
   const submitComment = () => {
     axios({
-      method: 'POST',
+      method: "POST",
       url: `${API}/conferenceAnswer`,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: JSON.stringify({
         conferenceAnswerContents: newComment,
         conferenceQuestionPk: params.conferenceQuestionPk,
         userPk: loginUser.userPk,
       }),
-    }).then(() => {
-      window.location.reload();
+    }).then((response) => {
+      answerRef.current.value=""
+      setNewComment("")
+      getAnswer();
     });
   };
 
   //질문 좋아요
   const likeClickHandler = () => {
     axios({
-      method: 'PUT',
+      method: "PUT",
       url: `${API}/conferenceQna/like`,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: JSON.stringify({
         conferenceQuestionPk: data.conferenceQuestionPk,
@@ -114,6 +125,7 @@ const MyPageQuestionListDetail = () => {
   };
 
   const commentList = comments.map((commentitem, index) => {
+    console.log(commentitem.conferenceAnswerLiked, index)
     return (
       <MyPageQnAComments
         key={index}
@@ -125,6 +137,8 @@ const MyPageQuestionListDetail = () => {
         conferenceAnswerPk={commentitem.conferenceAnswerPk}
         userPk={commentitem.userPk}
         detailData={data}
+        // commentLikeUnLike={commentLikeUnLike}
+        getAnswer={()=>{getAnswer()}}
       />
     );
   });
@@ -139,9 +153,9 @@ const MyPageQuestionListDetail = () => {
       <LikeBox>
         <div onClick={likeClickHandler}>
           {myLikeState === true ? (
-            <AiFillHeart style={{ margin: '0px 5px 0px 0px' }} />
+            <AiFillHeart style={{ margin: "0px 5px 0px 0px" }} />
           ) : (
-            <AiOutlineHeart style={{ margin: '0px 5px 0px 0px' }} />
+            <AiOutlineHeart style={{ margin: "0px 5px 0px 0px" }} />
           )}
           좋아요 : {data.conferenceQuestionLikeCnt}
         </div>
@@ -151,9 +165,10 @@ const MyPageQuestionListDetail = () => {
         댓글
         <input
           type="text"
+          ref={answerRef}
           onKeyPress={enterClickHandler}
           onChange={createComment}
-          style={{ width: '850px', height: '3vh', margin: '10px 0px 0px 5px' }}
+          style={{ width: "850px", height: "3vh", margin: "10px 0px 0px 5px" }}
         />
         <SubmitStyle onClick={submitComment}>Submit</SubmitStyle>
       </div>
@@ -161,7 +176,7 @@ const MyPageQuestionListDetail = () => {
         {comments.length > 0 ? (
           <CommentContentStyle Content={commentList} />
         ) : (
-          <div style={{ margin: '50px 50px 50px 50px' }}>댓글이 없습니다.</div>
+          <div style={{ margin: "50px 50px 50px 50px" }}>댓글이 없습니다.</div>
         )}
       </div>
       <ButtonStyle>
@@ -203,7 +218,7 @@ const ButtonStyle = styled.div`
     border-radius: 5px;
     padding: 10px 25px;
     margin: 20px;
-    font-family: 'Lato', sans-serif;
+    font-family: "Lato", sans-serif;
     font-weight: 500;
     background: transparent;
     cursor: pointer;
@@ -235,7 +250,7 @@ const ButtonStyle = styled.div`
   .btn-4:before,
   .btn-4:after {
     position: absolute;
-    content: '';
+    content: "";
     right: 0;
     top: 0;
     box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),
@@ -261,7 +276,7 @@ const ButtonStyle = styled.div`
   .btn-4 span:before,
   .btn-4 span:after {
     position: absolute;
-    content: '';
+    content: "";
     left: 0;
     bottom: 0;
     box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, 0.9),

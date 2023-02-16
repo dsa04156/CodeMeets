@@ -24,6 +24,7 @@ const MyPageMeetingListDetail = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
+      console.log(response)
       setData(response.data);
     });
   }, [API]);

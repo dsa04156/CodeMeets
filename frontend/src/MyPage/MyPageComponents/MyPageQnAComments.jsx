@@ -18,6 +18,7 @@ const MyPageQnAComments = ({
   userPk,
   detailData,
   commentLikeUnLike,
+  getAnswer,
 }) => {
   const API = useRecoilValue(APIroot);
   const loginUser = useRecoilValue(user);
@@ -44,7 +45,7 @@ const MyPageQnAComments = ({
   };
 
   // 댓글 좋아요
-  const likeClickHander = () => {
+  const likeClickHandler = () => {
     axios({
       method: 'PUT',
       url: `${API}/conferenceAnswer/Like`,
@@ -56,6 +57,7 @@ const MyPageQnAComments = ({
         userPk: loginUser.userPk,
       }),
     }).then((response) => {
+      // getAnswer()
       if (response.data === 'success') {
         setLikeUnLike((prev) => !prev);
         if (likeUnLike) {
@@ -68,7 +70,8 @@ const MyPageQnAComments = ({
           });
         }
       }
-    });
+    }
+    );
   };
 
   // 댓글 수정
@@ -86,7 +89,7 @@ const MyPageQnAComments = ({
       }),
     }).then(() => {
       modifyButtonStateHandler();
-      window.location.reload();
+      getAnswer()
     });
   };
 
@@ -95,8 +98,8 @@ const MyPageQnAComments = ({
     axios({
       method: 'DELETE',
       url: `${API}/conferenceAnswer?conferenceAnswerPk=${conferenceAnswerPk}`,
-    }).then(() => {
-      window.location.reload();
+    }).then((response) => {
+      getAnswer()
     });
   };
 
@@ -110,7 +113,7 @@ const MyPageQnAComments = ({
           <div>
             <AiFillHeart
               style={{ margin: '0px 5px 0px 0px' }}
-              onClick={likeClickHander}
+              onClick={likeClickHandler}
               cursor="pointer"
             />
             좋아요 : {commentLikeCnt}
@@ -119,7 +122,7 @@ const MyPageQnAComments = ({
           <div>
             <AiOutlineHeart
               style={{ margin: '0px 5px 0px 0px' }}
-              onClick={likeClickHander}
+              onClick={likeClickHandler}
               cursor="pointer"
             />
             좋아요 : {commentLikeCnt}

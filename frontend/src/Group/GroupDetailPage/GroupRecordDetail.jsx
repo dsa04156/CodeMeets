@@ -18,6 +18,7 @@ const GroupRecordDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const groupRecord = location.state;
+  console.log(groupRecord);
   const [newComment, setNewComment] = useState('');
   const [RecordTitle, setRecordTitle] = useState(groupRecord.title);
   const [RecordContent, setRecordContent] = useState(groupRecord.content);
@@ -32,6 +33,7 @@ const GroupRecordDetail = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
+      console.log(response.data)
       setCommentsInConference(response.data);
     });
   }, [API]);

@@ -7,6 +7,7 @@ import Pagination from '../../CommonComponents/Pagination';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
+import { IoConstructOutline } from 'react-icons/io5';
 
 const MyPageMeetingList = () => {
   const [meetingRecord, setMeetingRecord] = useState([]);
@@ -16,7 +17,8 @@ const MyPageMeetingList = () => {
   const navigate = useNavigate();
 
   const TableNavHandler = (row) => {
-    navigate(
+    console.log(row.original)
+        navigate(
       `/group/${row.original.groupPk}/record/${row.original.conferencePk}`,
       {
         state: {
@@ -48,6 +50,7 @@ const MyPageMeetingList = () => {
         AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
       },
     }).then((response) => {
+      console.log(response.data)
       setTotalPosts(response.data.conference_record[0].total);
       response.data.conference_record.map((list, index) => {
         list.newIndex = index + (page - 1) * 7 + 1;

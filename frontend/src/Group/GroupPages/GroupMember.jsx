@@ -41,7 +41,10 @@ const GroupMember = () => {
           nickName={useritem.nickname}
           profilePhoto={
             useritem.profilePhoto !== ""
-              ? useritem.profilePhoto
+              ? (useritem.profilePhoto.includes('http')
+                ? useritem.profilePhoto
+                : `${API}/file/images/${useritem.profilePhoto}`
+              )
               : DefaultImage
           } // 일단 null -> ""
           tel={useritem.tel}
