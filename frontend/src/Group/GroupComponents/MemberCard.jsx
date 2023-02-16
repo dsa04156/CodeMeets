@@ -64,4 +64,5 @@ const PublickBox = styled.div`
 
 const ProfileImageStyle = styled.img`
   height: 10vh;
+  width: 10vh;
 `;
