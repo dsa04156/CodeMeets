@@ -24,6 +24,7 @@
 		<result column="nickname" property="nickname"/>
 		<result column="count" property="count"/>
 		<result column="callStartTime" property="callStartTime"/>
+		<result column="manager_name" property="managerName"/>
 		<result column="manager_id" property="managerId"/>
 		<result column="user_pk" property="userPk"/>
 		<result column="group_pk" property="groupPk"/>
@@ -84,8 +85,8 @@
 				user user, user_info user_info, `group-user` `group-user`
  			WHERE 
 	 			user.user_pk = user_info.user_pk
-				and `group-user`.user_pk=user_info.user_pk 
-				and `group-user`.group_pk=#{groupPk};
+				and `group-user`.user_pk = user_info.user_pk 
+				and `group-user`.group_pk = #{groupPk};
 		]]>
 	</select>
 	
