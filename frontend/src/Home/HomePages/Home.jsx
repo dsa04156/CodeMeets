@@ -1,12 +1,12 @@
-import MeetingInModal from "../HomeComponents/MeetingInModal";
-import MeetingPlusModal from "../HomeComponents/MeetingPlusModal";
-import HomeMeetingList from "../HomeComponents/HomeMeetingList";
+import MeetingInModal from '../HomeComponents/MeetingInModal';
+import MeetingPlusModal from '../HomeComponents/MeetingPlusModal';
+import HomeMeetingList from '../HomeComponents/HomeMeetingList';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
-import { useState } from "react";
-import { IoEnterOutline } from "react-icons/io5";
-import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useState } from 'react';
+import { IoEnterOutline } from 'react-icons/io5';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 const Home = () => {
   const [isOpen1, setIsOpen1] = useState(false);
@@ -24,7 +24,7 @@ const Home = () => {
         <IoEnterOutline
           onClick={onClickButton1}
           size="80"
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           color="rgb(142,195,176)"
         ></IoEnterOutline>
         {isOpen1 && (
@@ -39,7 +39,7 @@ const Home = () => {
         <AiOutlinePlusCircle
           onClick={onClickButton2}
           size="80"
-          style={{ cursor: "pointer" }}
+          style={{ cursor: 'pointer' }}
           color="rgb(142,195,176)"
         ></AiOutlinePlusCircle>
         {isOpen2 && (
@@ -52,7 +52,14 @@ const Home = () => {
         )}
       </PositionIcon>
       <HomeMeetDiv>
-        <HomeMeetingList />
+        <div style={{display: "flex", margin: "0px 100px 0px 100px"}}>
+          <div style={{margin: "0px 260px 0px 125px"}}>
+            <h1>참가</h1>
+          </div>
+          <div style={{margin: "0px 0px 0px 150px"}}>
+            <h1>생성</h1>
+          </div>
+        </div>
       </HomeMeetDiv>
     </div>
   );
@@ -70,7 +77,6 @@ const PositionIcon = styled.div`
 `;
 
 const HomeMeetDiv = styled.div`
-  /* border: 1px solid black; */
   padding: 10px;
   height: 350px;
 `;

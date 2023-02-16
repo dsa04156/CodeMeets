@@ -17,6 +17,7 @@
     "namor": "^2.0.4",
     "openvidu-browser": "^2.25.0",
     "react": "^18.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-cropper": "^2.1.8",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
