@@ -154,16 +154,31 @@ public class GroupController {
 			Map<String,Object> resultMap = new HashMap<String, Object>();
 			logger.info("group member list - 호출");
 			List<UserDto> groupMemberList = groupService.groupMemberList(groupPk);
+			
+			if (groupMemberList != null) {
+				for (UserDto member : groupMemberList) {
+					if (member.getEmailPublic() == 0) {
+						member.setEmail("비공개");
+					}
+
+					if (member.getTelPublic() == 0) {
+						member.setTel("비공개");
+					}
+				}
+			}
+			
 			int total = groupMemberList.size();
-			System.out.println(groupMemberList.toString());
-			int position = groupService.checkManager(userPk,groupPk);
+			int position = groupService.checkManager(userPk, groupPk);
 			resultMap.put("position", position);
 			resultMap.put("List", groupMemberList);
 		
 			logger.info("group member list - 호출 성공");
-			System.out.println(groupMemberList.toString());
-			return new ResponseEntity<Map<String,Object>>(resultMap, HttpStatus.OK);
+			logger.info(groupMemberList.toString());
+
+			return new ResponseEntity<Map<String, Object>>(resultMap, HttpStatus.OK);
 		} catch (Exception e) {
+			logger.info("groupMemberList error - " + e);
+			
 			return new ResponseEntity<String>(FAIL, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
