@@ -11,7 +11,7 @@
 		<result column="origin_filename" property="originFilename" />
 		<result column="db_filename" property="dbFilename" />
 		<result column="group_notice_date" property="groupNoticeDate" />
-		<result column="nickname" property="nickname" />
+		<result column="user_name" property="userName" />
 		<result column="group_pk" property="groupPk" />
 		<result column="user_pk" property="userPk" />
 		<result column="group_notice_hit" property="groupNoticeHit" />
@@ -28,15 +28,18 @@
 	<!-- ==================== 공지 목록 조회, 상세 조회 ======================================== -->
 	
 	<select id="getGroupNoticeList" resultMap="groupNotice" >
-		SELECT *, count(*) OVER() AS total
+		SELECT group_notice_pk, group_notice_title, 
+		group_notice_date, group_pk, user_pk, group_notice_hit, user_name,
+		count(*) OVER() AS total
 		FROM `group_notice` NATURAL JOIN `user_info`
 		WHERE group_pk = #{groupPk}
-		ORDER BY #{order} DESC
+		ORDER BY ${order} DESC
 		LIMIT #{nowPage}, #{items};
 	</select>
 	
     <select id="getGroupNotice" resultMap="groupNotice" >
-		SELECT *
+		SELECT group_notice_pk, group_notice_title, group_notice_contents, origin_filename, 
+		db_filename, group_notice_date, group_pk, user_pk, group_notice_hit, user_name
 		FROM `group_notice` NATURAL JOIN `user_info`
 		WHERE group_notice_pk = #{groupNoticePk}
 	</select>

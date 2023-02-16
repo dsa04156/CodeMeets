@@ -17,6 +17,7 @@ target/
 ### properties ###
 src/main/resources/application-settings.properties
 src/main/resources/application-prod.properties
+src/main/resources/application-dev.properties
 
 ### STS ###
 .apt_generated

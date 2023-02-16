@@ -1,60 +1,74 @@
 import { APIroot, pageNumber } from '../../Store';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import CreateTable from '../../CommonComponents/CreateTable';
 import Pagination from '../../CommonComponents/Pagination';
 
 const MyPageQuestionList = () => {
-    const [questionRecord, setQuestionRecord] = useState([]);
-    const [page, setPage] = useRecoilState(pageNumber);
-    const [totalPosts, setTotalPosts] = useState(0);
-    const API = useRecoilValue(APIroot);
-    const navigate = useNavigate();
-    
-    const TableNavHandler = (row) => {
-      console.log(row.original.conferenceQuestionPk)
-        navigate(`/my-question-record/${row.original.conferenceQuestionPk}`); // my-question-record 의 게시글 중 한개 상세페이지로 가는 경로
-    }
-    
-    const data = React.useMemo(() => questionRecord, [questionRecord]);
+  const [questionRecord, setQuestionRecord] = useState([]);
+  const [page, setPage] = useRecoilState(pageNumber);
+  const [totalPosts, setTotalPosts] = useState(0);
+  const API = useRecoilValue(APIroot);
+  const navigate = useNavigate();
 
-    const columns = React.useMemo(
-        () => [
-            { Header: '번호', accessor: 'conferencePk', width: 90},
-            { Header: '질문 내용', accessor: 'conferenceQuestionContents', width: 260},
-            { Header: '미팅명', accessor: 'conferenceTitle', width: 190},
-            { Header: '그룹명', accessor: 'groupName', width: 180},
-            { Header: '질문 일자', accessor: 'conferenceQuestionDate', width: 200},
-        ], []
-    );
+  const TableNavHandler = (row) => {
+    navigate(`/my-question-record/${row.original.conferenceQuestionPk}`);
+  };
 
-    useEffect(() => {
-        axios({
-            method: 'GET',
-            url: `${API}/user/my-question-record?nowPage=${page}&items=7`,
-            headers: {
-                'Content-Type': 'application/json',
-                AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
-            },
-        })
-        .then((response) => {
-            console.log(response.data)
-            setTotalPosts(response.data.question_record[0].total);
-            setQuestionRecord(response.data.question_record);
-        })
-    }, [API, page]);
+  const data = React.useMemo(() => questionRecord, [questionRecord]);
 
-    return(
-        // <Scrollsize>
-            <Styles>
-                <CreateTable columns={columns} data={data} TableNavHandler={TableNavHandler} />
-                <Pagination totalPosts={`${totalPosts}`} limit="9" page={page} setPage={setPage}></Pagination>
-            </Styles>
-        // </Scrollsize>
-    );
+  const columns = React.useMemo(
+    () => [
+      { Header: '번호', accessor: 'newIndex', width: 90 },
+      {
+        Header: '질문 내용',
+        accessor: 'conferenceQuestionContents',
+        width: 260,
+      },
+      { Header: '미팅명', accessor: 'conferenceTitle', width: 190 },
+      { Header: '그룹명', accessor: 'groupName', width: 180 },
+      { Header: '질문 일자', accessor: 'conferenceQuestionDate', width: 200 },
+    ],
+    []
+  );
+
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: `${API}/user/my-question-record?nowPage=${page}&items=7`,
+      headers: {
+        'Content-Type': 'application/json',
+        AccessToken: `${localStorage.getItem('ACCESS_TOKEN')}`,
+      },
+    }).then((response) => {
+      setTotalPosts(response.data.question_record[0].total);
+      response.data.question_record.map((list, index) => {
+        list.newIndex = index + (page - 1) * 7 + 1;
+      });
+      setQuestionRecord(response.data.question_record);
+    });
+  }, [API, page]);
+
+  return (
+    <ContentBox>
+      <Styles>
+        <CreateTable
+          columns={columns}
+          data={data}
+          TableNavHandler={TableNavHandler}
+        />
+        <Pagination
+          totalPosts={`${totalPosts}`}
+          limit="9"
+          page={page}
+          setPage={setPage}
+        ></Pagination>
+      </Styles>
+    </ContentBox>
+  );
 };
 
 export default MyPageQuestionList;
@@ -84,7 +98,12 @@ const Styles = styled.div`
     }
   }
 `;
-// const Scrollsize = styled.div`
-//   height: 46vh;
-//   overflow-y: scroll;
-// `;
+
+const ContentBox = styled.div`
+  background: rgb(239, 245, 245);
+  background: linear-gradient(
+    149deg,
+    rgba(239, 245, 245, 1) 100%,
+    rgba(239, 245, 245, 0.41228991596638653) 100%
+  );
+`;
