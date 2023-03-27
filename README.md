@@ -1,6 +1,6 @@
 # CODE Meets - OCR 기능 중심 화상 회의 웹 서비스
 ---
-![nobg](/uploads/9332275ef1448b9a77f8663aa65e0684/nobg.gif)
+![nobg](./img/nobg.gif)
 
 # 프로젝트 진행 기간
 ---
@@ -38,19 +38,19 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 
 # 메뉴 구조
 ---
-![CODE_Meets_1_메뉴_구조](/uploads/c92d5012670b3b895884253f68756bff/CODE_Meets_1_메뉴_구조.jpg)
+![CODE_Meets_1_메뉴_구조](./img/CODE_Meets_1_메뉴_구조.jpg)
 
 # User Flowchart 
 ---
-![CODE_Meets_2_User_Flowchart](/uploads/a75c8752fee8bf8fa15940dabcde962a/CODE_Meets_2_User_Flowchart.jpg)
+![CODE_Meets_2_User_Flowchart](./img/CODE_Meets_2_User_Flowchart.jpg)
 
 # Wireframe
 ---
-![CODE_Meets_4_Wireframe](/uploads/fc8900d881475a17d9041bcca2214d55/CODE_Meets_4_Wireframe.jpg)
+![CODE_Meets_4_Wireframe](./img/CODE_Meets_4_Wireframe.jpg)
 
 # 주요 기술
 ---
-![CODE_Meets_5_Service_Architecture](/uploads/f39409b58b2c013eb28e716387ab38f2/CODE_Meets_5_Service_Architecture.jpg)
+![CODE_Meets_5_Service_Architecture](./img/CODE_Meets_5_Service_Architecture.png)
 
 # 협업 툴 및 환경
 ---
