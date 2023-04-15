@@ -38,19 +38,23 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 
 # 메뉴 구조
 ---
-![CODE_Meets_1_메뉴_구조](/uploads/c92d5012670b3b895884253f68756bff/CODE_Meets_1_메뉴_구조.jpg)
+![CODE_Meets_1_메뉴_구조](https://user-images.githubusercontent.com/82055169/232195581-d0753c73-70ec-4f8c-a726-7f6e01d73d98.jpg)
+
 
 # User Flowchart 
 ---
-![CODE_Meets_2_User_Flowchart](/uploads/a75c8752fee8bf8fa15940dabcde962a/CODE_Meets_2_User_Flowchart.jpg)
+![CODE_Meets_2_User_Flowchart](https://user-images.githubusercontent.com/82055169/232195586-58ad0993-42be-40eb-85ce-12fae2e51249.jpg)
+
 
 # Wireframe
 ---
-![CODE_Meets_4_Wireframe](/uploads/fc8900d881475a17d9041bcca2214d55/CODE_Meets_4_Wireframe.jpg)
+![CODE_Meets_4_Wireframe](https://user-images.githubusercontent.com/82055169/232195615-4672c585-b154-4ff0-8dec-8fc32e91d231.jpg)
+
 
 # 주요 기술
 ---
-![CODE_Meets_5_Service_Architecture](/uploads/f39409b58b2c013eb28e716387ab38f2/CODE_Meets_5_Service_Architecture.jpg)
+![CODE_Meets_5_Service_Architecture](https://user-images.githubusercontent.com/82055169/232195624-62226f11-df5f-43a0-b779-63009d758f0a.png)
+
 
 # 협업 툴 및 환경
 ---
