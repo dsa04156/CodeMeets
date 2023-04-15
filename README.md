@@ -118,4 +118,5 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 
 # 서비스 화면
 ---
+![image](https://user-images.githubusercontent.com/82055169/232195920-7f524ac6-a68f-4fca-9256-c2b2747326b9.png)
 
