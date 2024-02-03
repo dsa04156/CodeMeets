@@ -1,14 +1,9 @@
 # CODE Meets - OCR 기능 중심 화상 회의 웹 서비스
----
-![nobg](/uploads/9332275ef1448b9a77f8663aa65e0684/nobg.gif)
-
+![Alt text](logo.gif)
 # 프로젝트 진행 기간
----
 2023.01.09(월) ~ 2023.02.17(금) (39일간 진행)
 
-
 # CODE Meets 배경
----
 우리 팀원들은 코딩, SW 개발 관련 강의를 주로 유튜브 라이브 채널과 웹엑스로 수강합니다.
 이 두 채널에서 각각에서
 
@@ -23,7 +18,6 @@
 
 
 # CODE Meet 개요
----
 'CODE Meets'는 'Code', 'OCR', 'Develope', 'Education'의 첫 글자인 'C', 'O', 'D', 'E'와 강의자와 수강자가 만난다는 'Meets'를 합친 의미입니다.
 
 CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
@@ -37,27 +31,22 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 
 
 # 메뉴 구조
----
 ![CODE_Meets_1_메뉴_구조](https://user-images.githubusercontent.com/82055169/232195581-d0753c73-70ec-4f8c-a726-7f6e01d73d98.jpg)
 
 
 # User Flowchart 
----
 ![CODE_Meets_2_User_Flowchart](https://user-images.githubusercontent.com/82055169/232195586-58ad0993-42be-40eb-85ce-12fae2e51249.jpg)
 
 
 # Wireframe
----
 ![CODE_Meets_4_Wireframe](https://user-images.githubusercontent.com/82055169/232195615-4672c585-b154-4ff0-8dec-8fc32e91d231.jpg)
 
 
 # 주요 기술
----
 ![CODE_Meets_5_Service_Architecture](https://user-images.githubusercontent.com/82055169/232195624-62226f11-df5f-43a0-b779-63009d758f0a.png)
 
 
 # 협업 툴 및 환경
----
 - Git
     - 코드 버전 관리
     - 이슈 발행, 해결 위한 토록
@@ -75,7 +64,6 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 - Webex
 
 # 팀원
----
 ### 정형빈
 - 팀장
 - Web Socket
@@ -103,7 +91,6 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 - 기획/설계
 
 # 프로젝트 산출물
----
 - 메뉴 구조
 - Userflow
 - Git 전략
@@ -117,6 +104,5 @@ CODE Meets는 다른 화상 회의 프로그램과는 다릅니다.
 - 1차 발표자료(기획_설계)
 
 # 서비스 화면
----
 ![image](https://user-images.githubusercontent.com/82055169/232195920-7f524ac6-a68f-4fca-9256-c2b2747326b9.png)
 
